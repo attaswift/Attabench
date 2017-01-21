@@ -10,11 +10,6 @@
 		BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AAC61E3125D000BFE22D /* AppDelegate.swift */; };
 		BB83AAC91E3125D000BFE22D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB83AAC81E3125D000BFE22D /* Assets.xcassets */; };
 		BB83AACC1E3125D000BFE22D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB83AACA1E3125D000BFE22D /* MainMenu.xib */; };
-		BB83AAFE1E3127AE00BFE22D /* BenchmarkServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AAEF1E31264D00BFE22D /* BenchmarkServiceProtocol.swift */; };
-		BB83AB001E31281900BFE22D /* BenchmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AAFF1E31281900BFE22D /* BenchmarkService.swift */; };
-		BB83AB021E31288F00BFE22D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AB011E31288F00BFE22D /* main.swift */; };
-		BB83AB031E3129E400BFE22D /* BenchmarkServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AAEF1E31264D00BFE22D /* BenchmarkServiceProtocol.swift */; };
-		BB8E0DCB1E316CD000505773 /* CollectionBenchmarks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */; };
 		BB8E0DDA1E3237D900505773 /* BenchmarkingTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */; };
 		BB8E0DE11E3237D900505773 /* BenchmarkingToolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DE01E3237D900505773 /* BenchmarkingToolsTests.swift */; };
 		BB8E0DE61E3237D900505773 /* BenchmarkingTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */; };
@@ -28,7 +23,6 @@
 		BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DFE1E32384500505773 /* Benchmark.swift */; };
 		BB8E0E011E323F7700505773 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E001E323F7700505773 /* Timestamp.swift */; };
 		BB8E0E021E32418C00505773 /* BenchmarkingTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */; };
-		BB8E0E031E3246E900505773 /* BenchmarkingTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */; };
 		BB8E0E051E3253E500505773 /* CollectionBenchmarks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */; };
 		BB8E0E061E3253E500505773 /* CollectionBenchmarks.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E091E3262C600505773 /* ChartRendering.swift */; };
@@ -89,11 +83,6 @@
 		BB83AAC81E3125D000BFE22D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB83AACB1E3125D000BFE22D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BB83AACD1E3125D000BFE22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB83AAED1E31264D00BFE22D /* BenchmarkService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BenchmarkService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB83AAEF1E31264D00BFE22D /* BenchmarkServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkServiceProtocol.swift; sourceTree = "<group>"; };
-		BB83AAF51E31264D00BFE22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB83AAFF1E31281900BFE22D /* BenchmarkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BenchmarkService.swift; sourceTree = "<group>"; };
-		BB83AB011E31288F00BFE22D /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CollectionBenchmarks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8E0DBF1E316CC800505773 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkingTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,15 +110,6 @@
 			files = (
 				BB8E0E051E3253E500505773 /* CollectionBenchmarks.framework in Frameworks */,
 				BB8E0DE61E3237D900505773 /* BenchmarkingTools.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB83AAEA1E31264D00BFE22D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB8E0E031E3246E900505773 /* BenchmarkingTools.framework in Frameworks */,
-				BB8E0DCB1E316CD000505773 /* CollectionBenchmarks.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,7 +144,6 @@
 			children = (
 				BB8E0DBD1E316CC800505773 /* CollectionBenchmarks */,
 				BB83AAC51E3125D000BFE22D /* Benchmark */,
-				BB83AAEE1E31264D00BFE22D /* BenchmarkService */,
 				BB8E0DD21E3237D900505773 /* BenchmarkingTools */,
 				BB8E0DDF1E3237D900505773 /* BenchmarkingToolsTests */,
 				BB1DA9CE1E2E5923000F2B03 /* Products */,
@@ -176,7 +155,6 @@
 			children = (
 				BB1DA9CD1E2E5923000F2B03 /* dotSwift */,
 				BB83AAC41E3125CF00BFE22D /* Benchmark.app */,
-				BB83AAED1E31264D00BFE22D /* BenchmarkService.xpc */,
 				BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */,
 				BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */,
 				BB8E0DD91E3237D900505773 /* BenchmarkingToolsTests.xctest */,
@@ -196,17 +174,6 @@
 				BB83AACD1E3125D000BFE22D /* Info.plist */,
 			);
 			path = Benchmark;
-			sourceTree = "<group>";
-		};
-		BB83AAEE1E31264D00BFE22D /* BenchmarkService */ = {
-			isa = PBXGroup;
-			children = (
-				BB83AAEF1E31264D00BFE22D /* BenchmarkServiceProtocol.swift */,
-				BB83AAFF1E31281900BFE22D /* BenchmarkService.swift */,
-				BB83AB011E31288F00BFE22D /* main.swift */,
-				BB83AAF51E31264D00BFE22D /* Info.plist */,
-			);
-			path = BenchmarkService;
 			sourceTree = "<group>";
 		};
 		BB8E0DBD1E316CC800505773 /* CollectionBenchmarks */ = {
@@ -282,23 +249,6 @@
 			productReference = BB83AAC41E3125CF00BFE22D /* Benchmark.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BB83AAEC1E31264D00BFE22D /* BenchmarkService */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB83AAF91E31264D00BFE22D /* Build configuration list for PBXNativeTarget "BenchmarkService" */;
-			buildPhases = (
-				BB83AAE91E31264D00BFE22D /* Sources */,
-				BB83AAEA1E31264D00BFE22D /* Frameworks */,
-				BB83AAEB1E31264D00BFE22D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BenchmarkService;
-			productName = BenchmarkService;
-			productReference = BB83AAED1E31264D00BFE22D /* BenchmarkService.xpc */;
-			productType = "com.apple.product-type.xpc-service";
-		};
 		BB8E0DBB1E316CC700505773 /* CollectionBenchmarks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB8E0DC51E316CC800505773 /* Build configuration list for PBXNativeTarget "CollectionBenchmarks" */;
@@ -372,10 +322,6 @@
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 					};
-					BB83AAEC1E31264D00BFE22D = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-					};
 					BB8E0DBB1E316CC700505773 = {
 						CreatedOnToolsVersion = 8.2.1;
 						LastSwiftMigration = 0820;
@@ -407,7 +353,6 @@
 			projectRoot = "";
 			targets = (
 				BB83AAC31E3125CF00BFE22D /* Benchmark */,
-				BB83AAEC1E31264D00BFE22D /* BenchmarkService */,
 				BB8E0DBB1E316CC700505773 /* CollectionBenchmarks */,
 				BB8E0DD01E3237D900505773 /* BenchmarkingTools */,
 				BB8E0DD81E3237D900505773 /* BenchmarkingToolsTests */,
@@ -422,13 +367,6 @@
 			files = (
 				BB83AAC91E3125D000BFE22D /* Assets.xcassets in Resources */,
 				BB83AACC1E3125D000BFE22D /* MainMenu.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB83AAEB1E31264D00BFE22D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,19 +400,8 @@
 			files = (
 				BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */,
 				BB8E0E0C1E329E6F00505773 /* Runner.swift in Sources */,
-				BB83AB031E3129E400BFE22D /* BenchmarkServiceProtocol.swift in Sources */,
 				BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */,
 				BB8E0E0E1E32A35500505773 /* Results.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB83AAE91E31264D00BFE22D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB83AB001E31281900BFE22D /* BenchmarkService.swift in Sources */,
-				BB83AB021E31288F00BFE22D /* main.swift in Sources */,
-				BB83AAFE1E3127AE00BFE22D /* BenchmarkServiceProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -880,160 +807,6 @@
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
-			};
-			name = Unchecked;
-		};
-		BB83AAFA1E31264D00BFE22D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = BenchmarkService/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.BenchmarkService;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		BB83AAFB1E31264D00BFE22D /* Optimized */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkService/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.BenchmarkService;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Optimized;
-		};
-		BB83AAFC1E31264D00BFE22D /* WholeModule */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkService/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.BenchmarkService;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = WholeModule;
-		};
-		BB83AAFD1E31264D00BFE22D /* Unchecked */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkService/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.BenchmarkService;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
 			};
 			name = Unchecked;
 		};
@@ -1614,17 +1387,6 @@
 				BB83AACF1E3125D000BFE22D /* Optimized */,
 				BB83AAD01E3125D000BFE22D /* WholeModule */,
 				BB83AAD11E3125D000BFE22D /* Unchecked */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Optimized;
-		};
-		BB83AAF91E31264D00BFE22D /* Build configuration list for PBXNativeTarget "BenchmarkService" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB83AAFA1E31264D00BFE22D /* Debug */,
-				BB83AAFB1E31264D00BFE22D /* Optimized */,
-				BB83AAFC1E31264D00BFE22D /* WholeModule */,
-				BB83AAFD1E31264D00BFE22D /* Unchecked */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Optimized;
