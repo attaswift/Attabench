@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Run.png",
+      "filename" : "StopTemplate.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Run@2x.png",
+      "filename" : "StopTemplate@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Run@3x.png",
+      "filename" : "StopTemplate@3x.png",
       "scale" : "3x"
     }
   ],
