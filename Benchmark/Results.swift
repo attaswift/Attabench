@@ -21,14 +21,7 @@ class BenchmarkSample {
     }
 
     var minimum: TimeInterval {
-        switch measurements.count {
-        case 0: return 0
-        case 1: return measurements[0]
-        case 2:
-            return measurements.min()!
-        default:
-            return measurements.dropFirst().min()!
-        }
+        return measurements.min() ?? 0
     }
     var maximum: TimeInterval {
         switch measurements.count {

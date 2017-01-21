@@ -597,6 +597,17 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="View" id="HyV-fh-RgO">
                         <items>
+                            <menuItem title="Next Suite" keyEquivalent="" id="2g6-4n-ZmJ">
+                                <connections>
+                                    <action selector="selectPreviousSuite:" target="-1" id="MLY-X2-ccj"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Previous Suite" keyEquivalent="" id="2Z5-oS-twq">
+                                <connections>
+                                    <action selector="selectPreviousSuite:" target="-1" id="kDi-Ug-Ygf"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="GzI-C2-h7J"/>
                             <menuItem title="Show Toolbar" keyEquivalent="t" id="snW-S8-Cw5">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
@@ -703,14 +714,14 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="47A710C0-D1B1-49CF-ADAE-42DB45FEDE95" label="" paletteLabel="Run" image="Run" id="OES-KR-TQM">
+                    <toolbarItem implicitItemIdentifier="47A710C0-D1B1-49CF-ADAE-42DB45FEDE95" label="" paletteLabel="Run" image="RunTemplate" id="OES-KR-TQM">
                         <nil key="toolTip"/>
                         <size key="minSize" width="40" height="28"/>
                         <size key="maxSize" width="40" height="28"/>
                         <button key="view" verticalHuggingPriority="750" id="X4a-Uy-A9Q">
                             <rect key="frame" x="0.0" y="14" width="40" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="Run" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ma2-Mb-UJe">
+                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="RunTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ma2-Mb-UJe">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -747,6 +758,6 @@
         </window>
     </objects>
     <resources>
-        <image name="Run" width="18" height="18"/>
+        <image name="RunTemplate" width="18" height="18"/>
     </resources>
 </document>

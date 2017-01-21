@@ -5,6 +5,7 @@
 //  Copyright © 2017 Károly Lőrentey.
 //
 
+import Foundation
 import BenchmarkingTools
 
 typealias Value = Int
@@ -98,6 +99,31 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
             guard i == input.count else { fatalError() }
         }
     }
+
+    suite.addBenchmark(title: "NSOrderedSet") { input in
+        //guard input.count < 300_000 else { return nil }
+
+        let set = NSMutableOrderedSet()
+        let comparator: (Any, Any) -> ComparisonResult = {
+            let a = $0 as! Value
+            let b = $1 as! Value
+            return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
+        }
+        for value in 0 ..< input.count { // Cheating!
+//            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
+            set.insert(value, at: set.count)
+        }
+
+        return { measurer in
+            var i = 0
+            for element in set {
+                guard (element as! Value) == i else { fatalError() }
+                i += 1
+            }
+            guard i == input.count else { fatalError() }
+        }
+    }
+
     return suite
 }
 
@@ -133,14 +159,31 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("SortedArray", for: SortedArray<Value>.self, to: suite)
+
+    suite.addBenchmark(title: "NSOrderedSet") { input in
+        return { measurer in
+            let set = NSMutableOrderedSet()
+            let comparator: (Any, Any) -> ComparisonResult = {
+                let a = $0 as! Value
+                let b = $1 as! Value
+                return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
+            }
+            for value in input {
+                let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
+                set.insert(value, at: index)
+            }
+        }
+    }
+
     return suite
 }
 
 func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true) -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "SharedInsertion", inputGenerator: inputGenerator)
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, maxCount: Int? = nil, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
+            if let maxCount = maxCount, input.count > maxCount { return nil }
             var first = true
             return { measurer in
                 var set = initializer()
@@ -172,7 +215,29 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
     }
     add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("SortedArray", for: SortedArray<Value>.self, to: suite)
+    add("SortedArray", for: SortedArray<Value>.self, to: suite, maxCount: 300_000)
+
+    suite.addBenchmark(title: "NSOrderedSet") { input in
+        guard input.count < 20_000 else { return nil }
+        return { measurer in
+            let set = NSMutableOrderedSet()
+            let comparator: (Any, Any) -> ComparisonResult = {
+                let a = $0 as! Value
+                let b = $1 as! Value
+                return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
+            }
+            measurer.measure {
+                var copy = set.copy()
+                for value in input {
+                    let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
+                    set.insert(value, at: index)
+                    copy = set.copy()
+                }
+                _ = copy
+            }
+        }
+    }
+
     return suite
 }
 

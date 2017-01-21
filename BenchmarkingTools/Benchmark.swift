@@ -28,14 +28,14 @@ public class BenchmarkMeasurer {
 
 fileprivate class Benchmark<Input> {
     let title: String
-    let body: (Input) -> (BenchmarkMeasurer) -> Void
+    let body: (Input) -> ((BenchmarkMeasurer) -> Void)?
 
-    init(_ title: String, _ body: @escaping (Input) -> (BenchmarkMeasurer) -> Void) {
+    init(_ title: String, _ body: @escaping (Input) -> ((BenchmarkMeasurer) -> Void)?) {
         self.title = title
         self.body = body
     }
 
-    func generate(input: Input) -> (BenchmarkMeasurer) -> Void {
+    func generate(input: Input) -> ((BenchmarkMeasurer) -> Void)? {
         return self.body(input)
     }
 }
@@ -61,7 +61,7 @@ fileprivate struct InstanceKey: Hashable {
 public protocol BenchmarkSuiteProtocol {
     var title: String { get }
     var benchmarkTitles: [String] { get }
-    func run(_ title: String, _ size: Int) -> TimeInterval
+    func run(_ title: String, _ size: Int) -> TimeInterval?
 }
 
 public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
@@ -79,13 +79,13 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
         self.inputGenerator = inputGenerator
     }
 
-    public func addBenchmark(title: String, _ body: @escaping (Input) -> (BenchmarkMeasurer) -> ()) {
+    public func addBenchmark(title: String, _ body: @escaping (Input) -> ((BenchmarkMeasurer) -> Void)?) {
         precondition(self.benchmarks[title] == nil)
         self.benchmarkTitles.append(title)
         self.benchmarks[title] = Benchmark(title, body)
     }
 
-    private func instance(for key: InstanceKey) -> (BenchmarkMeasurer) -> Void {
+    private func instance(for key: InstanceKey) -> ((BenchmarkMeasurer) -> Void)? {
         if let instance = instances[key] { return instance }
         guard let benchmark = benchmarks[key.title] else { fatalError() }
         let input = self.input(for: key.size)
@@ -102,9 +102,9 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
         return input
     }
 
-    @discardableResult
-    public func run(_ title: String, _ size: Int) -> TimeInterval {
-        let instance = self.instance(for: InstanceKey(title, size))
+    @discardableResult @inline(never)
+    public func run(_ title: String, _ size: Int) -> TimeInterval? {
+        guard let instance = self.instance(for: InstanceKey(title, size)) else { return nil }
         let start = Timestamp()
         let measurer = BenchmarkMeasurer()
         instance(measurer)

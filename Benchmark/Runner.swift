@@ -116,10 +116,11 @@ class Runner {
         DispatchQueue.main.sync {
             self.delegate?.runner(self, didStartMeasuringSuite: suite.title, benchmark: benchmark, size: size)
         }
-        let time = suite.run(benchmarks[i], sizes[j])
-        DispatchQueue.main.sync {
-            self.results(for: suite.title).addMeasurement(benchmark, size, time)
-            self.delegate?.runner(self, didMeasureInstanceInSuite: suite.title, benchmark: benchmark, size: size, withResult: time)
+        if let time = suite.run(benchmarks[i], sizes[j]) {
+            DispatchQueue.main.sync {
+                self.results(for: suite.title).addMeasurement(benchmark, size, time)
+                self.delegate?.runner(self, didMeasureInstanceInSuite: suite.title, benchmark: benchmark, size: size, withResult: time)
+            }
         }
         if self._stopIfNeeded(suite) { return }
 

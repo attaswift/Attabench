@@ -24,6 +24,9 @@ class AppDelegate: NSObject {
     let runner = Runner()
 
     var refreshScheduled = false
+    var saveScheduled = false
+    var terminating = false
+
 
     var status: String = "" {
         didSet {
@@ -31,10 +34,18 @@ class AppDelegate: NSObject {
         }
     }
 
-    var selectedSuite: BenchmarkSuiteProtocol {
-        let index = suitePopUpButton.indexOfSelectedItem
-        if index == -1 { return runner.suites[0] }
-        return runner.suites[index]
+    var selectedSuite: BenchmarkSuiteProtocol? {
+        didSet {
+            guard let suite = selectedSuite else { return }
+            let defaults = UserDefaults.standard
+            defaults.set(suite.title, forKey: "SelectedSuite")
+
+            let index = self.suiteMenu.items.index(where: { $0.title == suite.title }) ?? 0
+            if self.suitePopUpButton.indexOfSelectedItem != index {
+                self.suitePopUpButton.selectItem(at: index)
+            }
+            refreshChart()
+        }
     }
 }
 
@@ -60,24 +71,35 @@ extension AppDelegate: NSApplicationDelegate {
 
         let defaults = UserDefaults.standard
         let selectedTitle = defaults.string(forKey: "SelectedSuite")
-        let selectedIndex = runner.suites.index(where: { $0.title == selectedTitle }) ?? 0
+        let suite = runner.suites.first(where: { $0.title == selectedTitle }) ?? runner.suites.first!
 
         self.suiteMenu.removeAllItems()
+        var i = 1
         for suite in runner.suites {
-            let item = NSMenuItem(title: suite.title, action: #selector(AppDelegate.didSelectSuite(_:)), keyEquivalent: "")
+            let item = NSMenuItem(title: suite.title,
+                                  action: #selector(AppDelegate.didSelectSuite(_:)),
+                                  keyEquivalent: i <= 9 ? "\(i)" : "")
             self.suiteMenu.addItem(item)
+            i += 1
         }
-        let selectedItem = self.suiteMenu.items[selectedIndex]
-        self.suitePopUpButton.select(selectedItem)
+        self.selectedSuite = suite
+    }
 
-        refreshChart()
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplicationTerminateReply {
+        if runner.state == .idle {
+            return .terminateNow
+        }
+        terminating = true
+        self.stop()
+        return .terminateLater
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        if runner.state == .running {
-            runner.stop()
-        }
-        try? runner.save()
+        self.save()
     }
 }
 
@@ -90,23 +112,28 @@ extension AppDelegate: RunnerDelegate {
     func runner(_ runner: Runner, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
         print(benchmark, size, time)
         scheduleRefresh()
+        window.isDocumentEdited = true
+        scheduleSave()
     }
 
     func runner(_ runner: Runner, didStopMeasuringSuite suite: String) {
-        self.runButton.image = #imageLiteral(resourceName: "Run")
+        self.runButton.image = #imageLiteral(resourceName: "RunTemplate")
         self.runButton.isEnabled = true
         self.startMenuItem.title = "Start Running"
         self.startMenuItem.isEnabled = true
         self.suitePopUpButton.isEnabled = true
         self.status = "Idle"
-        try? self.runner.save()
+        self.save()
+        if terminating {
+            NSApp.reply(toApplicationShouldTerminate: true)
+        }
     }
 }
 
 extension AppDelegate {
     //MARK: Actions
 
-    static let imageSize = CGSize(width: 1024, height: 768)
+    static let imageSize = CGSize(width: 1280, height: 720)
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(AppDelegate.run(_:)) {
@@ -129,7 +156,7 @@ extension AppDelegate {
 
     func refreshChart() {
         cancelRefresh()
-        let suite = self.selectedSuite
+        let suite = self.selectedSuite ?? self.runner.suites[0]
         let results = runner.results(for: suite)
         let chart = Chart(size: AppDelegate.imageSize, suite: suite, results: results)
         self.chartImageView.image = chart.image
@@ -140,24 +167,55 @@ extension AppDelegate {
         refreshChart()
     }
 
+    func scheduleSave() {
+        if !saveScheduled {
+            self.perform(#selector(AppDelegate.save), with: nil, afterDelay: 30.0)
+            saveScheduled = true
+        }
+    }
+
+    func cancelSave() {
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(AppDelegate.save), object: nil)
+        saveScheduled = false
+    }
+
+    func save() {
+        do {
+            cancelSave()
+            try runner.save()
+            window.isDocumentEdited = false
+        }
+        catch {
+            // Ignore for now
+        }
+    }
+
     @IBAction func saveDocument(_ sender: AnyObject) {
-        try? runner.save()
+        self.save()
+    }
+
+    func start() {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        self.suitePopUpButton.isEnabled = false
+        self.runButton.image = #imageLiteral(resourceName: "StopTemplate")
+        self.startMenuItem.title = "Stop Running"
+        self.status = "Running \(suite.title)"
+        self.runner.start(suite: suite, maxScale: 20)
+    }
+
+    func stop() {
+        self.runButton.isEnabled = false
+        self.startMenuItem.isEnabled = false
+        self.status = "Stopping..."
+        self.runner.stop()
     }
 
     @IBAction func run(_ sender: AnyObject) {
         switch self.runner.state {
         case .idle:
-            let suite = self.selectedSuite
-            self.suitePopUpButton.isEnabled = false
-            self.runButton.image = #imageLiteral(resourceName: "Stop")
-            self.startMenuItem.title = "Stop Running"
-            self.status = "Running \(suite.title)"
-            self.runner.start(suite: suite, maxScale: 18)
+            self.start()
         case .running:
-            self.runButton.isEnabled = false
-            self.startMenuItem.isEnabled = false
-            self.status = "Stopping..."
-            self.runner.stop()
+            self.stop()
         case .stopping:
             // Do nothing
             break
@@ -165,16 +223,19 @@ extension AppDelegate {
     }
 
     @IBAction func didSelectSuite(_ sender: NSMenuItem) {
-        let defaults = UserDefaults.standard
-        defaults.set(sender.title, forKey: "SelectedSuite")
-        refreshChart()
+        let index = suitePopUpButton.indexOfSelectedItem
+        selectedSuite = runner.suites[index == -1 ? 0 : index]
     }
-}
 
-extension AppDelegate: NSWindowDelegate {
-    //MARK: NSWindowDelegate
+    @IBAction func selectNextSuite(_ sender: AnyObject?) {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let index = self.runner.suites.index(where: { $0.title == suite.title }) ?? 0
+        self.selectedSuite = self.runner.suites[(index + 1) % self.runner.suites.count]
+    }
 
-    func windowWillClose(_ notification: Notification) {
-        NSApp.sendAction(#selector(NSApplication.terminate(_:)), to: nil, from: window)
+    @IBAction func selectPreviousSuite(_ sender: AnyObject?) {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let index = self.runner.suites.index(where: { $0.title == suite.title }) ?? 0
+        self.selectedSuite = index == 0 ? self.runner.suites.last! : self.runner.suites[index - 1]
     }
 }
