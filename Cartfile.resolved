@@ -1,0 +1,3 @@
+github "lorentey/BTree" "v4.0.1"
+github "lorentey/SipHash" "v1.1.0"
+github "lorentey/GlueKit" "v0.1.0-alpha.1"
