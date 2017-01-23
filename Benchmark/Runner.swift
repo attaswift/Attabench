@@ -137,17 +137,24 @@ class Runner {
         }
     }
 
-    func start(suite: BenchmarkSuiteProtocol, randomized: Bool) {
+    func start(suite: BenchmarkSuiteProtocol, randomized: Bool, subdivisions: Int = 8) {
         precondition(state == .idle)
         state = .running
 
         let benchmarks = suite.benchmarkTitles
         let results = self.results(for: suite)
-        let sizes = results.scaleRange.map { 1 << $0 }
+
+        let range = results.scaleRange
+        var sizes: Set<Int> = []
+        for i in subdivisions * range.lowerBound ... subdivisions * range.upperBound {
+            let size = exp2(Double(i) / Double(subdivisions))
+            sizes.insert(Int(size))
+        }
+
         precondition(!benchmarks.isEmpty && !sizes.isEmpty)
 
         queue.async {
-            self._run(suite: suite, benchmarks: benchmarks, sizes: sizes,
+            self._run(suite: suite, benchmarks: benchmarks, sizes: sizes.sorted(),
                       i: 0, j: 0, forget: randomized)
         }
     }

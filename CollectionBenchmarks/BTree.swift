@@ -46,6 +46,7 @@ class BTreeNode<Element: Comparable> {
     }
 
     deinit {
+        elements.deinitialize(count: elementCount)
         elements.deallocate(capacity: order)
     }
 }

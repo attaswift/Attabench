@@ -22,7 +22,7 @@ private protocol TestableSet: Collection {
 extension SortedArray: TestableSet {}
 extension AlgebraicTree: TestableSet {}
 extension BinaryTree: TestableSet {}
-extension RedBlackTree: TestableSet {}
+extension COWTree: TestableSet {}
 extension BTree: TestableSet {}
 
 func randomArrayGenerator(_ size: Int) -> [Value] {
@@ -122,7 +122,7 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
 
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+    add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
@@ -198,7 +198,7 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
 
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+    add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
@@ -220,8 +220,9 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
 func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "Insertion", inputGenerator: inputGenerator)
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxSize: Int? = nil, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
+            if let maxSize = maxSize, input.count > maxSize { return nil }
             var first = true
             return { measurer in
                 var set = initializer()
@@ -244,9 +245,10 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    add("SortedArray", for: SortedArray<Value>.self, to: suite)
+    add("SortedArray", for: SortedArray<Value>.self, maxSize: 100_000, to: suite)
 
     suite.addBenchmark(title: "NSOrderedSet") { input in
+        if input.count > 100_000 { return nil }
         return { measurer in
             let set = NSMutableOrderedSet()
             let comparator: (Any, Any) -> ComparisonResult = {
@@ -264,7 +266,7 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
 
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+    add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
@@ -336,7 +338,7 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
 
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+    add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }

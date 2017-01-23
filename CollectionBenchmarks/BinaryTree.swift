@@ -214,16 +214,6 @@ final class BinaryTreeNode<Element: Comparable>: CustomStringConvertible {
 }
 
 extension BinaryTreeNode {
-    func leftMostSubnode() -> BinaryTreeNode {
-        var node = self
-        while let next = node.left {
-            node = next
-        }
-        return node
-    }
-}
-
-extension BinaryTreeNode {
     func makeLeftUnique() -> BinaryTreeNode? {
         if left == nil { return nil }
         if isKnownUniquelyReferenced(&left!) {

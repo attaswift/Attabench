@@ -27,7 +27,12 @@ class AppDelegate: NSObject {
 
     let runner = Runner()
 
-    var refreshScheduled = false
+    let progressRefreshDelay = 0.1
+    var progressRefreshScheduled = false
+    var nextProgressUpdate = Date.distantPast
+
+    let chartRefreshDelay = 0.25
+    var chartRefreshScheduled = false
     var saveScheduled = false
     var terminating = false
     var waitingForParamsChange = false
@@ -38,7 +43,15 @@ class AppDelegate: NSObject {
 
     var status: String = "" {
         didSet {
-            self.progressButton.title = status
+            guard !progressRefreshScheduled else { return }
+            let now = Date()
+            if nextProgressUpdate < now {
+                self.progressButton.title = status
+                nextProgressUpdate = now.addingTimeInterval(progressRefreshDelay)
+            }
+            else {
+                scheduleProgressRefresh()
+            }
         }
     }
 
@@ -144,7 +157,7 @@ extension AppDelegate: RunnerDelegate {
 
     func runner(_ runner: Runner, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
         //print(benchmark, size, time)
-        scheduleRefresh()
+        scheduleChartRefresh()
         window.isDocumentEdited = true
         scheduleSave()
     }
@@ -180,20 +193,35 @@ extension AppDelegate {
         return true
     }
 
-    func scheduleRefresh() {
-        if !refreshScheduled {
-            self.perform(#selector(AppDelegate.refreshChart), with: nil, afterDelay: 0.1)
-            refreshScheduled = true
+    func scheduleProgressRefresh() {
+        if !progressRefreshScheduled {
+            self.perform(#selector(AppDelegate.refreshProgress), with: nil, afterDelay: progressRefreshDelay)
+            progressRefreshScheduled = true
         }
     }
 
-    func cancelRefresh() {
+    func refreshProgress() {
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(AppDelegate.refreshProgress), object: nil)
+        progressRefreshScheduled = false
+
+        self.progressButton.title = self.status
+        nextProgressUpdate = Date(timeIntervalSinceNow: progressRefreshDelay)
+    }
+
+    func scheduleChartRefresh() {
+        if !chartRefreshScheduled {
+            self.perform(#selector(AppDelegate.refreshChart), with: nil, afterDelay: 0.1)
+            chartRefreshScheduled = true
+        }
+    }
+
+    func cancelChartRefresh() {
         NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(AppDelegate.refreshChart), object: nil)
-        refreshScheduled = false
+        chartRefreshScheduled = false
     }
 
     func refreshChart() {
-        cancelRefresh()
+        cancelChartRefresh()
         let suite = self.selectedSuite ?? self.runner.suites[0]
         let results = runner.results(for: suite)
         let chart: Chart

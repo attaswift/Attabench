@@ -17,8 +17,8 @@ class BenchmarkSample {
 
     func addMeasurement(_ elapsedTime: TimeInterval) {
         self.measurements.append(elapsedTime)
-        if measurements.count > 1000 {
-            measurements.replaceSubrange(0 ..< 500, with: [measurements[0 ..< 500].min()!])
+        if measurements.count > 100 {
+            measurements.replaceSubrange(0 ..< 50, with: [measurements[0 ..< 50].min()!])
         }
         sum += elapsedTime
         sumSquared += elapsedTime * elapsedTime

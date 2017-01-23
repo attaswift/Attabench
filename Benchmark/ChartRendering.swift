@@ -21,9 +21,10 @@ extension NSBezierPath {
 
 extension Int {
     var label: String {
-        return self >= 1 << 30 ? "\(self >> 30)G"
-            : self >= 1 << 20 ? "\(self >> 20)M"
-            : self >= 1024 ? "\(self >> 10)k"
+        return self >= 1 << 40 ? String(format: "%.3gT", Double(self) * 0x1p-40)
+            : self >= 1 << 30 ? String(format: "%.3gG", Double(self) * 0x1p-30)
+            : self >= 1 << 20 ? String(format: "%.3gM", Double(self) * 0x1p-20)
+            : self >= 1024 ? String(format: "%.3gk", Double(self) * 0x1p-10)
             : "\(self)"
     }
 }
@@ -241,6 +242,7 @@ class Chart {
             let path = (chartTransform as NSAffineTransform).transform(path)
             path.lineWidth = 4
             path.lineCapStyle = .roundLineCapStyle
+            path.lineJoinStyle = .roundLineJoinStyle
             path.stroke()
         }
         NSGraphicsContext.restoreGraphicsState()
