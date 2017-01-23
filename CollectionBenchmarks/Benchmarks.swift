@@ -13,12 +13,14 @@ typealias Value = Int
 private protocol TestableSet: Collection {
     init()
     func validate()
+    func contains(_ element: Iterator.Element) -> Bool
     func forEach(_ body: (Iterator.Element) throws -> Void) rethrows
     @discardableResult
     mutating func insert(_ element: Iterator.Element) -> (inserted: Bool, memberAfterInsert: Iterator.Element)
 }
 
 extension SortedArray: TestableSet {}
+extension AlgebraicTree: TestableSet {}
 extension BinaryTree: TestableSet {}
 extension RedBlackTree: TestableSet {}
 extension BTree: TestableSet {}
@@ -76,13 +78,6 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    for order in [1023] { // [7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383] {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
-    }
-
-    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-
     suite.addBenchmark(title: "SortedArray") { input in
         var set = SortedArray<Value>()
         for value in 0 ..< input.count { // Cheating
@@ -109,9 +104,9 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
             let b = $1 as! Value
             return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
         }
-        for value in 0 ..< input.count { // Cheating!
-//            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
-            set.insert(value, at: set.count)
+        for value in input {
+            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
+            set.insert(value, at: index)
         }
 
         return { measurer in
@@ -123,7 +118,102 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
             guard i == input.count else { fatalError() }
         }
     }
+    
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
 
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
+    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+
+    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+
+    suite.addBenchmark(title: "Array") { input in
+        let array = input.sorted()
+        return { measurer in
+            var i = 0
+            for element in array {
+                guard element == i else { fatalError() }
+                i += 1
+            }
+            guard i == input.count else { fatalError() }
+        }
+    }
+
+    return suite
+}
+
+func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
+    let suite = BenchmarkSuite<([Value], [Value])>(title: "Contains", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<([Value], [Value])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+        suite.addBenchmark(title: title) { (input, lookups) in
+            var set = initializer()
+            for value in input {
+                set.insert(value)
+            }
+            set.validate()
+
+            return { measurer in
+                for element in lookups {
+                    guard set.contains(element) else { fatalError() }
+                }
+            }
+        }
+    }
+
+    suite.addBenchmark(title: "SortedArray") { (input, lookups) in
+        var set = SortedArray<Value>()
+        for value in 0 ..< input.count { // Cheating
+            set.append(value)
+        }
+        set.validate()
+
+        return { measurer in
+            for element in lookups {
+                guard set.contains(element) else { fatalError() }
+            }
+        }
+    }
+    
+    suite.addBenchmark(title: "NSOrderedSet") { (input, lookups) in
+        let set = NSMutableOrderedSet()
+        let comparator: (Any, Any) -> ComparisonResult = {
+            let a = $0 as! Value
+            let b = $1 as! Value
+            return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
+        }
+        for value in input {
+            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
+            set.insert(value, at: index)
+        }
+
+        return { measurer in
+            for element in lookups {
+                guard set.contains(element) else { fatalError() }
+            }
+        }
+    }
+    
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
+
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
+    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+
+    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+
+    suite.addBenchmark(title: "Array") { (input, lookups) in
+        if input.count > 100_000 { return nil }
+        let array = input.sorted()
+        return { measurer in
+            for element in lookups {
+                guard array.contains(element) else { fatalError() }
+            }
+        }
+    }
+    
     return suite
 }
 
@@ -153,11 +243,7 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
             }
         }
     }
-    for order in [1023] { //[7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383] {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
-    }
-    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
+
     add("SortedArray", for: SortedArray<Value>.self, to: suite)
 
     suite.addBenchmark(title: "NSOrderedSet") { input in
@@ -172,6 +258,22 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
                 let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
                 set.insert(value, at: index)
             }
+        }
+    }
+
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
+
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
+    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+
+    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+
+    suite.addBenchmark(title: "Array.sort") { input in
+        return { measurer in
+            var array = input
+            array.sort()
         }
     }
 
@@ -208,13 +310,7 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
             }
         }
     }
-    //let orders = [7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383]
-    let orders = [1023]
-    for order in orders {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
-    }
-    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
+
     add("SortedArray", for: SortedArray<Value>.self, to: suite, maxCount: 300_000)
 
     suite.addBenchmark(title: "NSOrderedSet") { input in
@@ -238,12 +334,36 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
         }
     }
 
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
+    add("RedBlackTree", for: RedBlackTree<Value>.self, to: suite)
+
+    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+
+
+    suite.addBenchmark(title: "Array.sort") { input in
+        guard input.count < 300_000 else { return nil }
+        return { measurer in
+            var array: [Value] = []
+            var copy = array
+            for value in input {
+                array.append(value)
+                copy = array
+            }
+            array.sort()
+            _ = copy
+        }
+    }
+
     return suite
 }
 
 public func generateBenchmarks() -> [BenchmarkSuiteProtocol] {
     return [
         foreachBenchmark(),
+        containsBenchmark(),
         insertionBenchmark(),
         cowBenchmark()
     ]

@@ -204,12 +204,22 @@ extension BTree: Collection {
 }
 
 extension BTree {
+    public func contains(_ element: Element) -> Bool {
+        return root.contains(element)
+    }
+
     public func forEach(_ body: (Element) throws -> Void) rethrows {
         try root.forEach(body)
     }
 }
 
 extension BTreeNode {
+    func contains(_ element: Element) -> Bool {
+        let slot = self.slot(of: element)
+        if slot.match != nil { return true }
+        return children[slot.descend].contains(element)
+    }
+
     func forEach(_ body: (Element) throws -> Void) rethrows {
         if isLeaf {
             for i in 0 ..< elementCount {

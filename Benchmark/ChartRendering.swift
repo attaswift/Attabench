@@ -19,8 +19,29 @@ extension NSBezierPath {
     }
 }
 
+extension Int {
+    var label: String {
+        return self >= 1 << 30 ? "\(self >> 30)G"
+            : self >= 1 << 20 ? "\(self >> 20)M"
+            : self >= 1024 ? "\(self >> 10)k"
+            : "\(self)"
+    }
+}
+
+extension TimeInterval {
+    var label: String {
+        return self >= 1000 ? String(Int(self)) + "s"
+            : self >= 1 ? String(format: "%.3gs", self)
+            : self >= 1e-3 ? String(format: "%.3gms", self * 1e3)
+            : self >= 1e-6 ? String(format: "%.3gµs", self * 1e6)
+            : String(format: "%.3gns", self * 1e9)
+    }
+}
+
 class Chart {
     let size: CGSize
+    let suite: BenchmarkSuiteProtocol
+    let title: String
 
     var curves: [(String, NSColor, NSBezierPath)] = []
     var verticalGridLines: [(String?, CGFloat)] = []
@@ -29,14 +50,17 @@ class Chart {
     init(size: CGSize,
          suite: BenchmarkSuiteProtocol,
          results: BenchmarkSuiteResults,
-         sizeRange: Range<Int> = 1 ..< (1024 * 1024),
-         timeRange: Range<TimeInterval> = 1e-6 ..< 100,
+         sizeRange: Range<Int>? = nil,
+         timeRange: Range<TimeInterval>? = nil,
          amortized: Bool = false) {
         self.size = size
-        var minSize = sizeRange.lowerBound
-        var maxSize = sizeRange.upperBound
-        var minTime = timeRange.lowerBound
-        var maxTime = timeRange.upperBound
+        self.suite = suite
+        self.title = amortized ? suite.title + " (amortized)" : suite.title
+        var minSize = sizeRange?.lowerBound ?? Int.max
+        var maxSize = sizeRange?.upperBound ?? Int.min
+        var minTime = timeRange?.lowerBound ?? Double.infinity
+        var maxTime = timeRange?.upperBound ?? -Double.infinity
+        var count = 0
         for (_, samples) in results.samplesByBenchmark {
             for (size, sample) in samples.samples {
                 if size > maxSize { maxSize = size }
@@ -44,7 +68,11 @@ class Chart {
                 let time = amortized ? sample.minimum / Double(size) : sample.minimum
                 if time > maxTime { maxTime = time }
                 if time < minTime { minTime = time }
+                count += 1
             }
+        }
+        if count == 0 {
+            return
         }
 
         var t: TimeInterval = 1e-20
@@ -73,7 +101,7 @@ class Chart {
             while size <= maxSize {
                 if size >= minSize {
                     let x = scaleX * log2(CGFloat(size))
-                    verticalGridLines.append(("\(size)", x))
+                    verticalGridLines.append((size.label, x))
                 }
                 size <<= 1
             }
@@ -82,12 +110,7 @@ class Chart {
         do {
             var time = minTime
             while time <= maxTime {
-                let title = time >= 1000 ? String(Int(time)) + "s"
-                    : time >= 1 ? String(format: "%.3gs", time)
-                    : time >= 0.001 ? String(format: "%.3gms", time * 1000)
-                    : String(format: "%.3gµs", time * 1000000)
-
-                horizontalGridLines.append((title, y(1, time)))
+                horizontalGridLines.append((time.label, y(1, time)))
 
                 for m: Double in [2, 4, 6, 8] {
                     let yc = y(1, m * time)
@@ -102,7 +125,24 @@ class Chart {
             let benchmark = suite.benchmarkTitles[i]
             guard let samples = results.samplesByBenchmark[benchmark] else { continue }
 
-            let color = NSColor(calibratedHue: CGFloat(i) / CGFloat(c), saturation: 1, brightness: 1, alpha: 1)
+            let color: NSColor
+            if c > 6 {
+                color = NSColor(calibratedHue: CGFloat(i) / CGFloat(c), saturation: 1, brightness: 1, alpha: 1)
+            }
+            else {
+                // Use stable colors when possible.
+                // These particular ones are nice because people with most forms of color blindness can still
+                // differentiate them.
+                switch i {
+                case 0: color = NSColor(calibratedRed: 0.89, green: 0.01, blue: 0.01, alpha: 1) // Red
+                case 1: color = NSColor(calibratedRed: 1, green: 0.55, blue: 0, alpha: 1) // Orange
+                case 2: color = NSColor(calibratedRed: 1, green: 0.93, blue: 0, alpha: 1) // Yellow
+                case 3: color = NSColor(calibratedRed: 0, green: 0.5, blue: 0.15, alpha: 1) // Green
+                case 4: color = NSColor(calibratedRed: 0, green: 0.3, blue: 1, alpha: 1) // Blue
+                case 5: color = NSColor(calibratedRed: 0.46, green: 0.03, blue: 0.53, alpha: 1) // Purple
+                default: fatalError()
+                }
+            }
             let path = NSBezierPath()
             path.appendLines(between: samples.samples.sorted(by: { $0.0 < $1.0 }).map { (size, sample) in
                 return CGPoint(x: x(size), y: y(size, sample.minimum))
@@ -120,15 +160,28 @@ class Chart {
         let majorGridLineColor = NSColor(white: 0.7, alpha: 1)
         let minorGridLineColor = NSColor(white: 0.3, alpha: 1)
 
+        let titleFont = NSFont(name: "HelveticaNeue-Light", size: 24)!
         let legendFont = NSFont(name: "HelveticaNeue-Light", size: 16)!
-        let scaleFont = NSFont(name: "HelveticaNeue-Light", size: 10)!
+        let scaleFont = NSFont(name: "HelveticaNeue-Light", size: 12)!
         let scaleAttributes: [String: Any] = [
             NSFontAttributeName: scaleFont,
             NSForegroundColorAttributeName: majorGridLineColor
         ]
 
-        let chartBounds = bounds.insetBy(dx: 0.1 * bounds.width, dy: 0.1 * bounds.height)
+        let (titleRect, bottomRect) = bounds.divided(atDistance: 0.1 * bounds.height, from: .maxYEdge)
+
+        let chartBounds = CGRect(x: bottomRect.minX + 0.1 * bottomRect.width, y: 32, width: 0.8 * bottomRect.width, height: bottomRect.height - 32)
         let largeSize = NSSize(width: 100000, height: 100000)
+
+        // Draw title
+        let title = NSAttributedString(
+            string: self.title,
+            attributes: [
+                NSFontAttributeName: titleFont,
+                NSForegroundColorAttributeName: NSColor.white
+            ])
+        let titleBounds = title.boundingRect(with: largeSize, options: [], context: nil)
+        title.draw(at: CGPoint(x: floor(titleRect.midX - titleBounds.width / 2), y: floor(titleRect.midY - titleBounds.height / 2)))
 
         var chartTransform = AffineTransform()
         chartTransform.translate(x: chartBounds.minX, y: chartBounds.minY)

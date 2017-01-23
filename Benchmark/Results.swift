@@ -13,11 +13,16 @@ class BenchmarkSample {
     internal private(set) var measurements: [TimeInterval] = []
     internal private(set) var sum: Double = 0
     internal private(set) var sumSquared: Double = 0
+    internal private(set) var count: Double = 0
 
     func addMeasurement(_ elapsedTime: TimeInterval) {
         self.measurements.append(elapsedTime)
+        if measurements.count > 1000 {
+            measurements.replaceSubrange(0 ..< 500, with: [measurements[0 ..< 500].min()!])
+        }
         sum += elapsedTime
         sumSquared += elapsedTime * elapsedTime
+        count += 1
     }
 
     var minimum: TimeInterval {
@@ -36,7 +41,7 @@ class BenchmarkSample {
 
     var average: TimeInterval {
         if measurements.count == 0 { return 0 }
-        return sum / Double(measurements.count)
+        return sum / count
     }
 }
 
@@ -71,14 +76,23 @@ class BenchmarkSamples {
 }
 
 class BenchmarkSuiteResults {
+    var scaleRange: CountableClosedRange<Int> = 0 ... 20
     var samplesByBenchmark: [String: BenchmarkSamples] = [:]
 
     init() {
     }
 
     init?(from plist: Any) {
-        guard let dict = plist as? [String: Any] else { return nil }
-        for (title, samples) in dict {
+        guard let dict = plist as? [String: Any],
+            let data = dict["Data"] as? [String: Any]
+        else { return nil }
+
+        if let minScale = dict["MinScale"] as? Int,
+            let maxScale = dict["MaxScale"] as? Int {
+            self.scaleRange = minScale ... maxScale
+        }
+
+        for (title, samples) in data {
             guard let s = BenchmarkSamples(from: samples) else { return nil }
             self.samplesByBenchmark[title] = s
         }
@@ -86,9 +100,13 @@ class BenchmarkSuiteResults {
 
     func encode() -> Any {
         var dict: [String: Any] = [:]
+        dict["MinScale"] = scaleRange.lowerBound
+        dict["MaxScale"] = scaleRange.upperBound
+        var data: [String: Any] = [:]
         for (title, samples) in samplesByBenchmark {
-            dict[title] = samples.encode()
+            data[title] = samples.encode()
         }
+        dict["Data"] = data
         return dict
     }
 

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import SipHash
 
 extension Array {
     var randomElement: Element {
@@ -40,7 +41,7 @@ fileprivate class Benchmark<Input> {
     }
 }
 
-fileprivate struct InstanceKey: Hashable {
+fileprivate struct InstanceKey: SipHashable {
     let title: String
     let size: Int
 
@@ -49,6 +50,11 @@ fileprivate struct InstanceKey: Hashable {
         self.size = size
     }
 
+    func appendHashes(to hasher: inout SipHasher) {
+        hasher.append(title)
+        hasher.append(size)
+    }
+    
     var hashValue: Int {
         return title.hashValue &+ size
     }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB35FF971E344D03003ABBF3 /* AlgebraicTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */; };
+		BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */; };
+		BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */; };
 		BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AAC61E3125D000BFE22D /* AppDelegate.swift */; };
 		BB83AAC91E3125D000BFE22D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB83AAC81E3125D000BFE22D /* Assets.xcassets */; };
 		BB83AACC1E3125D000BFE22D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB83AACA1E3125D000BFE22D /* MainMenu.xib */; };
@@ -28,6 +31,17 @@
 		BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E091E3262C600505773 /* ChartRendering.swift */; };
 		BB8E0E0C1E329E6F00505773 /* Runner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0B1E329E6F00505773 /* Runner.swift */; };
 		BB8E0E0E1E32A35500505773 /* Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0D1E32A35500505773 /* Results.swift */; };
+		BB8E0E131E33D64000505773 /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; };
+		BB8E0E141E33D64000505773 /* BTree.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB8E0E151E33D64000505773 /* GlueKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E111E33D64000505773 /* GlueKit.framework */; };
+		BB8E0E161E33D64000505773 /* GlueKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E111E33D64000505773 /* GlueKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB8E0E171E33D64000505773 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; };
+		BB8E0E181E33D64000505773 /* SipHash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB8E0E1E1E33D69100505773 /* BTree.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */; };
+		BB8E0E1F1E33D69100505773 /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */; };
+		BB8E0E201E33D69100505773 /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */; };
+		BB8E0E211E33D6B300505773 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; };
+		BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,14 +84,33 @@
 			files = (
 				BB8E0E061E3253E500505773 /* CollectionBenchmarks.framework in Embed Frameworks */,
 				BB8E0DE71E3237D900505773 /* BenchmarkingTools.framework in Embed Frameworks */,
+				BB8E0E181E33D64000505773 /* SipHash.framework in Embed Frameworks */,
+				BB8E0E161E33D64000505773 /* GlueKit.framework in Embed Frameworks */,
+				BB8E0E141E33D64000505773 /* BTree.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB8E0E1A1E33D66700505773 /* Copy dSYMs for Dependencies */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				BB8E0E1E1E33D69100505773 /* BTree.framework.dSYM in Copy dSYMs for Dependencies */,
+				BB8E0E1F1E33D69100505773 /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */,
+				BB8E0E201E33D69100505773 /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */,
+			);
+			name = "Copy dSYMs for Dependencies";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BB1DA9CD1E2E5923000F2B03 /* dotSwift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dotSwift; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgebraicTree.swift; sourceTree = "<group>"; };
+		BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusButtonInTitlebar.swift; sourceTree = "<group>"; };
+		BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
 		BB83AAC41E3125CF00BFE22D /* Benchmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Benchmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB83AAC61E3125D000BFE22D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB83AAC81E3125D000BFE22D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -101,6 +134,14 @@
 		BB8E0E091E3262C600505773 /* ChartRendering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartRendering.swift; sourceTree = "<group>"; };
 		BB8E0E0B1E329E6F00505773 /* Runner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runner.swift; sourceTree = "<group>"; };
 		BB8E0E0D1E32A35500505773 /* Results.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Results.swift; sourceTree = "<group>"; };
+		BB8E0E0F1E33D43400505773 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		BB8E0E101E33D64000505773 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/Mac/BTree.framework; sourceTree = "<group>"; };
+		BB8E0E111E33D64000505773 /* GlueKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GlueKit.framework; path = Carthage/Build/Mac/GlueKit.framework; sourceTree = "<group>"; };
+		BB8E0E121E33D64000505773 /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = Carthage/Build/Mac/SipHash.framework; sourceTree = "<group>"; };
+		BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BTree.framework.dSYM; path = Carthage/Build/Mac/BTree.framework.dSYM; sourceTree = "<group>"; };
+		BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GlueKit.framework.dSYM; path = Carthage/Build/Mac/GlueKit.framework.dSYM; sourceTree = "<group>"; };
+		BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SipHash.framework.dSYM; path = Carthage/Build/Mac/SipHash.framework.dSYM; sourceTree = "<group>"; };
+		BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +151,9 @@
 			files = (
 				BB8E0E051E3253E500505773 /* CollectionBenchmarks.framework in Frameworks */,
 				BB8E0DE61E3237D900505773 /* BenchmarkingTools.framework in Frameworks */,
+				BB8E0E171E33D64000505773 /* SipHash.framework in Frameworks */,
+				BB8E0E151E33D64000505773 /* GlueKit.framework in Frameworks */,
+				BB8E0E131E33D64000505773 /* BTree.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +169,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB8E0E211E33D6B300505773 /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,10 +187,12 @@
 		BB1DA9C41E2E5923000F2B03 = {
 			isa = PBXGroup;
 			children = (
+				BB8E0E0F1E33D43400505773 /* Cartfile */,
 				BB8E0DBD1E316CC800505773 /* CollectionBenchmarks */,
 				BB83AAC51E3125D000BFE22D /* Benchmark */,
 				BB8E0DD21E3237D900505773 /* BenchmarkingTools */,
 				BB8E0DDF1E3237D900505773 /* BenchmarkingToolsTests */,
+				BB8E0E191E33D64A00505773 /* Dependencies */,
 				BB1DA9CE1E2E5923000F2B03 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -169,6 +216,9 @@
 				BB8E0E0B1E329E6F00505773 /* Runner.swift */,
 				BB8E0E0D1E32A35500505773 /* Results.swift */,
 				BB8E0E091E3262C600505773 /* ChartRendering.swift */,
+				BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */,
+				BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */,
+				BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */,
 				BB83AAC81E3125D000BFE22D /* Assets.xcassets */,
 				BB83AACA1E3125D000BFE22D /* MainMenu.xib */,
 				BB83AACD1E3125D000BFE22D /* Info.plist */,
@@ -181,11 +231,12 @@
 			children = (
 				BB8E0DBF1E316CC800505773 /* Info.plist */,
 				BB8E0DF21E32383900505773 /* Benchmarks.swift */,
-				BB8E0DF31E32383900505773 /* BinaryTree.swift */,
-				BB8E0DF41E32383900505773 /* BTree.swift */,
-				BB8E0DF51E32383900505773 /* RedBlackTree.swift */,
-				BB8E0DF61E32383900505773 /* Shuffle.swift */,
 				BB8E0DF71E32383900505773 /* SortedArray.swift */,
+				BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */,
+				BB8E0DF31E32383900505773 /* BinaryTree.swift */,
+				BB8E0DF51E32383900505773 /* RedBlackTree.swift */,
+				BB8E0DF41E32383900505773 /* BTree.swift */,
+				BB8E0DF61E32383900505773 /* Shuffle.swift */,
 			);
 			path = CollectionBenchmarks;
 			sourceTree = "<group>";
@@ -207,6 +258,19 @@
 				BB8E0DE21E3237D900505773 /* Info.plist */,
 			);
 			path = BenchmarkingToolsTests;
+			sourceTree = "<group>";
+		};
+		BB8E0E191E33D64A00505773 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */,
+				BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */,
+				BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */,
+				BB8E0E101E33D64000505773 /* BTree.framework */,
+				BB8E0E111E33D64000505773 /* GlueKit.framework */,
+				BB8E0E121E33D64000505773 /* SipHash.framework */,
+			);
+			name = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +301,7 @@
 				BB83AAC11E3125CF00BFE22D /* Frameworks */,
 				BB83AAC21E3125CF00BFE22D /* Resources */,
 				BB8E0DCA1E316CC800505773 /* Embed Frameworks */,
+				BB8E0E1A1E33D66700505773 /* Copy dSYMs for Dependencies */,
 			);
 			buildRules = (
 			);
@@ -399,6 +464,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */,
+				BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */,
+				BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */,
+				BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */,
 				BB8E0E0C1E329E6F00505773 /* Runner.swift in Sources */,
 				BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */,
 				BB8E0E0E1E32A35500505773 /* Results.swift in Sources */,
@@ -409,6 +477,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB35FF971E344D03003ABBF3 /* AlgebraicTree.swift in Sources */,
 				BB8E0DFC1E32383900505773 /* Shuffle.swift in Sources */,
 				BB8E0DF91E32383900505773 /* BinaryTree.swift in Sources */,
 				BB8E0DFB1E32383900505773 /* RedBlackTree.swift in Sources */,
@@ -654,6 +723,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = Benchmark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Benchmark;
@@ -692,6 +765,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -741,6 +818,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -790,6 +871,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1018,6 +1103,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = BenchmarkingTools/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1065,6 +1154,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1122,6 +1215,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1179,6 +1276,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1400,6 +1501,7 @@
 				BB8E0DC91E316CC800505773 /* Unchecked */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Optimized;
 		};
 		BB8E0DE81E3237D900505773 /* Build configuration list for PBXNativeTarget "BenchmarkingTools" */ = {
 			isa = XCConfigurationList;
@@ -1410,6 +1512,7 @@
 				BB8E0DEC1E3237D900505773 /* Unchecked */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Optimized;
 		};
 		BB8E0DED1E3237D900505773 /* Build configuration list for PBXNativeTarget "BenchmarkingToolsTests" */ = {
 			isa = XCConfigurationList;
@@ -1420,6 +1523,7 @@
 				BB8E0DF11E3237D900505773 /* Unchecked */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Optimized;
 		};
 /* End XCConfigurationList section */
 	};

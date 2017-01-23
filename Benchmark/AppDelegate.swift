@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import GlueKit
 import BenchmarkingTools
 import CollectionBenchmarks
 
@@ -16,10 +17,10 @@ class AppDelegate: NSObject {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var runButton: NSButton!
     @IBOutlet weak var suitePopUpButton: NSPopUpButton!
-    @IBOutlet weak var suiteMenu: NSMenu!
-    @IBOutlet weak var progressButton: NSButton!
-    @IBOutlet weak var chartImageView: NSImageView!
+    @IBOutlet weak var maxSizePopUpButton: NSPopUpButton!
     @IBOutlet weak var startMenuItem: NSMenuItem!
+    @IBOutlet weak var progressButton: NSButton!
+    @IBOutlet weak var chartImageView: DraggableImageView!
 
     let runner = Runner()
 
@@ -27,6 +28,7 @@ class AppDelegate: NSObject {
     var saveScheduled = false
     var terminating = false
 
+    let amortized: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "Amortized", defaultValue: false)
 
     var status: String = "" {
         didSet {
@@ -40,11 +42,14 @@ class AppDelegate: NSObject {
             let defaults = UserDefaults.standard
             defaults.set(suite.title, forKey: "SelectedSuite")
 
-            let index = self.suiteMenu.items.index(where: { $0.title == suite.title }) ?? 0
-            if self.suitePopUpButton.indexOfSelectedItem != index {
-                self.suitePopUpButton.selectItem(at: index)
+            if let menu = self.suitePopUpButton.menu {
+                let item = menu.items.first(where: { $0.title == suite.title })
+                if self.suitePopUpButton.selectedItem !== item {
+                    self.suitePopUpButton.select(item)
+                }
             }
             refreshChart()
+            refreshMaxScale()
         }
     }
 }
@@ -54,8 +59,8 @@ extension AppDelegate: NSApplicationDelegate {
         window.titleVisibility = .hidden
 
         self.status = "Loading benchmarks"
-        self.suiteMenu.removeAllItems()
         self.runButton.isEnabled = false
+        self.startMenuItem.isEnabled = false
 
         runner.delegate = self
         for suite in CollectionBenchmarks.generateBenchmarks() {
@@ -68,21 +73,39 @@ extension AppDelegate: NSApplicationDelegate {
         }
         self.status = "Ready"
         self.runButton.isEnabled = true
+        self.startMenuItem.isEnabled = true
 
         let defaults = UserDefaults.standard
         let selectedTitle = defaults.string(forKey: "SelectedSuite")
         let suite = runner.suites.first(where: { $0.title == selectedTitle }) ?? runner.suites.first!
 
-        self.suiteMenu.removeAllItems()
+        let suiteMenu = NSMenu()
+        suiteMenu.removeAllItems()
         var i = 1
         for suite in runner.suites {
             let item = NSMenuItem(title: suite.title,
                                   action: #selector(AppDelegate.didSelectSuite(_:)),
                                   keyEquivalent: i <= 9 ? "\(i)" : "")
-            self.suiteMenu.addItem(item)
+            suiteMenu.addItem(item)
             i += 1
         }
+        self.suitePopUpButton.menu = suiteMenu
+
+        let sizeMenu = NSMenu()
+        for i in 4 ..< 30 {
+            let item = NSMenuItem(title: "≤\((1 << i).label)",
+                action: #selector(AppDelegate.didSelectMaxSize(_:)),
+                keyEquivalent: "")
+            item.tag = i
+            sizeMenu.addItem(item)
+        }
+        self.maxSizePopUpButton.menu = sizeMenu
+
         self.selectedSuite = suite
+
+        self.glue.connector.connect(self.amortized.futureValues) { value in
+            self.refreshChart()
+        }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -106,11 +129,11 @@ extension AppDelegate: NSApplicationDelegate {
 extension AppDelegate: RunnerDelegate {
     //MARK: RunnerDelegate
     func runner(_ runner: Runner, didStartMeasuringSuite suite: String, benchmark: String, size: Int) {
-        self.status = "Measuring \(benchmark) at size \(size)"
+        self.status = "Measuring \(suite) : \(benchmark) : \(size.label)"
     }
 
     func runner(_ runner: Runner, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
-        print(benchmark, size, time)
+        //print(benchmark, size, time)
         scheduleRefresh()
         window.isDocumentEdited = true
         scheduleSave()
@@ -121,7 +144,6 @@ extension AppDelegate: RunnerDelegate {
         self.runButton.isEnabled = true
         self.startMenuItem.title = "Start Running"
         self.startMenuItem.isEnabled = true
-        self.suitePopUpButton.isEnabled = true
         self.status = "Idle"
         self.save()
         if terminating {
@@ -158,8 +180,20 @@ extension AppDelegate {
         cancelRefresh()
         let suite = self.selectedSuite ?? self.runner.suites[0]
         let results = runner.results(for: suite)
-        let chart = Chart(size: AppDelegate.imageSize, suite: suite, results: results)
-        self.chartImageView.image = chart.image
+        let chart: Chart
+        if amortized.value {
+            chart = Chart(size: AppDelegate.imageSize, suite: suite, results: results, amortized: true)
+        }
+        else {
+            chart = Chart(size: AppDelegate.imageSize, suite: suite, results: results,
+                          sizeRange: 1 ..< (1 << 20),
+                          timeRange: 1e-7 ..< 1000,
+                          amortized: false)
+        }
+        let image = chart.image
+        self.chartImageView.image = image
+        self.chartImageView.name = chart.title
+
     }
 
     @IBAction func newDocument(_ sender: AnyObject) {
@@ -195,15 +229,16 @@ extension AppDelegate {
     }
 
     func start() {
+        guard self.runner.state == .idle else { return }
         let suite = self.selectedSuite ?? self.runner.suites[0]
-        self.suitePopUpButton.isEnabled = false
         self.runButton.image = #imageLiteral(resourceName: "StopTemplate")
         self.startMenuItem.title = "Stop Running"
         self.status = "Running \(suite.title)"
-        self.runner.start(suite: suite, maxScale: 20)
+        self.runner.start(suite: suite)
     }
 
     func stop() {
+        guard self.runner.state == .running else { return }
         self.runButton.isEnabled = false
         self.startMenuItem.isEnabled = false
         self.status = "Stopping..."
@@ -237,5 +272,31 @@ extension AppDelegate {
         let suite = self.selectedSuite ?? self.runner.suites[0]
         let index = self.runner.suites.index(where: { $0.title == suite.title }) ?? 0
         self.selectedSuite = index == 0 ? self.runner.suites.last! : self.runner.suites[index - 1]
+    }
+
+    @IBAction func didSelectMaxSize(_ sender: NSMenuItem) {
+        let i = sender.tag
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        runner.results(for: suite).scaleRange = 0 ... i
+        refreshMaxScale()
+    }
+
+    func refreshMaxScale() {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let maxScale = self.runner.results(for: suite).scaleRange.upperBound
+        if let item = self.maxSizePopUpButton.menu?.items.first(where: { $0.tag == maxScale }) {
+            if self.maxSizePopUpButton.selectedItem !== item {
+                self.maxSizePopUpButton.select(item)
+            }
+        }
+        else {
+            self.maxSizePopUpButton.select(nil)
+        }
+    }
+
+    @IBAction func maximumScaleStepperChanged(_ sender: NSStepper) {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        runner.results(for: suite).scaleRange = 0 ... sender.integerValue
+        refreshMaxScale()
     }
 }

@@ -134,12 +134,13 @@ class Runner {
         }
     }
 
-    func start(suite: BenchmarkSuiteProtocol, maxScale: Int) {
+    func start(suite: BenchmarkSuiteProtocol) {
         precondition(state == .idle)
         state = .running
 
         let benchmarks = suite.benchmarkTitles
-        let sizes = (0 ... maxScale).map { 1 << $0 }
+        let results = self.results(for: suite)
+        let sizes = results.scaleRange.map { 1 << $0 }
         precondition(!benchmarks.isEmpty && !sizes.isEmpty)
 
         queue.async {

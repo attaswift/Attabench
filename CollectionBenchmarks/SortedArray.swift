@@ -13,21 +13,21 @@ public struct SortedArray<Element: Comparable>: RandomAccessCollection {
     public typealias IndexDistance = Int.Stride
     public typealias Indices = CountableRange<Index>
 
-    private var value: ContiguousArray<Element>
+    private var storage: ContiguousArray<Element>
 
     public init() {
-        self.value = []
+        self.storage = []
     }
 
-    public var startIndex: Int { return value.startIndex }
-    public var endIndex: Int { return value.endIndex }
-    public subscript(index: Int) -> Element { return value[index] }
+    public var startIndex: Int { return storage.startIndex }
+    public var endIndex: Int { return storage.endIndex }
+    public subscript(index: Int) -> Element { return storage[index] }
 
     public func index(after i: Int) -> Int { return i + 1 }
     public func formIndex(after i: inout Int) { i += 1 }
 
     public func forEach(_ body: (Element) throws -> Void) rethrows {
-        try value.forEach(body)
+        try storage.forEach(body)
     }
 
     public func validate() {
@@ -39,47 +39,46 @@ public struct SortedArray<Element: Comparable>: RandomAccessCollection {
         }
     }
 
-    func slot(of element: Element) -> (found: Bool, index: Int) {
+    func slot(of element: Element) -> Int {
         var i = 0
-        var j = value.count
+        var j = storage.count
         while i < j {
-            let middle = (i + j) / 2
-            if value[middle] < element {
+            let middle = i + (j - i) / 2
+            if element > storage[middle] {
                 i = middle + 1
             }
-            else if value[middle] > element {
+            else {
                 j = middle
             }
-            else {
-                return (found: true, index: middle)
-            }
         }
-        return (found: false, index: i)
+        return i
     }
 
     public func contains(_ element: Element) -> Bool {
-        return self.slot(of: element).found
+        return storage[slot(of: element)] == element
     }
 
     @discardableResult
     public mutating func insert(_ newElement: Element) -> (inserted: Bool, memberAfterInsert: Element) {
         let slot = self.slot(of: newElement)
-        if slot.found {
-            return (false, value[slot.index])
+        if slot < storage.count && storage[slot] == newElement {
+            return (false, storage[slot])
         }
-        value.insert(newElement, at: slot.index)
+        storage.insert(newElement, at: slot)
         return (true, newElement)
     }
 
     public mutating func append(_ newElement: Element) {
-        precondition(isEmpty || value.last! < newElement)
-        value.append(newElement)
+        precondition(isEmpty || storage.last! < newElement)
+        storage.append(newElement)
     }
 
     @discardableResult
     public mutating func remove(_ element: Element) -> Element? {
         let slot = self.slot(of: element)
-        guard slot.found else { return nil }
-        return value.remove(at: slot.index)
+        guard slot < storage.count && storage[slot] == element else {
+            return nil
+        }
+        return storage.remove(at: slot)
     }
 }

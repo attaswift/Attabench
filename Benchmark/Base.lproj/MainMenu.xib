@@ -4,6 +4,7 @@
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -16,10 +17,10 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Benchmark" customModuleProvider="target">
             <connections>
                 <outlet property="chartImageView" destination="eLG-FC-549" id="coY-xm-PZy"/>
+                <outlet property="maxSizePopUpButton" destination="bxa-GT-aeV" id="akZ-UB-MQr"/>
                 <outlet property="progressButton" destination="PBE-a0-9V8" id="wqL-Ig-tfs"/>
                 <outlet property="runButton" destination="X4a-Uy-A9Q" id="n59-wX-RDY"/>
                 <outlet property="startMenuItem" destination="6GY-ZT-wi2" id="4f3-XQ-Hwh"/>
-                <outlet property="suiteMenu" destination="HeQ-y0-KuS" id="Qby-fZ-ZKz"/>
                 <outlet property="suitePopUpButton" destination="rg8-sn-PVA" id="hSp-CR-SaN"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -598,16 +599,25 @@
                     <menu key="submenu" title="View" id="HyV-fh-RgO">
                         <items>
                             <menuItem title="Next Suite" keyEquivalent="" id="2g6-4n-ZmJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="selectPreviousSuite:" target="-1" id="MLY-X2-ccj"/>
+                                    <action selector="selectNextSuite:" target="-1" id="jaL-KH-5CG"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Previous Suite" keyEquivalent="" id="2Z5-oS-twq">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="selectPreviousSuite:" target="-1" id="kDi-Ug-Ygf"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="GzI-C2-h7J"/>
+                            <menuItem title="Amortized View" keyEquivalent="a" id="diO-sP-6FN">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.Amortized" id="L68-14-2pq"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="vcw-Zy-RCb"/>
                             <menuItem title="Show Toolbar" keyEquivalent="t" id="snW-S8-Cw5">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
@@ -681,16 +691,21 @@
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="320" height="360"/>
-            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
+            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ" customClass="ColoredView" customModule="Benchmark" customModuleProvider="target">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eLG-FC-549">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eLG-FC-549" customClass="DraggableImageView" customModule="Benchmark" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="c3S-wd-iKf"/>
                     </imageView>
                 </subviews>
+                <userDefinedRuntimeAttributes>
+                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                        <color key="value" white="0.073594674560000004" alpha="1" colorSpace="calibratedWhite"/>
+                    </userDefinedRuntimeAttribute>
+                </userDefinedRuntimeAttributes>
             </view>
             <toolbar key="toolbar" implicitIdentifier="69E2655B-E4F8-45D3-8F32-9A7B56EBD9C8" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="gcQ-08-MOq">
                 <allowedToolbarItems>
@@ -709,6 +724,26 @@
                                         <menuItem title="Insertion" state="on" id="vBc-24-aYE"/>
                                         <menuItem title="Iteration" id="r52-C2-coi"/>
                                         <menuItem title="Copy on write" id="fAY-lD-xc4"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="17F5696C-4520-46B5-A3A3-480DBFE97383" label="" paletteLabel="Maximum Size" id="d02-oo-Bi2">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="76" height="26"/>
+                        <size key="maxSize" width="76" height="28"/>
+                        <popUpButton key="view" verticalHuggingPriority="750" id="bxa-GT-aeV">
+                            <rect key="frame" x="4" y="14" width="76" height="28"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <popUpButtonCell key="cell" type="roundTextured" title="1k" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="Apz-Oa-HXE" id="gA3-tz-wCp">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="ivw-L5-AaX">
+                                    <items>
+                                        <menuItem title="1k" state="on" id="Apz-Oa-HXE"/>
+                                        <menuItem title="Item 2" id="zlt-yV-K8C"/>
+                                        <menuItem title="Item 3" id="Pce-TB-g5m"/>
                                     </items>
                                 </menu>
                             </popUpButtonCell>
@@ -733,13 +768,13 @@
                     <toolbarItem implicitItemIdentifier="8BAEBCC9-8D47-420A-9F03-97DE265B5418" label="" paletteLabel="Progress" id="FTW-AO-GXT">
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="28"/>
-                        <size key="maxSize" width="10000" height="28"/>
-                        <button key="view" verticalHuggingPriority="750" id="PBE-a0-9V8">
+                        <size key="maxSize" width="400" height="28"/>
+                        <button key="view" verticalHuggingPriority="750" id="PBE-a0-9V8" customClass="StatusButtonInTitlebar" customModule="Benchmark" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="14" width="100" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Not running" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" enabled="NO" state="on" imageScaling="proportionallyDown" inset="2" id="auo-6k-fGR">
+                            <buttonCell key="cell" type="roundTextured" title="Not running" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="auo-6k-fGR" customClass="StatusButtonCell" customModule="Benchmark" customModuleProvider="target">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
+                                <font key="font" metaFont="systemLight" size="12"/>
                             </buttonCell>
                         </button>
                     </toolbarItem>
@@ -748,14 +783,17 @@
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="1hd-92-TVs"/>
+                    <toolbarItem reference="d02-oo-Bi2"/>
                     <toolbarItem reference="OES-KR-TQM"/>
                     <toolbarItem reference="FTW-AO-GXT"/>
+                    <toolbarItem reference="lmX-HI-z47"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>
                 <outlet property="delegate" destination="Voe-Tx-rLC" id="1lQ-Lh-sWu"/>
             </connections>
         </window>
+        <userDefaultsController representsSharedInstance="YES" id="wHU-2r-SE8"/>
     </objects>
     <resources>
         <image name="RunTemplate" width="18" height="18"/>
