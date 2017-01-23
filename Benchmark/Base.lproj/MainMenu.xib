@@ -87,6 +87,25 @@
                                     <action selector="run:" target="-1" id="rkO-Gi-mAD"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Randomize Inputs" keyEquivalent="r" id="uso-hV-x7a">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.RandomizeInputs" id="dnf-9s-xXl"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="N7n-y9-Zv0"/>
+                            <menuItem title="Increase Scale" keyEquivalent="" id="AiS-cj-v0x">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="increaseMaxScale:" target="-1" id="U3e-ha-3Yt"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Decrease Scale" keyEquivalent="" id="rlY-uA-xsP">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="decreaseMaxScale:" target="-1" id="kKm-Nt-omu"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="rh2-Le-6pn"/>
                             <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                 <connections>

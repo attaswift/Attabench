@@ -11,6 +11,9 @@ import GlueKit
 import BenchmarkingTools
 import CollectionBenchmarks
 
+let minimumScale = 4
+let maximumScale = 28
+
 @NSApplicationMain
 class AppDelegate: NSObject {
 
@@ -27,8 +30,11 @@ class AppDelegate: NSObject {
     var refreshScheduled = false
     var saveScheduled = false
     var terminating = false
+    var waitingForParamsChange = false
 
     let amortized: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "Amortized", defaultValue: false)
+
+    let randomizeInputs: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "RandomizeInputs", defaultValue: false)
 
     var status: String = "" {
         didSet {
@@ -50,6 +56,7 @@ class AppDelegate: NSObject {
             }
             refreshChart()
             refreshMaxScale()
+            refreshRunnerParams()
         }
     }
 }
@@ -92,7 +99,7 @@ extension AppDelegate: NSApplicationDelegate {
         self.suitePopUpButton.menu = suiteMenu
 
         let sizeMenu = NSMenu()
-        for i in 4 ..< 30 {
+        for i in minimumScale ... maximumScale {
             let item = NSMenuItem(title: "≤\((1 << i).label)",
                 action: #selector(AppDelegate.didSelectMaxSize(_:)),
                 keyEquivalent: "")
@@ -105,6 +112,9 @@ extension AppDelegate: NSApplicationDelegate {
 
         self.glue.connector.connect(self.amortized.futureValues) { value in
             self.refreshChart()
+        }
+        self.glue.connector.connect(self.randomizeInputs.futureValues) { value in
+            self.refreshRunnerParams()
         }
     }
 
@@ -140,14 +150,20 @@ extension AppDelegate: RunnerDelegate {
     }
 
     func runner(_ runner: Runner, didStopMeasuringSuite suite: String) {
-        self.runButton.image = #imageLiteral(resourceName: "RunTemplate")
-        self.runButton.isEnabled = true
-        self.startMenuItem.title = "Start Running"
-        self.startMenuItem.isEnabled = true
-        self.status = "Idle"
         self.save()
         if terminating {
             NSApp.reply(toApplicationShouldTerminate: true)
+        }
+        if !terminating && waitingForParamsChange {
+            waitingForParamsChange = false
+            self.start()
+        }
+        else {
+            self.runButton.image = #imageLiteral(resourceName: "RunTemplate")
+            self.runButton.isEnabled = true
+            self.startMenuItem.title = "Start Running"
+            self.startMenuItem.isEnabled = true
+            self.status = "Idle"
         }
     }
 }
@@ -234,15 +250,17 @@ extension AppDelegate {
         self.runButton.image = #imageLiteral(resourceName: "StopTemplate")
         self.startMenuItem.title = "Stop Running"
         self.status = "Running \(suite.title)"
-        self.runner.start(suite: suite)
+        self.runner.start(suite: suite, randomized: randomizeInputs.value)
     }
 
     func stop() {
-        guard self.runner.state == .running else { return }
+        guard self.runner.state == .running || self.waitingForParamsChange else { return }
         self.runButton.isEnabled = false
         self.startMenuItem.isEnabled = false
         self.status = "Stopping..."
-        self.runner.stop()
+        if self.runner.state == .running {
+            self.runner.stop()
+        }
     }
 
     @IBAction func run(_ sender: AnyObject) {
@@ -254,6 +272,13 @@ extension AppDelegate {
         case .stopping:
             // Do nothing
             break
+        }
+    }
+
+    func refreshRunnerParams() {
+        if self.runner.state == .running {
+            self.waitingForParamsChange = true
+            self.runner.stop()
         }
     }
 
@@ -279,6 +304,7 @@ extension AppDelegate {
         let suite = self.selectedSuite ?? self.runner.suites[0]
         runner.results(for: suite).scaleRange = 0 ... i
         refreshMaxScale()
+        refreshRunnerParams()
     }
 
     func refreshMaxScale() {
@@ -294,9 +320,19 @@ extension AppDelegate {
         }
     }
 
-    @IBAction func maximumScaleStepperChanged(_ sender: NSStepper) {
+    @IBAction func increaseMaxScale(_ sender: AnyObject) {
         let suite = self.selectedSuite ?? self.runner.suites[0]
-        runner.results(for: suite).scaleRange = 0 ... sender.integerValue
+        let results = self.runner.results(for: suite)
+        results.scaleRange = 0 ... min(maximumScale, results.scaleRange.upperBound + 1)
         refreshMaxScale()
+        refreshRunnerParams()
+    }
+
+    @IBAction func decreaseMaxScale(_ sender: AnyObject) {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let results = self.runner.results(for: suite)
+        results.scaleRange = 0 ... max(minimumScale, results.scaleRange.upperBound - 1)
+        refreshMaxScale()
+        refreshRunnerParams()
     }
 }

@@ -68,6 +68,7 @@ public protocol BenchmarkSuiteProtocol {
     var title: String { get }
     var benchmarkTitles: [String] { get }
     func run(_ title: String, _ size: Int) -> TimeInterval?
+    func forgetInstances() // FIXME: Move instances out of here
 }
 
 public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
@@ -98,6 +99,11 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
         let instance = benchmark.generate(input: input)
         instances[key] = instance
         return instance
+    }
+
+    public func forgetInstances() {
+        self.instances = [:]
+        self.inputs = [:]
     }
 
     private func input(for size: Int) -> Input {

@@ -108,7 +108,7 @@ class Runner {
         return true
     }
 
-    func _run(suite: BenchmarkSuiteProtocol, benchmarks: [String], sizes: [Int], i: Int, j: Int) {
+    func _run(suite: BenchmarkSuiteProtocol, benchmarks: [String], sizes: [Int], i: Int, j: Int, forget: Bool) {
         if self._stopIfNeeded(suite) { return }
 
         let benchmark = benchmarks[i]
@@ -126,15 +126,18 @@ class Runner {
 
         queue.async {
             if i + 1 < benchmarks.count {
-                self._run(suite: suite, benchmarks: benchmarks, sizes: sizes, i: i + 1, j: j)
+                self._run(suite: suite, benchmarks: benchmarks, sizes: sizes, i: i + 1, j: j, forget: forget)
             }
             else {
-                self._run(suite: suite, benchmarks: benchmarks, sizes: sizes, i: 0, j: (j + 1) % sizes.count)
+                if forget {
+                    suite.forgetInstances()
+                }
+                self._run(suite: suite, benchmarks: benchmarks, sizes: sizes, i: 0, j: (j + 1) % sizes.count, forget: forget)
             }
         }
     }
 
-    func start(suite: BenchmarkSuiteProtocol) {
+    func start(suite: BenchmarkSuiteProtocol, randomized: Bool) {
         precondition(state == .idle)
         state = .running
 
@@ -144,7 +147,8 @@ class Runner {
         precondition(!benchmarks.isEmpty && !sizes.isEmpty)
 
         queue.async {
-            self._run(suite: suite, benchmarks: benchmarks, sizes: sizes, i: 0, j: 0)
+            self._run(suite: suite, benchmarks: benchmarks, sizes: sizes,
+                      i: 0, j: 0, forget: randomized)
         }
     }
 
