@@ -152,7 +152,7 @@ extension AppDelegate: NSApplicationDelegate {
 extension AppDelegate: RunnerDelegate {
     //MARK: RunnerDelegate
     func runner(_ runner: Runner, didStartMeasuringSuite suite: String, benchmark: String, size: Int) {
-        self.status = "Measuring \(suite) : \(benchmark) : \(size.label)"
+        self.status = "Measuring \(suite) : \(size.label) : \(benchmark)"
     }
 
     func runner(_ runner: Runner, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
