@@ -11,7 +11,7 @@ public struct BTree<Element: Comparable> {
     var mutationCount: Int = 0
 
     public init() {
-        self.init(order: 1023)
+        self.init(order: 1024)
     }
     
     public init(order: Int) {
