@@ -66,6 +66,9 @@ fileprivate struct InstanceKey: SipHashable {
 
 public protocol BenchmarkSuiteProtocol {
     var title: String { get }
+    var descriptiveTitle: String? { get }
+    var descriptiveAmortizedTitle: String? { get }
+
     var benchmarkTitles: [String] { get }
     func run(_ title: String, _ size: Int) -> TimeInterval?
     func forgetInstances() // FIXME: Move instances out of here
@@ -73,6 +76,9 @@ public protocol BenchmarkSuiteProtocol {
 
 public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
     public let title: String
+    public var descriptiveTitle: String? = nil
+    public var descriptiveAmortizedTitle: String? = nil
+    
     public private(set) var benchmarkTitles: [String] = []
     private var benchmarks: [String: Benchmark<Input>] = [:]
     private var instances: [InstanceKey: (BenchmarkMeasurer) -> Void] = [:]

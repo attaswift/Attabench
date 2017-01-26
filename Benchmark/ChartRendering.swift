@@ -56,7 +56,12 @@ class Chart {
          amortized: Bool = false) {
         self.size = size
         self.suite = suite
-        self.title = amortized ? suite.title + " (amortized)" : suite.title
+        if amortized {
+            self.title = suite.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
+        }
+        else {
+            self.title = suite.descriptiveTitle ?? suite.title
+        }
         var minSize = sizeRange?.lowerBound ?? Int.max
         var maxSize = sizeRange?.upperBound ?? Int.min
         var minTime = timeRange?.lowerBound ?? Double.infinity

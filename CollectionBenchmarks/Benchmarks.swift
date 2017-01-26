@@ -58,6 +58,8 @@ let inputGenerator = randomInputs ? randomArrayGenerator : perfectlyBalancedArra
 
 func foreachBenchmark() -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "ForEach", inputGenerator: inputGenerator)
+    suite.descriptiveTitle = "Iteration Using “forEach”"
+    suite.descriptiveAmortizedTitle = "One Iteration of “forEach” (Amortized)"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
@@ -145,6 +147,8 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
 
 func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
     let suite = BenchmarkSuite<([Value], [Value])>(title: "Contains", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+    suite.descriptiveTitle = "Looking Up All Member in Random Order"
+    suite.descriptiveAmortizedTitle = "Looking Up One Random Member (Amortized)"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<([Value], [Value])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { (input, lookups) in
@@ -219,6 +223,8 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
 
 func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "Insertion", inputGenerator: inputGenerator)
+    suite.descriptiveTitle = "Construction by Random Insertions"
+    suite.descriptiveAmortizedTitle = "A Single Random Insertion (Amortized)"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxSize: Int? = nil, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
@@ -284,6 +290,8 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
 
 func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true) -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "SharedInsertion", inputGenerator: inputGenerator)
+    suite.descriptiveTitle = "Construction by Random Insertions with COW Copying"
+    suite.descriptiveAmortizedTitle = "Random Insertion with COW Copying (Amortized)"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, maxCount: Int? = nil, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
