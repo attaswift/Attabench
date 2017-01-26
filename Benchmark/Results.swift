@@ -78,6 +78,7 @@ class BenchmarkSamples {
 class BenchmarkSuiteResults {
     var scaleRange: CountableClosedRange<Int> = 0 ... 20
     var samplesByBenchmark: [String: BenchmarkSamples] = [:]
+    var selectedBenchmarks: Set<String> = [] // Empty means all
 
     init() {
     }
@@ -92,6 +93,10 @@ class BenchmarkSuiteResults {
             self.scaleRange = minScale ... maxScale
         }
 
+        if let selected = dict["SelectedBenchmarks"] as? [String] {
+            self.selectedBenchmarks = Set(selected)
+        }
+
         for (title, samples) in data {
             guard let s = BenchmarkSamples(from: samples) else { return nil }
             self.samplesByBenchmark[title] = s
@@ -102,6 +107,7 @@ class BenchmarkSuiteResults {
         var dict: [String: Any] = [:]
         dict["MinScale"] = scaleRange.lowerBound
         dict["MaxScale"] = scaleRange.upperBound
+        dict["SelectedBenchmarks"] = Array(selectedBenchmarks)
         var data: [String: Any] = [:]
         for (title, samples) in samplesByBenchmark {
             data[title] = samples.encode()

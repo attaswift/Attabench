@@ -16,6 +16,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Benchmark" customModuleProvider="target">
             <connections>
+                <outlet property="benchmarksPopUpButton" destination="m3D-IU-xIC" id="tIq-Zq-mZ0"/>
                 <outlet property="chartImageView" destination="eLG-FC-549" id="coY-xm-PZy"/>
                 <outlet property="maxSizePopUpButton" destination="bxa-GT-aeV" id="akZ-UB-MQr"/>
                 <outlet property="progressButton" destination="PBE-a0-9V8" id="wqL-Ig-tfs"/>
@@ -768,6 +769,26 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="121A327D-1C75-4ECB-AFBD-D496FD89D871" label="" paletteLabel="Benchmarks" id="0NC-Up-Wdv">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="120" height="28"/>
+                        <size key="maxSize" width="120" height="28"/>
+                        <popUpButton key="view" verticalHuggingPriority="750" id="m3D-IU-xIC">
+                            <rect key="frame" x="0.0" y="14" width="120" height="28"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <popUpButtonCell key="cell" type="roundTextured" title="All Benchmarks" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="KeB-v9-uZO" id="Kl2-V6-svu">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="VL9-sK-sgB">
+                                    <items>
+                                        <menuItem title="All Benchmarks" state="on" hidden="YES" id="KeB-v9-uZO"/>
+                                        <menuItem title="Item 2" id="WJ6-ma-btA"/>
+                                        <menuItem title="Item 3" id="Eek-f3-oTH"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
+                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="47A710C0-D1B1-49CF-ADAE-42DB45FEDE95" label="" paletteLabel="Run" image="RunTemplate" id="OES-KR-TQM">
                         <nil key="toolTip"/>
                         <size key="minSize" width="40" height="28"/>
@@ -803,6 +824,7 @@
                 <defaultToolbarItems>
                     <toolbarItem reference="1hd-92-TVs"/>
                     <toolbarItem reference="d02-oo-Bi2"/>
+                    <toolbarItem reference="0NC-Up-Wdv"/>
                     <toolbarItem reference="OES-KR-TQM"/>
                     <toolbarItem reference="FTW-AO-GXT"/>
                     <toolbarItem reference="lmX-HI-z47"/>

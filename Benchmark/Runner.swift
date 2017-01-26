@@ -141,8 +141,11 @@ class Runner {
         precondition(state == .idle)
         state = .running
 
-        let benchmarks = suite.benchmarkTitles
         let results = self.results(for: suite)
+        var benchmarks = suite.benchmarkTitles.filter(results.selectedBenchmarks.contains)
+        if benchmarks.isEmpty {
+            benchmarks = suite.benchmarkTitles
+        }
 
         let range = results.scaleRange
         var sizes: Set<Int> = []

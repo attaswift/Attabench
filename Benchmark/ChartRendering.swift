@@ -126,20 +126,27 @@ class Chart {
             }
         }
 
-        let c = suite.benchmarkTitles.count
+
+        let benchmarks = results.selectedBenchmarks.isDisjoint(with: suite.benchmarkTitles)
+            ? suite.benchmarkTitles
+            : suite.benchmarkTitles.filter(results.selectedBenchmarks.contains)
+
+        let c = benchmarks.count
         for i in 0 ..< c {
-            let benchmark = suite.benchmarkTitles[i]
+            let benchmark = benchmarks[i]
             guard let samples = results.samplesByBenchmark[benchmark] else { continue }
 
+            let index = suite.benchmarkTitles.index(of: benchmark)!
             let color: NSColor
-            if c > 6 {
-                color = NSColor(calibratedHue: CGFloat(i) / CGFloat(c), saturation: 1, brightness: 1, alpha: 1)
+            if suite.benchmarkTitles.count > 6 {
+                color = NSColor(calibratedHue: CGFloat(index) / CGFloat(suite.benchmarkTitles.count),
+                                saturation: 1, brightness: 1, alpha: 1)
             }
             else {
                 // Use stable colors when possible.
                 // These particular ones are nice because people with most forms of color blindness can still
                 // differentiate them.
-                switch i {
+                switch index {
                 case 0: color = NSColor(calibratedRed: 0.89, green: 0.01, blue: 0.01, alpha: 1) // Red
                 case 1: color = NSColor(calibratedRed: 1, green: 0.55, blue: 0, alpha: 1) // Orange
                 case 2: color = NSColor(calibratedRed: 1, green: 0.93, blue: 0, alpha: 1) // Yellow

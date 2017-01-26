@@ -21,6 +21,7 @@ class AppDelegate: NSObject {
     @IBOutlet weak var runButton: NSButton!
     @IBOutlet weak var suitePopUpButton: NSPopUpButton!
     @IBOutlet weak var maxSizePopUpButton: NSPopUpButton!
+    @IBOutlet weak var benchmarksPopUpButton: NSPopUpButton!
     @IBOutlet weak var startMenuItem: NSMenuItem!
     @IBOutlet weak var progressButton: NSButton!
     @IBOutlet weak var chartImageView: DraggableImageView!
@@ -69,6 +70,7 @@ class AppDelegate: NSObject {
             }
             refreshChart()
             refreshMaxScale()
+            refreshBenchmarks()
             refreshRunnerParams()
         }
     }
@@ -308,6 +310,11 @@ extension AppDelegate {
             self.waitingForParamsChange = true
             self.runner.stop()
         }
+        else {
+            DispatchQueue.main.async {
+                self.save()
+            }
+        }
     }
 
     @IBAction func didSelectSuite(_ sender: NSMenuItem) {
@@ -337,7 +344,8 @@ extension AppDelegate {
 
     func refreshMaxScale() {
         let suite = self.selectedSuite ?? self.runner.suites[0]
-        let maxScale = self.runner.results(for: suite).scaleRange.upperBound
+        let results = self.runner.results(for: suite)
+        let maxScale = results.scaleRange.upperBound
         if let item = self.maxSizePopUpButton.menu?.items.first(where: { $0.tag == maxScale }) {
             if self.maxSizePopUpButton.selectedItem !== item {
                 self.maxSizePopUpButton.select(item)
@@ -346,6 +354,87 @@ extension AppDelegate {
         else {
             self.maxSizePopUpButton.select(nil)
         }
+    }
+
+    func refreshBenchmarks() {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let results = self.runner.results(for: suite)
+        let selected = results.selectedBenchmarks.isDisjoint(with: results.selectedBenchmarks)
+            ? Set(suite.benchmarkTitles)
+            : results.selectedBenchmarks.intersection(suite.benchmarkTitles)
+
+        let title: String
+        switch selected.count {
+        case 0:
+            fatalError()
+        case 1:
+            title = selected.first!
+        case suite.benchmarkTitles.count:
+            title = "All Benchmarks"
+        default:
+            title = "\(selected.count) Benchmarks"
+        }
+
+        let menu = NSMenu()
+        menu.addItem(withTitle: title, action: nil, keyEquivalent: "")
+        menu.addItem(withTitle: "All Benchmarks", action: #selector(AppDelegate.selectAllBenchmarks(_:)), keyEquivalent: "a")
+        let submenu = NSMenu()
+        let submenuItem = NSMenuItem(title: "Just One", action: nil, keyEquivalent: "")
+        submenuItem.submenu = submenu
+        menu.addItem(submenuItem)
+        menu.addItem(NSMenuItem.separator())
+
+        for title in suite.benchmarkTitles {
+            let item = NSMenuItem(title: title, action: #selector(AppDelegate.toggleBenchmark(_:)), keyEquivalent: "")
+            item.state = selected.contains(title) ? NSOnState : NSOffState
+            menu.addItem(item)
+
+            submenu.addItem(withTitle: title, action: #selector(AppDelegate.selectBenchmark(_:)), keyEquivalent: "")
+        }
+        self.benchmarksPopUpButton.menu = menu
+    }
+
+    @IBAction func selectAllBenchmarks(_ sender: AnyObject) {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let results = self.runner.results(for: suite)
+        results.selectedBenchmarks = []
+        refreshBenchmarks()
+        refreshChart()
+        refreshRunnerParams()
+    }
+
+    @IBAction func toggleBenchmark(_ sender: NSMenuItem) {
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let results = self.runner.results(for: suite)
+        var selected = results.selectedBenchmarks.isDisjoint(with: results.selectedBenchmarks)
+            ? Set(suite.benchmarkTitles)
+            : results.selectedBenchmarks.intersection(suite.benchmarkTitles)
+        if selected.contains(sender.title) {
+            selected.remove(sender.title)
+        }
+        else {
+            selected.insert(sender.title)
+        }
+        if selected.isEmpty || selected.count == suite.benchmarkTitles.count {
+            results.selectedBenchmarks = []
+        }
+        else {
+            results.selectedBenchmarks = selected
+        }
+        refreshBenchmarks()
+        refreshChart()
+        refreshRunnerParams()
+    }
+
+    @IBAction func selectBenchmark(_ sender: NSMenuItem) {
+        let title = sender.title
+        let suite = self.selectedSuite ?? self.runner.suites[0]
+        guard suite.benchmarkTitles.contains(title) else { return }
+        let results = self.runner.results(for: suite)
+        results.selectedBenchmarks = [title]
+        refreshBenchmarks()
+        refreshChart()
+        refreshRunnerParams()
     }
 
     @IBAction func increaseMaxScale(_ sender: AnyObject) {
