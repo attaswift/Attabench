@@ -238,8 +238,7 @@ extension AppDelegate {
         }
         let image = chart.image
         self.chartImageView.image = image
-        self.chartImageView.name = chart.title
-
+        self.chartImageView.name = "\(suite.title) - \(benchmarksPopUpButton.title)"
     }
 
     @IBAction func newDocument(_ sender: AnyObject) {
