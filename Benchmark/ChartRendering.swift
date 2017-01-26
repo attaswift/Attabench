@@ -80,6 +80,7 @@ class Chart {
         if count == 0 {
             return
         }
+        //if maxTime > 100e-6 { maxTime = 100e-6 }
 
         var t: TimeInterval = 1e-20
         while 10 * t < minTime {
@@ -104,12 +105,14 @@ class Chart {
 
         do {
             var size = minSize
+            var i = 0
             while size <= maxSize {
                 if size >= minSize {
                     let x = scaleX * log2(CGFloat(size))
-                    verticalGridLines.append((size.label, x))
+                    verticalGridLines.append((i & 1 == 0 ? size.label : nil, x))
                 }
                 size <<= 1
+                i += 1
             }
         }
 
@@ -117,12 +120,15 @@ class Chart {
             var time = minTime
             while time <= maxTime {
                 horizontalGridLines.append((time.label, y(1, time)))
-
-                for m: Double in [2, 4, 6, 8] {
-                    let yc = y(1, m * time)
-                    if yc <= 1 { horizontalGridLines.append((nil, yc)) }
-                }
                 time *= 10
+            }
+            if maxTime / minTime < 1e6 {
+                time = 2 * minTime
+                while time <= maxTime {
+                    let yc = y(1, time)
+                    horizontalGridLines.append((nil, yc))
+                    time *= 2
+                }
             }
         }
 
@@ -171,19 +177,36 @@ class Chart {
 
         let borderColor =  NSColor.white
         let majorGridLineColor = NSColor(white: 0.7, alpha: 1)
-        let minorGridLineColor = NSColor(white: 0.3, alpha: 1)
+        let minorGridLineColor = NSColor(white: 0.7, alpha: 1)
+        let legendColor = NSColor.white
 
-        let titleFont = NSFont(name: "HelveticaNeue-Light", size: 24)!
-        let legendFont = NSFont(name: "HelveticaNeue-Light", size: 16)!
-        let scaleFont = NSFont(name: "HelveticaNeue-Light", size: 12)!
+        #if SMALL
+            let titleFont = NSFont(name: "Helvetica-Light", size: 24)!
+            let legendFont = NSFont(name: "Menlo", size: 12)!
+            let legendPadding: CGFloat = 6
+            let scaleFont = NSFont(name: "Helvetica-Light", size: 12)!
+            let xPadding: CGFloat = 6
+        #else
+            let titleFont = NSFont(name: "Helvetica-Light", size: 48)!
+            let legendFont = NSFont(name: "Menlo", size: 20)!
+            let legendPadding: CGFloat = 8
+            let scaleFont = NSFont(name: "Helvetica-Light", size: 24)!
+            let xPadding: CGFloat = 12
+        #endif
+
         let scaleAttributes: [String: Any] = [
             NSFontAttributeName: scaleFont,
             NSForegroundColorAttributeName: majorGridLineColor
         ]
+        let (titleRect, bottomRect) = bounds.divided(
+            atDistance: 1.2 * (titleFont.boundingRectForFont.height + titleFont.leading),
+            from: .maxYEdge)
 
-        let (titleRect, bottomRect) = bounds.divided(atDistance: 0.1 * bounds.height, from: .maxYEdge)
-
-        let chartBounds = CGRect(x: bottomRect.minX + 0.1 * bottomRect.width, y: 32, width: 0.8 * bottomRect.width, height: bottomRect.height - 32)
+        let scaleWidth = 3 * scaleFont.maximumAdvancement.width
+        let chartBounds = CGRect(x: bottomRect.minX + scaleWidth,
+                                 y: scaleFont.boundingRectForFont.height,
+                                 width: bottomRect.width - 2 * scaleWidth,
+                                 height: bottomRect.height - scaleFont.boundingRectForFont.height)
         let largeSize = NSSize(width: 100000, height: 100000)
 
         // Draw title
@@ -194,7 +217,8 @@ class Chart {
                 NSForegroundColorAttributeName: NSColor.white
             ])
         let titleBounds = title.boundingRect(with: largeSize, options: [], context: nil)
-        title.draw(at: CGPoint(x: floor(titleRect.midX - titleBounds.width / 2), y: floor(titleRect.midY - titleBounds.height / 2)))
+        title.draw(at: CGPoint(x: floor(titleRect.midX - titleBounds.width / 2),
+                               y: floor(titleRect.midY - titleBounds.height / 2)))
 
         var chartTransform = AffineTransform()
         chartTransform.translate(x: chartBounds.minX, y: chartBounds.minY)
@@ -208,15 +232,24 @@ class Chart {
             path.move(to: CGPoint(x: 0, y: y))
             path.line(to: CGPoint(x: 1, y: y))
             path.transform(using: chartTransform)
-            path.lineWidth = 0.5
+            if title == nil {
+                path.setLineDash([6, 3], count: 2, phase: 0)
+            }
+            path.lineWidth = title == nil ? 0.5 : 0.75
             path.stroke()
 
             if let title = title {
                 let yMid = chartBounds.minY + y * chartBounds.height + scaleFont.pointSize / 4
-                let xMax = chartBounds.minX - 6
 
                 let bounds = (title as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-                (title as NSString).draw(at: CGPoint(x: xMax - bounds.width, y: yMid - bounds.height / 2), withAttributes: scaleAttributes)
+                (title as NSString).draw(
+                    at: CGPoint(x: chartBounds.minX - xPadding - bounds.width,
+                                y: yMid - bounds.height / 2),
+                    withAttributes: scaleAttributes)
+                (title as NSString).draw(
+                    at: CGPoint(x: chartBounds.maxX + xPadding,
+                                y: yMid - bounds.height / 2),
+                    withAttributes: scaleAttributes)
             }
         }
 
@@ -246,51 +279,64 @@ class Chart {
         border.lineWidth = 0.5
         border.stroke()
 
+        guard !curves.isEmpty else { return }
+
+        // Calculate legend positions and sizes
+        let legendMinX = chartBounds.minX + min(0.1 * chartBounds.width, 0.1 * chartBounds.height)
+        let legendMaxY = chartBounds.maxY - min(0.1 * chartBounds.width, 0.1 * chartBounds.height)
+        var legendMaxX = legendMinX
+        var legendMinY = legendMaxY
+        var legend: [(position: CGPoint, title: NSAttributedString)] = []
+        for (title, color, _) in curves {
+            let title = NSMutableAttributedString(string: "◼︎ " + title, attributes: [
+                NSFontAttributeName: legendFont,
+                NSForegroundColorAttributeName: legendColor,
+                ])
+            title.setAttributes([NSForegroundColorAttributeName: color],
+                                range: NSRange(0 ..< 1))
+
+            let titleBounds = title.boundingRect(with: largeSize, options: [])
+            legendMinY -= titleBounds.height
+            legend.append((CGPoint(x: legendMinX, y: legendMinY), title))
+            legendMinY -= legendFont.leading
+            legendMaxX = max(legendMaxX, legendMinX + titleBounds.width)
+        }
+        let legendRect = CGRect(x: legendMinX, y: legendMinY, width: legendMaxX - legendMinX, height: legendMaxY - legendMinY)
+            .insetBy(dx: -2 * legendPadding, dy: -2 * legendPadding)
+        let legendBorder = NSBezierPath(rect: legendRect)
+        legendBorder.lineWidth = 0.5
+
+        // Draw legend background
+        NSColor.black.setFill()
+        legendBorder.fill()
+
         // Draw curves
         NSGraphicsContext.saveGraphicsState()
         NSRectClip(chartBounds)
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 3
+        shadow.shadowOffset = .zero
+        shadow.shadowColor = .black
+        shadow.set()
         for (_, color, path) in curves {
             color.setStroke()
             let path = (chartTransform as NSAffineTransform).transform(path)
-            path.lineWidth = 4
+            path.lineWidth = 8
             path.lineCapStyle = .roundLineCapStyle
             path.lineJoinStyle = .roundLineJoinStyle
             path.stroke()
         }
         NSGraphicsContext.restoreGraphicsState()
 
-        if !curves.isEmpty {
-            // Draw legend
-            let legendMinX = chartBounds.minX + min(0.1 * chartBounds.width, 0.1 * chartBounds.height)
-            let legendMaxY = chartBounds.maxY - min(0.1 * chartBounds.width, 0.1 * chartBounds.height)
-            var legendMaxX = legendMinX
-            var legendMinY = legendMaxY
-            var legend: [(position: CGPoint, title: NSAttributedString)] = []
-            for (title, color, _) in curves {
-                let title = NSMutableAttributedString(string: "◼︎ " + title, attributes: [
-                    NSFontAttributeName: legendFont,
-                    NSForegroundColorAttributeName: majorGridLineColor
-                    ])
-                title.setAttributes([NSForegroundColorAttributeName: color], range: NSRange(0 ..< 1))
-                let titleBounds = title.boundingRect(with: largeSize, options: [])
-                legendMinY -= titleBounds.height
-                legend.append((CGPoint(x: legendMinX, y: legendMinY), title))
-                legendMinY -= legendFont.leading
-                legendMaxX = max(legendMaxX, legendMinX + titleBounds.width)
-            }
-            //legendMinY += legendFont.leading
-            let legendRect = CGRect(x: legendMinX, y: legendMinY, width: legendMaxX - legendMinX, height: legendMaxY - legendMinY)
-                .insetBy(dx: -12, dy: -12)
-            NSColor.black.setFill()
-            NSColor.white.setStroke()
-            let legendBorder = NSBezierPath(rect: legendRect)
-            legendBorder.lineWidth = 0.5
-            legendBorder.fill()
-            legendBorder.stroke()
-            
-            for (position, title) in legend {
-                title.draw(at: position)
-            }
+        // Draw legend background again (with some transparency)
+        NSColor.black.withAlphaComponent(0.7).setFill()
+        NSColor.white.setStroke()
+        legendBorder.fill()
+        legendBorder.stroke()
+
+        // Draw legend titles
+        for (position, title) in legend {
+            title.draw(at: position)
         }
     }
 
