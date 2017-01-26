@@ -33,8 +33,15 @@ class DraggableImageView: NSImageView, NSDraggingSource {
     override func namesOfPromisedFilesDropped(atDestination dropDestination: URL) -> [String]? {
         Swift.print("dropDestination: \(dropDestination)")
         guard let image = self.image else { return nil }
-        let filename = name + ".png"
-        let url = dropDestination.appendingPathComponent(filename)
+        let name = self.name.replacingOccurrences(of: "/", with: "-")
+        var filename = name + ".png"
+        var num = 1
+        var url = dropDestination.appendingPathComponent(filename)
+        while (try? url.checkResourceIsReachable()) == true {
+            num += 1
+            filename = "\(name) \(num).png"
+            url = dropDestination.appendingPathComponent(filename)
+        }
         do {
             try image.pngData().write(to: url)
             return [filename]
