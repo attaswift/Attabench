@@ -224,7 +224,7 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
 func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "Insertion", inputGenerator: inputGenerator)
     suite.descriptiveTitle = "Construction by Random Insertions"
-    suite.descriptiveAmortizedTitle = "A Single Random Insertion (Amortized)"
+    suite.descriptiveAmortizedTitle = "Amortized cost of a single random insertion"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxSize: Int? = nil, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in

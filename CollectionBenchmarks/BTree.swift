@@ -127,6 +127,11 @@ public struct BTreeIndex<Element: Comparable>: Comparable {
         }
     }
 
+    var current: Element? {
+        guard let n = path.last else { return nil }
+        return n.ref.value.elements[n.slot]
+    }
+
     public static func ==(left: BTreeIndex, right: BTreeIndex) -> Bool {
         precondition(left.root != nil && left.root === right.root && left.mutationCount == right.mutationCount)
         return left.node === right.node && left.slot == right.slot
@@ -134,43 +139,14 @@ public struct BTreeIndex<Element: Comparable>: Comparable {
 
     public static func <(left: BTreeIndex, right: BTreeIndex) -> Bool {
         precondition(left.root != nil && left.root === right.root && left.mutationCount == right.mutationCount)
-        var li = BTreeIndexSlotIterator<Element>(left)
-        var ri = BTreeIndexSlotIterator<Element>(right)
-        while true {
-            switch (li.next(), ri.next()) {
-            case let (.some(l), .some(r)):
-                guard l == r else { return l < r }
-            case (.some(_), nil):
-                return true
-            case (nil, .some(_)):
-                return false
-            case (nil, nil):
-                return false
-            }
+        switch (left.current, right.current) {
+        case let (.some(a), .some(b)):
+            return a < b
+        case (.none, _):
+            return false
+        default:
+            return true
         }
-    }
-}
-
-private struct BTreeIndexSlotIterator<Element: Comparable>: IteratorProtocol {
-    let index: BTreeIndex<Element>
-    var i: Int
-
-    init(_ index: BTreeIndex<Element>) {
-        self.index = index
-        self.i = 0
-    }
-
-    mutating func next() -> Int? {
-        if i < index.path.count {
-            let result = index.path[i].slot
-            i += 1
-            return result
-        }
-        if i == index.path.count {
-            i += 1
-            return index.slot
-        }
-        return nil
     }
 }
 
