@@ -207,6 +207,19 @@ extension AppDelegate: NSWindowDelegate {
     }
 }
 
+extension AppDelegate {
+    //MARK: Copy image to pasteboard
+    @IBAction func copy(_ sender: Any?) {
+        guard let image = chartImageView.image else { NSBeep(); return }
+        let pb = NSPasteboard.general()
+        pb.clearContents()
+        pb.writeObjects([image])
+    }
+
+    @IBAction func cut(_ sender: Any?) {
+        self.copy(sender)
+    }
+}
 
 extension AppDelegate {
     //MARK: Actions
