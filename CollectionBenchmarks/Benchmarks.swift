@@ -505,10 +505,10 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
         }
     }
 
-    add("SortedArray", for: SortedArray<Value>.self, to: suite, maxCount: 300_000)
+    add("SortedArray", for: SortedArray<Value>.self, to: suite, maxCount: 130_000)
 
     suite.addBenchmark(title: "NSOrderedSet") { input in
-        guard input.count < 20_000 else { return nil }
+        guard input.count <= 2048 else { return nil }
         return { measurer in
             let set = NSMutableOrderedSet()
             let comparator: (Any, Any) -> ComparisonResult = {
@@ -545,7 +545,7 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
     }
 
     suite.addBenchmark(title: "Array.sort") { input in
-        guard input.count < 300_000 else { return nil }
+        guard input.count < 130_000 else { return nil }
         return { measurer in
             var array: [Value] = []
             var copy = array
