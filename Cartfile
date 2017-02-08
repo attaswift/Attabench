@@ -1,2 +1,2 @@
-github "lorentey/GlueKit" "v0.1.0-alpha.1"
+github "lorentey/GlueKit" "76660feb9e4082a3fd3facc04f273525c0c09f57"
 github "lorentey/SipHash" ~> 1.1
