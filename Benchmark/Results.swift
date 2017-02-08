@@ -80,6 +80,10 @@ class BenchmarkSuiteResults {
     var samplesByBenchmark: [String: BenchmarkSamples] = [:]
     var selectedBenchmarks: Set<String> = [] // Empty means all
 
+    var sizeRange: ClosedRange<Int> {
+        return (1 << scaleRange.lowerBound) ... (1 << scaleRange.upperBound)
+    }
+
     init() {
     }
 

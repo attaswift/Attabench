@@ -16,9 +16,11 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Benchmark" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundView" destination="EiT-Mj-1SZ" id="lO9-ly-tyX"/>
                 <outlet property="benchmarksPopUpButton" destination="m3D-IU-xIC" id="tIq-Zq-mZ0"/>
                 <outlet property="chartImageView" destination="eLG-FC-549" id="coY-xm-PZy"/>
                 <outlet property="maxSizePopUpButton" destination="bxa-GT-aeV" id="akZ-UB-MQr"/>
+                <outlet property="minSizePopUpButton" destination="wfA-Hb-afc" id="7pk-93-NK6"/>
                 <outlet property="progressButton" destination="PBE-a0-9V8" id="wqL-Ig-tfs"/>
                 <outlet property="runButton" destination="X4a-Uy-A9Q" id="n59-wX-RDY"/>
                 <outlet property="startMenuItem" destination="6GY-ZT-wi2" id="4f3-XQ-Hwh"/>
@@ -82,12 +84,19 @@
                                     <action selector="newDocument:" target="-1" id="4Si-XN-c54"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Save Data" keyEquivalent="s" id="pxx-59-PXV">
+                                <connections>
+                                    <action selector="saveDocument:" target="-1" id="teZ-XB-qJY"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                            <menuItem title="Start Running" keyEquivalent="r" id="6GY-ZT-wi2">
+                            <menuItem title="Start Running" keyEquivalent=" " id="6GY-ZT-wi2">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="run:" target="-1" id="rkO-Gi-mAD"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="vr5-rR-n1T"/>
                             <menuItem title="Randomize Inputs" keyEquivalent="r" id="uso-hV-x7a">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -95,13 +104,25 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="N7n-y9-Zv0"/>
-                            <menuItem title="Increase Scale" keyEquivalent="" id="AiS-cj-v0x">
+                            <menuItem title="Increase Min Size" keyEquivalent="" id="1Ta-6O-urU">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES"/>
+                                <connections>
+                                    <action selector="increaseMinScale:" target="-1" id="Jp5-54-yBp"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Increase Max Size" keyEquivalent="" id="AiS-cj-v0x">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="increaseMaxScale:" target="-1" id="U3e-ha-3Yt"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Decrease Scale" keyEquivalent="" id="rlY-uA-xsP">
+                            <menuItem title="Decrease Min Size" keyEquivalent="" id="aR2-Bs-e1g">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES"/>
+                                <connections>
+                                    <action selector="decreaseMinScale:" target="-1" id="kOd-7q-4Vt"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Decrease Max Size" keyEquivalent="" id="rlY-uA-xsP">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="decreaseMaxScale:" target="-1" id="kKm-Nt-omu"/>
@@ -111,11 +132,6 @@
                             <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                 <connections>
                                     <action selector="performClose:" target="-1" id="HmO-Ls-i7Q"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Save Data" keyEquivalent="s" id="pxx-59-PXV">
-                                <connections>
-                                    <action selector="saveDocument:" target="-1" id="teZ-XB-qJY"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
@@ -375,6 +391,12 @@
                                     <binding destination="wHU-2r-SE8" name="value" keyPath="values.Amortized" id="L68-14-2pq"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Presentation Mode" keyEquivalent="p" id="BWJ-e6-yPw">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.PresentationMode" id="QKP-U6-0CN"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="vcw-Zy-RCb"/>
                             <menuItem title="Show Toolbar" keyEquivalent="t" id="snW-S8-Cw5">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
@@ -461,13 +483,13 @@
                 </subviews>
                 <userDefinedRuntimeAttributes>
                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                        <color key="value" white="0.073594674560000004" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="value" white="0.25" alpha="1" colorSpace="calibratedWhite"/>
                     </userDefinedRuntimeAttribute>
                 </userDefinedRuntimeAttributes>
             </view>
             <toolbar key="toolbar" implicitIdentifier="69E2655B-E4F8-45D3-8F32-9A7B56EBD9C8" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="gcQ-08-MOq">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="CC9CEC29-B506-4495-A7EE-76D052EC9111" label="" paletteLabel="Active Suite" id="1hd-92-TVs">
+                    <toolbarItem implicitItemIdentifier="CC9CEC29-B506-4495-A7EE-76D052EC9111" label="Active Suite" paletteLabel="Active Suite" visibilityPriority="2" id="1hd-92-TVs">
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="28"/>
                         <size key="maxSize" width="150" height="28"/>
@@ -487,7 +509,27 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="17F5696C-4520-46B5-A3A3-480DBFE97383" label="" paletteLabel="Maximum Size" id="d02-oo-Bi2">
+                    <toolbarItem implicitItemIdentifier="3A754481-B5AC-4438-B120-2277C365DC10" label="Minimum Size" paletteLabel="Minimum Size" id="aPm-qb-Vv1">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="80" height="28"/>
+                        <size key="maxSize" width="80" height="28"/>
+                        <popUpButton key="view" verticalHuggingPriority="750" id="wfA-Hb-afc">
+                            <rect key="frame" x="0.0" y="14" width="80" height="28"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <popUpButtonCell key="cell" type="roundTextured" title="1k" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="Lbd-Cp-12h" id="PGF-9R-EY8">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="MG0-9I-xDb">
+                                    <items>
+                                        <menuItem title="1k" state="on" id="Lbd-Cp-12h"/>
+                                        <menuItem title="Item 2" id="8zw-Nx-4Ew"/>
+                                        <menuItem title="Item 3" id="cWZ-ih-QiE"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="17F5696C-4520-46B5-A3A3-480DBFE97383" label="Maximum Size" paletteLabel="Maximum Size" id="d02-oo-Bi2">
                         <nil key="toolTip"/>
                         <size key="minSize" width="80" height="28"/>
                         <size key="maxSize" width="80" height="28"/>
@@ -507,7 +549,7 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="121A327D-1C75-4ECB-AFBD-D496FD89D871" label="" paletteLabel="Benchmarks" id="0NC-Up-Wdv">
+                    <toolbarItem implicitItemIdentifier="121A327D-1C75-4ECB-AFBD-D496FD89D871" label="Benchmarks" paletteLabel="Benchmarks" visibilityPriority="1" id="0NC-Up-Wdv">
                         <nil key="toolTip"/>
                         <size key="minSize" width="120" height="28"/>
                         <size key="maxSize" width="120" height="28"/>
@@ -527,7 +569,7 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="47A710C0-D1B1-49CF-ADAE-42DB45FEDE95" label="" paletteLabel="Run" image="RunTemplate" id="OES-KR-TQM">
+                    <toolbarItem implicitItemIdentifier="47A710C0-D1B1-49CF-ADAE-42DB45FEDE95" label="Run" paletteLabel="Run" image="RunTemplate" visibilityPriority="3" id="OES-KR-TQM">
                         <nil key="toolTip"/>
                         <size key="minSize" width="40" height="28"/>
                         <size key="maxSize" width="40" height="28"/>
@@ -543,7 +585,7 @@
                             </connections>
                         </button>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="8BAEBCC9-8D47-420A-9F03-97DE265B5418" label="" paletteLabel="Progress" id="FTW-AO-GXT">
+                    <toolbarItem implicitItemIdentifier="8BAEBCC9-8D47-420A-9F03-97DE265B5418" label="Progress" paletteLabel="Progress" visibilityPriority="3" id="FTW-AO-GXT">
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="28"/>
                         <size key="maxSize" width="400" height="28"/>
@@ -561,6 +603,7 @@
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="1hd-92-TVs"/>
+                    <toolbarItem reference="aPm-qb-Vv1"/>
                     <toolbarItem reference="d02-oo-Bi2"/>
                     <toolbarItem reference="0NC-Up-Wdv"/>
                     <toolbarItem reference="OES-KR-TQM"/>

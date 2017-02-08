@@ -18,8 +18,10 @@ let maximumScale = 28
 class AppDelegate: NSObject {
 
     @IBOutlet weak var window: NSWindow!
+    @IBOutlet weak var backgroundView: ColoredView!
     @IBOutlet weak var runButton: NSButton!
     @IBOutlet weak var suitePopUpButton: NSPopUpButton!
+    @IBOutlet weak var minSizePopUpButton: NSPopUpButton!
     @IBOutlet weak var maxSizePopUpButton: NSPopUpButton!
     @IBOutlet weak var benchmarksPopUpButton: NSPopUpButton!
     @IBOutlet weak var startMenuItem: NSMenuItem!
@@ -69,7 +71,7 @@ class AppDelegate: NSObject {
                 }
             }
             refreshChart()
-            refreshMaxScale()
+            refreshScale()
             refreshBenchmarks()
             refreshRunnerParams()
         }
@@ -113,15 +115,25 @@ extension AppDelegate: NSApplicationDelegate {
         }
         self.suitePopUpButton.menu = suiteMenu
 
-        let sizeMenu = NSMenu()
+        let minSizeMenu = NSMenu()
+        for i in minimumScale ... maximumScale {
+            let item = NSMenuItem(title: "\((1 << i).label)≤",
+                action: #selector(AppDelegate.didSelectMinSize(_:)),
+                keyEquivalent: "")
+            item.tag = i
+            minSizeMenu.addItem(item)
+        }
+        self.minSizePopUpButton.menu = minSizeMenu
+
+        let maxSizeMenu = NSMenu()
         for i in minimumScale ... maximumScale {
             let item = NSMenuItem(title: "≤\((1 << i).label)",
                 action: #selector(AppDelegate.didSelectMaxSize(_:)),
                 keyEquivalent: "")
             item.tag = i
-            sizeMenu.addItem(item)
+            maxSizeMenu.addItem(item)
         }
-        self.maxSizePopUpButton.menu = sizeMenu
+        self.maxSizePopUpButton.menu = maxSizeMenu
 
         self.selectedSuite = suite
 
@@ -224,6 +236,7 @@ extension AppDelegate {
 
     func refreshChart() {
         cancelChartRefresh()
+        guard !runner.suites.isEmpty else { return }
         let suite = self.selectedSuite ?? self.runner.suites[0]
         let results = runner.results(for: suite)
         let chart: Chart
@@ -242,8 +255,11 @@ extension AppDelegate {
     }
 
     @IBAction func newDocument(_ sender: AnyObject) {
+        let selected = self.selectedBenchmarks
+        let scale = self.maxScale
         runner.reset()
-        refreshChart()
+        self.selectedBenchmarks = selected
+        self.maxScale = scale
     }
 
     func scheduleSave() {
@@ -333,34 +349,31 @@ extension AppDelegate {
         self.selectedSuite = index == 0 ? self.runner.suites.last! : self.runner.suites[index - 1]
     }
 
-    @IBAction func didSelectMaxSize(_ sender: NSMenuItem) {
-        let i = sender.tag
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        runner.results(for: suite).scaleRange = 0 ... i
-        refreshMaxScale()
-        refreshRunnerParams()
-    }
-
-    func refreshMaxScale() {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let results = self.runner.results(for: suite)
-        let maxScale = results.scaleRange.upperBound
-        if let item = self.maxSizePopUpButton.menu?.items.first(where: { $0.tag == maxScale }) {
-            if self.maxSizePopUpButton.selectedItem !== item {
-                self.maxSizePopUpButton.select(item)
-            }
+    var selectedBenchmarks: Set<String> {
+        get {
+            let suite = self.selectedSuite ?? self.runner.suites[0]
+            let results = self.runner.results(for: suite)
+            let selected = results.selectedBenchmarks.isDisjoint(with: suite.benchmarkTitles)
+                ? Set(suite.benchmarkTitles)
+                : results.selectedBenchmarks.intersection(suite.benchmarkTitles)
+            return selected
         }
-        else {
-            self.maxSizePopUpButton.select(nil)
+        set {
+            let suite = self.selectedSuite ?? self.runner.suites[0]
+            let results = self.runner.results(for: suite)
+            let selected = newValue.isDisjoint(with: suite.benchmarkTitles)
+                ? Set(suite.benchmarkTitles)
+                : newValue.intersection(suite.benchmarkTitles)
+            results.selectedBenchmarks = selected
+            refreshBenchmarks()
+            refreshChart()
+            refreshRunnerParams()
         }
     }
 
     func refreshBenchmarks() {
         let suite = self.selectedSuite ?? self.runner.suites[0]
-        let results = self.runner.results(for: suite)
-        let selected = results.selectedBenchmarks.isDisjoint(with: results.selectedBenchmarks)
-            ? Set(suite.benchmarkTitles)
-            : results.selectedBenchmarks.intersection(suite.benchmarkTitles)
+        let selected = self.selectedBenchmarks
 
         let title: String
         switch selected.count {
@@ -394,61 +407,103 @@ extension AppDelegate {
     }
 
     @IBAction func selectAllBenchmarks(_ sender: AnyObject) {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let results = self.runner.results(for: suite)
-        results.selectedBenchmarks = []
-        refreshBenchmarks()
-        refreshChart()
-        refreshRunnerParams()
+        self.selectedBenchmarks = []
     }
 
     @IBAction func toggleBenchmark(_ sender: NSMenuItem) {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let results = self.runner.results(for: suite)
-        var selected = results.selectedBenchmarks.isDisjoint(with: results.selectedBenchmarks)
-            ? Set(suite.benchmarkTitles)
-            : results.selectedBenchmarks.intersection(suite.benchmarkTitles)
+        var selected = self.selectedBenchmarks
         if selected.contains(sender.title) {
             selected.remove(sender.title)
         }
         else {
             selected.insert(sender.title)
         }
-        if selected.isEmpty || selected.count == suite.benchmarkTitles.count {
-            results.selectedBenchmarks = []
+        if selected.isEmpty {
+            self.selectedBenchmarks = []
         }
         else {
-            results.selectedBenchmarks = selected
+            self.selectedBenchmarks = selected
         }
-        refreshBenchmarks()
-        refreshChart()
-        refreshRunnerParams()
     }
 
     @IBAction func selectBenchmark(_ sender: NSMenuItem) {
         let title = sender.title
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        guard suite.benchmarkTitles.contains(title) else { return }
-        let results = self.runner.results(for: suite)
-        results.selectedBenchmarks = [title]
-        refreshBenchmarks()
-        refreshChart()
-        refreshRunnerParams()
+        self.selectedBenchmarks = [title]
+    }
+    var maxScale: Int {
+        get {
+            let suite = self.selectedSuite ?? self.runner.suites[0]
+            let results = self.runner.results(for: suite)
+            return results.scaleRange.upperBound
+        }
+        set {
+            let suite = self.selectedSuite ?? self.runner.suites[0]
+            let results = self.runner.results(for: suite)
+            let upper = max(min(newValue, maximumScale), minimumScale)
+            let lower = min(upper, results.scaleRange.lowerBound)
+            results.scaleRange = lower ... upper
+            refreshScale()
+            refreshChart()
+            refreshRunnerParams()
+        }
+    }
+    var minScale: Int {
+        get {
+            let suite = self.selectedSuite ?? self.runner.suites[0]
+            let results = self.runner.results(for: suite)
+            return results.scaleRange.lowerBound
+        }
+        set {
+            let suite = self.selectedSuite ?? self.runner.suites[0]
+            let results = self.runner.results(for: suite)
+            let lower = max(min(newValue, maximumScale), minimumScale)
+            let upper = max(lower, results.scaleRange.upperBound)
+            results.scaleRange = lower ... upper
+            refreshScale()
+            refreshChart()
+            refreshRunnerParams()
+        }
     }
 
+    func refreshScale() {
+        let minScale = self.minScale
+        if let item = self.minSizePopUpButton.menu?.items.first(where: { $0.tag == minScale }) {
+            if self.minSizePopUpButton.selectedItem !== item {
+                self.minSizePopUpButton.select(item)
+            }
+        }
+        else {
+            self.minSizePopUpButton.select(nil)
+        }
+
+        let maxScale = self.maxScale
+        if let item = self.maxSizePopUpButton.menu?.items.first(where: { $0.tag == maxScale }) {
+            if self.maxSizePopUpButton.selectedItem !== item {
+                self.maxSizePopUpButton.select(item)
+            }
+        }
+        else {
+            self.maxSizePopUpButton.select(nil)
+        }
+    }
+
+    @IBAction func didSelectMinSize(_ sender: NSMenuItem) {
+        self.minScale = sender.tag
+    }
+    @IBAction func didSelectMaxSize(_ sender: NSMenuItem) {
+        self.maxScale = sender.tag
+    }
+
+    @IBAction func increaseMinScale(_ sender: AnyObject) {
+        self.minScale += 1
+    }
+    @IBAction func decreaseMinScale(_ sender: AnyObject) {
+        self.minScale -= 1
+    }
     @IBAction func increaseMaxScale(_ sender: AnyObject) {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let results = self.runner.results(for: suite)
-        results.scaleRange = 0 ... min(maximumScale, results.scaleRange.upperBound + 1)
-        refreshMaxScale()
-        refreshRunnerParams()
+        self.maxScale += 1
     }
-
     @IBAction func decreaseMaxScale(_ sender: AnyObject) {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let results = self.runner.results(for: suite)
-        results.scaleRange = 0 ... max(minimumScale, results.scaleRange.upperBound - 1)
-        refreshMaxScale()
-        refreshRunnerParams()
+        self.maxScale -= 1
     }
 }
