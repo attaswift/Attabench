@@ -51,19 +51,19 @@ class BenchmarkSamples {
     init() {}
 
     init?(from plist: Any) {
-        guard let dict = plist as? [String: [Double]] else { return nil }
-        for (size, measurements) in dict {
+        guard let dict = plist as? [String: Double] else { return nil }
+        for (size, measurement) in dict {
             guard let size = Int(size, radix: 10) else { return nil }
             let sample = BenchmarkSample()
-            for m in measurements { sample.addMeasurement(m) }
+            sample.addMeasurement(measurement)
             samples[size] = sample
         }
     }
 
     func encode() -> Any {
-        var dict: [String: [Double]] = [:]
+        var dict: [String: Double] = [:]
         for (size, sample) in samples {
-            dict["\(size)"] = sample.measurements
+            dict["\(size)"] = sample.minimum
         }
         return dict
     }
