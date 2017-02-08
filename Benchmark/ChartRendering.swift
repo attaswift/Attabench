@@ -335,6 +335,7 @@ class Chart {
             highlight.line(to: .init(x: h.upperBound, y: 0))
             highlight.transform(using: chartTransform)
             highlight.lineWidth = 4
+            highlight.lineCapStyle = .roundLineCapStyle
             highlight.stroke()
         }
 

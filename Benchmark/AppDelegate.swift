@@ -11,7 +11,7 @@ import GlueKit
 import BenchmarkingTools
 import CollectionBenchmarks
 
-let minimumScale = 4
+let minimumScale = 0
 let maximumScale = 28
 
 @NSApplicationMain
