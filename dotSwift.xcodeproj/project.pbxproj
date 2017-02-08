@@ -41,6 +41,8 @@
 		BB8E0E1F1E33D69100505773 /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */; };
 		BB8E0E201E33D69100505773 /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */; };
 		BB8E0E211E33D6B300505773 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; };
+		BB96EEAF1E49046D00CD9C22 /* BTree2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEAE1E49046D00CD9C22 /* BTree2.swift */; };
+		BB9A6C651E4A52890051BCDB /* BTree3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9A6C641E4A52890051BCDB /* BTree3.swift */; };
 		BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */; };
 /* End PBXBuildFile section */
 
@@ -141,6 +143,8 @@
 		BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BTree.framework.dSYM; path = Carthage/Build/Mac/BTree.framework.dSYM; sourceTree = "<group>"; };
 		BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GlueKit.framework.dSYM; path = Carthage/Build/Mac/GlueKit.framework.dSYM; sourceTree = "<group>"; };
 		BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SipHash.framework.dSYM; path = Carthage/Build/Mac/SipHash.framework.dSYM; sourceTree = "<group>"; };
+		BB96EEAE1E49046D00CD9C22 /* BTree2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTree2.swift; sourceTree = "<group>"; };
+		BB9A6C641E4A52890051BCDB /* BTree3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTree3.swift; sourceTree = "<group>"; };
 		BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -232,10 +236,12 @@
 				BB8E0DBF1E316CC800505773 /* Info.plist */,
 				BB8E0DF21E32383900505773 /* Benchmarks.swift */,
 				BB8E0DF71E32383900505773 /* SortedArray.swift */,
-				BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */,
 				BB8E0DF31E32383900505773 /* BinaryTree.swift */,
+				BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */,
 				BB8E0DF51E32383900505773 /* COWTree.swift */,
 				BB8E0DF41E32383900505773 /* BTree.swift */,
+				BB96EEAE1E49046D00CD9C22 /* BTree2.swift */,
+				BB9A6C641E4A52890051BCDB /* BTree3.swift */,
 				BB8E0DF61E32383900505773 /* Shuffle.swift */,
 			);
 			path = CollectionBenchmarks;
@@ -480,7 +486,9 @@
 				BB35FF971E344D03003ABBF3 /* AlgebraicTree.swift in Sources */,
 				BB8E0DFC1E32383900505773 /* Shuffle.swift in Sources */,
 				BB8E0DF91E32383900505773 /* BinaryTree.swift in Sources */,
+				BB96EEAF1E49046D00CD9C22 /* BTree2.swift in Sources */,
 				BB8E0DFB1E32383900505773 /* COWTree.swift in Sources */,
+				BB9A6C651E4A52890051BCDB /* BTree3.swift in Sources */,
 				BB8E0DF81E32383900505773 /* Benchmarks.swift in Sources */,
 				BB8E0DFD1E32383900505773 /* SortedArray.swift in Sources */,
 				BB8E0DFA1E32383900505773 /* BTree.swift in Sources */,
@@ -575,6 +583,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -617,6 +626,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -709,6 +719,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;

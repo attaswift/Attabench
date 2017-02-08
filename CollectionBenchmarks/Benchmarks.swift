@@ -10,6 +10,9 @@ import BenchmarkingTools
 
 typealias Value = Int
 
+let orders = [1024] //[8, 16, 32, 64, 128, 256, 512, 768, 1024, 1500, 2048]
+let internalOrders = [16] //[5, 8, 16, 32, 64, 128]
+
 private protocol TestableSet: Collection {
     init()
     func validate()
@@ -17,13 +20,40 @@ private protocol TestableSet: Collection {
     func forEach(_ body: (Iterator.Element) throws -> Void) rethrows
     @discardableResult
     mutating func insert(_ element: Iterator.Element) -> (inserted: Bool, memberAfterInsert: Iterator.Element)
+    func printInfo(size: Int)
 }
 
-extension SortedArray: TestableSet {}
-extension AlgebraicTree: TestableSet {}
-extension BinaryTree: TestableSet {}
-extension COWTree: TestableSet {}
-extension BTree: TestableSet {}
+extension SortedArray: TestableSet {
+    func printInfo(size: Int) {
+    }
+}
+extension AlgebraicTree: TestableSet {
+    func printInfo(size: Int) {
+    }
+}
+extension BinaryTree: TestableSet {
+    func printInfo(size: Int) {
+    }
+}
+extension COWTree: TestableSet {
+    func printInfo(size: Int) {
+        //print("COWTree - size: \(size) - depth: \(depth)")
+    }
+}
+extension BTree: TestableSet {
+    func printInfo(size: Int) {
+    }
+}
+extension BTree2: TestableSet {
+    func printInfo(size: Int) {
+        //print("BTree2/\(order) - size: \(size) - depth: \(depth)")
+    }
+}
+extension BTree3: TestableSet {
+    func printInfo(size: Int) {
+        //print("BTree3/\(leafOrder)-\(internalOrder) - size: \(size) - depth: \(depth)")
+    }
+}
 
 func randomArrayGenerator(_ size: Int) -> [Value] {
     var values: [Value] = Array(0 ..< size)
@@ -58,8 +88,8 @@ let inputGenerator = randomInputs ? randomArrayGenerator : perfectlyBalancedArra
 
 func foreachBenchmark() -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "ForEach", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Iteration Using “forEach”"
-    suite.descriptiveAmortizedTitle = "One Iteration of “forEach” (Amortized)"
+    suite.descriptiveTitle = "Iteration using “forEach”"
+    suite.descriptiveAmortizedTitle = "A single iteration of “forEach”"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
@@ -126,8 +156,16 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
-    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+    for order in orders {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+    }
+    for order in orders {
+        for internalOrder in internalOrders {
+            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+        }
     }
 
     suite.addBenchmark(title: "Array") { input in
@@ -145,10 +183,115 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
     return suite
 }
 
+func indexingBenchmark() -> BenchmarkSuite<[Value]> {
+    let suite = BenchmarkSuite<[Value]>(title: "Indexing", inputGenerator: inputGenerator)
+    suite.descriptiveTitle = "Iteration using indexing"
+    suite.descriptiveAmortizedTitle = "A single iteration step with indexing"
+
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+        suite.addBenchmark(title: title) { input in
+            var set = initializer()
+            for value in input {
+                set.insert(value)
+            }
+            set.validate()
+
+            return { measurer in
+                var i = 0
+                var index = set.startIndex
+                let end = set.endIndex
+                while index != end {
+                    guard set[index] == i else { fatalError("Expected \(i), got \(set[index])") }
+                    i += 1
+                    set.formIndex(after: &index)
+                }
+                guard i == input.count else { fatalError() }
+            }
+        }
+    }
+
+    suite.addBenchmark(title: "SortedArray") { input in
+        var set = SortedArray<Value>()
+        for value in 0 ..< input.count { // Cheating
+            set.append(value)
+        }
+        set.validate()
+
+        return { measurer in
+            var i = 0
+            var index = set.startIndex
+            while index != set.endIndex {
+                guard set[index] == i else { fatalError() }
+                i += 1
+                set.formIndex(after: &index)
+            }
+            guard i == input.count else { fatalError() }
+        }
+    }
+
+    suite.addBenchmark(title: "NSOrderedSet") { input in
+        //guard input.count < 300_000 else { return nil }
+
+        let set = NSMutableOrderedSet()
+        let comparator: (Any, Any) -> ComparisonResult = {
+            let a = $0 as! Value
+            let b = $1 as! Value
+            return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
+        }
+        for value in input {
+            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
+            set.insert(value, at: index)
+        }
+
+        return { measurer in
+            var i = 0
+            let c = set.count
+            while i != c {
+                guard set[i] as! Value == i else { fatalError() }
+                i += 1
+            }
+            guard i == input.count else { fatalError() }
+        }
+    }
+
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
+
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
+    add("COWTree", for: COWTree<Value>.self, to: suite)
+
+    for order in orders {
+        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+    }
+    for order in orders {
+        for internalOrder in internalOrders {
+            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+        }
+    }
+
+    suite.addBenchmark(title: "Array") { input in
+        let array = input.sorted()
+        return { measurer in
+            var i = 0
+            var index = array.startIndex
+            while index != array.endIndex {
+                guard array[index] == i else { fatalError() }
+                i += 1
+                array.formIndex(after: &index)
+            }
+            guard i == input.count else { fatalError() }
+        }
+    }
+    
+    return suite
+}
+
 func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
     let suite = BenchmarkSuite<([Value], [Value])>(title: "Contains", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
-    suite.descriptiveTitle = "Looking Up All Member in Random Order"
-    suite.descriptiveAmortizedTitle = "Looking Up One Random Member (Amortized)"
+    suite.descriptiveTitle = "Looking up all members in random order"
+    suite.descriptiveAmortizedTitle = "Looking up one random member"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<([Value], [Value])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { (input, lookups) in
@@ -204,8 +347,16 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
-    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+    for order in orders {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+    }
+    for order in orders {
+        for internalOrder in internalOrders {
+            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+        }
     }
 
     suite.addBenchmark(title: "Array") { (input, lookups) in
@@ -223,8 +374,8 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
 
 func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "Insertion", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Construction by Random Insertions"
-    suite.descriptiveAmortizedTitle = "Amortized cost of a single random insertion"
+    suite.descriptiveTitle = "Construction by random insertions"
+    suite.descriptiveAmortizedTitle = "Cost of one random insertion"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxSize: Int? = nil, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
@@ -274,8 +425,16 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
-    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+    for order in orders {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+    }
+    for order in orders {
+        for internalOrder in internalOrders {
+            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+        }
     }
 
     suite.addBenchmark(title: "Array.sort") { input in
@@ -290,8 +449,8 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
 
 func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true) -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "SharedInsertion", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Construction by Random Insertions with COW Copying"
-    suite.descriptiveAmortizedTitle = "Random Insertion with COW Copying (Amortized)"
+    suite.descriptiveTitle = "Random insertions into shared storage"
+    suite.descriptiveAmortizedTitle = "One random insertion into shared storage"
 
     func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, maxCount: Int? = nil, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
@@ -300,18 +459,43 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
             return { measurer in
                 var set = initializer()
                 measurer.measure {
+                    #if false
                     var copy = set
+                    var k = 0
                     for value in input {
                         set.insert(value)
+                        print(Array(set))
+                        precondition(!copy.contains(value))
+                        precondition(set.contains(value))
                         copy = set
+
+                        do {
+                            var i = 0
+                            let test = input.prefix(through: k).sorted()
+                            set.forEach { value in
+                                guard value == test[i] else { fatalError("Expected \(test[i]), got \(value)") }
+                                i += 1
+                            }
+                            set.validate()
+                        }
+                        k += 1
                     }
                     _ = copy
+                    #else
+                        var copy = set
+                        for value in input {
+                            set.insert(value)
+                            copy = set
+                        }
+                        _ = copy
+                    #endif
                 }
 
                 if first {
+                    set.printInfo(size: input.count)
                     var i = 0
                     set.forEach { value in
-                        guard value == i else { fatalError() }
+                        guard value == i else { fatalError("Expected \(i), got \(value)") }
                         i += 1
                     }
                     set.validate()
@@ -348,10 +532,17 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
-    for order in [1024] { // [8, 16, 32, 64, 256, 512, 1024, 2048, 4096, 8182, 16384] {
+    for order in orders {
         add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
     }
-
+    for order in orders {
+        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+    }
+    for order in orders {
+        for internalOrder in internalOrders {
+            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+        }
+    }
 
     suite.addBenchmark(title: "Array.sort") { input in
         guard input.count < 300_000 else { return nil }
@@ -373,6 +564,7 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
 public func generateBenchmarks() -> [BenchmarkSuiteProtocol] {
     return [
         foreachBenchmark(),
+        indexingBenchmark(),
         containsBenchmark(),
         insertionBenchmark(),
         cowBenchmark()
