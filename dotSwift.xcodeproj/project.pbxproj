@@ -145,6 +145,7 @@
 		BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SipHash.framework.dSYM; path = Carthage/Build/Mac/SipHash.framework.dSYM; sourceTree = "<group>"; };
 		BB96EEAE1E49046D00CD9C22 /* BTree2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTree2.swift; sourceTree = "<group>"; };
 		BB9A6C641E4A52890051BCDB /* BTree3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTree3.swift; sourceTree = "<group>"; };
+		BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -191,6 +192,7 @@
 		BB1DA9C41E2E5923000F2B03 = {
 			isa = PBXGroup;
 			children = (
+				BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */,
 				BB8E0E0F1E33D43400505773 /* Cartfile */,
 				BB8E0DBD1E316CC800505773 /* CollectionBenchmarks */,
 				BB83AAC51E3125D000BFE22D /* Benchmark */,
