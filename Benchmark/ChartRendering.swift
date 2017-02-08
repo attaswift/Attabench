@@ -43,17 +43,21 @@ class Chart {
     let size: CGSize
     let suite: BenchmarkSuiteProtocol
     let title: String
+    let presentationMode: Bool
 
     var curves: [(String, NSColor, NSBezierPath)] = []
     var verticalGridLines: [(String?, CGFloat)] = []
     var horizontalGridLines: [(String?, CGFloat)] = []
+    var horizontalHighlight: Range<CGFloat>? = nil
 
     init(size: CGSize,
          suite: BenchmarkSuiteProtocol,
          results: BenchmarkSuiteResults,
+         highlightedSizes: ClosedRange<Int>? = nil,
          sizeRange: Range<Int>? = nil,
          timeRange: Range<TimeInterval>? = nil,
-         amortized: Bool = false) {
+         amortized: Bool = false,
+         presentation: Bool = false) {
         self.size = size
         self.suite = suite
         if amortized {
@@ -62,12 +66,23 @@ class Chart {
         else {
             self.title = suite.descriptiveTitle ?? suite.title
         }
+        self.presentationMode = presentation
+
+        let benchmarks = results.selectedBenchmarks.isDisjoint(with: suite.benchmarkTitles)
+            ? suite.benchmarkTitles
+            : suite.benchmarkTitles.filter(results.selectedBenchmarks.contains)
+
         var minSize = sizeRange?.lowerBound ?? Int.max
         var maxSize = sizeRange?.upperBound ?? Int.min
+        if let s = highlightedSizes {
+            minSize = min(s.lowerBound, minSize)
+            maxSize = max(s.upperBound, maxSize)
+        }
+
         var minTime = timeRange?.lowerBound ?? Double.infinity
         var maxTime = timeRange?.upperBound ?? -Double.infinity
         var count = 0
-        for (_, samples) in results.samplesByBenchmark {
+        for (benchmark, samples) in results.samplesByBenchmark where benchmarks.contains(benchmark) {
             for (size, sample) in samples.samples {
                 if size > maxSize { maxSize = size }
                 if size < minSize { minSize = size }
@@ -80,7 +95,6 @@ class Chart {
         if count == 0 {
             return
         }
-        //if maxTime > 100e-6 { maxTime = 100e-6 }
 
         var t: TimeInterval = 1e-20
         while 10 * t < minTime {
@@ -103,13 +117,22 @@ class Chart {
             return scaleY * CGFloat(log2(time) - log2(minTime))
         }
 
+        if let s = highlightedSizes {
+            self.horizontalHighlight = x(s.lowerBound) ..< x(s.upperBound)
+        }
+
         do {
             var size = minSize
             var i = 0
             while size <= maxSize {
                 if size >= minSize {
                     let x = scaleX * log2(CGFloat(size))
-                    verticalGridLines.append((i & 1 == 0 ? size.label : nil, x))
+                    if !presentationMode || i & 1 == 0 {
+                        verticalGridLines.append((size.label, x))
+                    }
+                    else {
+                        verticalGridLines.append((nil, x))
+                    }
                 }
                 size <<= 1
                 i += 1
@@ -132,10 +155,6 @@ class Chart {
             }
         }
 
-
-        let benchmarks = results.selectedBenchmarks.isDisjoint(with: suite.benchmarkTitles)
-            ? suite.benchmarkTitles
-            : suite.benchmarkTitles.filter(results.selectedBenchmarks.contains)
 
         let c = benchmarks.count
         for i in 0 ..< c {
@@ -171,50 +190,79 @@ class Chart {
         }
     }
 
+    struct ViewParams {
+        let backgroundColor: NSColor
+        let titleFont: NSFont
+        let titleColor: NSColor
+        let borderColor: NSColor
+        let majorGridLineColor: NSColor
+        let minorGridLineColor: NSColor
+        let scaleFont: NSFont
+        let legendFont: NSFont
+        let legendColor: NSColor
+        let legendPadding: CGFloat
+        let lineWidth: CGFloat
+        let shadowRadius: CGFloat
+        let xPadding: CGFloat
+
+        static let normal = ViewParams(
+            backgroundColor: NSColor.white,
+            titleFont: NSFont(name: "Helvetica-Light", size: 24)!,
+            titleColor: NSColor.black,
+            borderColor: NSColor.black,
+            majorGridLineColor: NSColor(white: 0.3, alpha: 1),
+            minorGridLineColor: NSColor(white: 0.3, alpha: 1),
+            scaleFont: NSFont(name: "Helvetica-Light", size: 12)!,
+            legendFont: NSFont(name: "Menlo", size: 12)!,
+            legendColor: NSColor.black,
+            legendPadding: 6,
+            lineWidth: 4,
+            shadowRadius: 0,
+            xPadding: 6)
+
+        static let presentation = ViewParams(
+            backgroundColor: NSColor.black,
+            titleFont: NSFont(name: "Helvetica-Light", size: 48)!,
+            titleColor: NSColor.white,
+            borderColor: NSColor.white,
+            majorGridLineColor: NSColor(white: 0.7, alpha: 1),
+            minorGridLineColor: NSColor(white: 0.7, alpha: 1),
+            scaleFont: NSFont(name: "Helvetica-Light", size: 24)!,
+            legendFont: NSFont(name: "Menlo", size: 20)!,
+            legendColor: NSColor.white,
+            legendPadding: 8,
+            lineWidth: 8,
+            shadowRadius: 3,
+            xPadding: 12)
+    }
+
     func render(into bounds: NSRect) {
-        NSColor.black.setFill()
+        let p = presentationMode ? ViewParams.presentation : ViewParams.normal
+
+        p.backgroundColor.setFill()
         NSRectFill(bounds)
 
-        let borderColor =  NSColor.white
-        let majorGridLineColor = NSColor(white: 0.7, alpha: 1)
-        let minorGridLineColor = NSColor(white: 0.7, alpha: 1)
-        let legendColor = NSColor.white
-
-        #if SMALL
-            let titleFont = NSFont(name: "Helvetica-Light", size: 24)!
-            let legendFont = NSFont(name: "Menlo", size: 12)!
-            let legendPadding: CGFloat = 6
-            let scaleFont = NSFont(name: "Helvetica-Light", size: 12)!
-            let xPadding: CGFloat = 6
-        #else
-            let titleFont = NSFont(name: "Helvetica-Light", size: 48)!
-            let legendFont = NSFont(name: "Menlo", size: 20)!
-            let legendPadding: CGFloat = 8
-            let scaleFont = NSFont(name: "Helvetica-Light", size: 24)!
-            let xPadding: CGFloat = 12
-        #endif
-
         let scaleAttributes: [String: Any] = [
-            NSFontAttributeName: scaleFont,
-            NSForegroundColorAttributeName: majorGridLineColor
+            NSFontAttributeName: p.scaleFont,
+            NSForegroundColorAttributeName: p.majorGridLineColor
         ]
         let (titleRect, bottomRect) = bounds.divided(
-            atDistance: 1.2 * (titleFont.boundingRectForFont.height + titleFont.leading),
+            atDistance: 1.2 * (p.titleFont.boundingRectForFont.height + p.titleFont.leading),
             from: .maxYEdge)
 
-        let scaleWidth = 3 * scaleFont.maximumAdvancement.width
+        let scaleWidth = 3 * p.scaleFont.maximumAdvancement.width
         let chartBounds = CGRect(x: bottomRect.minX + scaleWidth,
-                                 y: scaleFont.boundingRectForFont.height,
+                                 y: p.scaleFont.boundingRectForFont.height,
                                  width: bottomRect.width - 2 * scaleWidth,
-                                 height: bottomRect.height - scaleFont.boundingRectForFont.height)
+                                 height: bottomRect.height - p.scaleFont.boundingRectForFont.height)
         let largeSize = NSSize(width: 100000, height: 100000)
 
         // Draw title
         let title = NSAttributedString(
             string: self.title,
             attributes: [
-                NSFontAttributeName: titleFont,
-                NSForegroundColorAttributeName: NSColor.white
+                NSFontAttributeName: p.titleFont,
+                NSForegroundColorAttributeName: p.titleColor,
             ])
         let titleBounds = title.boundingRect(with: largeSize, options: [], context: nil)
         title.draw(at: CGPoint(x: floor(titleRect.midX - titleBounds.width / 2),
@@ -226,7 +274,7 @@ class Chart {
 
         // Draw horizontal grid lines
         for (title, y) in horizontalGridLines {
-            let color = title == nil ? minorGridLineColor : majorGridLineColor
+            let color = title == nil ? p.minorGridLineColor : p.majorGridLineColor
             color.setStroke()
             let path = NSBezierPath()
             path.move(to: CGPoint(x: 0, y: y))
@@ -239,15 +287,15 @@ class Chart {
             path.stroke()
 
             if let title = title {
-                let yMid = chartBounds.minY + y * chartBounds.height + scaleFont.pointSize / 4
+                let yMid = chartBounds.minY + y * chartBounds.height + p.scaleFont.pointSize / 4
 
                 let bounds = (title as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
                 (title as NSString).draw(
-                    at: CGPoint(x: chartBounds.minX - xPadding - bounds.width,
+                    at: CGPoint(x: chartBounds.minX - p.xPadding - bounds.width,
                                 y: yMid - bounds.height / 2),
                     withAttributes: scaleAttributes)
                 (title as NSString).draw(
-                    at: CGPoint(x: chartBounds.maxX + xPadding,
+                    at: CGPoint(x: chartBounds.maxX + p.xPadding,
                                 y: yMid - bounds.height / 2),
                     withAttributes: scaleAttributes)
             }
@@ -255,7 +303,7 @@ class Chart {
 
         // Draw vertical grid lines
         for (title, x) in verticalGridLines {
-            let color = title == nil ? minorGridLineColor : majorGridLineColor
+            let color = title == nil ? p.minorGridLineColor : p.majorGridLineColor
             color.setStroke()
             let path = NSBezierPath()
             path.move(to: CGPoint(x: x, y: 0))
@@ -274,10 +322,21 @@ class Chart {
         }
         
         // Draw border
-        borderColor.setStroke()
+        p.borderColor.setStroke()
         let border = NSBezierPath(rect: chartBounds.insetBy(dx: -0.25, dy: -0.25))
         border.lineWidth = 0.5
         border.stroke()
+
+        if !presentationMode, let h = horizontalHighlight {
+            let highlight = NSBezierPath()
+            highlight.move(to: .init(x: h.lowerBound, y: 1))
+            highlight.line(to: .init(x: h.upperBound, y: 1))
+            highlight.move(to: .init(x: h.lowerBound, y: 0))
+            highlight.line(to: .init(x: h.upperBound, y: 0))
+            highlight.transform(using: chartTransform)
+            highlight.lineWidth = 4
+            highlight.stroke()
+        }
 
         guard !curves.isEmpty else { return }
 
@@ -289,8 +348,8 @@ class Chart {
         var legend: [(position: CGPoint, title: NSAttributedString)] = []
         for (title, color, _) in curves {
             let title = NSMutableAttributedString(string: "◼︎ " + title, attributes: [
-                NSFontAttributeName: legendFont,
-                NSForegroundColorAttributeName: legendColor,
+                NSFontAttributeName: p.legendFont,
+                NSForegroundColorAttributeName: p.legendColor,
                 ])
             title.setAttributes([NSForegroundColorAttributeName: color],
                                 range: NSRange(0 ..< 1))
@@ -298,39 +357,51 @@ class Chart {
             let titleBounds = title.boundingRect(with: largeSize, options: [])
             legendMinY -= titleBounds.height
             legend.append((CGPoint(x: legendMinX, y: legendMinY), title))
-            legendMinY -= legendFont.leading
+            legendMinY -= p.legendFont.leading
             legendMaxX = max(legendMaxX, legendMinX + titleBounds.width)
         }
         let legendRect = CGRect(x: legendMinX, y: legendMinY, width: legendMaxX - legendMinX, height: legendMaxY - legendMinY)
-            .insetBy(dx: -2 * legendPadding, dy: -2 * legendPadding)
+            .insetBy(dx: -2 * p.legendPadding, dy: -2 * p.legendPadding)
         let legendBorder = NSBezierPath(rect: legendRect)
         legendBorder.lineWidth = 0.5
 
         // Draw legend background
-        NSColor.black.setFill()
+        p.backgroundColor.setFill()
         legendBorder.fill()
 
         // Draw curves
         NSGraphicsContext.saveGraphicsState()
         NSRectClip(chartBounds)
-        let shadow = NSShadow()
-        shadow.shadowBlurRadius = 3
-        shadow.shadowOffset = .zero
-        shadow.shadowColor = .black
-        shadow.set()
+        if p.shadowRadius > 0 {
+            let shadow = NSShadow()
+            shadow.shadowBlurRadius = p.shadowRadius
+            shadow.shadowOffset = .zero
+            shadow.shadowColor = .black
+            shadow.set()
+        }
         for (_, color, path) in curves {
             color.setStroke()
             let path = (chartTransform as NSAffineTransform).transform(path)
-            path.lineWidth = 8
+            path.lineWidth = p.lineWidth
             path.lineCapStyle = .roundLineCapStyle
             path.lineJoinStyle = .roundLineJoinStyle
             path.stroke()
         }
         NSGraphicsContext.restoreGraphicsState()
+        if !presentationMode {
+            NSColor.black.setStroke()
+            for (_, _, path) in curves {
+                let path = (chartTransform as NSAffineTransform).transform(path)
+                path.lineWidth = 0.5
+                path.lineCapStyle = .roundLineCapStyle
+                path.lineJoinStyle = .roundLineJoinStyle
+                path.stroke()
+            }
+        }
 
         // Draw legend background again (with some transparency)
-        NSColor.black.withAlphaComponent(0.7).setFill()
-        NSColor.white.setStroke()
+        p.backgroundColor.withAlphaComponent(0.7).setFill()
+        p.borderColor.setStroke()
         legendBorder.fill()
         legendBorder.stroke()
 

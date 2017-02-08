@@ -41,6 +41,7 @@ class AppDelegate: NSObject {
     var waitingForParamsChange = false
 
     let amortized: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "Amortized", defaultValue: true)
+    let presentationMode: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "PresentationMode", defaultValue: false)
 
     let randomizeInputs: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "RandomizeInputs", defaultValue: false)
 
@@ -140,6 +141,12 @@ extension AppDelegate: NSApplicationDelegate {
         self.glue.connector.connect(self.amortized.futureValues) { value in
             self.refreshChart()
         }
+        self.glue.connector.connect(self.presentationMode.values) { value in
+            self.backgroundView.backgroundColor = value ? NSColor.black : NSColor.white
+        }
+        self.glue.connector.connect(self.presentationMode.futureValues) { value in
+            self.refreshChart()
+        }
         self.glue.connector.connect(self.randomizeInputs.futureValues) { value in
             self.refreshRunnerParams()
         }
@@ -194,11 +201,17 @@ extension AppDelegate: RunnerDelegate {
         }
     }
 }
+extension AppDelegate: NSWindowDelegate {
+    func windowDidResize(_ notification: Notification) {
+        self.refreshChart()
+    }
+}
+
 
 extension AppDelegate {
     //MARK: Actions
 
-    static let imageSize = CGSize(width: 1280, height: 720)
+    static let presentationImageSize = CGSize(width: 1280, height: 720)
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(AppDelegate.run(_:)) {
@@ -240,14 +253,21 @@ extension AppDelegate {
         let suite = self.selectedSuite ?? self.runner.suites[0]
         let results = runner.results(for: suite)
         let chart: Chart
+
+        let size = presentationMode.value ? AppDelegate.presentationImageSize : chartImageView.bounds.size
         if amortized.value {
-            chart = Chart(size: AppDelegate.imageSize, suite: suite, results: results, amortized: true)
+            chart = Chart(size: size, suite: suite, results: results,
+                          highlightedSizes: results.sizeRange,
+                          amortized: true,
+                          presentation: presentationMode.value)
         }
         else {
-            chart = Chart(size: AppDelegate.imageSize, suite: suite, results: results,
-                          sizeRange: 1 ..< (1 << 20),
-                          timeRange: 1e-7 ..< 1000,
-                          amortized: false)
+            chart = Chart(size: size, suite: suite, results: results,
+                          highlightedSizes: results.sizeRange,
+//                          sizeRange: 1 ..< (1 << 20),
+//                          timeRange: 1e-7 ..< 1000,
+                          amortized: false,
+                          presentation: presentationMode.value)
         }
         let image = chart.image
         self.chartImageView.image = image
