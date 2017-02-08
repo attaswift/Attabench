@@ -207,25 +207,27 @@ extension AlgebraicTree: Collection {
         return minimum
     }
 
-    private func value(following element: Element) -> Element? {
-        guard case let .node(_, left, value, right) = self else { return nil }
-
-        if value < element {
-            if let next = left.value(following: element) { return next }
-            return value
+    private func value(following element: Element) -> (found: Bool, next: Element?) {
+        guard case let .node(_, left, value, right) = self else { return (false, nil) }
+        if element < value {
+            let v = left.value(following: element)
+            return (v.found, v.next ?? value)
         }
-        if value > element {
-            if let next = left.value(following: element) { return next }
-            return nil
+        if element > value {
+            return right.value(following: element)
         }
-        return right.minimum
+        return (true, right.minimum)
     }
 
     func formIndex(after i: inout Index) {
-        i.value = self.value(following: i.value!)
+        let v = self.value(following: i.value!)
+        precondition(v.found)
+        i.value = v.next
     }
 
     func index(after i: Index) -> Index {
-        return Index(value: self.value(following: i.value!))
+        let v = self.value(following: i.value!)
+        precondition(v.found)
+        return Index(value: v.next)
     }
 }
