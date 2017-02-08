@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
@@ -751,10 +751,10 @@
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="17F5696C-4520-46B5-A3A3-480DBFE97383" label="" paletteLabel="Maximum Size" id="d02-oo-Bi2">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="76" height="26"/>
-                        <size key="maxSize" width="76" height="28"/>
+                        <size key="minSize" width="80" height="28"/>
+                        <size key="maxSize" width="80" height="28"/>
                         <popUpButton key="view" verticalHuggingPriority="750" id="bxa-GT-aeV">
-                            <rect key="frame" x="4" y="14" width="76" height="28"/>
+                            <rect key="frame" x="2" y="14" width="80" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="roundTextured" title="1k" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="Apz-Oa-HXE" id="gA3-tz-wCp">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
