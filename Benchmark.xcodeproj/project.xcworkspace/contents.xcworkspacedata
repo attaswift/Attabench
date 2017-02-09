@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:dotSwift.xcodeproj">
+      location = "self:/Users/lorentey/Git/dotSwift/Benchmark.xcodeproj">
    </FileRef>
 </Workspace>

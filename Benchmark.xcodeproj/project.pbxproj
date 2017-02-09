@@ -109,7 +109,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		BB1DA9CD1E2E5923000F2B03 /* dotSwift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dotSwift; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgebraicTree.swift; sourceTree = "<group>"; };
 		BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusButtonInTitlebar.swift; sourceTree = "<group>"; };
 		BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
@@ -206,7 +205,6 @@
 		BB1DA9CE1E2E5923000F2B03 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BB1DA9CD1E2E5923000F2B03 /* dotSwift */,
 				BB83AAC41E3125CF00BFE22D /* Benchmark.app */,
 				BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */,
 				BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */,
@@ -387,10 +385,6 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Károly Lőrentey";
 				TargetAttributes = {
-					BB1DA9CC1E2E5923000F2B03 = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-					};
 					BB83AAC31E3125CF00BFE22D = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -412,7 +406,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "dotSwift" */;
+			buildConfigurationList = BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "Benchmark" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1486,7 +1480,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "dotSwift" */ = {
+		BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "Benchmark" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BB1DA9D21E2E5923000F2B03 /* Debug */,
