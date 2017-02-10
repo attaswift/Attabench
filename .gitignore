@@ -1,2 +1,4 @@
 /Carthage/Build
 /Carthage/Checkouts
+.build
+/Output

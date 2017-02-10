@@ -265,11 +265,6 @@ extension BTreeNode2 {
     var isBalanced: Bool { return !isTooLarge && !isTooSmall }
 }
 
-fileprivate struct BTreeSplinter2<Element: Comparable> {
-    let separator: Element
-    let node: BTreeNode2<Element>
-}
-
 extension UnsafeMutablePointer {
     @inline(__always)
     fileprivate mutating func advancingInitialize(to value: Pointee, count: Int = 1) {
@@ -284,10 +279,13 @@ extension UnsafeMutablePointer {
     }
 }
 
-extension BTreeNode2 {
-    typealias Splinter = BTreeSplinter2<Element>
+fileprivate struct Splinter<Element: Comparable> {
+    let separator: Element
+    let node: BTreeNode2<Element>
+}
 
-    func split() -> Splinter {
+extension BTreeNode2 {
+    func split() -> Splinter<Element> {
         let count = elementCount
         let median = count / 2
         let node = BTreeNode2(order: order, leaf: self.isLeaf)
@@ -315,7 +313,7 @@ extension BTreeNode2 {
         (children! + index).initialize(to: child)
     }
 
-    func insert(_ element: Element) -> (old: Element?, splinter: Splinter?) {
+    func insert(_ element: Element) -> (old: Element?, splinter: Splinter<Element>?) {
         let slot = self.slot(of: element)
         if slot.match {
             // The element is already in the tree.
@@ -344,7 +342,8 @@ extension BTreeNode2 {
         }
     }
 
-    func _inserting(_ element: Element, _ spawn: (left: BTreeNode2, right: BTreeNode2)?, at index: Int) -> (trunk: BTreeNode2, splinter: Splinter?) {
+    func _inserting(_ element: Element, _ spawn: (left: BTreeNode2, right: BTreeNode2)?, at index: Int)
+        -> (trunk: BTreeNode2, splinter: Splinter<Element>?) {
         if elementCount < maxElements {
             let tree = BTreeNode2(order: order, leaf: isLeaf)
             var p = tree.elements
@@ -436,7 +435,7 @@ extension BTreeNode2 {
         return (left, Splinter(separator: separator, node: right))
     }
 
-    func inserting(_ element: Element) -> (old: Element?, trunk: BTreeNode2, splinter: Splinter?) {
+    func inserting(_ element: Element) -> (old: Element?, trunk: BTreeNode2, splinter: Splinter<Element>?) {
         let slot = self.slot(of: element)
         if slot.match {
             // The element is already in the tree.
@@ -473,32 +472,23 @@ extension BTreeNode2 {
 extension BTree2 {
     @discardableResult
     public mutating func insert(_ element: Element) -> (inserted: Bool, memberAfterInsert: Element) {
-        #if false
-            _ = makeRootUnique()
+        mutationCount += 1
+        if isKnownUniquelyReferenced(&root) {
             let (old, splinter) = root.insert(element)
             if let splinter = splinter {
                 self.root = Node(order: root.order, left: root, element: splinter.separator, right: splinter.node)
             }
             return (inserted: old == nil, memberAfterInsert: old ?? element)
-        #else
-            mutationCount += 1
-            if isKnownUniquelyReferenced(&root) {
-                let (old, splinter) = root.insert(element)
-                if let splinter = splinter {
-                    self.root = Node(order: root.order, left: root, element: splinter.separator, right: splinter.node)
-                }
-                return (inserted: old == nil, memberAfterInsert: old ?? element)
-            }
-            let (old, trunk, splinter) = root.inserting(element)
-            if let old = old { return (false, old) }
-            if let splinter = splinter {
-                self.root = Node(order: trunk.order, left: trunk, element: splinter.separator, right: splinter.node)
-            }
-            else {
-                self.root = trunk
-            }
-            return (true, element)
-        #endif
+        }
+        let (old, trunk, splinter) = root.inserting(element)
+        if let old = old { return (false, old) }
+        if let splinter = splinter {
+            self.root = Node(order: trunk.order, left: trunk, element: splinter.separator, right: splinter.node)
+        }
+        else {
+            self.root = trunk
+        }
+        return (true, element)
     }
 }
 

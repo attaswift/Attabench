@@ -279,11 +279,6 @@ extension BTreeNode3 {
     }
 }
 
-fileprivate struct BTreeSplinter3<Element: Comparable> {
-    let separator: Element
-    let node: BTreeNode3<Element>
-}
-
 extension UnsafeMutablePointer {
     @inline(__always)
     fileprivate mutating func advancingInitialize(to value: Pointee, count: Int = 1) {
@@ -298,10 +293,13 @@ extension UnsafeMutablePointer {
     }
 }
 
-extension BTreeNode3 {
-    typealias Splinter = BTreeSplinter3<Element>
+fileprivate struct Splinter<Element: Comparable> {
+    let separator: Element
+    let node: BTreeNode3<Element>
+}
 
-    func split() -> Splinter {
+extension BTreeNode3 {
+    func split() -> Splinter<Element> {
         let count = elementCount
         let median = count / 2
         let node = BTreeNode3(leafOrder: leafOrder, internalOrder: internalOrder, leaf: self.isLeaf)
@@ -329,7 +327,7 @@ extension BTreeNode3 {
         (children! + index).initialize(to: child)
     }
 
-    func insert(_ element: Element) -> (old: Element?, splinter: Splinter?) {
+    func insert(_ element: Element) -> (old: Element?, splinter: Splinter<Element>?) {
         let slot = self.slot(of: element)
         if slot.match {
             // The element is already in the tree.
@@ -358,7 +356,8 @@ extension BTreeNode3 {
         }
     }
 
-    func _inserting(_ element: Element, _ spawn: (left: BTreeNode3, right: BTreeNode3)?, at index: Int) -> (trunk: BTreeNode3, splinter: Splinter?) {
+    func _inserting(_ element: Element, _ spawn: (left: BTreeNode3, right: BTreeNode3)?, at index: Int)
+        -> (trunk: BTreeNode3, splinter: Splinter<Element>?) {
         if elementCount < maxElements {
             let tree = BTreeNode3(leafOrder: leafOrder, internalOrder: internalOrder, leaf: isLeaf)
             var p = tree.elements
@@ -450,7 +449,7 @@ extension BTreeNode3 {
         return (left, Splinter(separator: separator, node: right))
     }
 
-    func inserting(_ element: Element) -> (old: Element?, trunk: BTreeNode3, splinter: Splinter?) {
+    func inserting(_ element: Element) -> (old: Element?, trunk: BTreeNode3, splinter: Splinter<Element>?) {
         let slot = self.slot(of: element)
         if slot.match {
             // The element is already in the tree.
@@ -487,32 +486,23 @@ extension BTreeNode3 {
 extension BTree3 {
     @discardableResult
     public mutating func insert(_ element: Element) -> (inserted: Bool, memberAfterInsert: Element) {
-        #if false
-            _ = makeRootUnique()
+        mutationCount += 1
+        if isKnownUniquelyReferenced(&root) {
             let (old, splinter) = root.insert(element)
             if let splinter = splinter {
-                self.root = Node(order: root.order, left: root, element: splinter.separator, right: splinter.node)
+                self.root = Node(leafOrder: root.leafOrder, internalOrder: root.internalOrder, left: root, element: splinter.separator, right: splinter.node)
             }
             return (inserted: old == nil, memberAfterInsert: old ?? element)
-        #else
-            mutationCount += 1
-            if isKnownUniquelyReferenced(&root) {
-                let (old, splinter) = root.insert(element)
-                if let splinter = splinter {
-                    self.root = Node(leafOrder: root.leafOrder, internalOrder: root.internalOrder, left: root, element: splinter.separator, right: splinter.node)
-                }
-                return (inserted: old == nil, memberAfterInsert: old ?? element)
-            }
-            let (old, trunk, splinter) = root.inserting(element)
-            if let old = old { return (false, old) }
-            if let splinter = splinter {
-                self.root = Node(leafOrder: trunk.leafOrder, internalOrder: trunk.internalOrder, left: trunk, element: splinter.separator, right: splinter.node)
-            }
-            else {
-                self.root = trunk
-            }
-            return (true, element)
-        #endif
+        }
+        let (old, trunk, splinter) = root.inserting(element)
+        if let old = old { return (false, old) }
+        if let splinter = splinter {
+            self.root = Node(leafOrder: trunk.leafOrder, internalOrder: trunk.internalOrder, left: trunk, element: splinter.separator, right: splinter.node)
+        }
+        else {
+            self.root = trunk
+        }
+        return (true, element)
     }
 }
 

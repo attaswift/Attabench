@@ -19,7 +19,7 @@
 		BB8E0DE71E3237D900505773 /* BenchmarkingTools.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB8E0DF81E32383900505773 /* Benchmarks.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF21E32383900505773 /* Benchmarks.swift */; };
 		BB8E0DF91E32383900505773 /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF31E32383900505773 /* BinaryTree.swift */; };
-		BB8E0DFA1E32383900505773 /* BTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF41E32383900505773 /* BTree.swift */; };
+		BB8E0DFA1E32383900505773 /* BTree1.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF41E32383900505773 /* BTree1.swift */; };
 		BB8E0DFB1E32383900505773 /* COWTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF51E32383900505773 /* COWTree.swift */; };
 		BB8E0DFC1E32383900505773 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF61E32383900505773 /* Shuffle.swift */; };
 		BB8E0DFD1E32383900505773 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF71E32383900505773 /* SortedArray.swift */; };
@@ -44,9 +44,30 @@
 		BB96EEAF1E49046D00CD9C22 /* BTree2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEAE1E49046D00CD9C22 /* BTree2.swift */; };
 		BB9A6C651E4A52890051BCDB /* BTree3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9A6C641E4A52890051BCDB /* BTree3.swift */; };
 		BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */; };
+		BBB9FA5C1E4CCE260074DFB1 /* BTree0.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA5B1E4CCE260074DFB1 /* BTree0.swift */; };
+		BBB9FA5E1E4CD2700074DFB1 /* CacheSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA5D1E4CD2700074DFB1 /* CacheSize.swift */; };
+		BBB9FA601E4CD3170074DFB1 /* MyOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */; };
+		BBB9FA621E4CD35B0074DFB1 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */; };
+		BBB9FA641E4CDC5A0074DFB1 /* IntBTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */; };
+		BBC860B71E4E178B00EFAFDC /* 01.Introduction.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AA1E4E178B00EFAFDC /* 01.Introduction.md */; };
+		BBC860B81E4E178B00EFAFDC /* 02.OrderedSet.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AB1E4E178B00EFAFDC /* 02.OrderedSet.md */; };
+		BBC860B91E4E178B00EFAFDC /* 03.NSOrderedSet.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AC1E4E178B00EFAFDC /* 03.NSOrderedSet.md */; };
+		BBC860BA1E4E178B00EFAFDC /* 04.SortedArray.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AD1E4E178B00EFAFDC /* 04.SortedArray.md */; };
+		BBC860BB1E4E178B00EFAFDC /* 05.AlgebraicTree.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AE1E4E178B00EFAFDC /* 05.AlgebraicTree.md */; };
+		BBC860BC1E4E178B00EFAFDC /* 06.COWTree.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AF1E4E178B00EFAFDC /* 06.COWTree.md */; };
+		BBC860BD1E4E178B00EFAFDC /* 07.BTree.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B01E4E178B00EFAFDC /* 07.BTree.md */; };
+		BBC860C11E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B51E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift */; };
+		BBC860C21E4E178B00EFAFDC /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B61E4E178B00EFAFDC /* Shuffle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BB6B73191E4E36ED0043A5A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BBC860C71E4E1F6F00EFAFDC;
+			remoteInfo = "compile-book";
+		};
 		BB8E0DDB1E3237D900505773 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
@@ -124,9 +145,9 @@
 		BB8E0DD91E3237D900505773 /* BenchmarkingToolsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BenchmarkingToolsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8E0DE01E3237D900505773 /* BenchmarkingToolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkingToolsTests.swift; sourceTree = "<group>"; };
 		BB8E0DE21E3237D900505773 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB8E0DF21E32383900505773 /* Benchmarks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Benchmarks.swift; sourceTree = "<group>"; };
+		BB8E0DF21E32383900505773 /* Benchmarks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Benchmarks.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BB8E0DF31E32383900505773 /* BinaryTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryTree.swift; sourceTree = "<group>"; };
-		BB8E0DF41E32383900505773 /* BTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTree.swift; sourceTree = "<group>"; };
+		BB8E0DF41E32383900505773 /* BTree1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTree1.swift; sourceTree = "<group>"; };
 		BB8E0DF51E32383900505773 /* COWTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = COWTree.swift; sourceTree = "<group>"; };
 		BB8E0DF61E32383900505773 /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
 		BB8E0DF71E32383900505773 /* SortedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedArray.swift; sourceTree = "<group>"; };
@@ -146,6 +167,21 @@
 		BB9A6C641E4A52890051BCDB /* BTree3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTree3.swift; sourceTree = "<group>"; };
 		BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableImageView.swift; sourceTree = "<group>"; };
+		BBB9FA5B1E4CCE260074DFB1 /* BTree0.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BTree0.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		BBB9FA5D1E4CD2700074DFB1 /* CacheSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheSize.swift; sourceTree = "<group>"; };
+		BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderedSet.swift; sourceTree = "<group>"; };
+		BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
+		BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntBTree.swift; sourceTree = "<group>"; };
+		BBC860AA1E4E178B00EFAFDC /* 01.Introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 01.Introduction.md; sourceTree = "<group>"; };
+		BBC860AB1E4E178B00EFAFDC /* 02.OrderedSet.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 02.OrderedSet.md; sourceTree = "<group>"; };
+		BBC860AC1E4E178B00EFAFDC /* 03.NSOrderedSet.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 03.NSOrderedSet.md; sourceTree = "<group>"; };
+		BBC860AD1E4E178B00EFAFDC /* 04.SortedArray.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 04.SortedArray.md; sourceTree = "<group>"; };
+		BBC860AE1E4E178B00EFAFDC /* 05.AlgebraicTree.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 05.AlgebraicTree.md; sourceTree = "<group>"; };
+		BBC860AF1E4E178B00EFAFDC /* 06.COWTree.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 06.COWTree.md; sourceTree = "<group>"; };
+		BBC860B01E4E178B00EFAFDC /* 07.BTree.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 07.BTree.md; sourceTree = "<group>"; };
+		BBC860B51E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PlaygroundQuickLook Extensions.swift"; sourceTree = "<group>"; };
+		BBC860B61E4E178B00EFAFDC /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
+		BBC860C81E4E1F6F00EFAFDC /* compile-book */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "compile-book"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +245,7 @@
 				BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */,
 				BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */,
 				BB8E0DD91E3237D900505773 /* BenchmarkingToolsTests.xctest */,
+				BBC860C81E4E1F6F00EFAFDC /* compile-book */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -235,13 +272,18 @@
 			children = (
 				BB8E0DBF1E316CC800505773 /* Info.plist */,
 				BB8E0DF21E32383900505773 /* Benchmarks.swift */,
+				BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */,
+				BBB9FA5D1E4CD2700074DFB1 /* CacheSize.swift */,
+				BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */,
 				BB8E0DF71E32383900505773 /* SortedArray.swift */,
 				BB8E0DF31E32383900505773 /* BinaryTree.swift */,
 				BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */,
 				BB8E0DF51E32383900505773 /* COWTree.swift */,
-				BB8E0DF41E32383900505773 /* BTree.swift */,
+				BBB9FA5B1E4CCE260074DFB1 /* BTree0.swift */,
+				BB8E0DF41E32383900505773 /* BTree1.swift */,
 				BB96EEAE1E49046D00CD9C22 /* BTree2.swift */,
 				BB9A6C641E4A52890051BCDB /* BTree3.swift */,
+				BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */,
 				BB8E0DF61E32383900505773 /* Shuffle.swift */,
 			);
 			path = CollectionBenchmarks;
@@ -297,6 +339,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		BB6B73131E4E36BA0043A5A6 /* Book */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "Book Output $(ACTION)";
+			buildConfigurationList = BB6B73181E4E36BA0043A5A6 /* Build configuration list for PBXLegacyTarget "Book" */;
+			buildPhases = (
+			);
+			buildToolPath = "$(BUILT_PRODUCTS_DIR)/compile-book";
+			buildWorkingDirectory = "$(SRCROOT)";
+			dependencies = (
+				BB6B731A1E4E36ED0043A5A6 /* PBXTargetDependency */,
+			);
+			name = Book;
+			passBuildSettingsInEnvironment = 1;
+			productName = Book;
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		BB83AAC31E3125CF00BFE22D /* Benchmark */ = {
@@ -385,6 +445,10 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Károly Lőrentey";
 				TargetAttributes = {
+					BB6B73131E4E36BA0043A5A6 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
 					BB83AAC31E3125CF00BFE22D = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -403,6 +467,10 @@
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 						TestTargetID = BB83AAC31E3125CF00BFE22D;
+					};
+					BBC860C71E4E1F6F00EFAFDC = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -423,6 +491,7 @@
 				BB8E0DBB1E316CC700505773 /* CollectionBenchmarks */,
 				BB8E0DD01E3237D900505773 /* BenchmarkingTools */,
 				BB8E0DD81E3237D900505773 /* BenchmarkingToolsTests */,
+				BB6B73131E4E36BA0043A5A6 /* Book */,
 			);
 		};
 /* End PBXProject section */
@@ -465,11 +534,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBC860B91E4E178B00EFAFDC /* 03.NSOrderedSet.md in Sources */,
+				BBC860C21E4E178B00EFAFDC /* Shuffle.swift in Sources */,
 				BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */,
 				BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */,
+				BBC860BB1E4E178B00EFAFDC /* 05.AlgebraicTree.md in Sources */,
+				BBC860B71E4E178B00EFAFDC /* 01.Introduction.md in Sources */,
 				BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */,
+				BBC860BA1E4E178B00EFAFDC /* 04.SortedArray.md in Sources */,
 				BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */,
+				BBC860B81E4E178B00EFAFDC /* 02.OrderedSet.md in Sources */,
+				BBC860C11E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift in Sources */,
 				BB8E0E0C1E329E6F00505773 /* Runner.swift in Sources */,
+				BBC860BC1E4E178B00EFAFDC /* 06.COWTree.md in Sources */,
+				BBC860BD1E4E178B00EFAFDC /* 07.BTree.md in Sources */,
 				BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */,
 				BB8E0E0E1E32A35500505773 /* Results.swift in Sources */,
 			);
@@ -479,15 +557,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB9FA601E4CD3170074DFB1 /* MyOrderedSet.swift in Sources */,
 				BB35FF971E344D03003ABBF3 /* AlgebraicTree.swift in Sources */,
+				BBB9FA5C1E4CCE260074DFB1 /* BTree0.swift in Sources */,
 				BB8E0DFC1E32383900505773 /* Shuffle.swift in Sources */,
+				BBB9FA641E4CDC5A0074DFB1 /* IntBTree.swift in Sources */,
+				BBB9FA5E1E4CD2700074DFB1 /* CacheSize.swift in Sources */,
 				BB8E0DF91E32383900505773 /* BinaryTree.swift in Sources */,
 				BB96EEAF1E49046D00CD9C22 /* BTree2.swift in Sources */,
 				BB8E0DFB1E32383900505773 /* COWTree.swift in Sources */,
 				BB9A6C651E4A52890051BCDB /* BTree3.swift in Sources */,
 				BB8E0DF81E32383900505773 /* Benchmarks.swift in Sources */,
+				BBB9FA621E4CD35B0074DFB1 /* OrderedSet.swift in Sources */,
 				BB8E0DFD1E32383900505773 /* SortedArray.swift in Sources */,
-				BB8E0DFA1E32383900505773 /* BTree.swift in Sources */,
+				BB8E0DFA1E32383900505773 /* BTree1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,6 +594,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		BB6B731A1E4E36ED0043A5A6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = BB6B73191E4E36ED0043A5A6 /* PBXContainerItemProxy */;
+		};
 		BB8E0DDC1E3237D900505773 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BB8E0DD01E3237D900505773 /* BenchmarkingTools */;
@@ -723,6 +810,139 @@
 				SWIFT_VERSION = 3.0;
 			};
 			name = Optimized;
+		};
+		BB6B73141E4E36BA0043A5A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BB6B73151E4E36BA0043A5A6 /* Optimized */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Optimized;
+		};
+		BB6B73161E4E36BA0043A5A6 /* WholeModule */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = WholeModule;
+		};
+		BB6B73171E4E36BA0043A5A6 /* Unchecked */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Unchecked;
 		};
 		BB83AACE1E3125D000BFE22D /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1487,6 +1707,17 @@
 				BB1DA9D31E2E5923000F2B03 /* Optimized */,
 				BB144F231E3054B400C8A6E7 /* WholeModule */,
 				BB144F251E3054D100C8A6E7 /* Unchecked */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Optimized;
+		};
+		BB6B73181E4E36BA0043A5A6 /* Build configuration list for PBXLegacyTarget "Book" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB6B73141E4E36BA0043A5A6 /* Debug */,
+				BB6B73151E4E36BA0043A5A6 /* Optimized */,
+				BB6B73161E4E36BA0043A5A6 /* WholeModule */,
+				BB6B73171E4E36BA0043A5A6 /* Unchecked */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Optimized;

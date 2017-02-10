@@ -13,47 +13,37 @@ typealias Value = Int
 let orders = [1024] //[8, 16, 32, 64, 128, 256, 512, 768, 1024, 1500, 2048]
 let internalOrders = [16] //[5, 8, 16, 32, 64, 128]
 
-private protocol TestableSet: Collection {
-    init()
+private protocol TestableSet: OrderedSet {
     func validate()
-    func contains(_ element: Iterator.Element) -> Bool
-    func forEach(_ body: (Iterator.Element) throws -> Void) rethrows
-    @discardableResult
-    mutating func insert(_ element: Iterator.Element) -> (inserted: Bool, memberAfterInsert: Iterator.Element)
-    func printInfo(size: Int)
+    func printInfo()
+}
+extension TestableSet {
+    func validate() {}
+    func printInfo() {}
 }
 
-extension SortedArray: TestableSet {
-    func printInfo(size: Int) {
-    }
-}
-extension AlgebraicTree: TestableSet {
-    func printInfo(size: Int) {
-    }
-}
-extension BinaryTree: TestableSet {
-    func printInfo(size: Int) {
-    }
-}
+extension MyOrderedSet: TestableSet {}
+extension SortedArray: TestableSet {}
+extension AlgebraicTree: TestableSet {}
+extension BinaryTree: TestableSet {}
 extension COWTree: TestableSet {
-    func printInfo(size: Int) {
-        //print("COWTree - size: \(size) - depth: \(depth)")
+    func printInfo() {
+        //print("COWTree - size: \(count) - depth: \(depth)")
     }
 }
-extension BTree: TestableSet {
-    func printInfo(size: Int) {
-    }
-}
+extension BTree0: TestableSet {}
+extension BTree1: TestableSet {}
 extension BTree2: TestableSet {
-    func printInfo(size: Int) {
-        //print("BTree2/\(order) - size: \(size) - depth: \(depth)")
+    func printInfo() {
+        //print("BTree2/\(order) - size: \(count) - depth: \(depth)")
     }
 }
 extension BTree3: TestableSet {
-    func printInfo(size: Int) {
-        //print("BTree3/\(leafOrder)-\(internalOrder) - size: \(size) - depth: \(depth)")
+    func printInfo() {
+        //print("BTree3/\(leafOrder)-\(internalOrder) - size: \(count) - depth: \(depth)")
     }
 }
+extension IntBTree: TestableSet {}
 
 func randomArrayGenerator(_ size: Int) -> [Value] {
     var values: [Value] = Array(0 ..< size)
@@ -127,37 +117,18 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    suite.addBenchmark(title: "NSOrderedSet") { input in
-        //guard input.count < 300_000 else { return nil }
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: suite)
 
-        let set = NSMutableOrderedSet()
-        let comparator: (Any, Any) -> ComparisonResult = {
-            let a = $0 as! Value
-            let b = $1 as! Value
-            return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
-        }
-        for value in input {
-            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
-            set.insert(value, at: index)
-        }
-
-        return { measurer in
-            var i = 0
-            for element in set {
-                guard (element as! Value) == i else { fatalError() }
-                i += 1
-            }
-            guard i == input.count else { fatalError() }
-        }
-    }
-    
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
 
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in orders {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
@@ -165,6 +136,24 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
     for order in orders {
         for internalOrder in internalOrders {
             add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+        }
+    }
+    for order in orders {
+        add("IntBTree/\(order)", to: suite) { IntBTree(order: order) }
+    }
+
+    suite.addBenchmark(title: "IntBTree/1024, inlined") { input in
+        var set = IntBTree(order: 1024)
+        for value in input {
+            set.insert(value)
+        }
+        return { measurer in
+            var i = 0
+            set.forEach { element in
+                guard element == i else { fatalError() }
+                i += 1
+            }
+            guard i == input.count else { fatalError() }
         }
     }
 
@@ -229,30 +218,7 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    suite.addBenchmark(title: "NSOrderedSet") { input in
-        //guard input.count < 300_000 else { return nil }
-
-        let set = NSMutableOrderedSet()
-        let comparator: (Any, Any) -> ComparisonResult = {
-            let a = $0 as! Value
-            let b = $1 as! Value
-            return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
-        }
-        for value in input {
-            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
-            set.insert(value, at: index)
-        }
-
-        return { measurer in
-            var i = 0
-            let c = set.count
-            while i != c {
-                guard set[i] as! Value == i else { fatalError() }
-                i += 1
-            }
-            guard i == input.count else { fatalError() }
-        }
-    }
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: suite)
 
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
 
@@ -260,7 +226,10 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in orders {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
@@ -268,6 +237,27 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
     for order in orders {
         for internalOrder in internalOrders {
             add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+        }
+    }
+    for order in orders {
+        add("IntBTree/\(order)", to: suite) { IntBTree(order: order) }
+    }
+
+    suite.addBenchmark(title: "IntBTree/1024, inlined") { input in
+        var set = IntBTree(order: 1024)
+        for value in input {
+            set.insert(value)
+        }
+        return { measurer in
+            var i = 0
+            var index = set.startIndex
+            let end = set.endIndex
+            while index != end {
+                guard set[index] == i else { fatalError("Expected \(i), got \(set[index])") }
+                i += 1
+                set.formIndex(after: &index)
+            }
+            guard i == input.count else { fatalError() }
         }
     }
 
@@ -322,33 +312,19 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
             }
         }
     }
-    
-    suite.addBenchmark(title: "NSOrderedSet") { (input, lookups) in
-        let set = NSMutableOrderedSet()
-        let comparator: (Any, Any) -> ComparisonResult = {
-            let a = $0 as! Value
-            let b = $1 as! Value
-            return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
-        }
-        for value in input {
-            let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
-            set.insert(value, at: index)
-        }
 
-        return { measurer in
-            for element in lookups {
-                guard set.contains(element) else { fatalError() }
-            }
-        }
-    }
-    
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: suite)
+
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
 
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in orders {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
@@ -357,6 +333,9 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
         for internalOrder in internalOrders {
             add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
+    }
+    for order in orders {
+        add("IntBTree/\(order)", to: suite) { IntBTree(order: order) }
     }
 
     suite.addBenchmark(title: "Array") { (input, lookups) in
@@ -402,31 +381,17 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    add("SortedArray", for: SortedArray<Value>.self, maxSize: 100_000, to: suite)
-
-    suite.addBenchmark(title: "NSOrderedSet") { input in
-        if input.count > 100_000 { return nil }
-        return { measurer in
-            let set = NSMutableOrderedSet()
-            let comparator: (Any, Any) -> ComparisonResult = {
-                let a = $0 as! Value
-                let b = $1 as! Value
-                return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
-            }
-            for value in input {
-                let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
-                set.insert(value, at: index)
-            }
-        }
-    }
-
+    add("SortedArray", for: SortedArray<Value>.self, maxSize: 65536, to: suite)
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, maxSize: 65536, to: suite)
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
-
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in orders {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
@@ -435,6 +400,9 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
         for internalOrder in internalOrders {
             add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
+    }
+    for order in orders {
+        add("IntBTree/\(order)", to: suite) { IntBTree(order: order) }
     }
 
     suite.addBenchmark(title: "Array.sort") { input in
@@ -452,7 +420,7 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
     suite.descriptiveTitle = "Random insertions into shared storage"
     suite.descriptiveAmortizedTitle = "One random insertion into shared storage"
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, maxCount: Int? = nil, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxCount: Int? = nil, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
         suite.addBenchmark(title: title) { input in
             if let maxCount = maxCount, input.count > maxCount { return nil }
             var first = true
@@ -492,7 +460,7 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
                 }
 
                 if first {
-                    set.printInfo(size: input.count)
+                    set.printInfo()
                     var i = 0
                     set.forEach { value in
                         guard value == i else { fatalError("Expected \(i), got \(value)") }
@@ -505,35 +473,17 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
         }
     }
 
-    add("SortedArray", for: SortedArray<Value>.self, to: suite, maxCount: 130_000)
-
-    suite.addBenchmark(title: "NSOrderedSet") { input in
-        guard input.count <= 2048 else { return nil }
-        return { measurer in
-            let set = NSMutableOrderedSet()
-            let comparator: (Any, Any) -> ComparisonResult = {
-                let a = $0 as! Value
-                let b = $1 as! Value
-                return (a < b ? .orderedAscending : a > b ? .orderedDescending : .orderedSame)
-            }
-            measurer.measure {
-                var copy = set.copy()
-                for value in input {
-                    let index = set.index(of: value, inSortedRange: NSRange(0 ..< set.count), options: .insertionIndex, usingComparator: comparator)
-                    set.insert(value, at: index)
-                    copy = set.copy()
-                }
-                _ = copy
-            }
-        }
-    }
-
+    add("SortedArray", for: SortedArray<Value>.self, maxCount: 130_000, to: suite)
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, maxCount: 2048, to: suite)
     add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
     //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
     add("COWTree", for: COWTree<Value>.self, to: suite)
 
     for order in orders {
-        add("BTree/\(order)", to: suite) { BTree<Value>(order: order) }
+        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+    }
+    for order in orders {
+        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
@@ -542,6 +492,9 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
         for internalOrder in internalOrders {
             add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
+    }
+    for order in orders {
+        add("IntBTree/\(order)", to: suite) { IntBTree(order: order) }
     }
 
     suite.addBenchmark(title: "Array.sort") { input in

@@ -41,9 +41,7 @@ class Runner {
 
     func saveURL(for suite: BenchmarkSuiteProtocol) throws -> URL {
         let name = suite.title.replacingOccurrences(of: "/", with: "-")
-        if (try? saveFolder.checkResourceIsReachable()) != true {
-            try FileManager.default.createDirectory(at: saveFolder, withIntermediateDirectories: true, attributes: nil)
-        }
+        try FileManager.default.createDirectory(at: saveFolder, withIntermediateDirectories: true)
         return saveFolder.appendingPathComponent("\(name).plist")
     }
 
