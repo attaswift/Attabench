@@ -46,7 +46,7 @@ class BenchmarkSample {
 }
 
 class BenchmarkSamples {
-    var samples: [Int: BenchmarkSample] = [:]
+    var samplesBySize: [Int: BenchmarkSample] = [:]
 
     init() {}
 
@@ -56,79 +56,22 @@ class BenchmarkSamples {
             guard let size = Int(size, radix: 10) else { return nil }
             let sample = BenchmarkSample()
             sample.addMeasurement(measurement)
-            samples[size] = sample
+            samplesBySize[size] = sample
         }
     }
 
     func encode() -> Any {
         var dict: [String: Double] = [:]
-        for (size, sample) in samples {
+        for (size, sample) in samplesBySize {
             dict["\(size)"] = sample.minimum
         }
         return dict
     }
 
     func addMeasurement(_ elapsedTime: TimeInterval, forSize size: Int) {
-        let sample = samples[size] ?? BenchmarkSample()
+        let sample = samplesBySize[size] ?? BenchmarkSample()
         sample.addMeasurement(elapsedTime)
-        samples[size] = sample
-    }
-}
-
-class BenchmarkSuiteResults {
-    var scaleRange: CountableClosedRange<Int> = 0 ... 20
-    var samplesByBenchmark: [String: BenchmarkSamples] = [:]
-    var selectedBenchmarks: Set<String> = [] // Empty means all
-
-    var sizeRange: ClosedRange<Int> {
-        return (1 << scaleRange.lowerBound) ... (1 << scaleRange.upperBound)
-    }
-
-    init() {
-    }
-
-    init?(from plist: Any) {
-        guard let dict = plist as? [String: Any],
-            let data = dict["Data"] as? [String: Any]
-        else { return nil }
-
-        if let minScale = dict["MinScale"] as? Int,
-            let maxScale = dict["MaxScale"] as? Int {
-            self.scaleRange = minScale ... maxScale
-        }
-
-        if let selected = dict["SelectedBenchmarks"] as? [String] {
-            self.selectedBenchmarks = Set(selected)
-        }
-
-        for (title, samples) in data {
-            guard let s = BenchmarkSamples(from: samples) else { return nil }
-            self.samplesByBenchmark[title] = s
-        }
-    }
-
-    func encode() -> Any {
-        var dict: [String: Any] = [:]
-        dict["MinScale"] = scaleRange.lowerBound
-        dict["MaxScale"] = scaleRange.upperBound
-        dict["SelectedBenchmarks"] = Array(selectedBenchmarks)
-        var data: [String: Any] = [:]
-        for (title, samples) in samplesByBenchmark {
-            data[title] = samples.encode()
-        }
-        dict["Data"] = data
-        return dict
-    }
-
-    func samples(for benchmark: String) -> BenchmarkSamples {
-        if let samples = samplesByBenchmark[benchmark] { return samples }
-        let samples = BenchmarkSamples()
-        samplesByBenchmark[benchmark] = samples
-        return samples
-    }
-
-    func addMeasurement(_ benchmark: String, _ size: Int, _ time: TimeInterval) {
-        samples(for: benchmark).addMeasurement(time, forSize: size)
+        samplesBySize[size] = sample
     }
 }
 

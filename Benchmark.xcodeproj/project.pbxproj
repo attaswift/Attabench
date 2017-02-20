@@ -29,7 +29,7 @@
 		BB8E0E051E3253E500505773 /* CollectionBenchmarks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */; };
 		BB8E0E061E3253E500505773 /* CollectionBenchmarks.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E091E3262C600505773 /* ChartRendering.swift */; };
-		BB8E0E0C1E329E6F00505773 /* Runner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0B1E329E6F00505773 /* Runner.swift */; };
+		BB8E0E0C1E329E6F00505773 /* Harness.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0B1E329E6F00505773 /* Harness.swift */; };
 		BB8E0E0E1E32A35500505773 /* Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0D1E32A35500505773 /* Results.swift */; };
 		BB8E0E131E33D64000505773 /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; };
 		BB8E0E141E33D64000505773 /* BTree.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -49,13 +49,6 @@
 		BBB9FA601E4CD3170074DFB1 /* MyOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */; };
 		BBB9FA621E4CD35B0074DFB1 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */; };
 		BBB9FA641E4CDC5A0074DFB1 /* IntBTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */; };
-		BBC860B71E4E178B00EFAFDC /* 01.Introduction.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AA1E4E178B00EFAFDC /* 01.Introduction.md */; };
-		BBC860B81E4E178B00EFAFDC /* 02.OrderedSet.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AB1E4E178B00EFAFDC /* 02.OrderedSet.md */; };
-		BBC860B91E4E178B00EFAFDC /* 03.NSOrderedSet.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AC1E4E178B00EFAFDC /* 03.NSOrderedSet.md */; };
-		BBC860BA1E4E178B00EFAFDC /* 04.SortedArray.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AD1E4E178B00EFAFDC /* 04.SortedArray.md */; };
-		BBC860BB1E4E178B00EFAFDC /* 05.AlgebraicTree.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AE1E4E178B00EFAFDC /* 05.AlgebraicTree.md */; };
-		BBC860BC1E4E178B00EFAFDC /* 06.COWTree.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860AF1E4E178B00EFAFDC /* 06.COWTree.md */; };
-		BBC860BD1E4E178B00EFAFDC /* 07.BTree.md in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B01E4E178B00EFAFDC /* 07.BTree.md */; };
 		BBC860C11E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B51E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift */; };
 		BBC860C21E4E178B00EFAFDC /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B61E4E178B00EFAFDC /* Shuffle.swift */; };
 /* End PBXBuildFile section */
@@ -154,7 +147,7 @@
 		BB8E0DFE1E32384500505773 /* Benchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Benchmark.swift; sourceTree = "<group>"; };
 		BB8E0E001E323F7700505773 /* Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		BB8E0E091E3262C600505773 /* ChartRendering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartRendering.swift; sourceTree = "<group>"; };
-		BB8E0E0B1E329E6F00505773 /* Runner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runner.swift; sourceTree = "<group>"; };
+		BB8E0E0B1E329E6F00505773 /* Harness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Harness.swift; sourceTree = "<group>"; };
 		BB8E0E0D1E32A35500505773 /* Results.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Results.swift; sourceTree = "<group>"; };
 		BB8E0E0F1E33D43400505773 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		BB8E0E101E33D64000505773 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/Mac/BTree.framework; sourceTree = "<group>"; };
@@ -172,13 +165,6 @@
 		BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderedSet.swift; sourceTree = "<group>"; };
 		BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntBTree.swift; sourceTree = "<group>"; };
-		BBC860AA1E4E178B00EFAFDC /* 01.Introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 01.Introduction.md; sourceTree = "<group>"; };
-		BBC860AB1E4E178B00EFAFDC /* 02.OrderedSet.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 02.OrderedSet.md; sourceTree = "<group>"; };
-		BBC860AC1E4E178B00EFAFDC /* 03.NSOrderedSet.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 03.NSOrderedSet.md; sourceTree = "<group>"; };
-		BBC860AD1E4E178B00EFAFDC /* 04.SortedArray.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 04.SortedArray.md; sourceTree = "<group>"; };
-		BBC860AE1E4E178B00EFAFDC /* 05.AlgebraicTree.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 05.AlgebraicTree.md; sourceTree = "<group>"; };
-		BBC860AF1E4E178B00EFAFDC /* 06.COWTree.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 06.COWTree.md; sourceTree = "<group>"; };
-		BBC860B01E4E178B00EFAFDC /* 07.BTree.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = 07.BTree.md; sourceTree = "<group>"; };
 		BBC860B51E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PlaygroundQuickLook Extensions.swift"; sourceTree = "<group>"; };
 		BBC860B61E4E178B00EFAFDC /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
 		BBC860C81E4E1F6F00EFAFDC /* compile-book */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "compile-book"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -254,7 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				BB83AAC61E3125D000BFE22D /* AppDelegate.swift */,
-				BB8E0E0B1E329E6F00505773 /* Runner.swift */,
+				BB8E0E0B1E329E6F00505773 /* Harness.swift */,
 				BB8E0E0D1E32A35500505773 /* Results.swift */,
 				BB8E0E091E3262C600505773 /* ChartRendering.swift */,
 				BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */,
@@ -534,20 +520,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBC860B91E4E178B00EFAFDC /* 03.NSOrderedSet.md in Sources */,
 				BBC860C21E4E178B00EFAFDC /* Shuffle.swift in Sources */,
 				BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */,
 				BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */,
-				BBC860BB1E4E178B00EFAFDC /* 05.AlgebraicTree.md in Sources */,
-				BBC860B71E4E178B00EFAFDC /* 01.Introduction.md in Sources */,
 				BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */,
-				BBC860BA1E4E178B00EFAFDC /* 04.SortedArray.md in Sources */,
 				BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */,
-				BBC860B81E4E178B00EFAFDC /* 02.OrderedSet.md in Sources */,
 				BBC860C11E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift in Sources */,
-				BB8E0E0C1E329E6F00505773 /* Runner.swift in Sources */,
-				BBC860BC1E4E178B00EFAFDC /* 06.COWTree.md in Sources */,
-				BBC860BD1E4E178B00EFAFDC /* 07.BTree.md in Sources */,
+				BB8E0E0C1E329E6F00505773 /* Harness.swift in Sources */,
 				BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */,
 				BB8E0E0E1E32A35500505773 /* Results.swift in Sources */,
 			);

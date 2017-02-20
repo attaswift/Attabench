@@ -28,7 +28,7 @@ class AppDelegate: NSObject {
     @IBOutlet weak var progressButton: NSButton!
     @IBOutlet weak var chartImageView: DraggableImageView!
 
-    let runner = Runner()
+    let harness = Harness()
 
     let progressRefreshDelay = 0.1
     var progressRefreshScheduled = false
@@ -59,7 +59,7 @@ class AppDelegate: NSObject {
         }
     }
 
-    var selectedSuite: BenchmarkSuiteProtocol? {
+    var selectedSuite: Suite! {
         didSet {
             guard let suite = selectedSuite else { return }
             let defaults = UserDefaults.standard
@@ -87,12 +87,12 @@ extension AppDelegate: NSApplicationDelegate {
         self.runButton.isEnabled = false
         self.startMenuItem.isEnabled = false
 
-        runner.delegate = self
+        harness.delegate = self
         for suite in CollectionBenchmarks.generateBenchmarks() {
-            runner.load(suite)
+            harness.load(suite)
         }
 
-        if runner.suites.isEmpty {
+        if harness.suites.isEmpty {
             self.status = "No benchmarks available"
             return
         }
@@ -102,12 +102,14 @@ extension AppDelegate: NSApplicationDelegate {
 
         let defaults = UserDefaults.standard
         let selectedTitle = defaults.string(forKey: "SelectedSuite")
-        let suite = runner.suites.first(where: { $0.title == selectedTitle }) ?? runner.suites.first!
+        let suite = harness.suites.first(where: { $0.title == selectedTitle }) ?? harness.suites.first!
+
+        self.selectedSuite = suite
 
         let suiteMenu = NSMenu()
         suiteMenu.removeAllItems()
         var i = 1
-        for suite in runner.suites {
+        for suite in harness.suites {
             let item = NSMenuItem(title: suite.title,
                                   action: #selector(AppDelegate.didSelectSuite(_:)),
                                   keyEquivalent: i <= 9 ? "\(i)" : "")
@@ -136,8 +138,6 @@ extension AppDelegate: NSApplicationDelegate {
         }
         self.maxSizePopUpButton.menu = maxSizeMenu
 
-        self.selectedSuite = suite
-
         self.glue.connector.connect(self.amortized.futureValues) { value in
             self.refreshChart()
         }
@@ -157,7 +157,7 @@ extension AppDelegate: NSApplicationDelegate {
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplicationTerminateReply {
-        if runner.state == .idle {
+        if harness.state == .idle {
             return .terminateNow
         }
         terminating = true
@@ -170,20 +170,20 @@ extension AppDelegate: NSApplicationDelegate {
     }
 }
 
-extension AppDelegate: RunnerDelegate {
-    //MARK: RunnerDelegate
-    func runner(_ runner: Runner, didStartMeasuringSuite suite: String, benchmark: String, size: Int) {
+extension AppDelegate: HarnessDelegate {
+    //MARK: HarnessDelegate
+    func harness(_ harness: Harness, didStartMeasuringSuite suite: String, benchmark: String, size: Int) {
         self.status = "Measuring \(suite) : \(size.label) : \(benchmark)"
     }
 
-    func runner(_ runner: Runner, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
+    func harness(_ harness: Harness, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
         //print(benchmark, size, time)
         scheduleChartRefresh()
         window.isDocumentEdited = true
         scheduleSave()
     }
 
-    func runner(_ runner: Runner, didStopMeasuringSuite suite: String) {
+    func harness(_ harness: Harness, didStopMeasuringSuite suite: String) {
         self.save()
         if terminating {
             NSApp.reply(toApplicationShouldTerminate: true)
@@ -228,7 +228,7 @@ extension AppDelegate {
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(AppDelegate.run(_:)) {
-            return runner.state != .stopping
+            return harness.state != .stopping
         }
         return true
     }
@@ -262,21 +262,20 @@ extension AppDelegate {
 
     func refreshChart() {
         cancelChartRefresh()
-        guard !runner.suites.isEmpty else { return }
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let results = runner.results(for: suite)
+        guard !harness.suites.isEmpty else { return }
+        let suite = self.selectedSuite ?? self.harness.suites[0]
         let chart: Chart
 
         let size = presentationMode.value ? AppDelegate.presentationImageSize : chartImageView.bounds.size
         if amortized.value {
-            chart = Chart(size: size, suite: suite, results: results,
-                          highlightedSizes: results.sizeRange,
+            chart = Chart(size: size, suite: suite,
+                          highlightedSizes: suite.sizeRange,
                           amortized: true,
                           presentation: presentationMode.value)
         }
         else {
-            chart = Chart(size: size, suite: suite, results: results,
-                          highlightedSizes: results.sizeRange,
+            chart = Chart(size: size, suite: suite,
+                          highlightedSizes: suite.sizeRange,
 //                          sizeRange: 1 ..< (1 << 20),
 //                          timeRange: 1e-7 ..< 1000,
                           amortized: false,
@@ -290,7 +289,7 @@ extension AppDelegate {
     @IBAction func newDocument(_ sender: AnyObject) {
         let selected = self.selectedBenchmarks
         let scale = self.maxScale
-        runner.reset()
+        try? harness.reset()
         self.selectedBenchmarks = selected
         self.maxScale = scale
     }
@@ -310,7 +309,7 @@ extension AppDelegate {
     func save() {
         do {
             cancelSave()
-            try runner.save()
+            try harness.save()
             window.isDocumentEdited = false
         }
         catch {
@@ -323,26 +322,26 @@ extension AppDelegate {
     }
 
     func start() {
-        guard self.runner.state == .idle else { return }
-        let suite = self.selectedSuite ?? self.runner.suites[0]
+        guard self.harness.state == .idle else { return }
+        let suite = self.selectedSuite ?? self.harness.suites[0]
         self.runButton.image = #imageLiteral(resourceName: "StopTemplate")
         self.startMenuItem.title = "Stop Running"
         self.status = "Running \(suite.title)"
-        self.runner.start(suite: suite, randomized: randomizeInputs.value)
+        self.harness.start(suite: suite, randomized: randomizeInputs.value)
     }
 
     func stop() {
-        guard self.runner.state == .running || self.waitingForParamsChange else { return }
+        guard self.harness.state == .running || self.waitingForParamsChange else { return }
         self.runButton.isEnabled = false
         self.startMenuItem.isEnabled = false
         self.status = "Stopping..."
-        if self.runner.state == .running {
-            self.runner.stop()
+        if self.harness.state == .running {
+            self.harness.stop()
         }
     }
 
     @IBAction func run(_ sender: AnyObject) {
-        switch self.runner.state {
+        switch self.harness.state {
         case .idle:
             self.start()
         case .running:
@@ -354,9 +353,9 @@ extension AppDelegate {
     }
 
     func refreshRunnerParams() {
-        if self.runner.state == .running {
+        if self.harness.state == .running {
             self.waitingForParamsChange = true
-            self.runner.stop()
+            self.harness.stop()
         }
         else {
             DispatchQueue.main.async {
@@ -367,37 +366,27 @@ extension AppDelegate {
 
     @IBAction func didSelectSuite(_ sender: NSMenuItem) {
         let index = suitePopUpButton.indexOfSelectedItem
-        selectedSuite = runner.suites[index == -1 ? 0 : index]
+        selectedSuite = harness.suites[index == -1 ? 0 : index]
     }
 
     @IBAction func selectNextSuite(_ sender: AnyObject?) {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let index = self.runner.suites.index(where: { $0.title == suite.title }) ?? 0
-        self.selectedSuite = self.runner.suites[(index + 1) % self.runner.suites.count]
+        let suite = self.selectedSuite ?? self.harness.suites[0]
+        let index = self.harness.suites.index(where: { $0.title == suite.title }) ?? 0
+        self.selectedSuite = self.harness.suites[(index + 1) % self.harness.suites.count]
     }
 
     @IBAction func selectPreviousSuite(_ sender: AnyObject?) {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
-        let index = self.runner.suites.index(where: { $0.title == suite.title }) ?? 0
-        self.selectedSuite = index == 0 ? self.runner.suites.last! : self.runner.suites[index - 1]
+        let suite = self.selectedSuite ?? self.harness.suites[0]
+        let index = self.harness.suites.index(where: { $0.title == suite.title }) ?? 0
+        self.selectedSuite = index == 0 ? self.harness.suites.last! : self.harness.suites[index - 1]
     }
 
     var selectedBenchmarks: Set<String> {
         get {
-            let suite = self.selectedSuite ?? self.runner.suites[0]
-            let results = self.runner.results(for: suite)
-            let selected = results.selectedBenchmarks.isDisjoint(with: suite.benchmarkTitles)
-                ? Set(suite.benchmarkTitles)
-                : results.selectedBenchmarks.intersection(suite.benchmarkTitles)
-            return selected
+            return self.selectedSuite.selectedBenchmarkSet
         }
         set {
-            let suite = self.selectedSuite ?? self.runner.suites[0]
-            let results = self.runner.results(for: suite)
-            let selected = newValue.isDisjoint(with: suite.benchmarkTitles)
-                ? Set(suite.benchmarkTitles)
-                : newValue.intersection(suite.benchmarkTitles)
-            results.selectedBenchmarks = selected
+            self.selectedSuite.selectedBenchmarkSet = newValue
             refreshBenchmarks()
             refreshChart()
             refreshRunnerParams()
@@ -405,7 +394,7 @@ extension AppDelegate {
     }
 
     func refreshBenchmarks() {
-        let suite = self.selectedSuite ?? self.runner.suites[0]
+        let suite = self.selectedSuite ?? self.harness.suites[0]
         let selected = self.selectedBenchmarks
 
         let title: String
@@ -465,16 +454,12 @@ extension AppDelegate {
     }
     var maxScale: Int {
         get {
-            let suite = self.selectedSuite ?? self.runner.suites[0]
-            let results = self.runner.results(for: suite)
-            return results.scaleRange.upperBound
+            return self.selectedSuite.scaleRange.upperBound
         }
         set {
-            let suite = self.selectedSuite ?? self.runner.suites[0]
-            let results = self.runner.results(for: suite)
             let upper = max(min(newValue, maximumScale), minimumScale)
-            let lower = min(upper, results.scaleRange.lowerBound)
-            results.scaleRange = lower ... upper
+            let lower = min(upper, selectedSuite.scaleRange.lowerBound)
+            self.selectedSuite.scaleRange = lower ... upper
             refreshScale()
             refreshChart()
             refreshRunnerParams()
@@ -482,16 +467,12 @@ extension AppDelegate {
     }
     var minScale: Int {
         get {
-            let suite = self.selectedSuite ?? self.runner.suites[0]
-            let results = self.runner.results(for: suite)
-            return results.scaleRange.lowerBound
+            return self.selectedSuite.scaleRange.lowerBound
         }
         set {
-            let suite = self.selectedSuite ?? self.runner.suites[0]
-            let results = self.runner.results(for: suite)
             let lower = max(min(newValue, maximumScale), minimumScale)
-            let upper = max(lower, results.scaleRange.upperBound)
-            results.scaleRange = lower ... upper
+            let upper = max(lower, selectedSuite.scaleRange.upperBound)
+            selectedSuite.scaleRange = lower ... upper
             refreshScale()
             refreshChart()
             refreshRunnerParams()

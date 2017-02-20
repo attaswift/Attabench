@@ -41,7 +41,7 @@ extension TimeInterval {
 
 class Chart {
     let size: CGSize
-    let suite: BenchmarkSuiteProtocol
+    let suite: Suite
     let title: String
     let presentationMode: Bool
 
@@ -51,8 +51,7 @@ class Chart {
     var horizontalHighlight: Range<CGFloat>? = nil
 
     init(size: CGSize,
-         suite: BenchmarkSuiteProtocol,
-         results: BenchmarkSuiteResults,
+         suite: Suite,
          highlightedSizes: ClosedRange<Int>? = nil,
          sizeRange: Range<Int>? = nil,
          timeRange: Range<TimeInterval>? = nil,
@@ -61,16 +60,14 @@ class Chart {
         self.size = size
         self.suite = suite
         if amortized {
-            self.title = suite.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
+            self.title = suite.suite.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
         }
         else {
-            self.title = suite.descriptiveTitle ?? suite.title
+            self.title = suite.suite.descriptiveTitle ?? suite.title
         }
         self.presentationMode = presentation
 
-        let benchmarks = results.selectedBenchmarks.isDisjoint(with: suite.benchmarkTitles)
-            ? suite.benchmarkTitles
-            : suite.benchmarkTitles.filter(results.selectedBenchmarks.contains)
+        let benchmarks = suite.selectedBenchmarks
 
         var minSize = sizeRange?.lowerBound ?? Int.max
         var maxSize = sizeRange?.upperBound ?? Int.min
@@ -82,8 +79,8 @@ class Chart {
         var minTime = timeRange?.lowerBound ?? Double.infinity
         var maxTime = timeRange?.upperBound ?? -Double.infinity
         var count = 0
-        for (benchmark, samples) in results.samplesByBenchmark where benchmarks.contains(benchmark) {
-            for (size, sample) in samples.samples {
+        for (benchmark, samples) in suite.samplesByBenchmark where benchmarks.contains(benchmark) {
+            for (size, sample) in samples.samplesBySize {
                 if size > maxSize { maxSize = size }
                 if size < minSize { minSize = size }
                 let time = amortized ? sample.minimum / Double(size) : sample.minimum
@@ -159,7 +156,7 @@ class Chart {
         let c = benchmarks.count
         for i in 0 ..< c {
             let benchmark = benchmarks[i]
-            guard let samples = results.samplesByBenchmark[benchmark] else { continue }
+            guard let samples = suite.samplesByBenchmark[benchmark] else { continue }
 
             let index = suite.benchmarkTitles.index(of: benchmark)!
             let color: NSColor
@@ -182,7 +179,7 @@ class Chart {
                 }
             }
             let path = NSBezierPath()
-            path.appendLines(between: samples.samples.sorted(by: { $0.0 < $1.0 }).map { (size, sample) in
+            path.appendLines(between: samples.samplesBySize.sorted(by: { $0.0 < $1.0 }).map { (size, sample) in
                 return CGPoint(x: x(size), y: y(size, sample.minimum))
             })
 
