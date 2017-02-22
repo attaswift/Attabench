@@ -5,7 +5,7 @@
 //  Copyright © 2017 Károly Lőrentey.
 //
 
-let defaultInternalOrder = 8
+private let defaultInternalOrder = 8
 
 public struct BTree3<Element: Comparable> {
     fileprivate typealias Node = BTreeNode3<Element>
@@ -546,3 +546,4 @@ extension BTreeNode3 {
         return depth + 1
     }
 }
+
