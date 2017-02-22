@@ -397,6 +397,12 @@
                                     <binding destination="wHU-2r-SE8" name="value" keyPath="values.PresentationMode" id="QKP-U6-0CN"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Highlight Active Range" keyEquivalent="h" id="JS3-Qq-ESW">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.HighlightActiveRange" id="TnY-Q4-ZEw"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="vcw-Zy-RCb"/>
                             <menuItem title="Show Toolbar" keyEquivalent="t" id="snW-S8-Cw5">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>

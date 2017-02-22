@@ -40,14 +40,30 @@ extension TimeInterval {
 }
 
 class Chart {
+    struct Gridline {
+        enum Kind {
+            case major
+            case minor
+        }
+        let kind: Kind
+        let position: CGFloat
+        let label: String?
+
+        init(_ kind: Kind, position: CGFloat, label: String? = nil) {
+            self.kind = kind
+            self.position = position
+            self.label = label
+        }
+    }
+
     let size: CGSize
     let suite: Suite
     let title: String
     let presentationMode: Bool
 
     var curves: [(String, NSColor, NSBezierPath)] = []
-    var verticalGridLines: [(String?, CGFloat)] = []
-    var horizontalGridLines: [(String?, CGFloat)] = []
+    var verticalGridlines: [Gridline] = []
+    var horizontalGridlines: [Gridline] = []
     var horizontalHighlight: Range<CGFloat>? = nil
 
     init(size: CGSize,
@@ -125,10 +141,10 @@ class Chart {
                 if size >= minSize {
                     let x = scaleX * log2(CGFloat(size))
                     if !presentationMode || i & 1 == 0 {
-                        verticalGridLines.append((size.label, x))
+                        verticalGridlines.append(Gridline(.major, position: x, label: size.label))
                     }
                     else {
-                        verticalGridLines.append((nil, x))
+                        verticalGridlines.append(Gridline(.major, position: x))
                     }
                 }
                 size <<= 1
@@ -139,14 +155,14 @@ class Chart {
         do {
             var time = minTime
             while time <= maxTime {
-                horizontalGridLines.append((time.label, y(1, time)))
+                horizontalGridlines.append(Gridline(.major, position: y(1, time), label: time.label))
                 time *= 10
             }
             if maxTime / minTime < 1e6 {
                 time = 2 * minTime
                 while time <= maxTime {
                     let yc = y(1, time)
-                    horizontalGridLines.append((nil, yc))
+                    horizontalGridlines.append(Gridline(.minor, position: yc))
                     time *= 2
                 }
             }
@@ -192,8 +208,12 @@ class Chart {
         let titleFont: NSFont
         let titleColor: NSColor
         let borderColor: NSColor
-        let majorGridLineColor: NSColor
-        let minorGridLineColor: NSColor
+        let borderWidth: CGFloat
+        let highlightedBorderWidth: CGFloat
+        let majorGridlineColor: NSColor
+        let majorGridlineWidth: CGFloat
+        let minorGridlineColor: NSColor
+        let minorGridlineWidth: CGFloat
         let scaleFont: NSFont
         let legendFont: NSFont
         let legendColor: NSColor
@@ -207,8 +227,12 @@ class Chart {
             titleFont: NSFont(name: "Helvetica-Light", size: 24)!,
             titleColor: NSColor.black,
             borderColor: NSColor.black,
-            majorGridLineColor: NSColor(white: 0.3, alpha: 1),
-            minorGridLineColor: NSColor(white: 0.3, alpha: 1),
+            borderWidth: 0.5,
+            highlightedBorderWidth: 4,
+            majorGridlineColor: NSColor(white: 0.3, alpha: 1),
+            majorGridlineWidth: 0.75,
+            minorGridlineColor: NSColor(white: 0.3, alpha: 1),
+            minorGridlineWidth: 0.5,
             scaleFont: NSFont(name: "Helvetica-Light", size: 12)!,
             legendFont: NSFont(name: "Menlo", size: 12)!,
             legendColor: NSColor.black,
@@ -222,8 +246,12 @@ class Chart {
             titleFont: NSFont(name: "Helvetica-Light", size: 48)!,
             titleColor: NSColor.white,
             borderColor: NSColor.white,
-            majorGridLineColor: NSColor(white: 0.7, alpha: 1),
-            minorGridLineColor: NSColor(white: 0.7, alpha: 1),
+            borderWidth: 0.5,
+            highlightedBorderWidth: 4,
+            majorGridlineColor: NSColor(white: 0.7, alpha: 1),
+            majorGridlineWidth: 0.75,
+            minorGridlineColor: NSColor(white: 0.7, alpha: 1),
+            minorGridlineWidth: 0.5,
             scaleFont: NSFont(name: "Helvetica-Light", size: 24)!,
             legendFont: NSFont(name: "Menlo", size: 20)!,
             legendColor: NSColor.white,
@@ -231,6 +259,15 @@ class Chart {
             lineWidth: 8,
             shadowRadius: 3,
             xPadding: 12)
+
+        func gridlineParams(for gridline: Gridline) -> (lineWidth: CGFloat, color: NSColor) {
+            switch gridline.kind {
+            case .major:
+                return (majorGridlineWidth, majorGridlineColor)
+            case .minor:
+                return (minorGridlineWidth, minorGridlineColor)
+            }
+        }
     }
 
     func render(into bounds: NSRect) {
@@ -241,7 +278,7 @@ class Chart {
 
         let scaleAttributes: [String: Any] = [
             NSFontAttributeName: p.scaleFont,
-            NSForegroundColorAttributeName: p.majorGridLineColor
+            NSForegroundColorAttributeName: p.majorGridlineColor
         ]
         let (titleRect, bottomRect) = bounds.divided(
             atDistance: 1.2 * (p.titleFont.boundingRectForFont.height + p.titleFont.leading),
@@ -270,28 +307,28 @@ class Chart {
         chartTransform.scale(x: chartBounds.width, y: chartBounds.height)
 
         // Draw horizontal grid lines
-        for (title, y) in horizontalGridLines {
-            let color = title == nil ? p.minorGridLineColor : p.majorGridLineColor
-            color.setStroke()
+        for gridline in horizontalGridlines {
+            let lineParams = p.gridlineParams(for: gridline)
+            lineParams.color.setStroke()
             let path = NSBezierPath()
-            path.move(to: CGPoint(x: 0, y: y))
-            path.line(to: CGPoint(x: 1, y: y))
+            path.move(to: CGPoint(x: 0, y: gridline.position))
+            path.line(to: CGPoint(x: 1, y: gridline.position))
             path.transform(using: chartTransform)
-            if title == nil {
+            if gridline.kind == .minor {
                 path.setLineDash([6, 3], count: 2, phase: 0)
             }
-            path.lineWidth = title == nil ? 0.5 : 0.75
+            path.lineWidth = lineParams.lineWidth
             path.stroke()
 
-            if let title = title {
-                let yMid = chartBounds.minY + y * chartBounds.height + p.scaleFont.pointSize / 4
+            if let label = gridline.label {
+                let yMid = chartBounds.minY + gridline.position * chartBounds.height + p.scaleFont.pointSize / 4
 
-                let bounds = (title as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-                (title as NSString).draw(
+                let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
+                (label as NSString).draw(
                     at: CGPoint(x: chartBounds.minX - p.xPadding - bounds.width,
                                 y: yMid - bounds.height / 2),
                     withAttributes: scaleAttributes)
-                (title as NSString).draw(
+                (label as NSString).draw(
                     at: CGPoint(x: chartBounds.maxX + p.xPadding,
                                 y: yMid - bounds.height / 2),
                     withAttributes: scaleAttributes)
@@ -299,39 +336,39 @@ class Chart {
         }
 
         // Draw vertical grid lines
-        for (title, x) in verticalGridLines {
-            let color = title == nil ? p.minorGridLineColor : p.majorGridLineColor
-            color.setStroke()
+        for gridline in verticalGridlines {
+            let lineParams = p.gridlineParams(for: gridline)
+            lineParams.color.setStroke()
             let path = NSBezierPath()
-            path.move(to: CGPoint(x: x, y: 0))
-            path.line(to: CGPoint(x: x, y: 1))
+            path.move(to: CGPoint(x: gridline.position, y: 0))
+            path.line(to: CGPoint(x: gridline.position, y: 1))
             path.transform(using: chartTransform)
-            path.lineWidth = 0.5
+            path.lineWidth = lineParams.lineWidth
             path.stroke()
 
-            if let title = title {
-                let xMid = chartBounds.minX + x * chartBounds.width
+            if let label = gridline.label {
+                let xMid = chartBounds.minX + gridline.position * chartBounds.width
                 let yTop = chartBounds.minY - 3
 
-                let bounds = (title as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-                (title as NSString).draw(at: CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height), withAttributes: scaleAttributes)
+                let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
+                (label as NSString).draw(at: CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height), withAttributes: scaleAttributes)
             }
         }
         
         // Draw border
         p.borderColor.setStroke()
         let border = NSBezierPath(rect: chartBounds.insetBy(dx: -0.25, dy: -0.25))
-        border.lineWidth = 0.5
+        border.lineWidth = p.borderWidth
         border.stroke()
 
-        if !presentationMode, let h = horizontalHighlight {
+        if let h = horizontalHighlight {
             let highlight = NSBezierPath()
             highlight.move(to: .init(x: h.lowerBound, y: 1))
             highlight.line(to: .init(x: h.upperBound, y: 1))
             highlight.move(to: .init(x: h.lowerBound, y: 0))
             highlight.line(to: .init(x: h.upperBound, y: 0))
             highlight.transform(using: chartTransform)
-            highlight.lineWidth = 4
+            highlight.lineWidth = p.highlightedBorderWidth
             highlight.lineCapStyle = .roundLineCapStyle
             highlight.stroke()
         }

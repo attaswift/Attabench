@@ -42,6 +42,7 @@ class AppDelegate: NSObject {
 
     let amortized: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "Amortized", defaultValue: true)
     let presentationMode: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "PresentationMode", defaultValue: false)
+    let highlightActiveRange: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "HighlightActiveRange", defaultValue: true)
 
     let randomizeInputs: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "RandomizeInputs", defaultValue: false)
 
@@ -138,17 +139,16 @@ extension AppDelegate: NSApplicationDelegate {
         }
         self.maxSizePopUpButton.menu = maxSizeMenu
 
-        self.glue.connector.connect(self.amortized.futureValues) { value in
-            self.refreshChart()
-        }
         self.glue.connector.connect(self.presentationMode.values) { value in
             self.backgroundView.backgroundColor = value ? NSColor.black : NSColor.white
         }
-        self.glue.connector.connect(self.presentationMode.futureValues) { value in
-            self.refreshChart()
-        }
         self.glue.connector.connect(self.randomizeInputs.futureValues) { value in
             self.refreshRunnerParams()
+        }
+        self.glue.connector.connect(
+            self.amortized.combined(self.presentationMode, self.highlightActiveRange).futureValues
+        ) { value in
+            self.refreshChart()
         }
     }
 
@@ -267,20 +267,11 @@ extension AppDelegate {
         let chart: Chart
 
         let size = presentationMode.value ? AppDelegate.presentationImageSize : chartImageView.bounds.size
-        if amortized.value {
-            chart = Chart(size: size, suite: suite,
-                          highlightedSizes: suite.sizeRange,
-                          amortized: true,
-                          presentation: presentationMode.value)
-        }
-        else {
-            chart = Chart(size: size, suite: suite,
-                          highlightedSizes: suite.sizeRange,
-//                          sizeRange: 1 ..< (1 << 20),
-//                          timeRange: 1e-7 ..< 1000,
-                          amortized: false,
-                          presentation: presentationMode.value)
-        }
+        let highlight = highlightActiveRange.value ? suite.sizeRange : nil
+        chart = Chart(size: size, suite: suite,
+                      highlightedSizes: highlight,
+                      amortized: amortized.value,
+                      presentation: presentationMode.value)
         let image = chart.image
         self.chartImageView.image = image
         self.chartImageView.name = "\(suite.title) - \(benchmarksPopUpButton.title)"
