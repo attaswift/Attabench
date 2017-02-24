@@ -88,21 +88,21 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
     suite.descriptiveAmortizedTitle = "Amortized Foo"
 
     suite.addBenchmark(title: "Array.contains") { input, lookups in
-        return { measurer in
+        return { timer in
             for i in 0 ..< lookups.count {
                 guard input.contains(i) else { fatalError() }
             }
         }
     }
     suite.addBenchmark(title: "Array.sort") { input, lookups in
-        return { measurer in
+        return { timer in
             let array = input.sorted()
             noop(array)
         }
     }
     suite.addBenchmark(title: "Array.binarySearch") { input, lookups in
         let array = input.sorted()
-        return { measurer in
+        return { timer in
             for value in 0 ..< lookups.count {
                 var i = 0
                 var j = array.count
@@ -120,7 +120,7 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
     suite.addBenchmark(title: "Array.sort+binarySearch") { input, lookups in
-        return { measurer in
+        return { timer in
             let array = input.sorted()
             for value in 0 ..< lookups.count {
                 var i = 0
@@ -140,14 +140,14 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
     }
 
     suite.addBenchmark(title: "Set.init") { input, lookups in
-        return { measurer in
+        return { timer in
             let set = Set(input)
             noop(set)
         }
     }
 
     suite.addBenchmark(title: "Set.init+capacity") { input, lookups in
-        return { measurer in
+        return { timer in
             var set = Set<Int>(minimumCapacity: input.count)
             for value in input { set.insert(value) }
             noop(set)
@@ -156,14 +156,14 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
 
     suite.addBenchmark(title: "Set.contains") { input, lookups in
         let set = Set(input)
-        return { measurer in
+        return { timer in
             for i in lookups {
                 guard set.contains(i) else { fatalError() }
             }
         }
     }
     suite.addBenchmark(title: "Set.init+contains") { input, lookups in
-        return { measurer in
+        return { timer in
             let set = Set(input)
             for i in lookups {
                 guard set.contains(i) else { fatalError() }
@@ -187,7 +187,7 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
             }
             set.validate()
 
-            return { measurer in
+            return { timer in
                 var i = 0
                 set.forEach { element in
                     guard element == i else { fatalError() }
@@ -205,7 +205,7 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             set.forEach { element in
                 guard element == i else { fatalError() }
@@ -247,7 +247,7 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         for value in input {
             set.insert(value)
         }
-        return { measurer in
+        return { timer in
             var i = 0
             set.forEach { element in
                 guard element == i else { fatalError() }
@@ -259,7 +259,7 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
 
     suite.addBenchmark(title: "Array") { input in
         let array = input.sorted()
-        return { measurer in
+        return { timer in
             var i = 0
             for element in array {
                 guard element == i else { fatalError() }
@@ -285,7 +285,7 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
             }
             set.validate()
 
-            return { measurer in
+            return { timer in
                 var i = 0
                 var index = set.startIndex
                 let end = set.endIndex
@@ -306,7 +306,7 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             var index = set.startIndex
             while index != set.endIndex {
@@ -350,7 +350,7 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
         for value in input {
             set.insert(value)
         }
-        return { measurer in
+        return { timer in
             var i = 0
             var index = set.startIndex
             let end = set.endIndex
@@ -365,7 +365,7 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
 
     suite.addBenchmark(title: "Array") { input in
         let array = input.sorted()
-        return { measurer in
+        return { timer in
             var i = 0
             var index = array.startIndex
             while index != array.endIndex {
@@ -393,7 +393,7 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
             }
             set.validate()
 
-            return { measurer in
+            return { timer in
                 for element in lookups {
                     guard set.contains(element) else { fatalError() }
                 }
@@ -408,7 +408,7 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             for element in lookups {
                 guard set.contains(element) else { fatalError() }
             }
@@ -445,7 +445,7 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
     suite.addBenchmark(title: "Array") { (input, lookups) in
         if input.count > 100_000 { return nil }
         let array = input.sorted()
-        return { measurer in
+        return { timer in
             for element in lookups {
                 guard array.contains(element) else { fatalError() }
             }
@@ -464,9 +464,9 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
         suite.addBenchmark(title: title) { input in
             if let maxSize = maxSize, input.count > maxSize { return nil }
             var first = true
-            return { measurer in
+            return { timer in
                 var set = initializer()
-                measurer.measure {
+                timer.measure {
                     for value in input {
                         set.insert(value)
                     }
@@ -512,7 +512,7 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
     }
 
     suite.addBenchmark(title: "Array.sort") { input in
-        return { measurer in
+        return { timer in
             var array = input
             array.sort()
         }
@@ -530,9 +530,9 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
         suite.addBenchmark(title: title) { input in
             if let maxCount = maxCount, input.count > maxCount { return nil }
             var first = true
-            return { measurer in
+            return { timer in
                 var set = initializer()
-                measurer.measure {
+                timer.measure {
                     #if false
                     var copy = set
                     var k = 0
@@ -607,7 +607,7 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
 
     suite.addBenchmark(title: "Array.sort") { input in
         guard input.count < 130_000 else { return nil }
-        return { measurer in
+        return { timer in
             var array: [Value] = []
             var copy = array
             for value in input {
@@ -634,7 +634,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             var index = set.startIndex
             let end = set.endIndex
@@ -654,7 +654,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             for element in set {
                 guard element == i else { fatalError("Expected \(i), got \(element)") }
@@ -671,7 +671,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             set.forEach { element in
                 guard element == i else { fatalError("Expected \(i), got \(element)") }
@@ -688,7 +688,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             for i in 0 ..< input.count {
                 guard set.contains(i) else { fatalError("Expected to find \(i)") }
             }
@@ -702,7 +702,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             var index = set.startIndex
             let end = set.endIndex
@@ -722,7 +722,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             for element in set {
                 guard element == i else { fatalError("Expected \(i), got \(element)") }
@@ -739,7 +739,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             var i = 0
             set.forEach { element in
                 guard element == i else { fatalError("Expected \(i), got \(element)") }
@@ -756,7 +756,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
         set.validate()
 
-        return { measurer in
+        return { timer in
             for i in 0 ..< input.count {
                 guard set.contains(i) else { fatalError("Expected to find \(i)") }
             }
@@ -767,7 +767,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         var array = input
         array.sort()
 
-        return { measurer in
+        return { timer in
             var i = 0
             for element in array {
                 guard element == i else { fatalError("Expected \(i), got \(element)") }
@@ -781,7 +781,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         var array = input
         array.sort()
 
-        return { measurer in
+        return { timer in
             var i = 0
             array.forEach { element in
                 guard element == i else { fatalError("Expected \(i), got \(element)") }

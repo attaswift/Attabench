@@ -15,7 +15,7 @@ extension Array {
     }
 }
 
-public class BenchmarkMeasurer {
+public class BenchmarkTimer {
     var elapsedTime: TimeInterval? = nil
 
     @inline(never)
@@ -29,14 +29,14 @@ public class BenchmarkMeasurer {
 
 fileprivate class Benchmark<Input> {
     let title: String
-    let body: (Input) -> ((BenchmarkMeasurer) -> Void)?
+    let body: (Input) -> ((BenchmarkTimer) -> Void)?
 
-    init(_ title: String, _ body: @escaping (Input) -> ((BenchmarkMeasurer) -> Void)?) {
+    init(_ title: String, _ body: @escaping (Input) -> ((BenchmarkTimer) -> Void)?) {
         self.title = title
         self.body = body
     }
 
-    func generate(input: Input) -> ((BenchmarkMeasurer) -> Void)? {
+    func generate(input: Input) -> ((BenchmarkTimer) -> Void)? {
         return self.body(input)
     }
 }
@@ -81,7 +81,7 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
     
     public private(set) var benchmarkTitles: [String] = []
     private var benchmarks: [String: Benchmark<Input>] = [:]
-    private var instances: [InstanceKey: (BenchmarkMeasurer) -> Void] = [:]
+    private var instances: [InstanceKey: (BenchmarkTimer) -> Void] = [:]
 
     private let inputGenerator: (Int) -> Input
     public private(set) var sizes: [Int] = []
@@ -92,13 +92,13 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
         self.inputGenerator = inputGenerator
     }
 
-    public func addBenchmark(title: String, _ body: @escaping (Input) -> ((BenchmarkMeasurer) -> Void)?) {
+    public func addBenchmark(title: String, _ body: @escaping (Input) -> ((BenchmarkTimer) -> Void)?) {
         precondition(self.benchmarks[title] == nil)
         self.benchmarkTitles.append(title)
         self.benchmarks[title] = Benchmark(title, body)
     }
 
-    private func instance(for key: InstanceKey) -> ((BenchmarkMeasurer) -> Void)? {
+    private func instance(for key: InstanceKey) -> ((BenchmarkTimer) -> Void)? {
         if let instance = instances[key] { return instance }
         guard let benchmark = benchmarks[key.title] else { fatalError() }
         let input = self.input(for: key.size)
@@ -124,10 +124,10 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
     public func run(_ title: String, _ size: Int) -> TimeInterval? {
         guard let instance = self.instance(for: InstanceKey(title, size)) else { return nil }
         let start = Timestamp()
-        let measurer = BenchmarkMeasurer()
-        instance(measurer)
+        let timer = BenchmarkTimer()
+        instance(timer)
         let stop = Timestamp()
-        let elapsed = measurer.elapsedTime ?? (stop - start)
+        let elapsed = timer.elapsedTime ?? (stop - start)
         return elapsed
     }
 }
