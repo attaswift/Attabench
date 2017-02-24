@@ -76,6 +76,104 @@ func perfectlyBalancedArrayGenerator(_ size: Int) -> [Value] {
 let randomInputs = true
 let inputGenerator = randomInputs ? randomArrayGenerator : perfectlyBalancedArrayGenerator
 
+@_semantics("optimize.sil.never")
+@inline(never)
+func noop<T>(_ value: T) {
+    _fixLifetime(value)
+}
+
+func demoBenchmark() -> BenchmarkSuiteProtocol {
+    let suite = BenchmarkSuite(title: "Demo", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+    suite.descriptiveTitle = "Foo"
+    suite.descriptiveAmortizedTitle = "Amortized Foo"
+
+    suite.addBenchmark(title: "Array.contains") { input, lookups in
+        return { measurer in
+            for i in 0 ..< lookups.count {
+                guard input.contains(i) else { fatalError() }
+            }
+        }
+    }
+    suite.addBenchmark(title: "Array.sort") { input, lookups in
+        return { measurer in
+            let array = input.sorted()
+            noop(array)
+        }
+    }
+    suite.addBenchmark(title: "Array.binarySearch") { input, lookups in
+        let array = input.sorted()
+        return { measurer in
+            for value in 0 ..< lookups.count {
+                var i = 0
+                var j = array.count
+                while i < j {
+                    let middle = i + (j - i) / 2
+                    if value > array[middle] {
+                        i = middle + 1
+                    }
+                    else {
+                        j = middle
+                    }
+                }
+                guard i < array.count && array[i] == value else { fatalError() }
+            }
+        }
+    }
+    suite.addBenchmark(title: "Array.sort+binarySearch") { input, lookups in
+        return { measurer in
+            let array = input.sorted()
+            for value in 0 ..< lookups.count {
+                var i = 0
+                var j = array.count
+                while i < j {
+                    let middle = i + (j - i) / 2
+                    if value > array[middle] {
+                        i = middle + 1
+                    }
+                    else {
+                        j = middle
+                    }
+                }
+                guard i < array.count && array[i] == value else { fatalError() }
+            }
+        }
+    }
+
+    suite.addBenchmark(title: "Set.init") { input, lookups in
+        return { measurer in
+            let set = Set(input)
+            noop(set)
+        }
+    }
+
+    suite.addBenchmark(title: "Set.init+capacity") { input, lookups in
+        return { measurer in
+            var set = Set<Int>(minimumCapacity: input.count)
+            for value in input { set.insert(value) }
+            noop(set)
+        }
+    }
+
+    suite.addBenchmark(title: "Set.contains") { input, lookups in
+        let set = Set(input)
+        return { measurer in
+            for i in lookups {
+                guard set.contains(i) else { fatalError() }
+            }
+        }
+    }
+    suite.addBenchmark(title: "Set.init+contains") { input, lookups in
+        return { measurer in
+            let set = Set(input)
+            for i in lookups {
+                guard set.contains(i) else { fatalError() }
+            }
+        }
+    }
+
+    return suite
+}
+
 func foreachBenchmark() -> BenchmarkSuite<[Value]> {
     let suite = BenchmarkSuite<[Value]>(title: "ForEach", inputGenerator: inputGenerator)
     suite.descriptiveTitle = "Iteration using “forEach”"
@@ -698,6 +796,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
 
 public func generateBenchmarks() -> [BenchmarkSuiteProtocol] {
     return [
+        demoBenchmark(),
         foreachBenchmark(),
         indexingBenchmark(),
         containsBenchmark(),
