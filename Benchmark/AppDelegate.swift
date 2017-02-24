@@ -20,7 +20,7 @@ class AppDelegate: NSObject {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var backgroundView: ColoredView!
     @IBOutlet weak var runButton: NSButton!
-    @IBOutlet weak var suitePopUpButton: NSPopUpButton!
+    @IBOutlet weak var benchmarksPopUpButton: NSPopUpButton!
     @IBOutlet weak var minSizePopUpButton: NSPopUpButton!
     @IBOutlet weak var maxSizePopUpButton: NSPopUpButton!
     @IBOutlet weak var jobsPopUpButton: NSPopUpButton!
@@ -53,8 +53,7 @@ class AppDelegate: NSObject {
             guard !progressRefreshScheduled else { return }
             let now = Date()
             if nextProgressUpdate < now {
-                self.progressButton.title = status
-                nextProgressUpdate = now.addingTimeInterval(progressRefreshDelay)
+                refreshProgress()
             }
             else {
                 scheduleProgressRefresh()
@@ -66,12 +65,12 @@ class AppDelegate: NSObject {
         didSet {
             guard let suite = selectedSuite else { return }
             let defaults = UserDefaults.standard
-            defaults.set(suite.title, forKey: "SelectedSuite")
+            defaults.set(suite.title, forKey: "SelectedBenchmark")
 
-            if let menu = self.suitePopUpButton.menu {
+            if let menu = self.benchmarksPopUpButton.menu {
                 let item = menu.items.first(where: { $0.title == suite.title })
-                if self.suitePopUpButton.selectedItem !== item {
-                    self.suitePopUpButton.select(item)
+                if self.benchmarksPopUpButton.selectedItem !== item {
+                    self.benchmarksPopUpButton.select(item)
                 }
             }
             refreshChart()
@@ -91,8 +90,8 @@ extension AppDelegate: NSApplicationDelegate {
         self.startMenuItem.isEnabled = false
 
         harness.delegate = self
-        for suite in CollectionBenchmarks.generateBenchmarks() {
-            harness.load(suite)
+        for benchmark in CollectionBenchmarks.generateBenchmarks() {
+            harness.load(benchmark)
         }
 
         if harness.suites.isEmpty {
@@ -104,22 +103,22 @@ extension AppDelegate: NSApplicationDelegate {
         self.startMenuItem.isEnabled = true
 
         let defaults = UserDefaults.standard
-        let selectedTitle = defaults.string(forKey: "SelectedSuite")
+        let selectedTitle = defaults.string(forKey: "SelectedBenchmark")
         let suite = harness.suites.first(where: { $0.title == selectedTitle }) ?? harness.suites.first!
 
         self.selectedSuite = suite
 
-        let suiteMenu = NSMenu()
-        suiteMenu.removeAllItems()
+        let benchmarkMenu = NSMenu()
+        benchmarkMenu.removeAllItems()
         var i = 1
         for suite in harness.suites {
             let item = NSMenuItem(title: suite.title,
-                                  action: #selector(AppDelegate.didSelectSuite(_:)),
+                                  action: #selector(AppDelegate.didSelectBenchmark(_:)),
                                   keyEquivalent: i <= 9 ? "\(i)" : "")
-            suiteMenu.addItem(item)
+            benchmarkMenu.addItem(item)
             i += 1
         }
-        self.suitePopUpButton.menu = suiteMenu
+        self.benchmarksPopUpButton.menu = benchmarkMenu
 
         let minSizeMenu = NSMenu()
         for i in minimumScale ... maximumScale {
@@ -177,18 +176,18 @@ extension AppDelegate: NSApplicationDelegate {
 
 extension AppDelegate: HarnessDelegate {
     //MARK: HarnessDelegate
-    func harness(_ harness: Harness, didStartMeasuringSuite suite: String, job: String, size: Int) {
-        self.status = "Measuring \(suite) : \(size.sizeLabel) : \(job)"
+    func harness(_ harness: Harness, didStartMeasuringBenchmark benchmark: String, job: String, size: Int) {
+        self.status = "Measuring \(benchmark) : \(size.sizeLabel) : \(job)"
     }
 
-    func harness(_ harness: Harness, didMeasureInstanceInSuite suite: String, job: String, size: Int, withResult time: TimeInterval) {
+    func harness(_ harness: Harness, didMeasureInstanceInBenchmark benchmark: String, job: String, size: Int, withResult time: TimeInterval) {
         //print(jobs, size, time)
         scheduleChartRefresh()
         window.isDocumentEdited = true
         scheduleSave()
     }
 
-    func harness(_ harness: Harness, didStopMeasuringSuite suite: String) {
+    func harness(_ harness: Harness, didStopMeasuringBenchmark benchmark: String) {
         self.save()
         if terminating {
             NSApp.reply(toApplicationShouldTerminate: true)
@@ -285,12 +284,12 @@ extension AppDelegate {
         self.chartImageView.name = "\(suite.title) - \(jobsPopUpButton.title)"
     }
 
-    @IBAction func newDocument(_ sender: AnyObject) {
-        let selected = self.selectedJobs
-        let scale = self.maxScale
+    @IBAction func deleteResults(_ sender: AnyObject) {
+        try? self.selectedSuite.reset()
+    }
+
+    @IBAction func deleteAllResults(_ sender: AnyObject) {
         try? harness.reset()
-        self.selectedJobs = selected
-        self.maxScale = scale
     }
 
     func scheduleSave() {
@@ -363,18 +362,18 @@ extension AppDelegate {
         }
     }
 
-    @IBAction func didSelectSuite(_ sender: NSMenuItem) {
-        let index = suitePopUpButton.indexOfSelectedItem
+    @IBAction func didSelectBenchmark(_ sender: NSMenuItem) {
+        let index = benchmarksPopUpButton.indexOfSelectedItem
         selectedSuite = harness.suites[index == -1 ? 0 : index]
     }
 
-    @IBAction func selectNextSuite(_ sender: AnyObject?) {
+    @IBAction func selectNextBenchmark(_ sender: AnyObject?) {
         let suite = self.selectedSuite ?? self.harness.suites[0]
         let index = self.harness.suites.index(where: { $0.title == suite.title }) ?? 0
         self.selectedSuite = self.harness.suites[(index + 1) % self.harness.suites.count]
     }
 
-    @IBAction func selectPreviousSuite(_ sender: AnyObject?) {
+    @IBAction func selectPreviousBenchmark(_ sender: AnyObject?) {
         let suite = self.selectedSuite ?? self.harness.suites[0]
         let index = self.harness.suites.index(where: { $0.title == suite.title }) ?? 0
         self.selectedSuite = index == 0 ? self.harness.suites.last! : self.harness.suites[index - 1]

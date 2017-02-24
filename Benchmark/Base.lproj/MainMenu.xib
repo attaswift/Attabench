@@ -17,6 +17,7 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Benchmark" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundView" destination="EiT-Mj-1SZ" id="lO9-ly-tyX"/>
+                <outlet property="benchmarksPopUpButton" destination="rg8-sn-PVA" id="TEO-zN-vaW"/>
                 <outlet property="chartImageView" destination="eLG-FC-549" id="coY-xm-PZy"/>
                 <outlet property="jobsPopUpButton" destination="m3D-IU-xIC" id="M70-yy-vSJ"/>
                 <outlet property="maxSizePopUpButton" destination="bxa-GT-aeV" id="akZ-UB-MQr"/>
@@ -24,7 +25,6 @@
                 <outlet property="progressButton" destination="PBE-a0-9V8" id="wqL-Ig-tfs"/>
                 <outlet property="runButton" destination="X4a-Uy-A9Q" id="n59-wX-RDY"/>
                 <outlet property="startMenuItem" destination="6GY-ZT-wi2" id="4f3-XQ-Hwh"/>
-                <outlet property="suitePopUpButton" destination="rg8-sn-PVA" id="hSp-CR-SaN"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -79,17 +79,42 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="File" id="bib-Uj-vzu">
                         <items>
-                            <menuItem title="Clear All Data" keyEquivalent="n" id="Was-JA-tGl">
+                            <menuItem title="Delete Results" id="Was-JA-tGl">
+                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
                                 <connections>
-                                    <action selector="newDocument:" target="-1" id="4Si-XN-c54"/>
+                                    <action selector="deleteResults:" target="-1" id="fOh-EO-uGP"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Save Data" keyEquivalent="s" id="pxx-59-PXV">
+                            <menuItem title="Delete All Results" alternate="YES" id="UHB-eR-jEy">
+                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="deleteAllResults:" target="-1" id="nwL-yV-BsF"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Save Results" keyEquivalent="s" id="pxx-59-PXV">
                                 <connections>
                                     <action selector="saveDocument:" target="-1" id="teZ-XB-qJY"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
+                            <menuItem title="Next Benchmark" keyEquivalent="" id="2g6-4n-ZmJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="selectNextBenchmark:" target="-1" id="esx-1f-orO"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Previous Benchmark" keyEquivalent="" id="2Z5-oS-twq">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="selectPreviousBenchmark:" target="-1" id="4lA-oR-XWb"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="GzI-C2-h7J"/>
                             <menuItem title="Start Running" keyEquivalent=" " id="6GY-ZT-wi2">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -372,35 +397,10 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="View" id="HyV-fh-RgO">
                         <items>
-                            <menuItem title="Next Suite" keyEquivalent="" id="2g6-4n-ZmJ">
+                            <menuItem title="Show Title" keyEquivalent="t" id="d3g-EV-mgD">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="selectNextSuite:" target="-1" id="jaL-KH-5CG"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Previous Suite" keyEquivalent="" id="2Z5-oS-twq">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="selectPreviousSuite:" target="-1" id="kDi-Ug-Ygf"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="GzI-C2-h7J"/>
-                            <menuItem title="Logarithmic Size Scale" keyEquivalent="x" id="diO-sP-6FN">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.LogarithmicSize" id="AQv-wK-skO"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Logarithmic Time Scale" keyEquivalent="y" id="bJM-A8-tsk">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.LogarithmicTime" id="jkz-1J-e4g"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Amortized View" keyEquivalent="a" id="m1f-PH-lUl">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.Amortized" id="gyu-zq-r0C"/>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.ShowTitle" id="OUM-X0-MJp"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Presentation Mode" keyEquivalent="p" id="BWJ-e6-yPw">
@@ -415,10 +415,23 @@
                                     <binding destination="wHU-2r-SE8" name="value" keyPath="values.HighlightActiveRange" id="TnY-Q4-ZEw"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Show Title" keyEquivalent="t" id="d3g-EV-mgD">
+                            <menuItem isSeparatorItem="YES" id="1YN-GV-B6O"/>
+                            <menuItem title="Amortized View" keyEquivalent="a" id="m1f-PH-lUl">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.ShowTitle" id="OUM-X0-MJp"/>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.Amortized" id="gyu-zq-r0C"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Logarithmic Size Scale" keyEquivalent="x" id="diO-sP-6FN">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.LogarithmicSize" id="AQv-wK-skO"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Logarithmic Time Scale" keyEquivalent="y" id="bJM-A8-tsk">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.LogarithmicTime" id="jkz-1J-e4g"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="vcw-Zy-RCb"/>
@@ -513,11 +526,11 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="69E2655B-E4F8-45D3-8F32-9A7B56EBD9C8" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="gcQ-08-MOq">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="CC9CEC29-B506-4495-A7EE-76D052EC9111" label="Active Suite" paletteLabel="Active Suite" visibilityPriority="2" id="1hd-92-TVs">
+                    <toolbarItem implicitItemIdentifier="CC9CEC29-B506-4495-A7EE-76D052EC9111" label="Benchmark" paletteLabel="Benchmark" visibilityPriority="2" id="1hd-92-TVs">
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="28"/>
                         <size key="maxSize" width="150" height="28"/>
-                        <popUpButton key="view" verticalHuggingPriority="750" id="rg8-sn-PVA">
+                        <popUpButton key="view" toolTip="Benchmark" verticalHuggingPriority="750" id="rg8-sn-PVA">
                             <rect key="frame" x="0.0" y="14" width="100" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="roundTextured" title="Insertion" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="vBc-24-aYE" id="dr8-Kh-Ry0">
@@ -533,8 +546,7 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="3A754481-B5AC-4438-B120-2277C365DC10" label="Minimum Size" paletteLabel="Minimum Size" id="aPm-qb-Vv1">
-                        <nil key="toolTip"/>
+                    <toolbarItem implicitItemIdentifier="3A754481-B5AC-4438-B120-2277C365DC10" label="Minimum Size" paletteLabel="Minimum Size" toolTip="Minimum Size" id="aPm-qb-Vv1">
                         <size key="minSize" width="80" height="28"/>
                         <size key="maxSize" width="80" height="28"/>
                         <popUpButton key="view" verticalHuggingPriority="750" id="wfA-Hb-afc">
@@ -553,8 +565,7 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="17F5696C-4520-46B5-A3A3-480DBFE97383" label="Maximum Size" paletteLabel="Maximum Size" id="d02-oo-Bi2">
-                        <nil key="toolTip"/>
+                    <toolbarItem implicitItemIdentifier="17F5696C-4520-46B5-A3A3-480DBFE97383" label="Maximum Size" paletteLabel="Maximum Size" toolTip="Maximum Size" id="d02-oo-Bi2">
                         <size key="minSize" width="80" height="28"/>
                         <size key="maxSize" width="80" height="28"/>
                         <popUpButton key="view" verticalHuggingPriority="750" id="bxa-GT-aeV">
@@ -573,8 +584,7 @@
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="121A327D-1C75-4ECB-AFBD-D496FD89D871" label="Jobs" paletteLabel="Jobs" visibilityPriority="1" id="0NC-Up-Wdv">
-                        <nil key="toolTip"/>
+                    <toolbarItem implicitItemIdentifier="121A327D-1C75-4ECB-AFBD-D496FD89D871" label="Jobs" paletteLabel="Jobs" toolTip="Jobs" visibilityPriority="1" id="0NC-Up-Wdv">
                         <size key="minSize" width="120" height="28"/>
                         <size key="maxSize" width="120" height="28"/>
                         <popUpButton key="view" verticalHuggingPriority="750" id="m3D-IU-xIC">
@@ -597,7 +607,7 @@
                         <nil key="toolTip"/>
                         <size key="minSize" width="40" height="28"/>
                         <size key="maxSize" width="40" height="28"/>
-                        <button key="view" verticalHuggingPriority="750" id="X4a-Uy-A9Q">
+                        <button key="view" toolTip="Toggle Execution" verticalHuggingPriority="750" id="X4a-Uy-A9Q">
                             <rect key="frame" x="0.0" y="14" width="40" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="RunTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ma2-Mb-UJe">
@@ -613,10 +623,10 @@
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="28"/>
                         <size key="maxSize" width="400" height="28"/>
-                        <button key="view" verticalHuggingPriority="750" id="PBE-a0-9V8" customClass="StatusButtonInTitlebar" customModule="Benchmark" customModuleProvider="target">
+                        <button key="view" verticalHuggingPriority="750" allowsExpansionToolTips="YES" id="PBE-a0-9V8" customClass="StatusButtonInTitlebar" customModule="Benchmark" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="14" width="100" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Not running" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="auo-6k-fGR" customClass="StatusButtonCell" customModule="Benchmark" customModuleProvider="target">
+                            <buttonCell key="cell" type="roundTextured" title="Idle" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="auo-6k-fGR" customClass="StatusButtonCell" customModule="Benchmark" customModuleProvider="target">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="systemLight" size="12"/>
                             </buttonCell>

@@ -10,15 +10,15 @@ import Cocoa
 import BenchmarkingTools
 
 protocol HarnessDelegate: class {
-    func harness(_ harness: Harness, didStartMeasuringSuite suite: String, job: String, size: Int)
-    func harness(_ harness: Harness, didMeasureInstanceInSuite suite: String, job: String, size: Int, withResult time: TimeInterval)
-    func harness(_ harness: Harness, didStopMeasuringSuite suite: String)
+    func harness(_ harness: Harness, didStartMeasuringBenchmark benchmark: String, job: String, size: Int)
+    func harness(_ harness: Harness, didMeasureInstanceInBenchmark benchmark: String, job: String, size: Int, withResult time: TimeInterval)
+    func harness(_ harness: Harness, didStopMeasuringBenchmark benchmark: String)
 }
 
 let cachesFolder = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
 let saveFolder = cachesFolder.appendingPathComponent("hu.lorentey.Benchmark")
 
-extension BenchmarkSuiteProtocol {
+extension BenchmarkProtocol {
     var saveURL: URL {
         let name = self.title.replacingOccurrences(of: "/", with: "-")
         return saveFolder.appendingPathComponent("\(name).plist")
@@ -45,11 +45,11 @@ class Harness {
     init() {
     }
 
-    func load(_ suite: BenchmarkSuiteProtocol) {
-        precondition(self.suitesByTitle[suite.title] == nil)
-        let harness = Suite(suite: suite)
+    func load(_ benchmark: BenchmarkProtocol) {
+        precondition(self.suitesByTitle[benchmark.title] == nil)
+        let harness = Suite(benchmark: benchmark)
         self.suites.append(harness)
-        self.suitesByTitle[suite.title] = harness
+        self.suitesByTitle[benchmark.title] = harness
     }
 
     func save() throws {
@@ -87,7 +87,7 @@ class Harness {
         guard self.state == .stopping else { return false }
         self.state = .idle
         DispatchQueue.main.async {
-            self.delegate?.harness(self, didStopMeasuringSuite: suite.title)
+            self.delegate?.harness(self, didStopMeasuringBenchmark: suite.title)
         }
         return true
     }
@@ -98,12 +98,12 @@ class Harness {
         let job = jobs[i]
         let size = sizes[j]
         DispatchQueue.main.sync {
-            self.delegate?.harness(self, didStartMeasuringSuite: suite.title, job: job, size: size)
+            self.delegate?.harness(self, didStartMeasuringBenchmark: suite.title, job: job, size: size)
         }
-        if let time = suite.suite.run(jobs[i], sizes[j]) {
+        if let time = suite.benchmark.run(jobs[i], sizes[j]) {
             DispatchQueue.main.sync {
                 suite.addMeasurement(job, size, time)
-                self.delegate?.harness(self, didMeasureInstanceInSuite: suite.title, job: job, size: size, withResult: time)
+                self.delegate?.harness(self, didMeasureInstanceInBenchmark: suite.title, job: job, size: size, withResult: time)
             }
         }
         if self._stopIfNeeded(suite) { return }
@@ -114,7 +114,7 @@ class Harness {
             }
             else {
                 if forget {
-                    suite.suite.forgetInstances()
+                    suite.benchmark.forgetInstances()
                 }
                 self._run(suite: suite, jobs: jobs, sizes: sizes,
                           i: 0, j: (j + 1) % sizes.count, forget: forget)
@@ -149,7 +149,7 @@ class Harness {
 }
 
 class Suite {
-    let suite: BenchmarkSuiteProtocol
+    let benchmark: BenchmarkProtocol
     var samplesByJob: [String: JobResults] = [:]
 
     var scaleRange: CountableClosedRange<Int> {
@@ -164,42 +164,42 @@ class Suite {
             return _selectedJobSet
         }
         set {
-            let value = newValue.intersection(suite.jobTitles)
-            if value.isEmpty { _selectedJobSet = Set(suite.jobTitles) }
+            let value = newValue.intersection(benchmark.jobTitles)
+            if value.isEmpty { _selectedJobSet = Set(benchmark.jobTitles) }
             else { _selectedJobSet = value }
         }
     }
 
     var selectedJobs: [String] {
         get {
-            return suite.jobTitles.filter(selectedJobSet.contains)
+            return benchmark.jobTitles.filter(selectedJobSet.contains)
         }
         set {
             selectedJobSet = Set(newValue)
         }
     }
 
-    var title: String { return suite.title }
-    var jobTitles: [String] { return suite.jobTitles }
+    var title: String { return benchmark.title }
+    var jobTitles: [String] { return benchmark.jobTitles }
     var sizeRange: ClosedRange<Int> { return (1 << scaleRange.lowerBound) ... (1 << scaleRange.upperBound) }
 
-    init(suite: BenchmarkSuiteProtocol) {
-        self.suite = suite
+    init(benchmark: BenchmarkProtocol) {
+        self.benchmark = benchmark
 
         do { // Load configuration
-            let dict = UserDefaults.standard.dictionary(forKey: "Config-\(suite.title)") ?? [:]
+            let dict = UserDefaults.standard.dictionary(forKey: "BenchmarkConfig-\(benchmark.title)") ?? [:]
 
             let minScale = dict["MinScale"] as? Int ?? 0
             let maxScale = dict["MaxScale"] as? Int ?? 20
             self.scaleRange = minScale ... maxScale
 
             let selected = dict["SelectedJobs"] as? [String] ?? []
-            self._selectedJobSet = Set(selected).intersection(suite.jobTitles)
-            if _selectedJobSet.isEmpty { _selectedJobSet = Set(suite.jobTitles) }
+            self._selectedJobSet = Set(selected).intersection(benchmark.jobTitles)
+            if _selectedJobSet.isEmpty { _selectedJobSet = Set(benchmark.jobTitles) }
         }
 
         do { // Load saved results
-            let url = suite.saveURL
+            let url = benchmark.saveURL
             if let savedData = try? Data(contentsOf: url),
                 let plist = (try? PropertyListSerialization.propertyList(from: savedData, format: nil)) as? [String: Any],
                 let data = plist["Data"] as? [String: Any] {
@@ -219,12 +219,13 @@ class Suite {
         }
         let plist: [String: Any] = ["Data": encoded]
         let data = try! PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
-        try data.write(to: suite.saveURL)
+        try data.write(to: benchmark.saveURL)
         saveConfig()
     }
 
     func reset() throws {
         self.samplesByJob = [:]
+        try? FileManager.default.removeItem(at: benchmark.saveURL)
     }
 
     private func saveConfig() {
@@ -233,12 +234,12 @@ class Suite {
             "MaxScale": scaleRange.upperBound,
             "SelectedJobs": Array(selectedJobs)
         ]
-        UserDefaults.standard.set(dict, forKey: "Config-\(title)")
+        UserDefaults.standard.set(dict, forKey: "BenchmarkConfig-\(title)")
     }
 
     func samples(for job: String) -> JobResults {
         if let samples = samplesByJob[job] { return samples }
-        precondition(suite.jobTitles.contains(job))
+        precondition(benchmark.jobTitles.contains(job))
         let samples = JobResults()
         samplesByJob[job] = samples
         return samples

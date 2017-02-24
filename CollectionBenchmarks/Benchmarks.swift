@@ -82,25 +82,25 @@ func noop<T>(_ value: T) {
     _fixLifetime(value)
 }
 
-func demoBenchmark() -> BenchmarkSuiteProtocol {
-    let suite = BenchmarkSuite(title: "Demo", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
-    suite.descriptiveTitle = "Foo"
-    suite.descriptiveAmortizedTitle = "Amortized Foo"
+func demoBenchmark() -> BenchmarkProtocol {
+    let benchmark = Benchmark(title: "Demo", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+    benchmark.descriptiveTitle = "Foo"
+    benchmark.descriptiveAmortizedTitle = "Amortized Foo"
 
-    suite.addJob(title: "Array.contains") { input, lookups in
+    benchmark.addJob(title: "Array.contains") { input, lookups in
         return { timer in
             for i in 0 ..< lookups.count {
                 guard input.contains(i) else { fatalError() }
             }
         }
     }
-    suite.addJob(title: "Array.sort") { input, lookups in
+    benchmark.addJob(title: "Array.sort") { input, lookups in
         return { timer in
             let array = input.sorted()
             noop(array)
         }
     }
-    suite.addJob(title: "Array.binarySearch") { input, lookups in
+    benchmark.addJob(title: "Array.binarySearch") { input, lookups in
         let array = input.sorted()
         return { timer in
             for value in 0 ..< lookups.count {
@@ -119,7 +119,7 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
             }
         }
     }
-    suite.addJob(title: "Array.sort+binarySearch") { input, lookups in
+    benchmark.addJob(title: "Array.sort+binarySearch") { input, lookups in
         return { timer in
             let array = input.sorted()
             for value in 0 ..< lookups.count {
@@ -139,14 +139,14 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "Set.init") { input, lookups in
+    benchmark.addJob(title: "Set.init") { input, lookups in
         return { timer in
             let set = Set(input)
             noop(set)
         }
     }
 
-    suite.addJob(title: "Set.init+capacity") { input, lookups in
+    benchmark.addJob(title: "Set.init+capacity") { input, lookups in
         return { timer in
             var set = Set<Int>(minimumCapacity: input.count)
             for value in input { set.insert(value) }
@@ -154,7 +154,7 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "Set.contains") { input, lookups in
+    benchmark.addJob(title: "Set.contains") { input, lookups in
         let set = Set(input)
         return { timer in
             for i in lookups {
@@ -162,7 +162,7 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
             }
         }
     }
-    suite.addJob(title: "Set.init+contains") { input, lookups in
+    benchmark.addJob(title: "Set.init+contains") { input, lookups in
         return { timer in
             let set = Set(input)
             for i in lookups {
@@ -171,16 +171,16 @@ func demoBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    return suite
+    return benchmark
 }
 
-func foreachBenchmark() -> BenchmarkSuite<[Value]> {
-    let suite = BenchmarkSuite<[Value]>(title: "ForEach", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Iteration using “forEach”"
-    suite.descriptiveAmortizedTitle = "A single iteration of “forEach”"
+func foreachBenchmark() -> Benchmark<[Value]> {
+    let benchmark = Benchmark<[Value]>(title: "ForEach", inputGenerator: inputGenerator)
+    benchmark.descriptiveTitle = "Iteration using “forEach”"
+    benchmark.descriptiveAmortizedTitle = "A single iteration of “forEach”"
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
-        suite.addJob(title: title) { input in
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+        benchmark.addJob(title: title) { input in
             var set = initializer()
             for value in input {
                 set.insert(value)
@@ -198,7 +198,7 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    suite.addJob(title: "SortedArray") { input in
+    benchmark.addJob(title: "SortedArray") { input in
         var set = SortedArray<Value>()
         for value in 0 ..< input.count { // Cheating
             set.append(value)
@@ -215,34 +215,34 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: suite)
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: benchmark)
 
-    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: benchmark)
 
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("COWTree", for: COWTree<Value>.self, to: suite)
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: benchmark)
+    add("COWTree", for: COWTree<Value>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+        add("BTree0/\(order)", to: benchmark) { BTree0<Value>(order: order) }
     }
     for order in orders {
-        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
+        add("BTree1/\(order)", to: benchmark) { BTree1<Value>(order: order) }
     }
     for order in orders {
-        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+        add("BTree2/\(order)", to: benchmark) { BTree2<Value>(order: order) }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: suite) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
         }
     }
 
-    suite.addJob(title: "IntBTree/1024-16, inlined") { input in
+    benchmark.addJob(title: "IntBTree/1024-16, inlined") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -257,7 +257,7 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    suite.addJob(title: "Array") { input in
+    benchmark.addJob(title: "Array") { input in
         let array = input.sorted()
         return { timer in
             var i = 0
@@ -269,16 +269,16 @@ func foreachBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    return suite
+    return benchmark
 }
 
-func indexingBenchmark() -> BenchmarkSuite<[Value]> {
-    let suite = BenchmarkSuite<[Value]>(title: "Indexing", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Iteration using indexing"
-    suite.descriptiveAmortizedTitle = "A single iteration step with indexing"
+func indexingBenchmark() -> Benchmark<[Value]> {
+    let benchmark = Benchmark<[Value]>(title: "Indexing", inputGenerator: inputGenerator)
+    benchmark.descriptiveTitle = "Iteration using indexing"
+    benchmark.descriptiveAmortizedTitle = "A single iteration step with indexing"
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
-        suite.addJob(title: title) { input in
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+        benchmark.addJob(title: title) { input in
             var set = initializer()
             for value in input {
                 set.insert(value)
@@ -299,7 +299,7 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    suite.addJob(title: "SortedArray") { input in
+    benchmark.addJob(title: "SortedArray") { input in
         var set = SortedArray<Value>()
         for value in 0 ..< input.count { // Cheating
             set.append(value)
@@ -318,34 +318,34 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: suite)
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: benchmark)
 
-    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: benchmark)
 
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("COWTree", for: COWTree<Value>.self, to: suite)
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: benchmark)
+    add("COWTree", for: COWTree<Value>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+        add("BTree0/\(order)", to: benchmark) { BTree0<Value>(order: order) }
     }
     for order in orders {
-        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
+        add("BTree1/\(order)", to: benchmark) { BTree1<Value>(order: order) }
     }
     for order in orders {
-        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+        add("BTree2/\(order)", to: benchmark) { BTree2<Value>(order: order) }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: suite) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
         }
     }
 
-    suite.addJob(title: "IntBTree/1024-16, inlined") { input in
+    benchmark.addJob(title: "IntBTree/1024-16, inlined") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -363,7 +363,7 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    suite.addJob(title: "Array") { input in
+    benchmark.addJob(title: "Array") { input in
         let array = input.sorted()
         return { timer in
             var i = 0
@@ -377,16 +377,16 @@ func indexingBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
     
-    return suite
+    return benchmark
 }
 
-func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
-    let suite = BenchmarkSuite<([Value], [Value])>(title: "Contains", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
-    suite.descriptiveTitle = "Looking up all members in random order"
-    suite.descriptiveAmortizedTitle = "Looking up one random member"
+func containsBenchmark() -> Benchmark<([Value], [Value])> {
+    let benchmark = Benchmark<([Value], [Value])>(title: "Contains", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+    benchmark.descriptiveTitle = "Looking up all members in random order"
+    benchmark.descriptiveAmortizedTitle = "Looking up one random member"
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to suite: BenchmarkSuite<([Value], [Value])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
-        suite.addJob(title: title) { (input, lookups) in
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<([Value], [Value])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+        benchmark.addJob(title: title) { (input, lookups) in
             var set = initializer()
             for value in input {
                 set.insert(value)
@@ -401,7 +401,7 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
         }
     }
 
-    suite.addJob(title: "SortedArray") { (input, lookups) in
+    benchmark.addJob(title: "SortedArray") { (input, lookups) in
         var set = SortedArray<Value>()
         for value in 0 ..< input.count { // Cheating
             set.append(value)
@@ -415,34 +415,34 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
         }
     }
 
-    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: suite)
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, to: benchmark)
 
-    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: benchmark)
 
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("COWTree", for: COWTree<Value>.self, to: suite)
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: benchmark)
+    add("COWTree", for: COWTree<Value>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+        add("BTree0/\(order)", to: benchmark) { BTree0<Value>(order: order) }
     }
     for order in orders {
-        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
+        add("BTree1/\(order)", to: benchmark) { BTree1<Value>(order: order) }
     }
     for order in orders {
-        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+        add("BTree2/\(order)", to: benchmark) { BTree2<Value>(order: order) }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: suite) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
         }
     }
 
-    suite.addJob(title: "Array") { (input, lookups) in
+    benchmark.addJob(title: "Array") { (input, lookups) in
         if input.count > 100_000 { return nil }
         let array = input.sorted()
         return { timer in
@@ -452,16 +452,16 @@ func containsBenchmark() -> BenchmarkSuite<([Value], [Value])> {
         }
     }
     
-    return suite
+    return benchmark
 }
 
-func insertionBenchmark() -> BenchmarkSuite<[Value]> {
-    let suite = BenchmarkSuite<[Value]>(title: "Insertion", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Construction by random insertions"
-    suite.descriptiveAmortizedTitle = "Cost of one random insertion"
+func insertionBenchmark() -> Benchmark<[Value]> {
+    let benchmark = Benchmark<[Value]>(title: "Insertion", inputGenerator: inputGenerator)
+    benchmark.descriptiveTitle = "Construction by random insertions"
+    benchmark.descriptiveAmortizedTitle = "Cost of one random insertion"
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxSize: Int? = nil, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
-        suite.addJob(title: title) { input in
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxSize: Int? = nil, to benchmark: Benchmark<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+        benchmark.addJob(title: title) { input in
             if let maxSize = maxSize, input.count > maxSize { return nil }
             var first = true
             return { timer in
@@ -485,49 +485,49 @@ func insertionBenchmark() -> BenchmarkSuite<[Value]> {
         }
     }
 
-    add("SortedArray", for: SortedArray<Value>.self, /*maxSize: 65536,*/ to: suite)
-    add("NSOrderedSet", for: MyOrderedSet<Value>.self, /*maxSize: 65536,*/ to: suite)
-    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("COWTree", for: COWTree<Value>.self, to: suite)
+    add("SortedArray", for: SortedArray<Value>.self, /*maxSize: 65536,*/ to: benchmark)
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, /*maxSize: 65536,*/ to: benchmark)
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: benchmark)
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: benchmark)
+    add("COWTree", for: COWTree<Value>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+        add("BTree0/\(order)", to: benchmark) { BTree0<Value>(order: order) }
     }
     for order in orders {
-        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
+        add("BTree1/\(order)", to: benchmark) { BTree1<Value>(order: order) }
     }
     for order in orders {
-        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+        add("BTree2/\(order)", to: benchmark) { BTree2<Value>(order: order) }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: suite) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
         }
     }
 
-    suite.addJob(title: "Array.sort") { input in
+    benchmark.addJob(title: "Array.sort") { input in
         return { timer in
             var array = input
             array.sort()
         }
     }
 
-    return suite
+    return benchmark
 }
 
-func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true) -> BenchmarkSuite<[Value]> {
-    let suite = BenchmarkSuite<[Value]>(title: "SharedInsertion", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Random insertions into shared storage"
-    suite.descriptiveAmortizedTitle = "One random insertion into shared storage"
+func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true) -> Benchmark<[Value]> {
+    let benchmark = Benchmark<[Value]>(title: "SharedInsertion", inputGenerator: inputGenerator)
+    benchmark.descriptiveTitle = "Random insertions into shared storage"
+    benchmark.descriptiveAmortizedTitle = "One random insertion into shared storage"
 
-    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxCount: Int? = nil, to suite: BenchmarkSuite<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
-        suite.addJob(title: title) { input in
+    func add<T: TestableSet>(_ title: String, for type: T.Type = T.self, maxCount: Int? = nil, to benchmark: Benchmark<[Value]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Value {
+        benchmark.addJob(title: title) { input in
             if let maxCount = maxCount, input.count > maxCount { return nil }
             var first = true
             return { timer in
@@ -579,33 +579,33 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
         }
     }
 
-    add("SortedArray", for: SortedArray<Value>.self, maxCount: 130_000, to: suite)
-    add("NSOrderedSet", for: MyOrderedSet<Value>.self, maxCount: 2048, to: suite)
-    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: suite)
-    //add("BinaryTree", for: BinaryTree<Value>.self, to: suite)
-    add("COWTree", for: COWTree<Value>.self, to: suite)
+    add("SortedArray", for: SortedArray<Value>.self, maxCount: 130_000, to: benchmark)
+    add("NSOrderedSet", for: MyOrderedSet<Value>.self, maxCount: 2048, to: benchmark)
+    add("AlgebraicTree", for: AlgebraicTree<Value>.self, to: benchmark)
+    //add("BinaryTree", for: BinaryTree<Value>.self, to: benchmark)
+    add("COWTree", for: COWTree<Value>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: suite) { BTree0<Value>(order: order) }
+        add("BTree0/\(order)", to: benchmark) { BTree0<Value>(order: order) }
     }
     for order in orders {
-        add("BTree1/\(order)", to: suite) { BTree1<Value>(order: order) }
+        add("BTree1/\(order)", to: benchmark) { BTree1<Value>(order: order) }
     }
     for order in orders {
-        add("BTree2/\(order)", to: suite) { BTree2<Value>(order: order) }
+        add("BTree2/\(order)", to: benchmark) { BTree2<Value>(order: order) }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: suite) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
+            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Value>(leafOrder: order, internalOrder: internalOrder) }
         }
     }
     for order in orders {
         for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: suite) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
         }
     }
 
-    suite.addJob(title: "Array.sort") { input in
+    benchmark.addJob(title: "Array.sort") { input in
         guard input.count < 130_000 else { return nil }
         return { timer in
             var array: [Value] = []
@@ -619,15 +619,15 @@ func cowBenchmark(iterations: Int = 10, maxScale: Int = 15, random: Bool = true)
         }
     }
 
-    return suite
+    return benchmark
 }
 
-func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
-    let suite = BenchmarkSuite<[Value]>(title: "BTreeIteration", inputGenerator: inputGenerator)
-    suite.descriptiveTitle = "Iterating over all elements"
-    suite.descriptiveAmortizedTitle = "A single iteration step"
+func btreeIterationBenchmark() -> BenchmarkProtocol {
+    let benchmark = Benchmark<[Value]>(title: "BTreeIteration", inputGenerator: inputGenerator)
+    benchmark.descriptiveTitle = "Iterating over all elements"
+    benchmark.descriptiveAmortizedTitle = "A single iteration step"
 
-    suite.addJob(title: "BTree3.Indexing") { input in
+    benchmark.addJob(title: "BTree3.Indexing") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
             for value in input {
                 set.insert(value)
@@ -647,7 +647,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "BTree3.for-in") { input in
+    benchmark.addJob(title: "BTree3.for-in") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -664,7 +664,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "BTree3.forEach") { input in
+    benchmark.addJob(title: "BTree3.forEach") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -681,7 +681,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "BTree3.contains") { input in
+    benchmark.addJob(title: "BTree3.contains") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -695,7 +695,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "IntBTree.Indexing") { input in
+    benchmark.addJob(title: "IntBTree.Indexing") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -715,7 +715,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "IntBTree.for-in") { input in
+    benchmark.addJob(title: "IntBTree.for-in") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -732,7 +732,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "IntBTree.forEach") { input in
+    benchmark.addJob(title: "IntBTree.forEach") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -749,7 +749,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "IntBTree.contains") { input in
+    benchmark.addJob(title: "IntBTree.contains") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -763,7 +763,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "Array.for-in") { input in
+    benchmark.addJob(title: "Array.for-in") { input in
         var array = input
         array.sort()
 
@@ -777,7 +777,7 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    suite.addJob(title: "Array.forEach") { input in
+    benchmark.addJob(title: "Array.forEach") { input in
         var array = input
         array.sort()
 
@@ -791,10 +791,10 @@ func btreeIterationBenchmark() -> BenchmarkSuiteProtocol {
         }
     }
 
-    return suite
+    return benchmark
 }
 
-public func generateBenchmarks() -> [BenchmarkSuiteProtocol] {
+public func generateBenchmarks() -> [BenchmarkProtocol] {
     return [
         demoBenchmark(),
         foreachBenchmark(),

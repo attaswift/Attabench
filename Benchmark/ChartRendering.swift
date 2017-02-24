@@ -249,10 +249,10 @@ class Chart {
         self.presentationMode = presentation
         self.showTitle = showTitle
         if amortized {
-            self.title = suite.suite.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
+            self.title = suite.benchmark.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
         }
         else {
-            self.title = suite.suite.descriptiveTitle ?? suite.title
+            self.title = suite.benchmark.descriptiveTitle ?? suite.title
         }
 
         let jobs = suite.selectedJobs
