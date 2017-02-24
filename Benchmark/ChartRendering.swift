@@ -20,7 +20,7 @@ extension NSBezierPath {
 }
 
 extension Int {
-    var label: String {
+    var sizeLabel: String {
         return self >= 1 << 40 ? String(format: "%.3gT", Double(self) * 0x1p-40)
             : self >= 1 << 30 ? String(format: "%.3gG", Double(self) * 0x1p-30)
             : self >= 1 << 20 ? String(format: "%.3gM", Double(self) * 0x1p-20)
@@ -30,40 +30,207 @@ extension Int {
 }
 
 extension TimeInterval {
-    var label: String {
+    var timeLabel: String {
         return self >= 1000 ? String(Int(self)) + "s"
             : self >= 1 ? String(format: "%.3gs", self)
             : self >= 1e-3 ? String(format: "%.3gms", self * 1e3)
             : self >= 1e-6 ? String(format: "%.3gµs", self * 1e6)
+            : self < 1e-9 ? "0s"
             : String(format: "%.3gns", self * 1e9)
     }
 }
 
-class Chart {
-    struct Gridline {
-        enum Kind {
-            case major
-            case minor
-        }
-        let kind: Kind
-        let position: CGFloat
-        let label: String?
+struct Gridline {
+    enum Kind {
+        case major
+        case minor
+    }
+    let kind: Kind
+    let position: CGFloat
+    let label: String?
 
-        init(_ kind: Kind, position: CGFloat, label: String? = nil) {
-            self.kind = kind
-            self.position = position
-            self.label = label
+    init(_ kind: Kind, position: CGFloat, label: String? = nil) {
+        self.kind = kind
+        self.position = position
+        self.label = label
+    }
+}
+
+protocol ChartScale {
+    var min: Double { get }
+    var max: Double { get }
+    var grid: (major: Double, minor: Double) { get }
+
+    var gridlines: [Gridline] { get }
+    func position(for value: Double) -> CGFloat
+}
+
+struct EmptyScale: ChartScale {
+    let min: Double = 0
+    let max: Double = 1
+    let grid: (major: Double, minor: Double) = (1, 1)
+    let gridlines: [Gridline] = []
+
+    func position(for value: Double) -> CGFloat {
+        return CGFloat(value)
+    }
+}
+
+struct LogarithmicScale: ChartScale {
+    let decimal: Bool
+    let labeler: (Double) -> String
+    let min: Double
+    let max: Double
+    let grid: (major: Double, minor: Double)
+
+    init(_ range: Range<Double>, decimal: Bool, labeler: @escaping (Double) -> String) {
+        precondition(range.lowerBound > 0)
+        self.decimal = decimal
+        self.labeler = labeler
+
+        let step = decimal ? 10.0 : 2.0
+
+        // Find last major gridline below range.
+        if range.lowerBound < 1 {
+            var s: Double = 1
+            while range.lowerBound * s < 1 {
+                s *= step
+            }
+            self.min = 1 / s
         }
+        else {
+            var s: Double = 1
+            while s * step < range.lowerBound {
+                s *= step
+            }
+            self.min = s
+        }
+
+        // Find first major gridline above range.
+        var s = self.min
+        while s < range.upperBound {
+            s *= step
+        }
+        self.max = s
+
+        self.grid = (major: log(step) / (log(max) - log(min)),
+                     minor: decimal ? log(2) / (log(max) - log(min)) : 0)
     }
 
+    var gridlines: [Gridline] {
+        var gridlines: [Gridline] = []
+        let step = decimal ? 10.0 : 2.0
+        var value = self.min
+        while value <= self.max {
+            let position = self.position(for: value)
+            let label = self.labeler(value)
+            gridlines.append(Gridline(.major, position: position, label: label))
+            value *= step
+        }
+        if decimal {
+            value = 2 * min
+            while true {
+                let position = self.position(for: value)
+                if position > 1.0001 { break }
+                gridlines.append(Gridline(.minor, position: position))
+                value *= 2
+            }
+        }
+        return gridlines
+    }
+
+    func position(for value: Double) -> CGFloat {
+        precondition(value > 0)
+        return CGFloat((log2(value) - log2(min)) / (log2(max) - log2(min)))
+    }
+}
+
+extension Array {
+    func looped() -> AnyIterator<Element> {
+        var i = 0
+        return AnyIterator {
+            defer { i = (i + 1 == self.count ? 0 : i + 1) }
+            return self[i]
+        }
+    }
+}
+
+struct LinearScale: ChartScale {
+    let decimal: Bool
+    let labeler: (Double) -> String
+    let min: Double
+    let max: Double
+    private let majorScale: Double
+    private let minorScale: Double
+    let grid: (major: Double, minor: Double)
+
+    init(_ range: Range<Double>, decimal: Bool, labeler: @escaping (Double) -> String) {
+        self.decimal = decimal
+        self.labeler = labeler
+
+        let steps = (decimal ? [5.0, 2.0] : [2.0]).looped()
+        let desiredDelta: Range<Double> = decimal ? 5.0 ..< 20.0 : 4.0 ..< 16.0
+
+        let delta = range.upperBound - range.lowerBound
+        var scale = 1.0
+        if delta < desiredDelta.lowerBound {
+            while scale * delta < desiredDelta.lowerBound {
+                scale *= steps.next()!
+            }
+            scale = 1 / scale
+        }
+        else if delta > desiredDelta.upperBound {
+            while delta > scale * desiredDelta.upperBound {
+                scale *= steps.next()!
+            }
+        }
+        self.min = scale * floor(range.lowerBound / scale)
+        self.max = scale * ceil(range.upperBound / scale)
+        self.majorScale = scale
+        self.minorScale = scale / 4
+
+        self.grid = (major: scale / (max - min),
+                     minor: decimal ? minorScale / (max - min) : 0)
+    }
+
+    var gridlines: [Gridline] {
+        var gridlines: [Gridline] = []
+        var value = self.min
+        while true {
+            let position = self.position(for: value)
+            if position > 1.0001 { break }
+            let label = self.labeler(value)
+            gridlines.append(Gridline(.major, position: position, label: label))
+            if decimal {
+                var v = value + minorScale
+                while v < value + majorScale {
+                    let p = self.position(for: v)
+                    if p > 1.0001 { break }
+                    gridlines.append(Gridline(.minor, position: p, label: self.labeler(v)))
+                    v += minorScale
+                }
+            }
+            value += majorScale
+        }
+        return gridlines
+    }
+
+    func position(for value: Double) -> CGFloat {
+        return CGFloat((value - min) / (max - min))
+    }
+}
+
+class Chart {
     let size: CGSize
     let suite: Suite
     let title: String
+    let amortized: Bool
     let presentationMode: Bool
+    let showTitle: Bool
 
     var curves: [(String, NSColor, NSBezierPath)] = []
-    var verticalGridlines: [Gridline] = []
-    var horizontalGridlines: [Gridline] = []
+    let sizeScale: ChartScale
+    let timeScale: ChartScale
     var horizontalHighlight: Range<CGFloat>? = nil
 
     init(size: CGSize,
@@ -71,17 +238,22 @@ class Chart {
          highlightedSizes: ClosedRange<Int>? = nil,
          sizeRange: Range<Int>? = nil,
          timeRange: Range<TimeInterval>? = nil,
+         logarithmicSizeScale: Bool = true,
+         logarithmicTimeScale: Bool = true,
          amortized: Bool = false,
-         presentation: Bool = false) {
+         presentation: Bool = false,
+         showTitle: Bool = true) {
         self.size = size
         self.suite = suite
+        self.amortized = amortized
+        self.presentationMode = presentation
+        self.showTitle = showTitle
         if amortized {
             self.title = suite.suite.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
         }
         else {
             self.title = suite.suite.descriptiveTitle ?? suite.title
         }
-        self.presentationMode = presentation
 
         let benchmarks = suite.selectedBenchmarks
 
@@ -105,69 +277,32 @@ class Chart {
                 count += 1
             }
         }
-        if count == 0 {
+
+        if count < 2 {
+            self.sizeScale = EmptyScale()
+            self.timeScale = EmptyScale()
             return
         }
 
-        var t: TimeInterval = 1e-20
-        while 10 * t < minTime {
-            t *= 10
+        let sizeLabeler: (Double) -> String = { value in Int(value).sizeLabel }
+        if logarithmicSizeScale {
+            self.sizeScale = LogarithmicScale(Double(minSize) ..< Double(maxSize), decimal: false, labeler: sizeLabeler)
         }
-        minTime = t
-        while t < maxTime {
-            t *= 10
+        else {
+            self.sizeScale = LinearScale(Double(minSize) ..< Double(maxSize), decimal: false, labeler: sizeLabeler)
         }
-        maxTime = t
 
-        let scaleX = 1 / (log2(CGFloat(maxSize)) - log2(CGFloat(minSize)))
-        let scaleY = 1 / CGFloat(log2(maxTime) - log2(minTime))
-
-        func x(_ size: Int) -> CGFloat {
-            return scaleX * log2(CGFloat(max(1, size)))
+        let timeLabeler: (Double) -> String = { value in TimeInterval(value).timeLabel }
+        if logarithmicTimeScale {
+            self.timeScale = LogarithmicScale(minTime ..< maxTime, decimal: true, labeler: timeLabeler)
         }
-        func y(_ size: Int, _ time: TimeInterval) -> CGFloat {
-            let time = amortized ? time / Double(size) : time
-            return scaleY * CGFloat(log2(time) - log2(minTime))
+        else {
+            self.timeScale = LinearScale(minTime ..< maxTime, decimal: true, labeler: timeLabeler)
         }
 
         if let s = highlightedSizes {
-            self.horizontalHighlight = x(s.lowerBound) ..< x(s.upperBound)
+            self.horizontalHighlight = sizeScale.position(for: Double(s.lowerBound)) ..< sizeScale.position(for: Double(s.upperBound))
         }
-
-        do {
-            var size = minSize
-            var i = 0
-            while size <= maxSize {
-                if size >= minSize {
-                    let x = scaleX * log2(CGFloat(size))
-                    if !presentationMode || i & 1 == 0 {
-                        verticalGridlines.append(Gridline(.major, position: x, label: size.label))
-                    }
-                    else {
-                        verticalGridlines.append(Gridline(.major, position: x))
-                    }
-                }
-                size <<= 1
-                i += 1
-            }
-        }
-
-        do {
-            var time = minTime
-            while time <= maxTime {
-                horizontalGridlines.append(Gridline(.major, position: y(1, time), label: time.label))
-                time *= 10
-            }
-            if maxTime / minTime < 1e6 {
-                time = 2 * minTime
-                while time <= maxTime {
-                    let yc = y(1, time)
-                    horizontalGridlines.append(Gridline(.minor, position: yc))
-                    time *= 2
-                }
-            }
-        }
-
 
         let c = benchmarks.count
         for i in 0 ..< c {
@@ -196,7 +331,8 @@ class Chart {
             }
             let path = NSBezierPath()
             path.appendLines(between: samples.samplesBySize.sorted(by: { $0.0 < $1.0 }).map { (size, sample) in
-                return CGPoint(x: x(size), y: y(size, sample.minimum))
+                return CGPoint(x: sizeScale.position(for: Double(size)),
+                               y: timeScale.position(for: amortized ? sample.minimum / Double(size) : sample.minimum))
             })
 
             self.curves.append((benchmark, color, path))
@@ -281,7 +417,9 @@ class Chart {
             NSForegroundColorAttributeName: p.majorGridlineColor
         ]
         let (titleRect, bottomRect) = bounds.divided(
-            atDistance: 1.2 * (p.titleFont.boundingRectForFont.height + p.titleFont.leading),
+            atDistance: showTitle
+                ? 1.2 * (p.titleFont.boundingRectForFont.height + p.titleFont.leading)
+                : p.scaleFont.boundingRectForFont.height,
             from: .maxYEdge)
 
         let scaleWidth = 3 * p.scaleFont.maximumAdvancement.width
@@ -292,21 +430,29 @@ class Chart {
         let largeSize = NSSize(width: 100000, height: 100000)
 
         // Draw title
-        let title = NSAttributedString(
-            string: self.title,
-            attributes: [
-                NSFontAttributeName: p.titleFont,
-                NSForegroundColorAttributeName: p.titleColor,
-            ])
-        let titleBounds = title.boundingRect(with: largeSize, options: [], context: nil)
-        title.draw(at: CGPoint(x: floor(titleRect.midX - titleBounds.width / 2),
-                               y: floor(titleRect.midY - titleBounds.height / 2)))
+        if showTitle {
+            let title = NSAttributedString(
+                string: self.title,
+                attributes: [
+                    NSFontAttributeName: p.titleFont,
+                    NSForegroundColorAttributeName: p.titleColor,
+                    ])
+            let titleBounds = title.boundingRect(with: largeSize, options: [], context: nil)
+            title.draw(at: CGPoint(x: floor(titleRect.midX - titleBounds.width / 2),
+                                   y: floor(titleRect.midY - titleBounds.height / 2)))
+        }
 
         var chartTransform = AffineTransform()
         chartTransform.translate(x: chartBounds.minX, y: chartBounds.minY)
         chartTransform.scale(x: chartBounds.width, y: chartBounds.height)
 
+        let horizontalGridlines = amortized && CGFloat(timeScale.grid.minor) * chartBounds.height > 10
+            ? timeScale.gridlines : timeScale.gridlines.filter { $0.kind == .major }
+        let verticalGridlines = sizeScale.gridlines
+
         // Draw horizontal grid lines
+        NSGraphicsContext.saveGraphicsState()
+        NSRectClip(chartBounds)
         for gridline in horizontalGridlines {
             let lineParams = p.gridlineParams(for: gridline)
             lineParams.color.setStroke()
@@ -319,23 +465,12 @@ class Chart {
             }
             path.lineWidth = lineParams.lineWidth
             path.stroke()
-
-            if let label = gridline.label {
-                let yMid = chartBounds.minY + gridline.position * chartBounds.height + p.scaleFont.pointSize / 4
-
-                let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-                (label as NSString).draw(
-                    at: CGPoint(x: chartBounds.minX - p.xPadding - bounds.width,
-                                y: yMid - bounds.height / 2),
-                    withAttributes: scaleAttributes)
-                (label as NSString).draw(
-                    at: CGPoint(x: chartBounds.maxX + p.xPadding,
-                                y: yMid - bounds.height / 2),
-                    withAttributes: scaleAttributes)
-            }
         }
+        NSGraphicsContext.restoreGraphicsState()
 
         // Draw vertical grid lines
+        NSGraphicsContext.saveGraphicsState()
+        NSRectClip(chartBounds)
         for gridline in verticalGridlines {
             let lineParams = p.gridlineParams(for: gridline)
             lineParams.color.setStroke()
@@ -345,16 +480,42 @@ class Chart {
             path.transform(using: chartTransform)
             path.lineWidth = lineParams.lineWidth
             path.stroke()
-
-            if let label = gridline.label {
-                let xMid = chartBounds.minX + gridline.position * chartBounds.width
-                let yTop = chartBounds.minY - 3
-
-                let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-                (label as NSString).draw(at: CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height), withAttributes: scaleAttributes)
-            }
         }
-        
+        NSGraphicsContext.restoreGraphicsState()
+
+        // Draw horizontal grid labels
+        var previousFrame = CGRect.null
+        for gridline in horizontalGridlines where gridline.kind == .major {
+            guard let label = gridline.label else { continue }
+            let yMid = chartBounds.minY + gridline.position * chartBounds.height + p.scaleFont.pointSize / 4
+
+            let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
+            let leftPos = CGPoint(x: chartBounds.minX - p.xPadding - bounds.width,
+                             y: yMid - bounds.height / 2)
+            let rightPos = CGPoint(x: chartBounds.maxX + p.xPadding,
+                                   y: yMid - bounds.height / 2)
+            let frame = bounds.offsetBy(dx: leftPos.x, dy: leftPos.y).insetBy(dx: 0, dy: -3)
+            guard !previousFrame.intersects(frame) else { continue }
+            (label as NSString).draw(at: leftPos, withAttributes: scaleAttributes)
+            (label as NSString).draw(at: rightPos, withAttributes: scaleAttributes)
+            previousFrame = frame
+        }
+
+        // Draw vertical grid labels
+        previousFrame = .null
+        for gridline in verticalGridlines {
+            guard let label = gridline.label else { continue }
+            let xMid = chartBounds.minX + gridline.position * chartBounds.width
+            let yTop = chartBounds.minY - 3
+
+            let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
+            let pos = CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height)
+            let frame = bounds.offsetBy(dx: pos.x, dy: pos.y).insetBy(dx: -3, dy: 0)
+            guard !previousFrame.intersects(frame) else { continue }
+            (label as NSString).draw(at: pos, withAttributes: scaleAttributes)
+            previousFrame = frame
+        }
+
         // Draw border
         p.borderColor.setStroke()
         let border = NSBezierPath(rect: chartBounds.insetBy(dx: -0.25, dy: -0.25))
@@ -422,7 +583,6 @@ class Chart {
             path.lineJoinStyle = .roundLineJoinStyle
             path.stroke()
         }
-        NSGraphicsContext.restoreGraphicsState()
         if !presentationMode {
             NSColor.black.setStroke()
             for (_, _, path) in curves {
@@ -433,6 +593,7 @@ class Chart {
                 path.stroke()
             }
         }
+        NSGraphicsContext.restoreGraphicsState()
 
         // Draw legend background again (with some transparency)
         p.backgroundColor.withAlphaComponent(0.7).setFill()

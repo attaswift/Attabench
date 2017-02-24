@@ -385,10 +385,22 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="GzI-C2-h7J"/>
-                            <menuItem title="Amortized View" keyEquivalent="a" id="diO-sP-6FN">
+                            <menuItem title="Logarithmic Size Scale" keyEquivalent="x" id="diO-sP-6FN">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.Amortized" id="L68-14-2pq"/>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.LogarithmicSize" id="AQv-wK-skO"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Logarithmic Time Scale" keyEquivalent="y" id="bJM-A8-tsk">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.LogarithmicTime" id="jkz-1J-e4g"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Amortized View" keyEquivalent="a" id="m1f-PH-lUl">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.Amortized" id="gyu-zq-r0C"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Presentation Mode" keyEquivalent="p" id="BWJ-e6-yPw">
@@ -401,6 +413,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <binding destination="wHU-2r-SE8" name="value" keyPath="values.HighlightActiveRange" id="TnY-Q4-ZEw"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Show Title" keyEquivalent="t" id="d3g-EV-mgD">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.ShowTitle" id="OUM-X0-MJp"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="vcw-Zy-RCb"/>

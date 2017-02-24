@@ -40,11 +40,13 @@ class AppDelegate: NSObject {
     var terminating = false
     var waitingForParamsChange = false
 
+    let logarithmicSizeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicSize", defaultValue: true)
+    let logarithmicTimeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicTime", defaultValue: true)
     let amortized: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "Amortized", defaultValue: true)
     let presentationMode: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "PresentationMode", defaultValue: false)
     let highlightActiveRange: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "HighlightActiveRange", defaultValue: true)
-
     let randomizeInputs: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "RandomizeInputs", defaultValue: false)
+    let showTitle: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "ShowTitle", defaultValue: true)
 
     var status: String = "" {
         didSet {
@@ -121,7 +123,7 @@ extension AppDelegate: NSApplicationDelegate {
 
         let minSizeMenu = NSMenu()
         for i in minimumScale ... maximumScale {
-            let item = NSMenuItem(title: "\((1 << i).label)≤",
+            let item = NSMenuItem(title: "\((1 << i).sizeLabel)≤",
                 action: #selector(AppDelegate.didSelectMinSize(_:)),
                 keyEquivalent: "")
             item.tag = i
@@ -131,7 +133,7 @@ extension AppDelegate: NSApplicationDelegate {
 
         let maxSizeMenu = NSMenu()
         for i in minimumScale ... maximumScale {
-            let item = NSMenuItem(title: "≤\((1 << i).label)",
+            let item = NSMenuItem(title: "≤\((1 << i).sizeLabel)",
                 action: #selector(AppDelegate.didSelectMaxSize(_:)),
                 keyEquivalent: "")
             item.tag = i
@@ -146,7 +148,10 @@ extension AppDelegate: NSApplicationDelegate {
             self.refreshRunnerParams()
         }
         self.glue.connector.connect(
-            self.amortized.combined(self.presentationMode, self.highlightActiveRange).futureValues
+            AnySource<Void>.merge(
+                [logarithmicSizeScale, logarithmicTimeScale, amortized, presentationMode, highlightActiveRange, showTitle]
+                    .map { $0.futureValues.map { _ in () } }
+            )
         ) { value in
             self.refreshChart()
         }
@@ -173,7 +178,7 @@ extension AppDelegate: NSApplicationDelegate {
 extension AppDelegate: HarnessDelegate {
     //MARK: HarnessDelegate
     func harness(_ harness: Harness, didStartMeasuringSuite suite: String, benchmark: String, size: Int) {
-        self.status = "Measuring \(suite) : \(size.label) : \(benchmark)"
+        self.status = "Measuring \(suite) : \(size.sizeLabel) : \(benchmark)"
     }
 
     func harness(_ harness: Harness, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
@@ -270,8 +275,11 @@ extension AppDelegate {
         let highlight = highlightActiveRange.value ? suite.sizeRange : nil
         chart = Chart(size: size, suite: suite,
                       highlightedSizes: highlight,
+                      logarithmicSizeScale: logarithmicSizeScale.value,
+                      logarithmicTimeScale: logarithmicTimeScale.value,
                       amortized: amortized.value,
-                      presentation: presentationMode.value)
+                      presentation: presentationMode.value,
+                      showTitle: showTitle.value)
         let image = chart.image
         self.chartImageView.image = image
         self.chartImageView.name = "\(suite.title) - \(benchmarksPopUpButton.title)"
