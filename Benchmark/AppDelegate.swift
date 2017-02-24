@@ -23,7 +23,7 @@ class AppDelegate: NSObject {
     @IBOutlet weak var suitePopUpButton: NSPopUpButton!
     @IBOutlet weak var minSizePopUpButton: NSPopUpButton!
     @IBOutlet weak var maxSizePopUpButton: NSPopUpButton!
-    @IBOutlet weak var benchmarksPopUpButton: NSPopUpButton!
+    @IBOutlet weak var jobsPopUpButton: NSPopUpButton!
     @IBOutlet weak var startMenuItem: NSMenuItem!
     @IBOutlet weak var progressButton: NSButton!
     @IBOutlet weak var chartImageView: DraggableImageView!
@@ -76,7 +76,7 @@ class AppDelegate: NSObject {
             }
             refreshChart()
             refreshScale()
-            refreshBenchmarks()
+            refreshJobs()
             refreshRunnerParams()
         }
     }
@@ -177,12 +177,12 @@ extension AppDelegate: NSApplicationDelegate {
 
 extension AppDelegate: HarnessDelegate {
     //MARK: HarnessDelegate
-    func harness(_ harness: Harness, didStartMeasuringSuite suite: String, benchmark: String, size: Int) {
-        self.status = "Measuring \(suite) : \(size.sizeLabel) : \(benchmark)"
+    func harness(_ harness: Harness, didStartMeasuringSuite suite: String, job: String, size: Int) {
+        self.status = "Measuring \(suite) : \(size.sizeLabel) : \(job)"
     }
 
-    func harness(_ harness: Harness, didMeasureInstanceInSuite suite: String, benchmark: String, size: Int, withResult time: TimeInterval) {
-        //print(benchmark, size, time)
+    func harness(_ harness: Harness, didMeasureInstanceInSuite suite: String, job: String, size: Int, withResult time: TimeInterval) {
+        //print(jobs, size, time)
         scheduleChartRefresh()
         window.isDocumentEdited = true
         scheduleSave()
@@ -282,14 +282,14 @@ extension AppDelegate {
                       showTitle: showTitle.value)
         let image = chart.image
         self.chartImageView.image = image
-        self.chartImageView.name = "\(suite.title) - \(benchmarksPopUpButton.title)"
+        self.chartImageView.name = "\(suite.title) - \(jobsPopUpButton.title)"
     }
 
     @IBAction func newDocument(_ sender: AnyObject) {
-        let selected = self.selectedBenchmarks
+        let selected = self.selectedJobs
         let scale = self.maxScale
         try? harness.reset()
-        self.selectedBenchmarks = selected
+        self.selectedJobs = selected
         self.maxScale = scale
     }
 
@@ -380,21 +380,21 @@ extension AppDelegate {
         self.selectedSuite = index == 0 ? self.harness.suites.last! : self.harness.suites[index - 1]
     }
 
-    var selectedBenchmarks: Set<String> {
+    var selectedJobs: Set<String> {
         get {
-            return self.selectedSuite.selectedBenchmarkSet
+            return self.selectedSuite.selectedJobSet
         }
         set {
-            self.selectedSuite.selectedBenchmarkSet = newValue
-            refreshBenchmarks()
+            self.selectedSuite.selectedJobSet = newValue
+            refreshJobs()
             refreshChart()
             refreshRunnerParams()
         }
     }
 
-    func refreshBenchmarks() {
+    func refreshJobs() {
         let suite = self.selectedSuite ?? self.harness.suites[0]
-        let selected = self.selectedBenchmarks
+        let selected = self.selectedJobs
 
         let title: String
         switch selected.count {
@@ -402,37 +402,37 @@ extension AppDelegate {
             fatalError()
         case 1:
             title = selected.first!
-        case suite.benchmarkTitles.count:
-            title = "All Benchmarks"
+        case suite.jobTitles.count:
+            title = "All Jobs"
         default:
-            title = "\(selected.count) Benchmarks"
+            title = "\(selected.count) Jobs"
         }
 
         let menu = NSMenu()
         menu.addItem(withTitle: title, action: nil, keyEquivalent: "")
-        menu.addItem(withTitle: "All Benchmarks", action: #selector(AppDelegate.selectAllBenchmarks(_:)), keyEquivalent: "a")
+        menu.addItem(withTitle: "All Jobs", action: #selector(AppDelegate.selectAllJobs(_:)), keyEquivalent: "a")
         let submenu = NSMenu()
         let submenuItem = NSMenuItem(title: "Just One", action: nil, keyEquivalent: "")
         submenuItem.submenu = submenu
         menu.addItem(submenuItem)
         menu.addItem(NSMenuItem.separator())
 
-        for title in suite.benchmarkTitles {
-            let item = NSMenuItem(title: title, action: #selector(AppDelegate.toggleBenchmark(_:)), keyEquivalent: "")
+        for title in suite.jobTitles {
+            let item = NSMenuItem(title: title, action: #selector(AppDelegate.toggleJob(_:)), keyEquivalent: "")
             item.state = selected.contains(title) ? NSOnState : NSOffState
             menu.addItem(item)
 
-            submenu.addItem(withTitle: title, action: #selector(AppDelegate.selectBenchmark(_:)), keyEquivalent: "")
+            submenu.addItem(withTitle: title, action: #selector(AppDelegate.selectJob(_:)), keyEquivalent: "")
         }
-        self.benchmarksPopUpButton.menu = menu
+        self.jobsPopUpButton.menu = menu
     }
 
-    @IBAction func selectAllBenchmarks(_ sender: AnyObject) {
-        self.selectedBenchmarks = []
+    @IBAction func selectAllJobs(_ sender: AnyObject) {
+        self.selectedJobs = []
     }
 
-    @IBAction func toggleBenchmark(_ sender: NSMenuItem) {
-        var selected = self.selectedBenchmarks
+    @IBAction func toggleJob(_ sender: NSMenuItem) {
+        var selected = self.selectedJobs
         if selected.contains(sender.title) {
             selected.remove(sender.title)
         }
@@ -440,16 +440,16 @@ extension AppDelegate {
             selected.insert(sender.title)
         }
         if selected.isEmpty {
-            self.selectedBenchmarks = []
+            self.selectedJobs = []
         }
         else {
-            self.selectedBenchmarks = selected
+            self.selectedJobs = selected
         }
     }
 
-    @IBAction func selectBenchmark(_ sender: NSMenuItem) {
+    @IBAction func selectJob(_ sender: NSMenuItem) {
         let title = sender.title
-        self.selectedBenchmarks = [title]
+        self.selectedJobs = [title]
     }
     var maxScale: Int {
         get {

@@ -255,7 +255,7 @@ class Chart {
             self.title = suite.suite.descriptiveTitle ?? suite.title
         }
 
-        let benchmarks = suite.selectedBenchmarks
+        let jobs = suite.selectedJobs
 
         var minSize = sizeRange?.lowerBound ?? Int.max
         var maxSize = sizeRange?.upperBound ?? Int.min
@@ -267,7 +267,7 @@ class Chart {
         var minTime = timeRange?.lowerBound ?? Double.infinity
         var maxTime = timeRange?.upperBound ?? -Double.infinity
         var count = 0
-        for (benchmark, samples) in suite.samplesByBenchmark where benchmarks.contains(benchmark) {
+        for (job, samples) in suite.samplesByJob where jobs.contains(job) {
             for (size, sample) in samples.samplesBySize {
                 if size > maxSize { maxSize = size }
                 if size < minSize { minSize = size }
@@ -304,15 +304,15 @@ class Chart {
             self.horizontalHighlight = sizeScale.position(for: Double(s.lowerBound)) ..< sizeScale.position(for: Double(s.upperBound))
         }
 
-        let c = benchmarks.count
+        let c = jobs.count
         for i in 0 ..< c {
-            let benchmark = benchmarks[i]
-            guard let samples = suite.samplesByBenchmark[benchmark] else { continue }
+            let job = jobs[i]
+            guard let samples = suite.samplesByJob[job] else { continue }
 
-            let index = suite.benchmarkTitles.index(of: benchmark)!
+            let index = suite.jobTitles.index(of: job)!
             let color: NSColor
-            if suite.benchmarkTitles.count > 6 {
-                color = NSColor(calibratedHue: CGFloat(index) / CGFloat(suite.benchmarkTitles.count),
+            if suite.jobTitles.count > 6 {
+                color = NSColor(calibratedHue: CGFloat(index) / CGFloat(suite.jobTitles.count),
                                 saturation: 1, brightness: 1, alpha: 1)
             }
             else {
@@ -335,7 +335,7 @@ class Chart {
                                y: timeScale.position(for: amortized ? sample.minimum / Double(size) : sample.minimum))
             })
 
-            self.curves.append((benchmark, color, path))
+            self.curves.append((job, color, path))
         }
     }
 

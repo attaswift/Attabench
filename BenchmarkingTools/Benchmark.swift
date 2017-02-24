@@ -27,7 +27,7 @@ public class BenchmarkTimer {
     }
 }
 
-fileprivate class Benchmark<Input> {
+fileprivate class BenchmarkJob<Input> {
     let title: String
     let body: (Input) -> ((BenchmarkTimer) -> Void)?
 
@@ -69,7 +69,7 @@ public protocol BenchmarkSuiteProtocol {
     var descriptiveTitle: String? { get }
     var descriptiveAmortizedTitle: String? { get }
 
-    var benchmarkTitles: [String] { get }
+    var jobTitles: [String] { get }
     func run(_ title: String, _ size: Int) -> TimeInterval?
     func forgetInstances() // FIXME: Move instances out of here
 }
@@ -79,8 +79,8 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
     public var descriptiveTitle: String? = nil
     public var descriptiveAmortizedTitle: String? = nil
     
-    public private(set) var benchmarkTitles: [String] = []
-    private var benchmarks: [String: Benchmark<Input>] = [:]
+    public private(set) var jobTitles: [String] = []
+    private var jobs: [String: BenchmarkJob<Input>] = [:]
     private var instances: [InstanceKey: (BenchmarkTimer) -> Void] = [:]
 
     private let inputGenerator: (Int) -> Input
@@ -92,17 +92,17 @@ public class BenchmarkSuite<Input>: BenchmarkSuiteProtocol {
         self.inputGenerator = inputGenerator
     }
 
-    public func addBenchmark(title: String, _ body: @escaping (Input) -> ((BenchmarkTimer) -> Void)?) {
-        precondition(self.benchmarks[title] == nil)
-        self.benchmarkTitles.append(title)
-        self.benchmarks[title] = Benchmark(title, body)
+    public func addJob(title: String, _ body: @escaping (Input) -> ((BenchmarkTimer) -> Void)?) {
+        precondition(self.jobs[title] == nil)
+        self.jobTitles.append(title)
+        self.jobs[title] = BenchmarkJob(title, body)
     }
 
     private func instance(for key: InstanceKey) -> ((BenchmarkTimer) -> Void)? {
         if let instance = instances[key] { return instance }
-        guard let benchmark = benchmarks[key.title] else { fatalError() }
+        guard let job = jobs[key.title] else { fatalError() }
         let input = self.input(for: key.size)
-        let instance = benchmark.generate(input: input)
+        let instance = job.generate(input: input)
         instances[key] = instance
         return instance
     }
