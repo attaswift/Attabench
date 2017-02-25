@@ -15,8 +15,9 @@ protocol HarnessDelegate: class {
     func harness(_ harness: Harness, didStopMeasuringBenchmark benchmark: String)
 }
 
+let bundleIdentifier = Bundle.main.bundleIdentifier!
 let cachesFolder = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-let saveFolder = cachesFolder.appendingPathComponent("hu.lorentey.Benchmark")
+let saveFolder = cachesFolder.appendingPathComponent(bundleIdentifier)
 
 extension BenchmarkProtocol {
     var saveURL: URL {
@@ -40,7 +41,7 @@ class Harness {
     private let lock = NSLock()
     private var _state: State = .idle
 
-    private let queue = DispatchQueue(label: "hu.lorentey.Benchmark.RunnerQueue")
+    private let queue = DispatchQueue(label: bundleIdentifier + ".RunnerQueue")
 
     init() {
     }
