@@ -49,18 +49,9 @@
 		BBB9FA601E4CD3170074DFB1 /* MyOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */; };
 		BBB9FA621E4CD35B0074DFB1 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */; };
 		BBB9FA641E4CDC5A0074DFB1 /* IntBTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */; };
-		BBC860C11E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B51E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift */; };
-		BBC860C21E4E178B00EFAFDC /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC860B61E4E178B00EFAFDC /* Shuffle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BB6B73191E4E36ED0043A5A6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BBC860C71E4E1F6F00EFAFDC;
-			remoteInfo = "compile-book";
-		};
 		BB8E0DDB1E3237D900505773 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
@@ -165,9 +156,6 @@
 		BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderedSet.swift; sourceTree = "<group>"; };
 		BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntBTree.swift; sourceTree = "<group>"; };
-		BBC860B51E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PlaygroundQuickLook Extensions.swift"; sourceTree = "<group>"; };
-		BBC860B61E4E178B00EFAFDC /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
-		BBC860C81E4E1F6F00EFAFDC /* compile-book */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "compile-book"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,7 +219,6 @@
 				BB8E0DBC1E316CC700505773 /* CollectionBenchmarks.framework */,
 				BB8E0DD11E3237D900505773 /* BenchmarkingTools.framework */,
 				BB8E0DD91E3237D900505773 /* BenchmarkingToolsTests.xctest */,
-				BBC860C81E4E1F6F00EFAFDC /* compile-book */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -326,28 +313,10 @@
 		};
 /* End PBXHeadersBuildPhase section */
 
-/* Begin PBXLegacyTarget section */
-		BB6B73131E4E36BA0043A5A6 /* Book */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "Book Output $(ACTION)";
-			buildConfigurationList = BB6B73181E4E36BA0043A5A6 /* Build configuration list for PBXLegacyTarget "Book" */;
-			buildPhases = (
-			);
-			buildToolPath = "$(BUILT_PRODUCTS_DIR)/compile-book";
-			buildWorkingDirectory = "$(SRCROOT)";
-			dependencies = (
-				BB6B731A1E4E36ED0043A5A6 /* PBXTargetDependency */,
-			);
-			name = Book;
-			passBuildSettingsInEnvironment = 1;
-			productName = Book;
-		};
-/* End PBXLegacyTarget section */
-
 /* Begin PBXNativeTarget section */
-		BB83AAC31E3125CF00BFE22D /* Benchmark */ = {
+		BB83AAC31E3125CF00BFE22D /* Attabench */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BB83AAD21E3125D000BFE22D /* Build configuration list for PBXNativeTarget "Benchmark" */;
+			buildConfigurationList = BB83AAD21E3125D000BFE22D /* Build configuration list for PBXNativeTarget "Attabench" */;
 			buildPhases = (
 				BB83AAC01E3125CF00BFE22D /* Sources */,
 				BB83AAC11E3125CF00BFE22D /* Frameworks */,
@@ -361,7 +330,7 @@
 				BB8E0DE51E3237D900505773 /* PBXTargetDependency */,
 				BB8E0E081E3253E500505773 /* PBXTargetDependency */,
 			);
-			name = Benchmark;
+			name = Attabench;
 			productName = Benchmark;
 			productReference = BB83AAC41E3125CF00BFE22D /* Benchmark.app */;
 			productType = "com.apple.product-type.application";
@@ -431,10 +400,6 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Károly Lőrentey";
 				TargetAttributes = {
-					BB6B73131E4E36BA0043A5A6 = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-					};
 					BB83AAC31E3125CF00BFE22D = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -454,13 +419,9 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = BB83AAC31E3125CF00BFE22D;
 					};
-					BBC860C71E4E1F6F00EFAFDC = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
-			buildConfigurationList = BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "Benchmark" */;
+			buildConfigurationList = BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "Attabench" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -473,11 +434,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BB83AAC31E3125CF00BFE22D /* Benchmark */,
+				BB83AAC31E3125CF00BFE22D /* Attabench */,
 				BB8E0DBB1E316CC700505773 /* CollectionBenchmarks */,
 				BB8E0DD01E3237D900505773 /* BenchmarkingTools */,
 				BB8E0DD81E3237D900505773 /* BenchmarkingToolsTests */,
-				BB6B73131E4E36BA0043A5A6 /* Book */,
 			);
 		};
 /* End PBXProject section */
@@ -520,12 +480,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBC860C21E4E178B00EFAFDC /* Shuffle.swift in Sources */,
 				BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */,
 				BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */,
 				BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */,
 				BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */,
-				BBC860C11E4E178B00EFAFDC /* PlaygroundQuickLook Extensions.swift in Sources */,
 				BB8E0E0C1E329E6F00505773 /* Harness.swift in Sources */,
 				BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */,
 				BB8E0E0E1E32A35500505773 /* Results.swift in Sources */,
@@ -573,10 +531,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BB6B731A1E4E36ED0043A5A6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			targetProxy = BB6B73191E4E36ED0043A5A6 /* PBXContainerItemProxy */;
-		};
 		BB8E0DDC1E3237D900505773 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BB8E0DD01E3237D900505773 /* BenchmarkingTools */;
@@ -584,7 +538,7 @@
 		};
 		BB8E0DDE1E3237D900505773 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BB83AAC31E3125CF00BFE22D /* Benchmark */;
+			target = BB83AAC31E3125CF00BFE22D /* Attabench */;
 			targetProxy = BB8E0DDD1E3237D900505773 /* PBXContainerItemProxy */;
 		};
 		BB8E0DE51E3237D900505773 /* PBXTargetDependency */ = {
@@ -790,139 +744,6 @@
 			};
 			name = Optimized;
 		};
-		BB6B73141E4E36BA0043A5A6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEBUGGING_SYMBOLS = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		BB6B73151E4E36BA0043A5A6 /* Optimized */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Optimized;
-		};
-		BB6B73161E4E36BA0043A5A6 /* WholeModule */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = WholeModule;
-		};
-		BB6B73171E4E36BA0043A5A6 /* Unchecked */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Unchecked;
-		};
 		BB83AACE1E3125D000BFE22D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -936,7 +757,7 @@
 				INFOPLIST_FILE = Benchmark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Benchmark;
+				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 3.0;
@@ -988,7 +809,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Benchmark;
+				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1041,7 +862,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Benchmark;
+				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1094,7 +915,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Benchmark;
+				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1679,7 +1500,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "Benchmark" */ = {
+		BB1DA9C81E2E5923000F2B03 /* Build configuration list for PBXProject "Attabench" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BB1DA9D21E2E5923000F2B03 /* Debug */,
@@ -1690,18 +1511,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Optimized;
 		};
-		BB6B73181E4E36BA0043A5A6 /* Build configuration list for PBXLegacyTarget "Book" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB6B73141E4E36BA0043A5A6 /* Debug */,
-				BB6B73151E4E36BA0043A5A6 /* Optimized */,
-				BB6B73161E4E36BA0043A5A6 /* WholeModule */,
-				BB6B73171E4E36BA0043A5A6 /* Unchecked */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Optimized;
-		};
-		BB83AAD21E3125D000BFE22D /* Build configuration list for PBXNativeTarget "Benchmark" */ = {
+		BB83AAD21E3125D000BFE22D /* Build configuration list for PBXNativeTarget "Attabench" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BB83AACE1E3125D000BFE22D /* Debug */,

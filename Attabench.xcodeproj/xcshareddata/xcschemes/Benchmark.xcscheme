@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB8E0DD01E3237D900505773"
-               BuildableName = "BenchmarkingTools.framework"
-               BlueprintName = "BenchmarkingTools"
-               ReferencedContainer = "container:Benchmark.xcodeproj">
+               BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+               BuildableName = "Attabench.app"
+               BlueprintName = "Attabench"
+               ReferencedContainer = "container:Attabench.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,12 +28,31 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BB8E0DD81E3237D900505773"
+               BuildableName = "BenchmarkingToolsTests.xctest"
+               BlueprintName = "BenchmarkingToolsTests"
+               ReferencedContainer = "container:Attabench.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+            BuildableName = "Attabench.app"
+            BlueprintName = "Attabench"
+            ReferencedContainer = "container:Attabench.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Optimized"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -42,15 +61,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB8E0DD01E3237D900505773"
-            BuildableName = "BenchmarkingTools.framework"
-            BlueprintName = "BenchmarkingTools"
-            ReferencedContainer = "container:Benchmark.xcodeproj">
+            BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+            BuildableName = "Attabench.app"
+            BlueprintName = "Attabench"
+            ReferencedContainer = "container:Attabench.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -60,15 +80,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB8E0DD01E3237D900505773"
-            BuildableName = "BenchmarkingTools.framework"
-            BlueprintName = "BenchmarkingTools"
-            ReferencedContainer = "container:Benchmark.xcodeproj">
+            BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+            BuildableName = "Attabench.app"
+            BlueprintName = "Attabench"
+            ReferencedContainer = "container:Attabench.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
