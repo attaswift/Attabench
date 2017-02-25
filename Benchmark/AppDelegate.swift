@@ -12,7 +12,7 @@ import BenchmarkingTools
 import CollectionBenchmarks
 
 let minimumScale = 0
-let maximumScale = 28
+let maximumScale = 32
 
 @NSApplicationMain
 class AppDelegate: NSObject {
