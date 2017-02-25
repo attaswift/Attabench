@@ -14,7 +14,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Benchmark" customModuleProvider="target">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Attabench" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundView" destination="EiT-Mj-1SZ" id="lO9-ly-tyX"/>
                 <outlet property="benchmarksPopUpButton" destination="rg8-sn-PVA" id="TEO-zN-vaW"/>
@@ -505,15 +505,15 @@ CA
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="documentWindow" frameAutosaveName="BenchmarkWindow" tabbingMode="disallowed" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="768" height="450"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="320" height="360"/>
-            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ" customClass="ColoredView" customModule="Benchmark" customModuleProvider="target">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
+                <rect key="frame" x="0.0" y="0.0" width="768" height="450"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eLG-FC-549" customClass="DraggableImageView" customModule="Benchmark" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eLG-FC-549" customClass="DraggableImageView" customModule="Attabench" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="450"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="c3S-wd-iKf"/>
                     </imageView>
@@ -623,10 +623,10 @@ CA
                         <nil key="toolTip"/>
                         <size key="minSize" width="100" height="28"/>
                         <size key="maxSize" width="400" height="28"/>
-                        <button key="view" verticalHuggingPriority="750" allowsExpansionToolTips="YES" id="PBE-a0-9V8" customClass="StatusButtonInTitlebar" customModule="Benchmark" customModuleProvider="target">
+                        <button key="view" verticalHuggingPriority="750" allowsExpansionToolTips="YES" id="PBE-a0-9V8" customClass="StatusButtonInTitlebar" customModule="Attabench" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="14" width="100" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Idle" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="auo-6k-fGR" customClass="StatusButtonCell" customModule="Benchmark" customModuleProvider="target">
+                            <buttonCell key="cell" type="roundTextured" title="Idle" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="auo-6k-fGR" customClass="StatusButtonCell" customModule="Attabench" customModuleProvider="target">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="systemLight" size="12"/>
                             </buttonCell>
@@ -648,6 +648,7 @@ CA
             <connections>
                 <outlet property="delegate" destination="Voe-Tx-rLC" id="1lQ-Lh-sWu"/>
             </connections>
+            <point key="canvasLocation" x="279" y="-133"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="wHU-2r-SE8"/>
     </objects>
