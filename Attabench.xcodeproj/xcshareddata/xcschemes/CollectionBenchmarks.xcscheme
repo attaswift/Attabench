@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BB8E0DBB1E316CC700505773"
-               BuildableName = "CollectionBenchmarks.framework"
-               BlueprintName = "CollectionBenchmarks"
+               BuildableName = "Benchmarks.framework"
+               BlueprintName = "Benchmarks"
                ReferencedContainer = "container:Attabench.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,8 +46,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BB8E0DBB1E316CC700505773"
-            BuildableName = "CollectionBenchmarks.framework"
-            BlueprintName = "CollectionBenchmarks"
+            BuildableName = "Benchmarks.framework"
+            BlueprintName = "Benchmarks"
             ReferencedContainer = "container:Attabench.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BB8E0DBB1E316CC700505773"
-            BuildableName = "CollectionBenchmarks.framework"
-            BlueprintName = "CollectionBenchmarks"
+            BuildableName = "Benchmarks.framework"
+            BlueprintName = "Benchmarks"
             ReferencedContainer = "container:Attabench.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
