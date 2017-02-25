@@ -192,6 +192,9 @@ extension AppDelegate: HarnessDelegate {
         if terminating {
             NSApp.reply(toApplicationShouldTerminate: true)
         }
+        if randomizeInputs.value {
+            selectedSuite.benchmark.forgetInputs()
+        }
         if !terminating && waitingForParamsChange {
             waitingForParamsChange = false
             self.start()

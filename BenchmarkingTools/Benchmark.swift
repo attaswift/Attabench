@@ -71,6 +71,7 @@ public protocol BenchmarkProtocol {
 
     var jobTitles: [String] { get }
     func run(_ title: String, _ size: Int) -> TimeInterval?
+    func forgetInputs() // FIXME: Move instances out of here
     func forgetInstances() // FIXME: Move instances out of here
 }
 
@@ -107,9 +108,13 @@ public class Benchmark<Input>: BenchmarkProtocol {
         return instance
     }
 
+    public func forgetInputs() {
+        self.inputs = [:]
+        forgetInstances()
+    }
+
     public func forgetInstances() {
         self.instances = [:]
-        self.inputs = [:]
     }
 
     private func input(for size: Int) -> Input {

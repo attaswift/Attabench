@@ -106,6 +106,9 @@ class Harness {
                 self.delegate?.harness(self, didMeasureInstanceInBenchmark: suite.title, job: job, size: size, withResult: time)
             }
         }
+        if forget {
+            suite.benchmark.forgetInstances()
+        }
         if self._stopIfNeeded(suite) { return }
 
         queue.async {
@@ -114,7 +117,7 @@ class Harness {
             }
             else {
                 if forget {
-                    suite.benchmark.forgetInstances()
+                    suite.benchmark.forgetInputs()
                 }
                 self._run(suite: suite, jobs: jobs, sizes: sizes,
                           i: 0, j: (j + 1) % sizes.count, forget: forget)
