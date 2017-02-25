@@ -167,6 +167,8 @@ extension AppDelegate: NSApplicationDelegate {
         ) { value in
             self.refreshChart()
         }
+        self.refreshScale()
+        self.refreshJobs()
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
