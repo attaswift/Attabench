@@ -48,6 +48,19 @@ class AppDelegate: NSObject {
     let randomizeInputs: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "RandomizeInputs", defaultValue: false)
     let showTitle: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "ShowTitle", defaultValue: true)
 
+    override init() {
+        super.init()
+        UserDefaults.standard.register(defaults: [
+            "LogarithmicSize": true,
+            "LogarithmicTime": true,
+            "Amortized": true,
+            "PresentationMode": false,
+            "HighlightActiveRange": true,
+            "RandomizeInputs": false,
+            "ShowTitle": true
+            ])
+    }
+
     var status: String = "" {
         didSet {
             guard !progressRefreshScheduled else { return }
