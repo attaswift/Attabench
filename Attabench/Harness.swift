@@ -10,9 +10,9 @@ import Cocoa
 import BenchmarkingTools
 
 protocol HarnessDelegate: class {
-    func harness(_ harness: Harness, didStartMeasuringBenchmark benchmark: String, job: String, size: Int)
-    func harness(_ harness: Harness, didMeasureInstanceInBenchmark benchmark: String, job: String, size: Int, withResult time: TimeInterval)
-    func harness(_ harness: Harness, didStopMeasuringBenchmark benchmark: String)
+    func harness(_ harness: Harness, willStartMeasuring instance: BenchmarkInstanceKey)
+    func harness(_ harness: Harness, didMeasure instance: BenchmarkInstanceKey, withResult time: TimeInterval)
+    func harnessDidStopRunning(_ harness: Harness)
 }
 
 let bundleIdentifier = Bundle.main.bundleIdentifier!
@@ -88,7 +88,7 @@ class Harness {
         guard self.state == .stopping else { return false }
         self.state = .idle
         DispatchQueue.main.async {
-            self.delegate?.harness(self, didStopMeasuringBenchmark: suite.title)
+            self.delegate?.harnessDidStopRunning(self)
         }
         return true
     }
@@ -98,13 +98,14 @@ class Harness {
 
         let job = jobs[i]
         let size = sizes[j]
+        let instance = BenchmarkInstanceKey(benchmark: suite.title, job: job, size: size)
         DispatchQueue.main.sync {
-            self.delegate?.harness(self, didStartMeasuringBenchmark: suite.title, job: job, size: size)
+            self.delegate?.harness(self, willStartMeasuring: instance)
         }
         if let time = suite.benchmark.run(jobs[i], sizes[j]) {
             DispatchQueue.main.sync {
                 suite.addMeasurement(job, size, time)
-                self.delegate?.harness(self, didMeasureInstanceInBenchmark: suite.title, job: job, size: size, withResult: time)
+                self.delegate?.harness(self, didMeasure: instance, withResult: time)
             }
         }
         if forget {

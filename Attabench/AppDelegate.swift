@@ -187,18 +187,18 @@ extension AppDelegate: NSApplicationDelegate {
 
 extension AppDelegate: HarnessDelegate {
     //MARK: HarnessDelegate
-    func harness(_ harness: Harness, didStartMeasuringBenchmark benchmark: String, job: String, size: Int) {
-        self.status = "Measuring \(benchmark) : \(size.sizeLabel) : \(job)"
+
+    func harness(_ harness: Harness, willStartMeasuring instance: BenchmarkInstanceKey) {
+        self.status = "Measuring \(instance.benchmark) : \(instance.size.sizeLabel) : \(instance.job)"
     }
 
-    func harness(_ harness: Harness, didMeasureInstanceInBenchmark benchmark: String, job: String, size: Int, withResult time: TimeInterval) {
-        //print(jobs, size, time)
+    func harness(_ harness: Harness, didMeasure instance: BenchmarkInstanceKey, withResult time: TimeInterval) {
         scheduleChartRefresh()
         window.isDocumentEdited = true
         scheduleSave()
     }
 
-    func harness(_ harness: Harness, didStopMeasuringBenchmark benchmark: String) {
+    func harnessDidStopRunning(_ harness: Harness) {
         self.save()
         if terminating {
             NSApp.reply(toApplicationShouldTerminate: true)
