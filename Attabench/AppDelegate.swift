@@ -39,6 +39,7 @@ class AppDelegate: NSObject {
     var saveScheduled = false
     var terminating = false
     var shouldBeRunning = false
+    var benchmarkActivity: NSObjectProtocol? = nil
 
     let logarithmicSizeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicSize", defaultValue: true)
     let logarithmicTimeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicTime", defaultValue: true)
@@ -200,6 +201,8 @@ extension AppDelegate: HarnessDelegate {
 
     func harnessDidStopRunning(_ harness: Harness) {
         self.save()
+        ProcessInfo.processInfo.endActivity(benchmarkActivity!)
+        benchmarkActivity = nil
         if terminating {
             NSApp.reply(toApplicationShouldTerminate: true)
         }
@@ -347,6 +350,10 @@ extension AppDelegate {
         self.runButton.image = #imageLiteral(resourceName: "StopTemplate")
         self.startMenuItem.title = "Stop Running"
         self.status = "Running \(suite.title)"
+        precondition(benchmarkActivity == nil)
+        self.benchmarkActivity = ProcessInfo.processInfo.beginActivity(
+            options: [.idleSystemSleepDisabled, .latencyCritical, .userInitiated, .automaticTerminationDisabled, .suddenTerminationDisabled],
+            reason: "Running Benchmarks")
         self.harness.start(suite: suite, randomized: randomizeInputs.value)
     }
 
