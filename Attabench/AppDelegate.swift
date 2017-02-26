@@ -80,16 +80,11 @@ class AppDelegate: NSObject {
             let defaults = UserDefaults.standard
             defaults.set(suite.title, forKey: "SelectedBenchmark")
 
-            if let menu = self.benchmarksPopUpButton.menu {
-                let item = menu.items.first(where: { $0.title == suite.title })
-                if self.benchmarksPopUpButton.selectedItem !== item {
-                    self.benchmarksPopUpButton.select(item)
-                }
-            }
-            refreshChart()
+            refreshRunnerParams()
+            refreshSuite()
             refreshScale()
             refreshJobs()
-            refreshRunnerParams()
+            refreshChart()
         }
     }
 }
@@ -167,6 +162,7 @@ extension AppDelegate: NSApplicationDelegate {
         ) { value in
             self.refreshChart()
         }
+        self.refreshSuite()
         self.refreshScale()
         self.refreshJobs()
     }
@@ -253,6 +249,15 @@ extension AppDelegate {
             return harness.state != .stopping
         }
         return true
+    }
+
+    func refreshSuite() {
+        if let menu = self.benchmarksPopUpButton.menu {
+            let item = menu.items.first(where: { $0.title == selectedSuite.title })
+            if self.benchmarksPopUpButton.selectedItem !== item {
+                self.benchmarksPopUpButton.select(item)
+            }
+        }
     }
 
     func scheduleProgressRefresh() {
