@@ -642,7 +642,6 @@ CA
                     <toolbarItem reference="0NC-Up-Wdv"/>
                     <toolbarItem reference="OES-KR-TQM"/>
                     <toolbarItem reference="FTW-AO-GXT"/>
-                    <toolbarItem reference="lmX-HI-z47"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>
