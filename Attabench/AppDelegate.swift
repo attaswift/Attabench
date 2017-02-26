@@ -9,7 +9,7 @@
 import Cocoa
 import GlueKit
 import BenchmarkingTools
-import CollectionBenchmarks
+import Benchmarks
 
 let minimumScale = 0
 let maximumScale = 32
@@ -98,7 +98,7 @@ extension AppDelegate: NSApplicationDelegate {
         self.startMenuItem.isEnabled = false
 
         harness.delegate = self
-        for benchmark in CollectionBenchmarks.generateBenchmarks() {
+        for benchmark in Benchmarks.generateBenchmarks() {
             harness.load(benchmark)
         }
 
