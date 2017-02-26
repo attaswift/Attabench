@@ -330,6 +330,10 @@ extension AppDelegate {
     }
 
     func save() {
+        let activity = ProcessInfo.processInfo.beginActivity(
+            options: [.suddenTerminationDisabled],
+            reason: "Saving")
+        defer { ProcessInfo.processInfo.endActivity(activity) }
         do {
             cancelSave()
             try harness.save()
