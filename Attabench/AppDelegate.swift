@@ -38,7 +38,7 @@ class AppDelegate: NSObject {
     var chartRefreshScheduled = false
     var saveScheduled = false
     var terminating = false
-    var waitingForParamsChange = false
+    var shouldBeRunning = false
 
     let logarithmicSizeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicSize", defaultValue: true)
     let logarithmicTimeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicTime", defaultValue: true)
@@ -206,8 +206,7 @@ extension AppDelegate: HarnessDelegate {
         if randomizeInputs.value {
             selectedSuite.benchmark.forgetInputs()
         }
-        if !terminating && waitingForParamsChange {
-            waitingForParamsChange = false
+        if !self.terminating && self.shouldBeRunning {
             self.start()
         }
         else {
@@ -343,7 +342,7 @@ extension AppDelegate {
     }
 
     func start() {
-        guard self.harness.state == .idle else { return }
+        guard self.harness.state == .idle, !self.terminating else { return }
         let suite = self.selectedSuite ?? self.harness.suites[0]
         self.runButton.image = #imageLiteral(resourceName: "StopTemplate")
         self.startMenuItem.title = "Stop Running"
@@ -352,7 +351,7 @@ extension AppDelegate {
     }
 
     func stop() {
-        guard self.harness.state == .running || self.waitingForParamsChange else { return }
+        guard self.harness.state == .running else { return }
         self.runButton.isEnabled = false
         self.startMenuItem.isEnabled = false
         self.status = "Stopping..."
@@ -364,8 +363,10 @@ extension AppDelegate {
     @IBAction func run(_ sender: AnyObject) {
         switch self.harness.state {
         case .idle:
+            self.shouldBeRunning = true
             self.start()
         case .running:
+            self.shouldBeRunning = false
             self.stop()
         case .stopping:
             // Do nothing
@@ -375,7 +376,6 @@ extension AppDelegate {
 
     func refreshRunnerParams() {
         if self.harness.state == .running {
-            self.waitingForParamsChange = true
             self.harness.stop()
         }
         else {
