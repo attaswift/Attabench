@@ -293,19 +293,19 @@ extension AppDelegate {
         cancelChartRefresh()
         guard !harness.suites.isEmpty else { return }
         let suite = self.selectedSuite ?? self.harness.suites[0]
-        let chart: Chart
-
         let size = presentationMode.value ? AppDelegate.presentationImageSize : chartImageView.bounds.size
         let highlight = highlightActiveRange.value ? suite.sizeRange : nil
-        chart = Chart(size: size, suite: suite,
-                      highlightedSizes: highlight,
-                      logarithmicSizeScale: logarithmicSizeScale.value,
-                      logarithmicTimeScale: logarithmicTimeScale.value,
-                      amortized: amortized.value,
-                      presentation: presentationMode.value,
-                      showTitle: showTitle.value)
-        let image = chart.image
-        self.chartImageView.image = image
+        let chart = Chart(suite: suite,
+                          highlightedSizes: highlight,
+                          logarithmicSizeScale: logarithmicSizeScale.value,
+                          logarithmicTimeScale: logarithmicTimeScale.value,
+                          amortized: amortized.value)
+        let renderer = ChartRenderer(rect: CGRect(origin: .zero, size: size),
+                                     chart: chart,
+                                     theme: presentationMode.value ? .presentation : .normal,
+                                     showTitle: showTitle.value,
+                                     legendPositionRatio: CGPoint(x: 0.1, y: 0.1))
+        self.chartImageView.image = renderer.image
         self.chartImageView.name = "\(suite.title) - \(jobsPopUpButton.title)"
     }
 

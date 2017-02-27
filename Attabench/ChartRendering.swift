@@ -221,33 +221,25 @@ struct LinearScale: ChartScale {
 }
 
 class Chart {
-    let size: CGSize
     let suite: Suite
     let title: String
     let amortized: Bool
-    let presentationMode: Bool
-    let showTitle: Bool
 
     var curves: [(String, NSColor, NSBezierPath)] = []
     let sizeScale: ChartScale
     let timeScale: ChartScale
     var horizontalHighlight: Range<CGFloat>? = nil
 
-    init(size: CGSize,
-         suite: Suite,
+    init(suite: Suite,
          highlightedSizes: ClosedRange<Int>? = nil,
          sizeRange: Range<Int>? = nil,
          timeRange: Range<TimeInterval>? = nil,
          logarithmicSizeScale: Bool = true,
          logarithmicTimeScale: Bool = true,
          amortized: Bool = false,
-         presentation: Bool = false,
-         showTitle: Bool = true) {
-        self.size = size
+         presentation: Bool = false) {
         self.suite = suite
         self.amortized = amortized
-        self.presentationMode = presentation
-        self.showTitle = showTitle
         if amortized {
             self.title = suite.benchmark.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
         }
@@ -338,295 +330,336 @@ class Chart {
             self.curves.append((job, color, path))
         }
     }
+}
 
-    struct ViewParams {
-        struct LineParams {
-            let lineWidth: CGFloat
-            let dash: [CGFloat]
-            let phase: CGFloat
+struct ChartTheme {
+    struct LineParams {
+        let lineWidth: CGFloat
+        let dash: [CGFloat]
+        let phase: CGFloat
 
-            init(lineWidth: CGFloat, dash: [CGFloat] = [], phase: CGFloat = 0) {
-                self.lineWidth = lineWidth
-                self.dash = dash
-                self.phase = phase
-            }
-
-            func apply(on path: NSBezierPath) {
-                path.lineWidth = lineWidth
-                path.setLineDash(dash, count: dash.count, phase: phase)
-            }
+        init(lineWidth: CGFloat, dash: [CGFloat] = [], phase: CGFloat = 0) {
+            self.lineWidth = lineWidth
+            self.dash = dash
+            self.phase = phase
         }
 
-        let backgroundColor: NSColor
-        let titleFont: NSFont
-        let titleColor: NSColor
-        let borderColor: NSColor
-        let borderWidth: CGFloat
-        let highlightedBorderWidth: CGFloat
-        let majorGridlineColor: NSColor
-        let majorGridlineParams: LineParams
-        let minorGridlineColor: NSColor
-        let minorGridlineParams: LineParams
-        let scaleFont: NSFont
-        let legendFont: NSFont
-        let legendColor: NSColor
-        let legendPadding: CGFloat
-        let lineParams: LineParams
-        let shadowRadius: CGFloat
-        let xPadding: CGFloat
-
-        static let normal = ViewParams(
-            backgroundColor: NSColor.white,
-            titleFont: NSFont(name: "Helvetica-Light", size: 24)!,
-            titleColor: NSColor.black,
-            borderColor: NSColor.black,
-            borderWidth: 0.5,
-            highlightedBorderWidth: 4,
-            majorGridlineColor: NSColor(white: 0.3, alpha: 1),
-            majorGridlineParams: LineParams(lineWidth: 0.75),
-            minorGridlineColor: NSColor(white: 0.3, alpha: 1),
-            minorGridlineParams: LineParams(lineWidth: 0.5, dash: [6, 3]),
-            scaleFont: NSFont(name: "Helvetica-Light", size: 10)!,
-            legendFont: NSFont(name: "Menlo", size: 12)!,
-            legendColor: NSColor.black,
-            legendPadding: 6,
-            lineParams: LineParams(lineWidth: 4),
-            shadowRadius: 0,
-            xPadding: 6)
-
-        static let presentation = ViewParams(
-            backgroundColor: NSColor.black,
-            titleFont: NSFont(name: "Helvetica-Light", size: 48)!,
-            titleColor: NSColor.white,
-            borderColor: NSColor.white,
-            borderWidth: 0.5,
-            highlightedBorderWidth: 4,
-            majorGridlineColor: NSColor(white: 0.7, alpha: 1),
-            majorGridlineParams: LineParams(lineWidth: 0.75),
-            minorGridlineColor: NSColor(white: 0.7, alpha: 1),
-            minorGridlineParams: LineParams(lineWidth: 0.5, dash: [6, 3]),
-            scaleFont: NSFont(name: "Helvetica-Light", size: 24)!,
-            legendFont: NSFont(name: "Menlo", size: 20)!,
-            legendColor: NSColor.white,
-            legendPadding: 8,
-            lineParams: LineParams(lineWidth: 8),
-            shadowRadius: 3,
-            xPadding: 12)
-
-        func lineParams(for kind: Gridline.Kind) -> (color: NSColor, params: LineParams) {
-            switch kind {
-            case .major:
-                return (majorGridlineColor, majorGridlineParams)
-            case .minor:
-                return (minorGridlineColor, minorGridlineParams)
-            }
+        func apply(on path: NSBezierPath) {
+            path.lineWidth = lineWidth
+            path.setLineDash(dash, count: dash.count, phase: phase)
         }
     }
 
-    func render(into bounds: NSRect) {
-        let p = presentationMode ? ViewParams.presentation : ViewParams.normal
+    let backgroundColor: NSColor
+    let titleFont: NSFont
+    let titleColor: NSColor
+    let borderColor: NSColor
+    let borderWidth: CGFloat
+    let highlightedBorderWidth: CGFloat
+    let majorGridlineColor: NSColor
+    let majorGridlineParams: LineParams
+    let minorGridlineColor: NSColor
+    let minorGridlineParams: LineParams
+    let axisLabelFont: NSFont
+    let legendFont: NSFont
+    let legendColor: NSColor
+    let legendPadding: CGFloat
+    let lineParams: LineParams
+    let shadowRadius: CGFloat
+    let hairline: Bool
+    let xPadding: CGFloat
 
-        p.backgroundColor.setFill()
-        NSRectFill(bounds)
+    static let normal = ChartTheme(
+        backgroundColor: NSColor.white,
+        titleFont: NSFont(name: "Helvetica-Light", size: 24)!,
+        titleColor: NSColor.black,
+        borderColor: NSColor.black,
+        borderWidth: 0.5,
+        highlightedBorderWidth: 4,
+        majorGridlineColor: NSColor(white: 0.3, alpha: 1),
+        majorGridlineParams: LineParams(lineWidth: 0.75),
+        minorGridlineColor: NSColor(white: 0.3, alpha: 1),
+        minorGridlineParams: LineParams(lineWidth: 0.5, dash: [6, 3]),
+        axisLabelFont: NSFont(name: "Helvetica-Light", size: 10)!,
+        legendFont: NSFont(name: "Menlo", size: 12)!,
+        legendColor: NSColor.black,
+        legendPadding: 6,
+        lineParams: LineParams(lineWidth: 4),
+        shadowRadius: 0,
+        hairline: true,
+        xPadding: 6)
 
-        let scaleAttributes: [String: Any] = [
-            NSFontAttributeName: p.scaleFont,
-            NSForegroundColorAttributeName: p.majorGridlineColor
-        ]
-        let (titleRect, bottomRect) = bounds.divided(
-            atDistance: showTitle
-                ? 1.2 * (p.titleFont.boundingRectForFont.height + p.titleFont.leading)
-                : p.scaleFont.boundingRectForFont.height,
-            from: .maxYEdge)
+    static let presentation = ChartTheme(
+        backgroundColor: NSColor.black,
+        titleFont: NSFont(name: "Helvetica-Light", size: 48)!,
+        titleColor: NSColor.white,
+        borderColor: NSColor.white,
+        borderWidth: 0.5,
+        highlightedBorderWidth: 4,
+        majorGridlineColor: NSColor(white: 0.7, alpha: 1),
+        majorGridlineParams: LineParams(lineWidth: 0.75),
+        minorGridlineColor: NSColor(white: 0.7, alpha: 1),
+        minorGridlineParams: LineParams(lineWidth: 0.5, dash: [6, 3]),
+        axisLabelFont: NSFont(name: "Helvetica-Light", size: 24)!,
+        legendFont: NSFont(name: "Menlo", size: 20)!,
+        legendColor: NSColor.white,
+        legendPadding: 8,
+        lineParams: LineParams(lineWidth: 8),
+        shadowRadius: 3,
+        hairline: false,
+        xPadding: 12)
 
-        let scaleWidth = 3 * p.scaleFont.maximumAdvancement.width
-        let chartBounds = CGRect(x: bottomRect.minX + scaleWidth,
-                                 y: p.scaleFont.boundingRectForFont.height,
-                                 width: bottomRect.width - 2 * scaleWidth,
-                                 height: bottomRect.height - p.scaleFont.boundingRectForFont.height)
-        let largeSize = NSSize(width: 100000, height: 100000)
-
-        // Draw title
-        if showTitle {
-            let title = NSAttributedString(
-                string: self.title,
-                attributes: [
-                    NSFontAttributeName: p.titleFont,
-                    NSForegroundColorAttributeName: p.titleColor,
-                    ])
-            let titleBounds = title.boundingRect(with: largeSize, options: [], context: nil)
-            title.draw(at: CGPoint(x: floor(titleRect.midX - titleBounds.width / 2),
-                                   y: floor(titleRect.midY - titleBounds.height / 2)))
+    func lineParams(for kind: Gridline.Kind) -> (color: NSColor, params: LineParams) {
+        switch kind {
+        case .major:
+            return (majorGridlineColor, majorGridlineParams)
+        case .minor:
+            return (minorGridlineColor, minorGridlineParams)
         }
+    }
+
+    func axisLabelAttributes() -> [String: Any] {
+        return [
+            NSFontAttributeName: axisLabelFont,
+            NSForegroundColorAttributeName: majorGridlineColor
+        ]
+    }
+}
+
+struct ChartRenderer {
+    let rect: CGRect
+    let chart: Chart
+    let theme: ChartTheme
+    let showTitle: Bool
+    let legendPositionRatio: CGPoint?
+
+    let chartRect: CGRect
+    let chartTransform: AffineTransform
+
+    init(rect: CGRect, chart: Chart, theme: ChartTheme, showTitle: Bool, legendPositionRatio: CGPoint?) {
+        self.rect = rect
+        self.chart = chart
+        self.theme = theme
+        self.showTitle = showTitle
+        self.legendPositionRatio = legendPositionRatio
+
+        let bottomRect = rect.divided(
+            atDistance: showTitle
+                ? 1.2 * (theme.titleFont.boundingRectForFont.height + theme.titleFont.leading)
+                : theme.axisLabelFont.boundingRectForFont.height,
+            from: .maxYEdge).remainder
+
+        let scaleWidth = 3 * theme.axisLabelFont.maximumAdvancement.width
+        self.chartRect = CGRect(x: bottomRect.minX + scaleWidth,
+                                y: theme.axisLabelFont.boundingRectForFont.height,
+                                width: bottomRect.width - 2 * scaleWidth,
+                                height: bottomRect.height - theme.axisLabelFont.boundingRectForFont.height - theme.axisLabelFont.leading)
 
         var chartTransform = AffineTransform()
-        chartTransform.translate(x: chartBounds.minX, y: chartBounds.minY)
-        chartTransform.scale(x: chartBounds.width, y: chartBounds.height)
+        chartTransform.translate(x: chartRect.minX, y: chartRect.minY)
+        chartTransform.scale(x: chartRect.width, y: chartRect.height)
+        self.chartTransform = chartTransform
+    }
 
-        let horizontalGridlines = amortized && CGFloat(timeScale.grid.minor) * chartBounds.height > 10
-            ? timeScale.gridlines : timeScale.gridlines.filter { $0.kind == .major }
-        let verticalGridlines = sizeScale.gridlines
+    var image: NSImage {
+        return NSImage(size: rect.integral.size, flipped: false) { rect in
+            (AffineTransform(translationByX: -self.rect.minX, byY: -self.rect.minY) as NSAffineTransform).concat()
+            self.draw()
+            return true
+        }
+    }
 
-        // Draw horizontal grid lines
+    func draw() {
+        drawBackground()
+
+        if showTitle {
+            drawTitle()
+        }
+
+        drawYAxis()
+        drawXAxis()
+        drawBorder()
+
+        if let range = chart.horizontalHighlight {
+            drawHighlight(range)
+        }
+
+        guard !chart.curves.isEmpty else { return }
+
+        if let legendLayout = self.legendLayout() {
+            drawLegendBackground(with: legendLayout)
+            drawCurves()
+            drawLegendContents(with: legendLayout)
+        }
+        else {
+            drawCurves()
+        }
+    }
+
+    func drawBackground() {
+        theme.backgroundColor.setFill()
+        NSRectFill(rect)
+    }
+
+    func drawTitle() {
+        let titleRect = CGRect(x: rect.minX,
+                               y: chartRect.maxY,
+                               width: rect.width,
+                               height: rect.maxY - chartRect.maxY)
+
+        let paragraphStyle = NSParagraphStyle.default().mutableCopy() as! NSMutableParagraphStyle
+        paragraphStyle.alignment = .center
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+        let title = NSAttributedString(
+            string: chart.title,
+            attributes: [
+                NSFontAttributeName: theme.titleFont,
+                NSForegroundColorAttributeName: theme.titleColor,
+                NSParagraphStyleAttributeName: paragraphStyle,
+                ])
+        title.draw(with: titleRect, options: .usesLineFragmentOrigin)
+    }
+
+    func drawYAxis() {
+        let gridlines = chart.amortized && CGFloat(chart.timeScale.grid.minor) * chartRect.height > 10
+            ? chart.timeScale.gridlines : chart.timeScale.gridlines.filter { $0.kind == .major }
+
+        // Draw gridlines
         NSGraphicsContext.saveGraphicsState()
-        NSRectClip(chartBounds)
-        for gridline in horizontalGridlines {
+        NSRectClip(chartRect)
+        for gridline in gridlines {
             let path = NSBezierPath()
             path.move(to: CGPoint(x: 0, y: gridline.position))
             path.line(to: CGPoint(x: 1, y: gridline.position))
             path.transform(using: chartTransform)
-            let (color, lineParams) = p.lineParams(for: gridline.kind)
+            let (color, lineParams) = theme.lineParams(for: gridline.kind)
             lineParams.apply(on: path)
             color.setStroke()
             path.stroke()
         }
         NSGraphicsContext.restoreGraphicsState()
 
-        // Draw horizontal grid labels
+        // Draw labels
         var previousFrame = CGRect.null
-        for gridline in horizontalGridlines where gridline.kind == .major {
+        let attributes = theme.axisLabelAttributes()
+        for gridline in gridlines where gridline.kind == .major {
             guard let label = gridline.label else { continue }
-            let yMid = chartBounds.minY + gridline.position * chartBounds.height + p.scaleFont.pointSize / 4
+            let yMid = chartRect.minY + gridline.position * chartRect.height + theme.axisLabelFont.pointSize / 4
 
-            let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-            let leftPos = CGPoint(x: chartBounds.minX - p.xPadding - bounds.width,
+            let bounds = (label as NSString).boundingRect(with: CGSize(width: 1000, height: 1000),
+                                                          options: [], attributes: attributes)
+            let leftPos = CGPoint(x: chartRect.minX - theme.xPadding - bounds.width,
                                   y: yMid - bounds.height / 2)
-            let rightPos = CGPoint(x: chartBounds.maxX + p.xPadding,
+            let rightPos = CGPoint(x: chartRect.maxX + theme.xPadding,
                                    y: yMid - bounds.height / 2)
             let frame = bounds.offsetBy(dx: leftPos.x, dy: leftPos.y).insetBy(dx: 0, dy: -3)
             guard !previousFrame.intersects(frame) else { continue }
-            (label as NSString).draw(at: leftPos, withAttributes: scaleAttributes)
-            (label as NSString).draw(at: rightPos, withAttributes: scaleAttributes)
+            (label as NSString).draw(at: leftPos, withAttributes: attributes)
+            (label as NSString).draw(at: rightPos, withAttributes: attributes)
             previousFrame = frame
         }
+    }
 
-        do {
-            // Calculate frames for labels on the size axis
-            typealias LabelGeometry = (gridline: Gridline, position: CGPoint, frame: CGRect)
-            var labels: [LabelGeometry] = []
-            var secondary: [Gridline] = []
-            for gridline in verticalGridlines {
-                guard let label = gridline.label else { secondary.append(gridline); continue }
-                let xMid = chartBounds.minX + gridline.position * chartBounds.width
-                let yTop = chartBounds.minY - 3
+    func drawXAxis() {
+        let gridlines = chart.sizeScale.gridlines
+        let attributes = theme.axisLabelAttributes()
 
-                let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-                let pos = CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height)
-                let frame = bounds.offsetBy(dx: pos.x, dy: pos.y)
-                labels.append((gridline, pos, frame))
-            }
-            func needsThinning(_ frames: [LabelGeometry]) -> Bool {
-                var previousFrame: CGRect = .null
-                for (_, _, frame) in frames where !frame.isNull {
-                    let enlarged = frame.insetBy(dx: -1.5, dy: 0)
-                    if previousFrame.intersects(enlarged) { return true }
-                    previousFrame = enlarged
-                }
-                return false
-            }
-            while needsThinning(labels) {
-                for i in stride(from: 1, to: labels.count, by: 2).reversed() {
-                    secondary.append(labels.remove(at: i).gridline)
-                }
-            }
+        // Calculate frames for labels on the size axis
+        typealias LabelGeometry = (gridline: Gridline, position: CGPoint, frame: CGRect)
+        var labels: [LabelGeometry] = []
+        var secondary: [Gridline] = []
+        for gridline in gridlines {
+            guard let label = gridline.label else { secondary.append(gridline); continue }
+            let xMid = chartRect.minX + gridline.position * chartRect.width
+            let yTop = chartRect.minY - 3
 
-            // Draw labels on the size axis
-            for (gridline, pos, _) in labels {
-                (gridline.label! as NSString).draw(at: pos, withAttributes: scaleAttributes)
+            let bounds = (label as NSString).boundingRect(with: CGSize(width: 1000, height: 1000), options: [], attributes: attributes)
+            let pos = CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height)
+            let frame = bounds.offsetBy(dx: pos.x, dy: pos.y)
+            labels.append((gridline, pos, frame))
+        }
+        func needsThinning(_ frames: [LabelGeometry]) -> Bool {
+            var previousFrame: CGRect = .null
+            for (_, _, frame) in frames where !frame.isNull {
+                let enlarged = frame.insetBy(dx: -3, dy: 0)
+                if previousFrame.intersects(enlarged) { return true }
+                previousFrame = enlarged
             }
-
-            // Draw grid lines for values on the size axis
-            func draw(_ gridline: Gridline, labeled: Bool) {
-                let path = NSBezierPath()
-                path.move(to: CGPoint(x: gridline.position, y: 0))
-                path.line(to: CGPoint(x: gridline.position, y: 1))
-                path.transform(using: chartTransform)
-                let (color, lineParams) = p.lineParams(for: labeled ? .major : .minor)
-                lineParams.apply(on: path)
-                color.setStroke()
-                path.stroke()
+            return false
+        }
+        while needsThinning(labels) {
+            for i in stride(from: 1, to: labels.count, by: 2).reversed() {
+                secondary.append(labels.remove(at: i).gridline)
             }
-            NSGraphicsContext.saveGraphicsState()
-            NSRectClip(chartBounds)
-            for (gridline, _, _) in labels {
-                draw(gridline, labeled: true)
-            }
-            for gridline in secondary {
-                draw(gridline, labeled: false)
-            }
-            NSGraphicsContext.restoreGraphicsState()
         }
 
-        // Draw border
-        p.borderColor.setStroke()
-        let border = NSBezierPath(rect: chartBounds.insetBy(dx: -0.25, dy: -0.25))
-        border.lineWidth = p.borderWidth
-        border.stroke()
-
-        if let h = horizontalHighlight {
-            let highlight = NSBezierPath()
-            highlight.move(to: .init(x: h.lowerBound, y: 1))
-            highlight.line(to: .init(x: h.upperBound, y: 1))
-            highlight.move(to: .init(x: h.lowerBound, y: 0))
-            highlight.line(to: .init(x: h.upperBound, y: 0))
-            highlight.transform(using: chartTransform)
-            highlight.lineWidth = p.highlightedBorderWidth
-            highlight.lineCapStyle = .roundLineCapStyle
-            highlight.stroke()
+        // Draw labels
+        for (gridline, pos, _) in labels {
+            (gridline.label! as NSString).draw(at: pos, withAttributes: attributes)
         }
 
-        guard !curves.isEmpty else { return }
-
-        // Calculate legend positions and sizes
-        let legendMinX = chartBounds.minX + min(0.1 * chartBounds.width, 0.1 * chartBounds.height)
-        let legendMaxY = chartBounds.maxY - min(0.1 * chartBounds.width, 0.1 * chartBounds.height)
-        var legendMaxX = legendMinX
-        var legendMinY = legendMaxY
-        var legend: [(position: CGPoint, title: NSAttributedString)] = []
-        for (title, color, _) in curves {
-            let title = NSMutableAttributedString(string: "◼︎ " + title, attributes: [
-                NSFontAttributeName: p.legendFont,
-                NSForegroundColorAttributeName: p.legendColor,
-                ])
-            title.setAttributes([NSForegroundColorAttributeName: color],
-                                range: NSRange(0 ..< 1))
-
-            let titleBounds = title.boundingRect(with: largeSize, options: [])
-            legendMinY -= titleBounds.height
-            legend.append((CGPoint(x: legendMinX, y: legendMinY), title))
-            legendMinY -= p.legendFont.leading
-            legendMaxX = max(legendMaxX, legendMinX + titleBounds.width)
+        // Draw grid lines
+        func draw(_ gridline: Gridline, labeled: Bool) {
+            let path = NSBezierPath()
+            path.move(to: CGPoint(x: gridline.position, y: 0))
+            path.line(to: CGPoint(x: gridline.position, y: 1))
+            path.transform(using: chartTransform)
+            let (color, lineParams) = theme.lineParams(for: labeled ? .major : .minor)
+            lineParams.apply(on: path)
+            color.setStroke()
+            path.stroke()
         }
-        let legendRect = CGRect(x: legendMinX, y: legendMinY, width: legendMaxX - legendMinX, height: legendMaxY - legendMinY)
-            .insetBy(dx: -2 * p.legendPadding, dy: -2 * p.legendPadding)
-        let legendBorder = NSBezierPath(rect: legendRect)
-        legendBorder.lineWidth = 0.5
-
-        // Draw legend background
-        p.backgroundColor.setFill()
-        legendBorder.fill()
-
-        // Draw curves
         NSGraphicsContext.saveGraphicsState()
-        NSRectClip(chartBounds)
-        if p.shadowRadius > 0 {
+        NSRectClip(chartRect)
+        for (gridline, _, _) in labels {
+            draw(gridline, labeled: true)
+        }
+        for gridline in secondary {
+            draw(gridline, labeled: false)
+        }
+        NSGraphicsContext.restoreGraphicsState()
+    }
+
+    func drawBorder() {
+        theme.borderColor.setStroke()
+        let border = NSBezierPath(rect: chartRect.insetBy(dx: -0.25, dy: -0.25))
+        border.lineWidth = theme.borderWidth
+        border.stroke()
+    }
+
+    func drawHighlight(_ range: Range<CGFloat>) {
+        let highlight = NSBezierPath()
+        highlight.move(to: .init(x: range.lowerBound, y: 1))
+        highlight.line(to: .init(x: range.upperBound, y: 1))
+        highlight.move(to: .init(x: range.lowerBound, y: 0))
+        highlight.line(to: .init(x: range.upperBound, y: 0))
+        highlight.transform(using: chartTransform)
+        highlight.lineWidth = theme.highlightedBorderWidth
+        highlight.lineCapStyle = .roundLineCapStyle
+        highlight.stroke()
+    }
+
+    func drawCurves() {
+        NSGraphicsContext.saveGraphicsState()
+        NSRectClip(chartRect)
+        if theme.shadowRadius > 0 {
             let shadow = NSShadow()
-            shadow.shadowBlurRadius = p.shadowRadius
+            shadow.shadowBlurRadius = theme.shadowRadius
             shadow.shadowOffset = .zero
             shadow.shadowColor = .black
             shadow.set()
         }
-        for (_, color, path) in curves {
+        for (_, color, path) in chart.curves {
             color.setStroke()
             let path = (chartTransform as NSAffineTransform).transform(path)
             path.lineCapStyle = .roundLineCapStyle
             path.lineJoinStyle = .roundLineJoinStyle
-            p.lineParams.apply(on: path)
+            theme.lineParams.apply(on: path)
             path.stroke()
         }
-        if !presentationMode {
+        if theme.hairline {
             NSColor.black.setStroke()
-            for (_, _, path) in curves {
+            for (_, _, path) in chart.curves {
                 let path = (chartTransform as NSAffineTransform).transform(path)
                 path.lineWidth = 0.5
                 path.lineCapStyle = .roundLineCapStyle
@@ -635,28 +668,70 @@ class Chart {
             }
         }
         NSGraphicsContext.restoreGraphicsState()
+    }
 
-        // Draw legend background again (with some transparency)
-        p.backgroundColor.withAlphaComponent(0.7).setFill()
-        p.borderColor.setStroke()
+    typealias LegendLayout = (frame: CGRect, contents: [(position: CGPoint, text: NSAttributedString)])
+    func legendLayout() -> LegendLayout? {
+        guard let legendPositionRatio = self.legendPositionRatio else { return nil }
+        let attributes = [
+            NSFontAttributeName: theme.legendFont,
+            NSForegroundColorAttributeName: theme.legendColor
+        ]
+        var contents: [(position: CGPoint, text: NSAttributedString)] = []
+        var y = theme.legendPadding - theme.legendFont.descender
+        var width: CGFloat = 0
+        for (title, color, _) in chart.curves.reversed() {
+            let title = NSMutableAttributedString(string: "◼︎ " + title, attributes: attributes)
+            title.setAttributes([NSForegroundColorAttributeName: color],
+                                range: NSRange(0 ..< 1))
+
+            contents.append((CGPoint(x: theme.legendPadding, y: y), title))
+            let bounds = title.boundingRect(with: CGSize(width: 1000, height: 1000), options: .usesLineFragmentOrigin, context: nil)
+            y += bounds.minY + bounds.height + theme.legendFont.leading
+            width = max(width, bounds.width)
+        }
+        y += theme.legendPadding - theme.legendFont.leading
+        let legendSize = CGSize(width: width + 2 * theme.legendPadding, height: y)
+
+        let frame = CGRect(x: chartRect.minX + legendPositionRatio.x * (chartRect.width - legendSize.width),
+                           y: chartRect.maxY - legendPositionRatio.y * (chartRect.height - legendSize.height) - legendSize.height,
+                           width: legendSize.width,
+                           height: legendSize.height)
+        return (frame, contents)
+    }
+
+    func drawLegendBackground(with layout: LegendLayout) {
+        theme.backgroundColor.setFill()
+        NSRectFill(layout.frame)
+    }
+
+    func drawLegendContents(with layout: LegendLayout) {
+        // Draw background again, with some transparency and borders.
+        theme.backgroundColor.withAlphaComponent(0.7).setFill()
+        theme.borderColor.setStroke()
+        let legendBorder = NSBezierPath(rect: layout.frame)
+        legendBorder.lineWidth = 0.5
         legendBorder.fill()
         legendBorder.stroke()
 
         // Draw legend titles
-        for (position, title) in legend {
-            title.draw(at: position)
-        }
-    }
-
-    var image: NSImage {
-        return NSImage(size: size, flipped: false) { rect in
-            self.render(into: rect)
-            return true
+        for (position, title) in layout.contents {
+            title.draw(at: CGPoint(x: layout.frame.minX + position.x,
+                                   y: layout.frame.minY + position.y))
         }
     }
 }
 
 extension Chart: CustomPlaygroundQuickLookable {
+    var customPlaygroundQuickLook: PlaygroundQuickLook {
+        let renderer = ChartRenderer(rect: CGRect(x: 0, y: 0, width: 1024, height: 640),
+                                     chart: self, theme: .normal,
+                                     showTitle: true, legendPositionRatio: CGPoint(x: 0.1, y: 0.1))
+        return .image(renderer.image)
+    }
+}
+
+extension ChartRenderer: CustomPlaygroundQuickLookable {
     var customPlaygroundQuickLook: PlaygroundQuickLook {
         return .image(self.image)
     }
