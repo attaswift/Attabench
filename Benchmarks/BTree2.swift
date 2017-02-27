@@ -492,7 +492,7 @@ extension BTree2 {
     }
 }
 
-extension BTree2 {
+extension BTree2: OrderedSet {
     public func validate() {
         _ = root.validate(level: 0)
     }

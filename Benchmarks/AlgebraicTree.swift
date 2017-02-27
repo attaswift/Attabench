@@ -177,7 +177,7 @@ struct AlgebraicTreeIndex<Element: Comparable>: Comparable {
     }
 }
 
-extension AlgebraicTree: Collection {
+extension AlgebraicTree: Collection, OrderedSet {
     typealias Index = AlgebraicTreeIndex<Element>
 
     var startIndex: Index { return Index(value: self.minimum) }

@@ -512,7 +512,7 @@ extension IntBTree {
     }
 }
 
-extension IntBTree {
+extension IntBTree: OrderedSet {
     public func validate() {
         _ = root.validate(level: 0)
     }

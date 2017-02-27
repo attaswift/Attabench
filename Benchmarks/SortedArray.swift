@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SortedArray<Element: Comparable>: RandomAccessCollection {
+public struct SortedArray<Element: Comparable>: RandomAccessCollection, OrderedSet {
     public typealias Index = Int
     public typealias IndexDistance = Int.Stride
     public typealias Indices = CountableRange<Index>

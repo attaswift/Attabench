@@ -25,6 +25,12 @@ public protocol OrderedSet: Collection, CustomStringConvertible {
     ///     other means.
     @discardableResult
     mutating func insert(_ newElement: Iterator.Element) -> (inserted: Bool, memberAfterInsert: Iterator.Element)
+
+    func validate()
+}
+
+extension OrderedSet {
+    public func validate() {}
 }
 
 extension OrderedSet {

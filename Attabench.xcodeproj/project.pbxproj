@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB14EDE41E6472080006FD5F /* ExampleBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDE31E6472080006FD5F /* ExampleBenchmark.swift */; };
+		BB14EDE61E6472330006FD5F /* ForEachBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDE51E6472330006FD5F /* ForEachBenchmark.swift */; };
+		BB14EDEA1E64729D0006FD5F /* IndexingBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDE91E64729D0006FD5F /* IndexingBenchmark.swift */; };
+		BB14EDEC1E6472BA0006FD5F /* ContainsBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDEB1E6472BA0006FD5F /* ContainsBenchmark.swift */; };
+		BB14EDEE1E6472D80006FD5F /* InsertionBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDED1E6472D80006FD5F /* InsertionBenchmark.swift */; };
+		BB14EDF01E6472F20006FD5F /* SharedInsertionBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDEF1E6472F20006FD5F /* SharedInsertionBenchmark.swift */; };
+		BB14EDF21E6473260006FD5F /* IterationBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF11E6473260006FD5F /* IterationBenchmark.swift */; };
+		BB14EDF41E6473D00006FD5F /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF31E6473D00006FD5F /* Noop.swift */; };
 		BB35FF971E344D03003ABBF3 /* AlgebraicTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */; };
 		BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */; };
 		BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */; };
@@ -98,6 +106,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BB14EDE31E6472080006FD5F /* ExampleBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleBenchmark.swift; sourceTree = "<group>"; };
+		BB14EDE51E6472330006FD5F /* ForEachBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForEachBenchmark.swift; sourceTree = "<group>"; };
+		BB14EDE91E64729D0006FD5F /* IndexingBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexingBenchmark.swift; sourceTree = "<group>"; };
+		BB14EDEB1E6472BA0006FD5F /* ContainsBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainsBenchmark.swift; sourceTree = "<group>"; };
+		BB14EDED1E6472D80006FD5F /* InsertionBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionBenchmark.swift; sourceTree = "<group>"; };
+		BB14EDEF1E6472F20006FD5F /* SharedInsertionBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedInsertionBenchmark.swift; sourceTree = "<group>"; };
+		BB14EDF11E6473260006FD5F /* IterationBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IterationBenchmark.swift; sourceTree = "<group>"; };
+		BB14EDF31E6473D00006FD5F /* Noop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Noop.swift; sourceTree = "<group>"; };
 		BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgebraicTree.swift; sourceTree = "<group>"; };
 		BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusButtonInTitlebar.swift; sourceTree = "<group>"; };
 		BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
@@ -171,6 +187,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB14EDE71E6472640006FD5F /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */,
+				BBB9FA5D1E4CD2700074DFB1 /* CacheSize.swift */,
+				BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */,
+				BB8E0DF71E32383900505773 /* SortedArray.swift */,
+				BB8E0DF31E32383900505773 /* BinaryTree.swift */,
+				BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */,
+				BB8E0DF51E32383900505773 /* COWTree.swift */,
+				BBB9FA5B1E4CCE260074DFB1 /* BTree0.swift */,
+				BB8E0DF41E32383900505773 /* BTree1.swift */,
+				BB96EEAE1E49046D00CD9C22 /* BTree2.swift */,
+				BB9A6C641E4A52890051BCDB /* BTree3.swift */,
+				BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */,
+			);
+			name = Types;
+			sourceTree = "<group>";
+		};
+		BB14EDE81E64726F0006FD5F /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				BB8E0DF61E32383900505773 /* Shuffle.swift */,
+				BB14EDF31E6473D00006FD5F /* Noop.swift */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
 		BB1DA9C41E2E5923000F2B03 = {
 			isa = PBXGroup;
 			children = (
@@ -217,19 +261,15 @@
 			children = (
 				BB8E0DBF1E316CC800505773 /* Info.plist */,
 				BB8E0DF21E32383900505773 /* Benchmarks.swift */,
-				BBB9FA611E4CD35B0074DFB1 /* OrderedSet.swift */,
-				BBB9FA5D1E4CD2700074DFB1 /* CacheSize.swift */,
-				BBB9FA5F1E4CD3170074DFB1 /* MyOrderedSet.swift */,
-				BB8E0DF71E32383900505773 /* SortedArray.swift */,
-				BB8E0DF31E32383900505773 /* BinaryTree.swift */,
-				BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */,
-				BB8E0DF51E32383900505773 /* COWTree.swift */,
-				BBB9FA5B1E4CCE260074DFB1 /* BTree0.swift */,
-				BB8E0DF41E32383900505773 /* BTree1.swift */,
-				BB96EEAE1E49046D00CD9C22 /* BTree2.swift */,
-				BB9A6C641E4A52890051BCDB /* BTree3.swift */,
-				BBB9FA631E4CDC5A0074DFB1 /* IntBTree.swift */,
-				BB8E0DF61E32383900505773 /* Shuffle.swift */,
+				BB14EDE31E6472080006FD5F /* ExampleBenchmark.swift */,
+				BB14EDE51E6472330006FD5F /* ForEachBenchmark.swift */,
+				BB14EDE91E64729D0006FD5F /* IndexingBenchmark.swift */,
+				BB14EDEB1E6472BA0006FD5F /* ContainsBenchmark.swift */,
+				BB14EDED1E6472D80006FD5F /* InsertionBenchmark.swift */,
+				BB14EDEF1E6472F20006FD5F /* SharedInsertionBenchmark.swift */,
+				BB14EDF11E6473260006FD5F /* IterationBenchmark.swift */,
+				BB14EDE81E64726F0006FD5F /* Tools */,
+				BB14EDE71E6472640006FD5F /* Types */,
 			);
 			path = Benchmarks;
 			sourceTree = "<group>";
@@ -429,7 +469,13 @@
 				BB35FF971E344D03003ABBF3 /* AlgebraicTree.swift in Sources */,
 				BBB9FA5C1E4CCE260074DFB1 /* BTree0.swift in Sources */,
 				BB8E0DFC1E32383900505773 /* Shuffle.swift in Sources */,
+				BB14EDEE1E6472D80006FD5F /* InsertionBenchmark.swift in Sources */,
+				BB14EDE61E6472330006FD5F /* ForEachBenchmark.swift in Sources */,
+				BB14EDF01E6472F20006FD5F /* SharedInsertionBenchmark.swift in Sources */,
 				BBB9FA641E4CDC5A0074DFB1 /* IntBTree.swift in Sources */,
+				BB14EDEC1E6472BA0006FD5F /* ContainsBenchmark.swift in Sources */,
+				BB14EDF41E6473D00006FD5F /* Noop.swift in Sources */,
+				BB14EDE41E6472080006FD5F /* ExampleBenchmark.swift in Sources */,
 				BBB9FA5E1E4CD2700074DFB1 /* CacheSize.swift in Sources */,
 				BB8E0DF91E32383900505773 /* BinaryTree.swift in Sources */,
 				BB96EEAF1E49046D00CD9C22 /* BTree2.swift in Sources */,
@@ -439,6 +485,8 @@
 				BBB9FA621E4CD35B0074DFB1 /* OrderedSet.swift in Sources */,
 				BB8E0DFD1E32383900505773 /* SortedArray.swift in Sources */,
 				BB8E0DFA1E32383900505773 /* BTree1.swift in Sources */,
+				BB14EDF21E6473260006FD5F /* IterationBenchmark.swift in Sources */,
+				BB14EDEA1E64729D0006FD5F /* IndexingBenchmark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

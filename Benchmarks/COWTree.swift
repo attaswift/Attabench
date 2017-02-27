@@ -355,8 +355,8 @@ extension COWNode: CustomStringConvertible {
 
 //MARK: validate()
 
-extension COWTree {
-    func validate() {
+extension COWTree: OrderedSet {
+    public func validate() {
         _ = root?.validate(parentColor: .red, min: nil, max: nil)
     }
 }

@@ -336,7 +336,7 @@ extension BTree1 {
     }
 }
 
-extension BTree1 {
+extension BTree1: OrderedSet {
     public func validate() {
         _ = root.validate(level: 0)
     }
