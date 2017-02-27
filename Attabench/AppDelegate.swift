@@ -300,11 +300,12 @@ extension AppDelegate {
                           logarithmicSizeScale: logarithmicSizeScale.value,
                           logarithmicTimeScale: logarithmicTimeScale.value,
                           amortized: amortized.value)
+        let legendDistance = min(0.05 * size.width, 0.05 * size.height)
         let renderer = ChartRenderer(rect: CGRect(origin: .zero, size: size),
                                      chart: chart,
                                      theme: presentationMode.value ? .presentation : .normal,
                                      showTitle: showTitle.value,
-                                     legendPositionRatio: CGPoint(x: 0.1, y: 0.1))
+                                     legend: (position: .topLeft, distance: CGSize(width: legendDistance, height: legendDistance)))
         self.chartImageView.image = renderer.image
         self.chartImageView.name = "\(suite.title) - \(jobsPopUpButton.title)"
     }

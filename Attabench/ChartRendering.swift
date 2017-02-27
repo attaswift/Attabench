@@ -431,17 +431,25 @@ struct ChartRenderer {
     let chart: Chart
     let theme: ChartTheme
     let showTitle: Bool
-    let legendPositionRatio: CGPoint?
 
     let chartRect: CGRect
     let chartTransform: AffineTransform
 
-    init(rect: CGRect, chart: Chart, theme: ChartTheme, showTitle: Bool, legendPositionRatio: CGPoint?) {
+    let legend: (position: LegendPosition, distance: CGSize)?
+
+    enum LegendPosition {
+        case topLeft
+        case topRight
+        case bottomLeft
+        case bottomRight
+    }
+
+    init(rect: CGRect, chart: Chart, theme: ChartTheme, showTitle: Bool, legend: (position: LegendPosition, distance: CGSize)?) {
         self.rect = rect
         self.chart = chart
         self.theme = theme
         self.showTitle = showTitle
-        self.legendPositionRatio = legendPositionRatio
+        self.legend = legend
 
         let bottomRect = rect.divided(
             atDistance: showTitle
@@ -672,7 +680,7 @@ struct ChartRenderer {
 
     typealias LegendLayout = (frame: CGRect, contents: [(position: CGPoint, text: NSAttributedString)])
     func legendLayout() -> LegendLayout? {
-        guard let legendPositionRatio = self.legendPositionRatio else { return nil }
+        guard let legend = self.legend else { return nil }
         let attributes = [
             NSFontAttributeName: theme.legendFont,
             NSForegroundColorAttributeName: theme.legendColor
@@ -693,10 +701,21 @@ struct ChartRenderer {
         y += theme.legendPadding - theme.legendFont.leading
         let legendSize = CGSize(width: width + 2 * theme.legendPadding, height: y)
 
-        let frame = CGRect(x: chartRect.minX + legendPositionRatio.x * (chartRect.width - legendSize.width),
-                           y: chartRect.maxY - legendPositionRatio.y * (chartRect.height - legendSize.height) - legendSize.height,
-                           width: legendSize.width,
-                           height: legendSize.height)
+        var pos = CGPoint.zero
+        switch legend.position {
+        case .topLeft, .bottomLeft:
+            pos.x = chartRect.minX + legend.distance.width
+        case .topRight, .bottomRight:
+            pos.x = chartRect.maxX - legend.distance.width - legendSize.width
+        }
+        switch legend.position {
+        case .topLeft, .topRight:
+            pos.y = chartRect.maxY - legend.distance.height - legendSize.height
+        case .bottomLeft, .bottomRight:
+            pos.y = chartRect.minY + legend.distance.height
+        }
+
+        let frame = CGRect(origin: pos, size: legendSize)
         return (frame, contents)
     }
 
@@ -726,7 +745,8 @@ extension Chart: CustomPlaygroundQuickLookable {
     var customPlaygroundQuickLook: PlaygroundQuickLook {
         let renderer = ChartRenderer(rect: CGRect(x: 0, y: 0, width: 1024, height: 640),
                                      chart: self, theme: .normal,
-                                     showTitle: true, legendPositionRatio: CGPoint(x: 0.1, y: 0.1))
+                                     showTitle: true,
+                                     legend: (position: .topLeft, distance: CGSize(width: 32, height: 32)))
         return .image(renderer.image)
     }
 }
