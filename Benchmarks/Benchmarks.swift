@@ -84,8 +84,8 @@ func noop<T>(_ value: T) {
 
 func demoBenchmark() -> BenchmarkProtocol {
     let benchmark = Benchmark(title: "Demo", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
-    benchmark.descriptiveTitle = "Foo"
-    benchmark.descriptiveAmortizedTitle = "Amortized Foo"
+    benchmark.descriptiveTitle = "Time spent on all elements"
+    benchmark.descriptiveAmortizedTitle = "Average time spent on a single element"
 
     benchmark.addJob(title: "Array.contains") { input, lookups in
         return { timer in
@@ -627,7 +627,7 @@ func btreeIterationBenchmark() -> BenchmarkProtocol {
     benchmark.descriptiveTitle = "Iterating over all elements"
     benchmark.descriptiveAmortizedTitle = "A single iteration step"
 
-    benchmark.addJob(title: "BTree3.Indexing") { input in
+    benchmark.addJob(title: "BTree3.indexing") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
             for value in input {
                 set.insert(value)
@@ -664,38 +664,7 @@ func btreeIterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "BTree3.forEach") { input in
-        var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
-        for value in input {
-            set.insert(value)
-        }
-        set.validate()
-
-        return { timer in
-            var i = 0
-            set.forEach { element in
-                guard element == i else { fatalError("Expected \(i), got \(element)") }
-                i += 1
-            }
-            guard i == input.count else { fatalError() }
-        }
-    }
-
-    benchmark.addJob(title: "BTree3.contains") { input in
-        var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
-        for value in input {
-            set.insert(value)
-        }
-        set.validate()
-
-        return { timer in
-            for i in 0 ..< input.count {
-                guard set.contains(i) else { fatalError("Expected to find \(i)") }
-            }
-        }
-    }
-
-    benchmark.addJob(title: "IntBTree.Indexing") { input in
+    benchmark.addJob(title: "IntBTree.indexing") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -732,8 +701,36 @@ func btreeIterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "IntBTree.forEach") { input in
+    benchmark.addJob(title: "BTree3.contains") { input in
+        var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
+        for value in input {
+            set.insert(value)
+        }
+        set.validate()
+
+        return { timer in
+            for i in 0 ..< input.count {
+                guard set.contains(i) else { fatalError("Expected to find \(i)") }
+            }
+        }
+    }
+
+    benchmark.addJob(title: "IntBTree.contains") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
+        for value in input {
+            set.insert(value)
+        }
+        set.validate()
+
+        return { timer in
+            for i in 0 ..< input.count {
+                guard set.contains(i) else { fatalError("Expected to find \(i)") }
+            }
+        }
+    }
+
+    benchmark.addJob(title: "BTree3.forEach") { input in
+        var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
         }
@@ -749,7 +746,7 @@ func btreeIterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "IntBTree.contains") { input in
+    benchmark.addJob(title: "IntBTree.forEach") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -757,9 +754,12 @@ func btreeIterationBenchmark() -> BenchmarkProtocol {
         set.validate()
 
         return { timer in
-            for i in 0 ..< input.count {
-                guard set.contains(i) else { fatalError("Expected to find \(i)") }
+            var i = 0
+            set.forEach { element in
+                guard element == i else { fatalError("Expected \(i), got \(element)") }
+                i += 1
             }
+            guard i == input.count else { fatalError() }
         }
     }
 
