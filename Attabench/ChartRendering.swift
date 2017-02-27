@@ -340,6 +340,23 @@ class Chart {
     }
 
     struct ViewParams {
+        struct LineParams {
+            let lineWidth: CGFloat
+            let dash: [CGFloat]
+            let phase: CGFloat
+
+            init(lineWidth: CGFloat, dash: [CGFloat] = [], phase: CGFloat = 0) {
+                self.lineWidth = lineWidth
+                self.dash = dash
+                self.phase = phase
+            }
+
+            func apply(on path: NSBezierPath) {
+                path.lineWidth = lineWidth
+                path.setLineDash(dash, count: dash.count, phase: phase)
+            }
+        }
+
         let backgroundColor: NSColor
         let titleFont: NSFont
         let titleColor: NSColor
@@ -347,14 +364,14 @@ class Chart {
         let borderWidth: CGFloat
         let highlightedBorderWidth: CGFloat
         let majorGridlineColor: NSColor
-        let majorGridlineWidth: CGFloat
+        let majorGridlineParams: LineParams
         let minorGridlineColor: NSColor
-        let minorGridlineWidth: CGFloat
+        let minorGridlineParams: LineParams
         let scaleFont: NSFont
         let legendFont: NSFont
         let legendColor: NSColor
         let legendPadding: CGFloat
-        let lineWidth: CGFloat
+        let lineParams: LineParams
         let shadowRadius: CGFloat
         let xPadding: CGFloat
 
@@ -366,14 +383,14 @@ class Chart {
             borderWidth: 0.5,
             highlightedBorderWidth: 4,
             majorGridlineColor: NSColor(white: 0.3, alpha: 1),
-            majorGridlineWidth: 0.75,
+            majorGridlineParams: LineParams(lineWidth: 0.75),
             minorGridlineColor: NSColor(white: 0.3, alpha: 1),
-            minorGridlineWidth: 0.5,
-            scaleFont: NSFont(name: "Helvetica-Light", size: 12)!,
+            minorGridlineParams: LineParams(lineWidth: 0.5, dash: [6, 3]),
+            scaleFont: NSFont(name: "Helvetica-Light", size: 10)!,
             legendFont: NSFont(name: "Menlo", size: 12)!,
             legendColor: NSColor.black,
             legendPadding: 6,
-            lineWidth: 4,
+            lineParams: LineParams(lineWidth: 4),
             shadowRadius: 0,
             xPadding: 6)
 
@@ -385,23 +402,23 @@ class Chart {
             borderWidth: 0.5,
             highlightedBorderWidth: 4,
             majorGridlineColor: NSColor(white: 0.7, alpha: 1),
-            majorGridlineWidth: 0.75,
+            majorGridlineParams: LineParams(lineWidth: 0.75),
             minorGridlineColor: NSColor(white: 0.7, alpha: 1),
-            minorGridlineWidth: 0.5,
+            minorGridlineParams: LineParams(lineWidth: 0.5, dash: [6, 3]),
             scaleFont: NSFont(name: "Helvetica-Light", size: 24)!,
             legendFont: NSFont(name: "Menlo", size: 20)!,
             legendColor: NSColor.white,
             legendPadding: 8,
-            lineWidth: 8,
+            lineParams: LineParams(lineWidth: 8),
             shadowRadius: 3,
             xPadding: 12)
 
-        func gridlineParams(for gridline: Gridline) -> (lineWidth: CGFloat, color: NSColor) {
-            switch gridline.kind {
+        func lineParams(for kind: Gridline.Kind) -> (color: NSColor, params: LineParams) {
+            switch kind {
             case .major:
-                return (majorGridlineWidth, majorGridlineColor)
+                return (majorGridlineColor, majorGridlineParams)
             case .minor:
-                return (minorGridlineWidth, minorGridlineColor)
+                return (minorGridlineColor, minorGridlineParams)
             }
         }
     }
@@ -454,31 +471,13 @@ class Chart {
         NSGraphicsContext.saveGraphicsState()
         NSRectClip(chartBounds)
         for gridline in horizontalGridlines {
-            let lineParams = p.gridlineParams(for: gridline)
-            lineParams.color.setStroke()
             let path = NSBezierPath()
             path.move(to: CGPoint(x: 0, y: gridline.position))
             path.line(to: CGPoint(x: 1, y: gridline.position))
             path.transform(using: chartTransform)
-            if gridline.kind == .minor {
-                path.setLineDash([6, 3], count: 2, phase: 0)
-            }
-            path.lineWidth = lineParams.lineWidth
-            path.stroke()
-        }
-        NSGraphicsContext.restoreGraphicsState()
-
-        // Draw vertical grid lines
-        NSGraphicsContext.saveGraphicsState()
-        NSRectClip(chartBounds)
-        for gridline in verticalGridlines {
-            let lineParams = p.gridlineParams(for: gridline)
-            lineParams.color.setStroke()
-            let path = NSBezierPath()
-            path.move(to: CGPoint(x: gridline.position, y: 0))
-            path.line(to: CGPoint(x: gridline.position, y: 1))
-            path.transform(using: chartTransform)
-            path.lineWidth = lineParams.lineWidth
+            let (color, lineParams) = p.lineParams(for: gridline.kind)
+            lineParams.apply(on: path)
+            color.setStroke()
             path.stroke()
         }
         NSGraphicsContext.restoreGraphicsState()
@@ -491,7 +490,7 @@ class Chart {
 
             let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
             let leftPos = CGPoint(x: chartBounds.minX - p.xPadding - bounds.width,
-                             y: yMid - bounds.height / 2)
+                                  y: yMid - bounds.height / 2)
             let rightPos = CGPoint(x: chartBounds.maxX + p.xPadding,
                                    y: yMid - bounds.height / 2)
             let frame = bounds.offsetBy(dx: leftPos.x, dy: leftPos.y).insetBy(dx: 0, dy: -3)
@@ -501,19 +500,61 @@ class Chart {
             previousFrame = frame
         }
 
-        // Draw vertical grid labels
-        previousFrame = .null
-        for gridline in verticalGridlines {
-            guard let label = gridline.label else { continue }
-            let xMid = chartBounds.minX + gridline.position * chartBounds.width
-            let yTop = chartBounds.minY - 3
+        do {
+            // Calculate frames for labels on the size axis
+            typealias LabelGeometry = (gridline: Gridline, position: CGPoint, frame: CGRect)
+            var labels: [LabelGeometry] = []
+            var secondary: [Gridline] = []
+            for gridline in verticalGridlines {
+                guard let label = gridline.label else { secondary.append(gridline); continue }
+                let xMid = chartBounds.minX + gridline.position * chartBounds.width
+                let yTop = chartBounds.minY - 3
 
-            let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
-            let pos = CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height)
-            let frame = bounds.offsetBy(dx: pos.x, dy: pos.y).insetBy(dx: -3, dy: 0)
-            guard !previousFrame.intersects(frame) else { continue }
-            (label as NSString).draw(at: pos, withAttributes: scaleAttributes)
-            previousFrame = frame
+                let bounds = (label as NSString).boundingRect(with: largeSize, options: [], attributes: scaleAttributes)
+                let pos = CGPoint(x: xMid - bounds.width / 2, y: yTop - bounds.height)
+                let frame = bounds.offsetBy(dx: pos.x, dy: pos.y)
+                labels.append((gridline, pos, frame))
+            }
+            func needsThinning(_ frames: [LabelGeometry]) -> Bool {
+                var previousFrame: CGRect = .null
+                for (_, _, frame) in frames where !frame.isNull {
+                    let enlarged = frame.insetBy(dx: -1.5, dy: 0)
+                    if previousFrame.intersects(enlarged) { return true }
+                    previousFrame = enlarged
+                }
+                return false
+            }
+            while needsThinning(labels) {
+                for i in stride(from: 1, to: labels.count, by: 2).reversed() {
+                    secondary.append(labels.remove(at: i).gridline)
+                }
+            }
+
+            // Draw labels on the size axis
+            for (gridline, pos, _) in labels {
+                (gridline.label! as NSString).draw(at: pos, withAttributes: scaleAttributes)
+            }
+
+            // Draw grid lines for values on the size axis
+            func draw(_ gridline: Gridline, labeled: Bool) {
+                let path = NSBezierPath()
+                path.move(to: CGPoint(x: gridline.position, y: 0))
+                path.line(to: CGPoint(x: gridline.position, y: 1))
+                path.transform(using: chartTransform)
+                let (color, lineParams) = p.lineParams(for: labeled ? .major : .minor)
+                lineParams.apply(on: path)
+                color.setStroke()
+                path.stroke()
+            }
+            NSGraphicsContext.saveGraphicsState()
+            NSRectClip(chartBounds)
+            for (gridline, _, _) in labels {
+                draw(gridline, labeled: true)
+            }
+            for gridline in secondary {
+                draw(gridline, labeled: false)
+            }
+            NSGraphicsContext.restoreGraphicsState()
         }
 
         // Draw border
@@ -578,9 +619,9 @@ class Chart {
         for (_, color, path) in curves {
             color.setStroke()
             let path = (chartTransform as NSAffineTransform).transform(path)
-            path.lineWidth = p.lineWidth
             path.lineCapStyle = .roundLineCapStyle
             path.lineJoinStyle = .roundLineJoinStyle
+            p.lineParams.apply(on: path)
             path.stroke()
         }
         if !presentationMode {
