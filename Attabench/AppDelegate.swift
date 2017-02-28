@@ -23,7 +23,7 @@ class AppDelegate: NSObject {
     @IBOutlet weak var benchmarksPopUpButton: NSPopUpButton!
     @IBOutlet weak var minSizePopUpButton: NSPopUpButton!
     @IBOutlet weak var maxSizePopUpButton: NSPopUpButton!
-    @IBOutlet weak var jobsPopUpButton: NSPopUpButton!
+    @IBOutlet weak var tasksPopUpButton: NSPopUpButton!
     @IBOutlet weak var startMenuItem: NSMenuItem!
     @IBOutlet weak var progressButton: NSButton!
     @IBOutlet weak var chartImageView: DraggableImageView!
@@ -84,7 +84,7 @@ class AppDelegate: NSObject {
             refreshRunnerParams()
             refreshSuite()
             refreshScale()
-            refreshJobs()
+            refreshTasks()
             refreshChart()
         }
     }
@@ -165,7 +165,7 @@ extension AppDelegate: NSApplicationDelegate {
         }
         self.refreshSuite()
         self.refreshScale()
-        self.refreshJobs()
+        self.refreshTasks()
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -190,7 +190,7 @@ extension AppDelegate: HarnessDelegate {
     //MARK: HarnessDelegate
 
     func harness(_ harness: Harness, willStartMeasuring instance: BenchmarkInstanceKey) {
-        self.status = "Measuring \(instance.benchmark) : \(instance.size.sizeLabel) : \(instance.job)"
+        self.status = "Measuring \(instance.benchmark) : \(instance.size.sizeLabel) : \(instance.task)"
     }
 
     func harness(_ harness: Harness, didMeasure instance: BenchmarkInstanceKey, withResult time: TimeInterval) {
@@ -307,7 +307,7 @@ extension AppDelegate {
                                      showTitle: showTitle.value,
                                      legend: (position: .topLeft, distance: CGSize(width: legendDistance, height: legendDistance)))
         self.chartImageView.image = renderer.image
-        self.chartImageView.name = "\(suite.title) - \(jobsPopUpButton.title)"
+        self.chartImageView.name = "\(suite.title) - \(tasksPopUpButton.title)"
     }
 
     @IBAction func deleteResults(_ sender: AnyObject) {
@@ -414,21 +414,21 @@ extension AppDelegate {
         self.selectedSuite = index == 0 ? self.harness.suites.last! : self.harness.suites[index - 1]
     }
 
-    var selectedJobs: Set<String> {
+    var selectedTasks: Set<String> {
         get {
-            return self.selectedSuite.selectedJobSet
+            return self.selectedSuite.selectedTaskSet
         }
         set {
-            self.selectedSuite.selectedJobSet = newValue
-            refreshJobs()
+            self.selectedSuite.selectedTaskSet = newValue
+            refreshTasks()
             refreshChart()
             refreshRunnerParams()
         }
     }
 
-    func refreshJobs() {
+    func refreshTasks() {
         let suite = self.selectedSuite ?? self.harness.suites[0]
-        let selected = self.selectedJobs
+        let selected = self.selectedTasks
 
         let title: String
         switch selected.count {
@@ -436,54 +436,49 @@ extension AppDelegate {
             fatalError()
         case 1:
             title = selected.first!
-        case suite.jobTitles.count:
-            title = "All Jobs"
+        case suite.taskTitles.count:
+            title = "All Tasks"
         default:
-            title = "\(selected.count) Jobs"
+            title = "\(selected.count) Tasks"
         }
 
         let menu = NSMenu()
         menu.addItem(withTitle: title, action: nil, keyEquivalent: "")
-        menu.addItem(withTitle: "All Jobs", action: #selector(AppDelegate.selectAllJobs(_:)), keyEquivalent: "a")
+        menu.addItem(withTitle: "All Tasks", action: #selector(AppDelegate.selectAllTasks(_:)), keyEquivalent: "a")
         let submenu = NSMenu()
         let submenuItem = NSMenuItem(title: "Just One", action: nil, keyEquivalent: "")
         submenuItem.submenu = submenu
         menu.addItem(submenuItem)
         menu.addItem(NSMenuItem.separator())
 
-        for title in suite.jobTitles {
-            let item = NSMenuItem(title: title, action: #selector(AppDelegate.toggleJob(_:)), keyEquivalent: "")
+        for title in suite.taskTitles {
+            let item = NSMenuItem(title: title, action: #selector(AppDelegate.toggleTask(_:)), keyEquivalent: "")
             item.state = selected.contains(title) ? NSOnState : NSOffState
             menu.addItem(item)
 
-            submenu.addItem(withTitle: title, action: #selector(AppDelegate.selectJob(_:)), keyEquivalent: "")
+            submenu.addItem(withTitle: title, action: #selector(AppDelegate.selectTask(_:)), keyEquivalent: "")
         }
-        self.jobsPopUpButton.menu = menu
+        self.tasksPopUpButton.menu = menu
     }
 
-    @IBAction func selectAllJobs(_ sender: AnyObject) {
-        self.selectedJobs = []
+    @IBAction func selectAllTasks(_ sender: AnyObject) {
+        self.selectedTasks = []
     }
 
-    @IBAction func toggleJob(_ sender: NSMenuItem) {
-        var selected = self.selectedJobs
+    @IBAction func toggleTask(_ sender: NSMenuItem) {
+        var selected = self.selectedTasks
         if selected.contains(sender.title) {
             selected.remove(sender.title)
         }
         else {
             selected.insert(sender.title)
         }
-        if selected.isEmpty {
-            self.selectedJobs = []
-        }
-        else {
-            self.selectedJobs = selected
-        }
+        self.selectedTasks = selected
     }
 
-    @IBAction func selectJob(_ sender: NSMenuItem) {
+    @IBAction func selectTask(_ sender: NSMenuItem) {
         let title = sender.title
-        self.selectedJobs = [title]
+        self.selectedTasks = [title]
     }
     var maxScale: Int {
         get {

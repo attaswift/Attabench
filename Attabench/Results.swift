@@ -9,7 +9,7 @@
 import Foundation
 import BenchmarkingTools
 
-class JobSample {
+class TaskSample {
     internal private(set) var measurements: [TimeInterval] = []
     internal private(set) var sum: Double = 0
     internal private(set) var sumSquared: Double = 0
@@ -45,8 +45,8 @@ class JobSample {
     }
 }
 
-class JobResults {
-    var samplesBySize: [Int: JobSample] = [:]
+class TaskResults {
+    var samplesBySize: [Int: TaskSample] = [:]
 
     init() {}
 
@@ -54,7 +54,7 @@ class JobResults {
         guard let dict = plist as? [String: Double] else { return nil }
         for (size, measurement) in dict {
             guard let size = Int(size, radix: 10) else { return nil }
-            let sample = JobSample()
+            let sample = TaskSample()
             sample.addMeasurement(measurement)
             samplesBySize[size] = sample
         }
@@ -69,7 +69,7 @@ class JobResults {
     }
 
     func addMeasurement(_ elapsedTime: TimeInterval, forSize size: Int) {
-        let sample = samplesBySize[size] ?? JobSample()
+        let sample = samplesBySize[size] ?? TaskSample()
         sample.addMeasurement(elapsedTime)
         samplesBySize[size] = sample
     }

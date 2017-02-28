@@ -19,12 +19,12 @@
                 <outlet property="backgroundView" destination="EiT-Mj-1SZ" id="lO9-ly-tyX"/>
                 <outlet property="benchmarksPopUpButton" destination="rg8-sn-PVA" id="TEO-zN-vaW"/>
                 <outlet property="chartImageView" destination="eLG-FC-549" id="coY-xm-PZy"/>
-                <outlet property="jobsPopUpButton" destination="m3D-IU-xIC" id="M70-yy-vSJ"/>
                 <outlet property="maxSizePopUpButton" destination="bxa-GT-aeV" id="akZ-UB-MQr"/>
                 <outlet property="minSizePopUpButton" destination="wfA-Hb-afc" id="7pk-93-NK6"/>
                 <outlet property="progressButton" destination="PBE-a0-9V8" id="wqL-Ig-tfs"/>
                 <outlet property="runButton" destination="X4a-Uy-A9Q" id="n59-wX-RDY"/>
                 <outlet property="startMenuItem" destination="6GY-ZT-wi2" id="4f3-XQ-Hwh"/>
+                <outlet property="tasksPopUpButton" destination="m3D-IU-xIC" id="M70-yy-vSJ"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -584,18 +584,18 @@ CA
                             </popUpButtonCell>
                         </popUpButton>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="121A327D-1C75-4ECB-AFBD-D496FD89D871" label="Jobs" paletteLabel="Jobs" toolTip="Jobs" visibilityPriority="1" id="0NC-Up-Wdv">
+                    <toolbarItem implicitItemIdentifier="121A327D-1C75-4ECB-AFBD-D496FD89D871" label="Tasks" paletteLabel="Tasks" toolTip="Tasks" visibilityPriority="1" id="0NC-Up-Wdv">
                         <size key="minSize" width="120" height="28"/>
                         <size key="maxSize" width="120" height="28"/>
                         <popUpButton key="view" verticalHuggingPriority="750" id="m3D-IU-xIC">
                             <rect key="frame" x="0.0" y="14" width="120" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <popUpButtonCell key="cell" type="roundTextured" title="All Jobs" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="KeB-v9-uZO" id="Kl2-V6-svu">
+                            <popUpButtonCell key="cell" type="roundTextured" title="All Tasks" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="KeB-v9-uZO" id="Kl2-V6-svu">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="menu"/>
                                 <menu key="menu" id="VL9-sK-sgB">
                                     <items>
-                                        <menuItem title="All Jobs" state="on" hidden="YES" id="KeB-v9-uZO"/>
+                                        <menuItem title="All Tasks" state="on" hidden="YES" id="KeB-v9-uZO"/>
                                         <menuItem title="Item 2" id="WJ6-ma-btA"/>
                                         <menuItem title="Item 3" id="Eek-f3-oTH"/>
                                     </items>

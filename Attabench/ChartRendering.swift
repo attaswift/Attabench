@@ -247,7 +247,7 @@ class Chart {
             self.title = suite.benchmark.descriptiveTitle ?? suite.title
         }
 
-        let jobs = suite.selectedJobs
+        let tasks = suite.selectedTasks
 
         var minSize = sizeRange?.lowerBound ?? Int.max
         var maxSize = sizeRange?.upperBound ?? Int.min
@@ -259,7 +259,7 @@ class Chart {
         var minTime = timeRange?.lowerBound ?? Double.infinity
         var maxTime = timeRange?.upperBound ?? -Double.infinity
         var count = 0
-        for (job, samples) in suite.samplesByJob where jobs.contains(job) {
+        for (task, samples) in suite.samplesByTask where tasks.contains(task) {
             for (size, sample) in samples.samplesBySize {
                 if size > maxSize { maxSize = size }
                 if size < minSize { minSize = size }
@@ -296,15 +296,15 @@ class Chart {
             self.horizontalHighlight = sizeScale.position(for: Double(s.lowerBound)) ..< sizeScale.position(for: Double(s.upperBound))
         }
 
-        let c = jobs.count
+        let c = tasks.count
         for i in 0 ..< c {
-            let job = jobs[i]
-            guard let samples = suite.samplesByJob[job] else { continue }
+            let task = tasks[i]
+            guard let samples = suite.samplesByTask[task] else { continue }
 
-            let index = suite.jobTitles.index(of: job)!
+            let index = suite.taskTitles.index(of: task)!
             let color: NSColor
-            if suite.jobTitles.count > 6 {
-                color = NSColor(calibratedHue: CGFloat(index) / CGFloat(suite.jobTitles.count),
+            if suite.taskTitles.count > 6 {
+                color = NSColor(calibratedHue: CGFloat(index) / CGFloat(suite.taskTitles.count),
                                 saturation: 1, brightness: 1, alpha: 1)
             }
             else {
@@ -327,7 +327,7 @@ class Chart {
                                y: timeScale.position(for: amortized ? sample.minimum / Double(size) : sample.minimum))
             })
 
-            self.curves.append((job, color, path))
+            self.curves.append((task, color, path))
         }
     }
 }

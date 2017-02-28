@@ -18,7 +18,7 @@ func insertionBenchmark() -> Benchmark<[Int]> {
     benchmark.descriptiveAmortizedTitle = "Cost of one random insertion"
 
     func add<T: OrderedSet>(_ title: String, for type: T.Type = T.self, maxSize: Int? = nil, to benchmark: Benchmark<[Int]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
-        benchmark.addJob(title: title) { input in
+        benchmark.addTask(title: title) { input in
             if let maxSize = maxSize, input.count > maxSize { return nil }
             var first = true
             return { timer in
@@ -68,7 +68,7 @@ func insertionBenchmark() -> Benchmark<[Int]> {
         }
     }
 
-    benchmark.addJob(title: "Array.sort") { input in
+    benchmark.addTask(title: "Array.sort") { input in
         return { timer in
             var array = input
             array.sort()

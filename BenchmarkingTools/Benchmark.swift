@@ -27,7 +27,7 @@ public class BenchmarkTimer {
     }
 }
 
-fileprivate class BenchmarkJob<Input> {
+fileprivate class BenchmarkTask<Input> {
     let title: String
     let body: (Input) -> ((BenchmarkTimer) -> Void)?
 
@@ -43,23 +43,23 @@ fileprivate class BenchmarkJob<Input> {
 
 public struct BenchmarkInstanceKey: SipHashable {
     public let benchmark: String
-    public let job: String
+    public let task: String
     public let size: Int
 
-    public init(benchmark: String, job: String, size: Int) {
+    public init(benchmark: String, task: String, size: Int) {
         self.benchmark = benchmark
-        self.job = job
+        self.task = task
         self.size = size
     }
 
     public func appendHashes(to hasher: inout SipHasher) {
         hasher.append(benchmark)
-        hasher.append(job)
+        hasher.append(task)
         hasher.append(size)
     }
     
     public static func ==(left: BenchmarkInstanceKey, right: BenchmarkInstanceKey) -> Bool {
-        return left.benchmark == right.benchmark && left.job == right.job && left.size == right.size
+        return left.benchmark == right.benchmark && left.task == right.task && left.size == right.size
     }
 }
 
@@ -68,7 +68,7 @@ public protocol BenchmarkProtocol {
     var descriptiveTitle: String? { get }
     var descriptiveAmortizedTitle: String? { get }
 
-    var jobTitles: [String] { get }
+    var taskTitles: [String] { get }
     func run(_ title: String, _ size: Int) -> TimeInterval?
     func forgetInputs() // FIXME: Move instances out of here
     func forgetInstances() // FIXME: Move instances out of here
@@ -79,8 +79,8 @@ public class Benchmark<Input>: BenchmarkProtocol {
     public var descriptiveTitle: String? = nil
     public var descriptiveAmortizedTitle: String? = nil
     
-    public private(set) var jobTitles: [String] = []
-    private var jobs: [String: BenchmarkJob<Input>] = [:]
+    public private(set) var taskTitles: [String] = []
+    private var tasks: [String: BenchmarkTask<Input>] = [:]
     private var instances: [BenchmarkInstanceKey: (BenchmarkTimer) -> Void] = [:]
 
     private let inputGenerator: (Int) -> Input
@@ -92,17 +92,17 @@ public class Benchmark<Input>: BenchmarkProtocol {
         self.inputGenerator = inputGenerator
     }
 
-    public func addJob(title: String, _ body: @escaping (Input) -> ((BenchmarkTimer) -> Void)?) {
-        precondition(self.jobs[title] == nil)
-        self.jobTitles.append(title)
-        self.jobs[title] = BenchmarkJob(title, body)
+    public func addTask(title: String, _ body: @escaping (Input) -> ((BenchmarkTimer) -> Void)?) {
+        precondition(self.tasks[title] == nil)
+        self.taskTitles.append(title)
+        self.tasks[title] = BenchmarkTask(title, body)
     }
 
     private func instance(for key: BenchmarkInstanceKey) -> ((BenchmarkTimer) -> Void)? {
         if let instance = instances[key] { return instance }
-        guard let job = jobs[key.job] else { fatalError() }
+        guard let task = tasks[key.task] else { fatalError() }
         let input = self.input(for: key.size)
-        let instance = job.generate(input: input)
+        let instance = task.generate(input: input)
         instances[key] = instance
         return instance
     }
@@ -125,8 +125,8 @@ public class Benchmark<Input>: BenchmarkProtocol {
     }
 
     @discardableResult @inline(never)
-    public func run(_ job: String, _ size: Int) -> TimeInterval? {
-        let key = BenchmarkInstanceKey(benchmark: title, job: job, size: size)
+    public func run(_ task: String, _ size: Int) -> TimeInterval? {
+        let key = BenchmarkInstanceKey(benchmark: title, task: task, size: size)
         guard let instance = self.instance(for: key) else { return nil }
         let start = Timestamp()
         let timer = BenchmarkTimer()

@@ -19,7 +19,7 @@ func foreachBenchmark() -> Benchmark<[Int]> {
     benchmark.descriptiveAmortizedTitle = "A single iteration of “forEach”"
 
     func add<T: OrderedSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<[Int]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
-        benchmark.addJob(title: title) { input in
+        benchmark.addTask(title: title) { input in
             var set = initializer()
             for value in input {
                 set.insert(value)
@@ -37,7 +37,7 @@ func foreachBenchmark() -> Benchmark<[Int]> {
         }
     }
 
-    benchmark.addJob(title: "SortedArray") { input in
+    benchmark.addTask(title: "SortedArray") { input in
         var set = SortedArray<Int>()
         for value in 0 ..< input.count { // Cheating
             set.append(value)
@@ -81,7 +81,7 @@ func foreachBenchmark() -> Benchmark<[Int]> {
         }
     }
 
-    benchmark.addJob(title: "IntBTree/1024-16, inlined") { input in
+    benchmark.addTask(title: "IntBTree/1024-16, inlined") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -96,7 +96,7 @@ func foreachBenchmark() -> Benchmark<[Int]> {
         }
     }
 
-    benchmark.addJob(title: "Array") { input in
+    benchmark.addTask(title: "Array") { input in
         let array = input.sorted()
         return { timer in
             var i = 0

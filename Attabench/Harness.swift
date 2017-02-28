@@ -93,18 +93,18 @@ class Harness {
         return true
     }
 
-    func _run(suite: Suite, jobs: [String], sizes: [Int], i: Int, j: Int, forget: Bool) {
+    func _run(suite: Suite, tasks: [String], sizes: [Int], i: Int, j: Int, forget: Bool) {
         if self._stopIfNeeded(suite) { return }
 
-        let job = jobs[i]
+        let task = tasks[i]
         let size = sizes[j]
-        let instance = BenchmarkInstanceKey(benchmark: suite.title, job: job, size: size)
+        let instance = BenchmarkInstanceKey(benchmark: suite.title, task: task, size: size)
         DispatchQueue.main.sync {
             self.delegate?.harness(self, willStartMeasuring: instance)
         }
-        if let time = suite.benchmark.run(jobs[i], sizes[j]) {
+        if let time = suite.benchmark.run(tasks[i], sizes[j]) {
             DispatchQueue.main.sync {
-                suite.addMeasurement(job, size, time)
+                suite.addMeasurement(task, size, time)
                 self.delegate?.harness(self, didMeasure: instance, withResult: time)
             }
         }
@@ -114,14 +114,14 @@ class Harness {
         if self._stopIfNeeded(suite) { return }
 
         queue.async {
-            if i + 1 < jobs.count {
-                self._run(suite: suite, jobs: jobs, sizes: sizes, i: i + 1, j: j, forget: forget)
+            if i + 1 < tasks.count {
+                self._run(suite: suite, tasks: tasks, sizes: sizes, i: i + 1, j: j, forget: forget)
             }
             else {
                 if forget {
                     suite.benchmark.forgetInputs()
                 }
-                self._run(suite: suite, jobs: jobs, sizes: sizes,
+                self._run(suite: suite, tasks: tasks, sizes: sizes,
                           i: 0, j: (j + 1) % sizes.count, forget: forget)
             }
         }
@@ -131,7 +131,7 @@ class Harness {
         precondition(state == .idle)
         state = .running
 
-        let jobs = suite.selectedJobs
+        let tasks = suite.selectedTasks
 
         let range = suite.scaleRange
         var sizes: Set<Int> = []
@@ -140,10 +140,10 @@ class Harness {
             sizes.insert(Int(size))
         }
 
-        precondition(!jobs.isEmpty && !sizes.isEmpty)
+        precondition(!tasks.isEmpty && !sizes.isEmpty)
 
         queue.async {
-            self._run(suite: suite, jobs: jobs, sizes: sizes.sorted(), i: 0, j: 0, forget: randomized)
+            self._run(suite: suite, tasks: tasks, sizes: sizes.sorted(), i: 0, j: 0, forget: randomized)
         }
     }
 
@@ -155,37 +155,37 @@ class Harness {
 
 class Suite {
     let benchmark: BenchmarkProtocol
-    var samplesByJob: [String: JobResults] = [:]
+    var samplesByTask: [String: TaskResults] = [:]
 
     var scaleRange: CountableClosedRange<Int> {
         didSet { saveConfig() }
     }
-    private var _selectedJobSet: Set<String> = [] {
+    private var _selectedTaskSet: Set<String> = [] {
         didSet { saveConfig() }
     }
 
-    var selectedJobSet: Set<String> {
+    var selectedTaskSet: Set<String> {
         get {
-            return _selectedJobSet
+            return _selectedTaskSet
         }
         set {
-            let value = newValue.intersection(benchmark.jobTitles)
-            if value.isEmpty { _selectedJobSet = Set(benchmark.jobTitles) }
-            else { _selectedJobSet = value }
+            let value = newValue.intersection(benchmark.taskTitles)
+            if value.isEmpty { _selectedTaskSet = Set(benchmark.taskTitles) }
+            else { _selectedTaskSet = value }
         }
     }
 
-    var selectedJobs: [String] {
+    var selectedTasks: [String] {
         get {
-            return benchmark.jobTitles.filter(selectedJobSet.contains)
+            return benchmark.taskTitles.filter(selectedTaskSet.contains)
         }
         set {
-            selectedJobSet = Set(newValue)
+            selectedTaskSet = Set(newValue)
         }
     }
 
     var title: String { return benchmark.title }
-    var jobTitles: [String] { return benchmark.jobTitles }
+    var taskTitles: [String] { return benchmark.taskTitles }
     var sizeRange: ClosedRange<Int> { return (1 << scaleRange.lowerBound) ... (1 << scaleRange.upperBound) }
 
     init(benchmark: BenchmarkProtocol) {
@@ -198,9 +198,9 @@ class Suite {
             let maxScale = dict["MaxScale"] as? Int ?? 20
             self.scaleRange = minScale ... maxScale
 
-            let selected = dict["SelectedJobs"] as? [String] ?? []
-            self._selectedJobSet = Set(selected).intersection(benchmark.jobTitles)
-            if _selectedJobSet.isEmpty { _selectedJobSet = Set(benchmark.jobTitles) }
+            let selected = dict["SelectedTasks"] as? [String] ?? []
+            self._selectedTaskSet = Set(selected).intersection(benchmark.taskTitles)
+            if _selectedTaskSet.isEmpty { _selectedTaskSet = Set(benchmark.taskTitles) }
         }
 
         do { // Load saved results
@@ -209,8 +209,8 @@ class Suite {
                 let plist = (try? PropertyListSerialization.propertyList(from: savedData, format: nil)) as? [String: Any],
                 let data = plist["Data"] as? [String: Any] {
                 for (title, samples) in data {
-                    guard let s = JobResults(from: samples) else { continue }
-                    self.samplesByJob[title] = s
+                    guard let s = TaskResults(from: samples) else { continue }
+                    self.samplesByTask[title] = s
                 }
                 print("Loaded \(url)")
             }
@@ -219,7 +219,7 @@ class Suite {
 
     func save() throws {
         var encoded: [String: Any] = [:]
-        for (title, samples) in samplesByJob {
+        for (title, samples) in samplesByTask {
             encoded[title] = samples.encode()
         }
         let plist: [String: Any] = ["Data": encoded]
@@ -229,7 +229,7 @@ class Suite {
     }
 
     func reset() throws {
-        self.samplesByJob = [:]
+        self.samplesByTask = [:]
         try? FileManager.default.removeItem(at: benchmark.saveURL)
     }
 
@@ -237,20 +237,20 @@ class Suite {
         let dict: [String: Any] = [
             "MinScale": scaleRange.lowerBound,
             "MaxScale": scaleRange.upperBound,
-            "SelectedJobs": Array(selectedJobs)
+            "SelectedTasks": Array(selectedTasks)
         ]
         UserDefaults.standard.set(dict, forKey: "BenchmarkConfig-\(title)")
     }
 
-    func samples(for job: String) -> JobResults {
-        if let samples = samplesByJob[job] { return samples }
-        precondition(benchmark.jobTitles.contains(job))
-        let samples = JobResults()
-        samplesByJob[job] = samples
+    func samples(for task: String) -> TaskResults {
+        if let samples = samplesByTask[task] { return samples }
+        precondition(benchmark.taskTitles.contains(task))
+        let samples = TaskResults()
+        samplesByTask[task] = samples
         return samples
     }
 
-    func addMeasurement(_ job: String, _ size: Int, _ time: TimeInterval) {
-        samples(for: job).addMeasurement(time, forSize: size)
+    func addMeasurement(_ task: String, _ size: Int, _ time: TimeInterval) {
+        samples(for: task).addMeasurement(time, forSize: size)
     }
 }

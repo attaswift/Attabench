@@ -18,7 +18,7 @@ func containsBenchmark() -> Benchmark<([Int], [Int])> {
     benchmark.descriptiveAmortizedTitle = "Looking up one random member"
 
     func add<T: OrderedSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<([Int], [Int])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
-        benchmark.addJob(title: title) { (input, lookups) in
+        benchmark.addTask(title: title) { (input, lookups) in
             var set = initializer()
             for value in input {
                 set.insert(value)
@@ -33,7 +33,7 @@ func containsBenchmark() -> Benchmark<([Int], [Int])> {
         }
     }
 
-    benchmark.addJob(title: "SortedArray") { (input, lookups) in
+    benchmark.addTask(title: "SortedArray") { (input, lookups) in
         var set = SortedArray<Int>()
         for value in 0 ..< input.count { // Cheating
             set.append(value)
@@ -74,7 +74,7 @@ func containsBenchmark() -> Benchmark<([Int], [Int])> {
         }
     }
 
-    benchmark.addJob(title: "Array") { (input, lookups) in
+    benchmark.addTask(title: "Array") { (input, lookups) in
         if input.count > 100_000 { return nil }
         let array = input.sorted()
         return { timer in

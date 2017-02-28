@@ -14,7 +14,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
     benchmark.descriptiveTitle = "Iterating over all elements"
     benchmark.descriptiveAmortizedTitle = "A single iteration step"
 
-    benchmark.addJob(title: "BTree3.indexing") { input in
+    benchmark.addTask(title: "BTree3.indexing") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -34,7 +34,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "BTree3.for-in") { input in
+    benchmark.addTask(title: "BTree3.for-in") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -51,7 +51,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "IntBTree.indexing") { input in
+    benchmark.addTask(title: "IntBTree.indexing") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -71,7 +71,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "IntBTree.for-in") { input in
+    benchmark.addTask(title: "IntBTree.for-in") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -88,7 +88,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "BTree3.contains") { input in
+    benchmark.addTask(title: "BTree3.contains") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -102,7 +102,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "IntBTree.contains") { input in
+    benchmark.addTask(title: "IntBTree.contains") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -116,7 +116,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "BTree3.forEach") { input in
+    benchmark.addTask(title: "BTree3.forEach") { input in
         var set = BTree3<Int>(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -133,7 +133,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "IntBTree.forEach") { input in
+    benchmark.addTask(title: "IntBTree.forEach") { input in
         var set = IntBTree(leafOrder: 1024, internalOrder: 16)
         for value in input {
             set.insert(value)
@@ -150,7 +150,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "Array.for-in") { input in
+    benchmark.addTask(title: "Array.for-in") { input in
         var array = input
         array.sort()
 
@@ -164,7 +164,7 @@ func iterationBenchmark() -> BenchmarkProtocol {
         }
     }
 
-    benchmark.addJob(title: "Array.forEach") { input in
+    benchmark.addTask(title: "Array.forEach") { input in
         var array = input
         array.sort()
 

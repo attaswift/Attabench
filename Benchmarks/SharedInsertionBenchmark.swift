@@ -18,7 +18,7 @@ func sharedInsertionBenchmark(iterations: Int = 10, maxScale: Int = 15, random: 
     benchmark.descriptiveAmortizedTitle = "One random insertion into shared storage"
 
     func add<T: OrderedSet>(_ title: String, for type: T.Type = T.self, maxCount: Int? = nil, to benchmark: Benchmark<[Int]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
-        benchmark.addJob(title: title) { input in
+        benchmark.addTask(title: title) { input in
             if let maxCount = maxCount, input.count > maxCount { return nil }
             var first = true
             return { timer in
@@ -95,7 +95,7 @@ func sharedInsertionBenchmark(iterations: Int = 10, maxScale: Int = 15, random: 
         }
     }
 
-    benchmark.addJob(title: "Array.sort") { input in
+    benchmark.addTask(title: "Array.sort") { input in
         guard input.count < 130_000 else { return nil }
         return { timer in
             var array: [Int] = []
