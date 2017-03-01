@@ -18,7 +18,7 @@ func sampleBenchmark() -> BenchmarkProtocol {
     benchmark.descriptiveAmortizedTitle = "Average time spent on a single element"
 
     benchmark.addTask(title: "Array.contains") { (input, lookups) in
-        guard input.count <= 16386 else { return nil }
+        guard input.count <= 16384 else { return nil }
         return { timer in
             for value in lookups {
                 guard input.contains(value) else { fatalError() }
