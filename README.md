@@ -19,7 +19,7 @@ and visualize the performance of Swift code.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Add New Benchmarks](#add-new-benchmarks)
-- [Get Suprised by Results](#get-suprised-by-results)
+- [Get Surprised by Results](#get-surprised-by-results)
 - [Create Less Interesting Charts](#create-less-interesting-charts)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -229,7 +229,7 @@ benchmark.addJob(title: "Array.binarySearch") { input, lookups in
 
 That's it! To finish things off, we just need to modify the function `generateBenchmarks` in `Benchmarks.swift` to include our new benchmark in its return value, and recompile the app.
 
-## Get Suprised by Results
+## Get Surprised by Results
 
 Running our brand new benchmark gets us a chart like this one:
 
