@@ -41,6 +41,7 @@ let inputGenerator = randomInputs ? randomArrayGenerator : perfectlyBalancedArra
 
 public func generateBenchmarks() -> [BenchmarkProtocol] {
     return [
+        sampleBenchmark(),
         exampleBenchmark(),
         foreachBenchmark(),
         indexingBenchmark(),
