@@ -1,9 +1,9 @@
 //
 //  CacheSize.swift
-//  Benchmark
+//  Attabench
 //
 //  Created by Károly Lőrentey on 2017-02-09.
-//  Copyright © 2017. Károly Lőrentey. All rights reserved.
+//  Copyright © 2017 Károly Lőrentey.
 //
 
 import Darwin

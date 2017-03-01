@@ -1,9 +1,9 @@
 //
 //  StatusButtonInTitlebar.swift
-//  dotSwift
+//  Attabench
 //
 //  Created by Károly Lőrentey on 2017-01-23.
-//  Copyright © 2017. Károly Lőrentey. All rights reserved.
+//  Copyright © 2017 Károly Lőrentey.
 //
 
 import Cocoa

@@ -1,9 +1,9 @@
 //
 //  DraggableImageView.swift
-//  dotSwift
+//  Attabench
 //
 //  Created by Károly Lőrentey on 2017-01-21.
-//  Copyright © 2017. Károly Lőrentey. All rights reserved.
+//  Copyright © 2017 Károly Lőrentey.
 //
 
 import Cocoa

@@ -1,6 +1,6 @@
 //
 //  COWTree.swift
-//  dotSwift
+//  Attabench
 //
 //  Copyright © 2017 Károly Lőrentey.
 //
