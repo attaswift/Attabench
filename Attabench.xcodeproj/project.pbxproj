@@ -115,6 +115,7 @@
 		BB14EDEF1E6472F20006FD5F /* SharedInsertionBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedInsertionBenchmark.swift; sourceTree = "<group>"; };
 		BB14EDF11E6473260006FD5F /* IterationBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IterationBenchmark.swift; sourceTree = "<group>"; };
 		BB14EDF31E6473D00006FD5F /* Noop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Noop.swift; sourceTree = "<group>"; };
+		BB17BB091E6733DA00B05A22 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		BB2709971E65C28600247AD5 /* SampleBenchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleBenchmark.swift; sourceTree = "<group>"; };
 		BB35FF961E344D03003ABBF3 /* AlgebraicTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgebraicTree.swift; sourceTree = "<group>"; };
 		BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusButtonInTitlebar.swift; sourceTree = "<group>"; };
