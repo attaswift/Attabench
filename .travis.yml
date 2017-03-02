@@ -1,4 +1,6 @@
 language: objective-c
 osx_image: xcode8.2
+install:
+- carthage bootstrap --platform macOS
 script:
 - xcrun xcodebuild -project Attabench.xcodeproj -scheme Attabench
