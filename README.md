@@ -169,7 +169,7 @@ benchmark.addTask(title: "Array.contains") { (input, lookups) in
 The syntax may look strange at first, because we're returning a
 closure from within a closure, with the returned closure doing the
 actual measurement. This looks complicated, but it allows for extra
-functionality that's often important. In this case, we expect that the simple linear search implemented by `Array.contains` will be kind of slow, so to keep measurements fast, we limit the size of the input to about 16 thousand elements. Returning `nil` means that the task does not want to run on a particular input value, so it's curve will have a gap on the chart corresponding to that particular size.
+functionality that's often important. In this case, we expect that the simple linear search implemented by `Array.contains` will be kind of slow, so to keep measurements fast, we limit the size of the input to about 16 thousand elements. Returning `nil` means that the task does not want to run on a particular input value, so its curve will have a gap on the chart corresponding to that particular size.
 
 The inner closure receives a `timer` parameter that can be used to
 narrow the measurement to the section of the code we're actually interested in. For example, when we're measuring `Set.contains`, we aren't interested in the time needed to construct the set, so we need to exclude it from the measurement:
