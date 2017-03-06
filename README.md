@@ -235,7 +235,7 @@ Running our brand new benchmark gets us a chart like this one:
 
 ![Sample benchmark results](Images/Sample - All Tasks.png)
 
-The chart uses logarithmic scale on both axis, and displays amortized
+The chart uses logarithmic scale on both axes, and displays amortized
 per-element execution time, where the elapsed time of each
 measurement is divided by its size.
 
