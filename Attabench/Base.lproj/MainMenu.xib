@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
@@ -25,6 +25,7 @@
                 <outlet property="runButton" destination="X4a-Uy-A9Q" id="n59-wX-RDY"/>
                 <outlet property="startMenuItem" destination="6GY-ZT-wi2" id="4f3-XQ-Hwh"/>
                 <outlet property="tasksPopUpButton" destination="m3D-IU-xIC" id="M70-yy-vSJ"/>
+                <outlet property="themeMenu" destination="c6o-h0-DNC" id="Xr8-Ey-n3X"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -397,16 +398,26 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="View" id="HyV-fh-RgO">
                         <items>
+                            <menuItem title="Theme" id="wzw-aM-3KL">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Theme" id="c6o-h0-DNC">
+                                    <items>
+                                        <menuItem title="Screen" id="988-qq-Wwk">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Presentation" id="EBb-Rc-h5K">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Print" id="DZD-xd-tK1">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Show Title" keyEquivalent="t" id="d3g-EV-mgD">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <binding destination="wHU-2r-SE8" name="value" keyPath="values.ShowTitle" id="OUM-X0-MJp"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Presentation Mode" keyEquivalent="p" id="BWJ-e6-yPw">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <binding destination="wHU-2r-SE8" name="value" keyPath="values.PresentationMode" id="QKP-U6-0CN"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Highlight Active Range" keyEquivalent="h" id="JS3-Qq-ESW">

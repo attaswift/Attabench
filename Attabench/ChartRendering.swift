@@ -35,8 +35,9 @@ extension TimeInterval {
             : self >= 1 ? String(format: "%.3gs", self)
             : self >= 1e-3 ? String(format: "%.3gms", self * 1e3)
             : self >= 1e-6 ? String(format: "%.3gµs", self * 1e6)
-            : self < 1e-9 ? "0s"
-            : String(format: "%.3gns", self * 1e9)
+            : self >= 1e-9 ? String(format: "%.3gns", self * 1e9)
+            : self < 1e-12 ? "0s"
+            : String(format: "%.3gps", self * 1e12)
     }
 }
 
@@ -270,6 +271,8 @@ class Chart {
             }
         }
 
+//        maxSize = min(maxSize, 1 << 22)
+//        maxTime = min(maxTime, 10e-6)
         if count < 2 {
             self.sizeScale = EmptyScale()
             self.timeScale = EmptyScale()
@@ -301,17 +304,16 @@ class Chart {
             let task = tasks[i]
             guard let samples = suite.samplesByTask[task] else { continue }
 
-            let index = suite.taskTitles.index(of: task)!
             let color: NSColor
-            if suite.taskTitles.count > 6 {
-                color = NSColor(calibratedHue: CGFloat(index) / CGFloat(suite.taskTitles.count),
+            if c > 6 {
+                color = NSColor(calibratedHue: CGFloat(i) / CGFloat(c),
                                 saturation: 1, brightness: 1, alpha: 1)
             }
             else {
                 // Use stable colors when possible.
                 // These particular ones are nice because people with most forms of color blindness can still
                 // differentiate them.
-                switch index {
+                switch i {
                 case 0: color = NSColor(calibratedRed: 0.89, green: 0.01, blue: 0.01, alpha: 1) // Red
                 case 1: color = NSColor(calibratedRed: 1, green: 0.55, blue: 0, alpha: 1) // Orange
                 case 2: color = NSColor(calibratedRed: 1, green: 0.93, blue: 0, alpha: 1) // Yellow
@@ -332,44 +334,51 @@ class Chart {
     }
 }
 
-struct ChartTheme {
-    struct LineParams {
-        let lineWidth: CGFloat
-        let dash: [CGFloat]
-        let phase: CGFloat
+struct LineParams {
+    let lineWidth: CGFloat
+    let dash: [CGFloat]
+    let phase: CGFloat
 
-        init(lineWidth: CGFloat, dash: [CGFloat] = [], phase: CGFloat = 0) {
-            self.lineWidth = lineWidth
-            self.dash = dash
-            self.phase = phase
-        }
-
-        func apply(on path: NSBezierPath) {
-            path.lineWidth = lineWidth
-            path.setLineDash(dash, count: dash.count, phase: phase)
-        }
+    init(lineWidth: CGFloat, dash: [CGFloat] = [], phase: CGFloat = 0) {
+        self.lineWidth = lineWidth
+        self.dash = dash
+        self.phase = phase
     }
 
-    let backgroundColor: NSColor
-    let titleFont: NSFont
-    let titleColor: NSColor
-    let borderColor: NSColor
-    let borderWidth: CGFloat
-    let highlightedBorderWidth: CGFloat
-    let majorGridlineColor: NSColor
-    let majorGridlineParams: LineParams
-    let minorGridlineColor: NSColor
-    let minorGridlineParams: LineParams
-    let axisLabelFont: NSFont
-    let legendFont: NSFont
-    let legendColor: NSColor
-    let legendPadding: CGFloat
-    let lineParams: LineParams
-    let shadowRadius: CGFloat
-    let hairline: Bool
-    let xPadding: CGFloat
+    func apply(on path: NSBezierPath) {
+        path.lineWidth = lineWidth
+        path.setLineDash(dash, count: dash.count, phase: phase)
+    }
+}
 
-    static let normal = ChartTheme(
+enum ChartTheme: Int {
+    case screen
+    case presentation
+    case print
+
+    static var allThemes: [ChartTheme] = [.screen, .presentation, .print]
+
+    var label: String {
+        switch self {
+        case .screen: return "Screen"
+        case .presentation: return "Presentation"
+        case .print: return "Print"
+        }
+    }
+    
+    var imageSize: CGSize? {
+        switch self {
+        case .screen:
+            return nil
+        case .presentation:
+            return CGSize(width: 1280, height: 720)
+        case .print:
+            return CGSize(width: 800, height: 260)
+        }
+    }
+    
+    static let screenParams = ChartParams(
+        marginRatio: (0.05, 0.05),
         backgroundColor: NSColor.white,
         titleFont: NSFont(name: "Helvetica-Light", size: 24)!,
         titleColor: NSColor.black,
@@ -389,25 +398,82 @@ struct ChartTheme {
         hairline: true,
         xPadding: 6)
 
-    static let presentation = ChartTheme(
+    private static let presentationParams = ChartParams(
+        marginRatio: (0, 0),
         backgroundColor: NSColor.black,
-        titleFont: NSFont(name: "Helvetica-Light", size: 48)!,
+        titleFont: NSFont(name: "Palatino", size: 48)!,
         titleColor: NSColor.white,
         borderColor: NSColor.white,
         borderWidth: 0.5,
         highlightedBorderWidth: 4,
-        majorGridlineColor: NSColor(white: 0.7, alpha: 1),
+        majorGridlineColor: NSColor(white: 0.3, alpha: 1),
         majorGridlineParams: LineParams(lineWidth: 0.75),
         minorGridlineColor: NSColor(white: 0.7, alpha: 1),
         minorGridlineParams: LineParams(lineWidth: 0.5, dash: [6, 3]),
-        axisLabelFont: NSFont(name: "Helvetica-Light", size: 24)!,
-        legendFont: NSFont(name: "Menlo", size: 20)!,
+        axisLabelFont: NSFont(name: "Palatino", size: 24)!,
+        legendFont: NSFont(name: "InputSansNarrow-Regular", size: 20)!,
         legendColor: NSColor.white,
         legendPadding: 8,
         lineParams: LineParams(lineWidth: 8),
         shadowRadius: 3,
         hairline: false,
         xPadding: 12)
+
+    private static let printParams = ChartParams(
+        marginRatio: (0, 0),
+        backgroundColor: NSColor.white,
+        titleFont: NSFont(name: "Palatino", size: 12)!,
+        titleColor: NSColor.black,
+        borderColor: NSColor.black,
+        borderWidth: 1,
+        highlightedBorderWidth: 4,
+        majorGridlineColor: NSColor(white: 0.6, alpha: 1),
+        majorGridlineParams: LineParams(lineWidth: 0.7),
+        minorGridlineColor: NSColor(white: 0.6, alpha: 1),
+        minorGridlineParams: LineParams(lineWidth: 0.4, dash: [2, 1]),
+        axisLabelFont: NSFont(name: "Palatino", size: 10)!,
+        legendFont: NSFont(name: "InputSansNarrow-Regular", size: 10)!,
+        legendColor: NSColor.black,
+        legendPadding: 6,
+        lineParams: LineParams(lineWidth: 4),
+        shadowRadius: 0,
+        hairline: true,
+        xPadding: 6)
+
+
+    var params: ChartParams {
+        switch self {
+        case .screen:
+            return ChartTheme.screenParams
+        case .presentation:
+            return ChartTheme.presentationParams
+        case .print:
+            return ChartTheme.printParams
+        }
+    }
+}
+
+struct ChartParams {
+    let marginRatio: (CGFloat, CGFloat)
+    let backgroundColor: NSColor
+    let titleFont: NSFont
+    let titleColor: NSColor
+    let borderColor: NSColor
+    let borderWidth: CGFloat
+    let highlightedBorderWidth: CGFloat
+    let majorGridlineColor: NSColor
+    let majorGridlineParams: LineParams
+    let minorGridlineColor: NSColor
+    let minorGridlineParams: LineParams
+    let axisLabelFont: NSFont
+    let legendFont: NSFont
+    let legendColor: NSColor
+    let legendPadding: CGFloat
+    let lineParams: LineParams
+    let shadowRadius: CGFloat
+    let hairline: Bool
+    let xPadding: CGFloat
+
 
     func lineParams(for kind: Gridline.Kind) -> (color: NSColor, params: LineParams) {
         switch kind {
@@ -421,15 +487,16 @@ struct ChartTheme {
     func axisLabelAttributes() -> [String: Any] {
         return [
             NSFontAttributeName: axisLabelFont,
-            NSForegroundColorAttributeName: majorGridlineColor
+            NSForegroundColorAttributeName: titleColor
         ]
     }
 }
 
 struct ChartRenderer {
     let rect: CGRect
+    let bounds: CGRect
     let chart: Chart
-    let theme: ChartTheme
+    let params: ChartParams
     let showTitle: Bool
 
     let chartRect: CGRect
@@ -445,23 +512,27 @@ struct ChartRenderer {
     }
 
     init(rect: CGRect, chart: Chart, theme: ChartTheme, showTitle: Bool, legend: (position: LegendPosition, distance: CGSize)?) {
+        self.params = theme.params
         self.rect = rect
+        self.bounds = CGRect(x: rect.midX - (rect.width * (0.5 - params.marginRatio.0)),
+                             y: rect.midY - (rect.height * (0.5 - params.marginRatio.1)),
+                             width: rect.width * (1 - 2 * params.marginRatio.0),
+                             height: rect.height * (1 - 2 * params.marginRatio.1))
         self.chart = chart
-        self.theme = theme
         self.showTitle = showTitle
         self.legend = legend
 
-        let bottomRect = rect.divided(
+        let bottomRect = bounds.divided(
             atDistance: showTitle
-                ? 1.2 * (theme.titleFont.boundingRectForFont.height + theme.titleFont.leading)
-                : theme.axisLabelFont.boundingRectForFont.height,
+                ? 1.2 * (params.titleFont.boundingRectForFont.height + params.titleFont.leading)
+                : params.axisLabelFont.boundingRectForFont.height,
             from: .maxYEdge).remainder
 
-        let scaleWidth = 3 * theme.axisLabelFont.maximumAdvancement.width
+        let scaleWidth = 3 * params.axisLabelFont.maximumAdvancement.width
         self.chartRect = CGRect(x: bottomRect.minX + scaleWidth,
-                                y: theme.axisLabelFont.boundingRectForFont.height,
+                                y: bottomRect.minY + params.axisLabelFont.boundingRectForFont.height,
                                 width: bottomRect.width - 2 * scaleWidth,
-                                height: bottomRect.height - theme.axisLabelFont.boundingRectForFont.height - theme.axisLabelFont.leading)
+                                height: bottomRect.height - params.axisLabelFont.boundingRectForFont.height - params.axisLabelFont.leading)
 
         var chartTransform = AffineTransform()
         chartTransform.translate(x: chartRect.minX, y: chartRect.minY)
@@ -505,24 +576,26 @@ struct ChartRenderer {
     }
 
     func drawBackground() {
-        theme.backgroundColor.setFill()
+        params.backgroundColor.setFill()
         NSRectFill(rect)
     }
 
     func drawTitle() {
-        let titleRect = CGRect(x: rect.minX,
+        let titleRect = CGRect(x: bounds.minX,
                                y: chartRect.maxY,
-                               width: rect.width,
-                               height: rect.maxY - chartRect.maxY)
-
+                               width: bounds.width,
+                               height: bounds.maxY - chartRect.maxY)
+        print(bounds)
+        print(chartRect)
+        print(titleRect)
         let paragraphStyle = NSParagraphStyle.default().mutableCopy() as! NSMutableParagraphStyle
         paragraphStyle.alignment = .center
         paragraphStyle.lineBreakMode = .byTruncatingTail
         let title = NSAttributedString(
             string: chart.title,
             attributes: [
-                NSFontAttributeName: theme.titleFont,
-                NSForegroundColorAttributeName: theme.titleColor,
+                NSFontAttributeName: params.titleFont,
+                NSForegroundColorAttributeName: params.titleColor,
                 NSParagraphStyleAttributeName: paragraphStyle,
                 ])
         title.draw(with: titleRect, options: .usesLineFragmentOrigin)
@@ -540,7 +613,7 @@ struct ChartRenderer {
             path.move(to: CGPoint(x: 0, y: gridline.position))
             path.line(to: CGPoint(x: 1, y: gridline.position))
             path.transform(using: chartTransform)
-            let (color, lineParams) = theme.lineParams(for: gridline.kind)
+            let (color, lineParams) = params.lineParams(for: gridline.kind)
             lineParams.apply(on: path)
             color.setStroke()
             path.stroke()
@@ -549,16 +622,16 @@ struct ChartRenderer {
 
         // Draw labels
         var previousFrame = CGRect.null
-        let attributes = theme.axisLabelAttributes()
+        let attributes = params.axisLabelAttributes()
         for gridline in gridlines where gridline.kind == .major {
             guard let label = gridline.label else { continue }
-            let yMid = chartRect.minY + gridline.position * chartRect.height + theme.axisLabelFont.pointSize / 4
+            let yMid = chartRect.minY + gridline.position * chartRect.height + params.axisLabelFont.pointSize / 4
 
             let bounds = (label as NSString).boundingRect(with: CGSize(width: 1000, height: 1000),
                                                           options: [], attributes: attributes)
-            let leftPos = CGPoint(x: chartRect.minX - theme.xPadding - bounds.width,
+            let leftPos = CGPoint(x: chartRect.minX - params.xPadding - bounds.width,
                                   y: yMid - bounds.height / 2)
-            let rightPos = CGPoint(x: chartRect.maxX + theme.xPadding,
+            let rightPos = CGPoint(x: chartRect.maxX + params.xPadding,
                                    y: yMid - bounds.height / 2)
             let frame = bounds.offsetBy(dx: leftPos.x, dy: leftPos.y).insetBy(dx: 0, dy: -3)
             guard !previousFrame.intersects(frame) else { continue }
@@ -570,7 +643,7 @@ struct ChartRenderer {
 
     func drawXAxis() {
         let gridlines = chart.sizeScale.gridlines
-        let attributes = theme.axisLabelAttributes()
+        let attributes = params.axisLabelAttributes()
 
         // Calculate frames for labels on the size axis
         typealias LabelGeometry = (gridline: Gridline, position: CGPoint, frame: CGRect)
@@ -612,7 +685,7 @@ struct ChartRenderer {
             path.move(to: CGPoint(x: gridline.position, y: 0))
             path.line(to: CGPoint(x: gridline.position, y: 1))
             path.transform(using: chartTransform)
-            let (color, lineParams) = theme.lineParams(for: labeled ? .major : .minor)
+            let (color, lineParams) = params.lineParams(for: labeled ? .major : .minor)
             lineParams.apply(on: path)
             color.setStroke()
             path.stroke()
@@ -629,9 +702,9 @@ struct ChartRenderer {
     }
 
     func drawBorder() {
-        theme.borderColor.setStroke()
+        params.borderColor.setStroke()
         let border = NSBezierPath(rect: chartRect.insetBy(dx: -0.25, dy: -0.25))
-        border.lineWidth = theme.borderWidth
+        border.lineWidth = params.borderWidth
         border.stroke()
     }
 
@@ -642,7 +715,7 @@ struct ChartRenderer {
         highlight.move(to: .init(x: range.lowerBound, y: 0))
         highlight.line(to: .init(x: range.upperBound, y: 0))
         highlight.transform(using: chartTransform)
-        highlight.lineWidth = theme.highlightedBorderWidth
+        highlight.lineWidth = params.highlightedBorderWidth
         highlight.lineCapStyle = .roundLineCapStyle
         highlight.stroke()
     }
@@ -650,9 +723,9 @@ struct ChartRenderer {
     func drawCurves() {
         NSGraphicsContext.saveGraphicsState()
         NSRectClip(chartRect)
-        if theme.shadowRadius > 0 {
+        if params.shadowRadius > 0 {
             let shadow = NSShadow()
-            shadow.shadowBlurRadius = theme.shadowRadius
+            shadow.shadowBlurRadius = params.shadowRadius
             shadow.shadowOffset = .zero
             shadow.shadowColor = .black
             shadow.set()
@@ -662,10 +735,10 @@ struct ChartRenderer {
             let path = (chartTransform as NSAffineTransform).transform(path)
             path.lineCapStyle = .roundLineCapStyle
             path.lineJoinStyle = .roundLineJoinStyle
-            theme.lineParams.apply(on: path)
+            params.lineParams.apply(on: path)
             path.stroke()
         }
-        if theme.hairline {
+        if params.hairline {
             NSColor.black.setStroke()
             for (_, _, path) in chart.curves {
                 let path = (chartTransform as NSAffineTransform).transform(path)
@@ -682,24 +755,24 @@ struct ChartRenderer {
     func legendLayout() -> LegendLayout? {
         guard let legend = self.legend else { return nil }
         let attributes = [
-            NSFontAttributeName: theme.legendFont,
-            NSForegroundColorAttributeName: theme.legendColor
+            NSFontAttributeName: params.legendFont,
+            NSForegroundColorAttributeName: params.legendColor
         ]
         var contents: [(position: CGPoint, text: NSAttributedString)] = []
-        var y = theme.legendPadding - theme.legendFont.descender
+        var y = params.legendPadding - params.legendFont.descender
         var width: CGFloat = 0
         for (title, color, _) in chart.curves.reversed() {
             let title = NSMutableAttributedString(string: "◼︎ " + title, attributes: attributes)
             title.setAttributes([NSForegroundColorAttributeName: color],
                                 range: NSRange(0 ..< 1))
 
-            contents.append((CGPoint(x: theme.legendPadding, y: y), title))
+            contents.append((CGPoint(x: params.legendPadding, y: y), title))
             let bounds = title.boundingRect(with: CGSize(width: 1000, height: 1000), options: .usesLineFragmentOrigin, context: nil)
-            y += bounds.minY + bounds.height + theme.legendFont.leading
+            y += bounds.minY + bounds.height + params.legendFont.leading
             width = max(width, bounds.width)
         }
-        y += theme.legendPadding - theme.legendFont.leading
-        let legendSize = CGSize(width: width + 2 * theme.legendPadding, height: y)
+        y += params.legendPadding - params.legendFont.leading
+        let legendSize = CGSize(width: width + 2 * params.legendPadding, height: y)
 
         var pos = CGPoint.zero
         switch legend.position {
@@ -720,14 +793,14 @@ struct ChartRenderer {
     }
 
     func drawLegendBackground(with layout: LegendLayout) {
-        theme.backgroundColor.setFill()
+        params.backgroundColor.setFill()
         NSRectFill(layout.frame)
     }
 
     func drawLegendContents(with layout: LegendLayout) {
         // Draw background again, with some transparency and borders.
-        theme.backgroundColor.withAlphaComponent(0.7).setFill()
-        theme.borderColor.setStroke()
+        params.backgroundColor.withAlphaComponent(0.7).setFill()
+        params.borderColor.setStroke()
         let legendBorder = NSBezierPath(rect: layout.frame)
         legendBorder.lineWidth = 0.5
         legendBorder.fill()
@@ -744,7 +817,7 @@ struct ChartRenderer {
 extension Chart: CustomPlaygroundQuickLookable {
     var customPlaygroundQuickLook: PlaygroundQuickLook {
         let renderer = ChartRenderer(rect: CGRect(x: 0, y: 0, width: 1024, height: 640),
-                                     chart: self, theme: .normal,
+                                     chart: self, theme: .screen,
                                      showTitle: true,
                                      legend: (position: .topLeft, distance: CGSize(width: 32, height: 32)))
         return .image(renderer.image)

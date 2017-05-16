@@ -27,6 +27,7 @@ class AppDelegate: NSObject {
     @IBOutlet weak var startMenuItem: NSMenuItem!
     @IBOutlet weak var progressButton: NSButton!
     @IBOutlet weak var chartImageView: DraggableImageView!
+    @IBOutlet weak var themeMenu: NSMenu!
 
     let harness = Harness()
 
@@ -44,7 +45,9 @@ class AppDelegate: NSObject {
     let logarithmicSizeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicSize", defaultValue: true)
     let logarithmicTimeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicTime", defaultValue: true)
     let amortized: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "Amortized", defaultValue: true)
-    let presentationMode: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "PresentationMode", defaultValue: false)
+    let chartTheme: AnyUpdatableValue<ChartTheme> =
+        UserDefaults.standard.glue.updatable(forKey: "ChartTheme", defaultValue: 0)
+            .map({ ChartTheme(rawValue: $0) ?? ChartTheme.screen }, inverse: { $0.rawValue })
     let highlightActiveRange: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "HighlightActiveRange", defaultValue: true)
     let randomizeInputs: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "RandomizeInputs", defaultValue: false)
     let showTitle: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "ShowTitle", defaultValue: true)
@@ -117,6 +120,16 @@ extension AppDelegate: NSApplicationDelegate {
 
         self.selectedSuite = suite
 
+        themeMenu.removeAllItems()
+        for theme in ChartTheme.allThemes {
+            let item = NSMenuItem(title: theme.label,
+                                  action: #selector(AppDelegate.didSelectTheme(_:)),
+                                  keyEquivalent: "")
+            item.tag = theme.rawValue
+            item.state = self.chartTheme.value == theme ? NSOnState : NSOffState
+            themeMenu.addItem(item)
+        }
+
         let benchmarkMenu = NSMenu()
         benchmarkMenu.removeAllItems()
         var i = 1
@@ -149,18 +162,21 @@ extension AppDelegate: NSApplicationDelegate {
         }
         self.maxSizePopUpButton.menu = maxSizeMenu
 
-        self.glue.connector.connect(self.presentationMode.values) { value in
-            self.backgroundView.backgroundColor = value ? NSColor.black : NSColor.white
+        self.glue.connector.connect(self.chartTheme.values) { theme in
+            self.backgroundView.backgroundColor = theme.params.backgroundColor
         }
         self.glue.connector.connect(self.randomizeInputs.futureValues) { value in
             self.refreshRunnerParams()
         }
         self.glue.connector.connect(
-            AnySource<Void>.merge(
-                [logarithmicSizeScale, logarithmicTimeScale, amortized, presentationMode, highlightActiveRange, showTitle]
-                    .map { $0.futureValues.map { _ in () } }
-            )
-        ) { value in
+            AnySource<Void>.merge([
+                logarithmicSizeScale.futureValues.mapToVoid(),
+                logarithmicTimeScale.futureValues.mapToVoid(),
+                amortized.futureValues.mapToVoid(),
+                chartTheme.futureValues.mapToVoid(),
+                highlightActiveRange.futureValues.mapToVoid(),
+                showTitle.futureValues.mapToVoid()
+                ])) { value in
             self.refreshChart()
         }
         self.refreshSuite()
@@ -244,8 +260,6 @@ extension AppDelegate {
 extension AppDelegate {
     //MARK: Actions
 
-    static let presentationImageSize = CGSize(width: 1280, height: 720)
-
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(AppDelegate.run(_:)) {
             return harness.state != .stopping
@@ -293,7 +307,7 @@ extension AppDelegate {
         cancelChartRefresh()
         guard !harness.suites.isEmpty else { return }
         let suite = self.selectedSuite ?? self.harness.suites[0]
-        let size = presentationMode.value ? AppDelegate.presentationImageSize : chartImageView.bounds.size
+        let size = self.chartTheme.value.imageSize ?? chartImageView.bounds.size
         let highlight = highlightActiveRange.value ? suite.sizeRange : nil
         let chart = Chart(suite: suite,
                           highlightedSizes: highlight,
@@ -303,7 +317,7 @@ extension AppDelegate {
         let legendDistance = min(0.05 * size.width, 0.05 * size.height)
         let renderer = ChartRenderer(rect: CGRect(origin: .zero, size: size),
                                      chart: chart,
-                                     theme: presentationMode.value ? .presentation : .normal,
+                                     theme: chartTheme.value,
                                      showTitle: showTitle.value,
                                      legend: (position: .topLeft, distance: CGSize(width: legendDistance, height: legendDistance)))
         self.chartImageView.image = renderer.image
@@ -396,6 +410,14 @@ extension AppDelegate {
             DispatchQueue.main.async {
                 self.save()
             }
+        }
+    }
+
+    @IBAction func didSelectTheme(_ sender: NSMenuItem) {
+        let theme = ChartTheme(rawValue: sender.tag) ?? .screen
+        self.chartTheme.value = theme
+        for item in themeMenu.items {
+            item.state = item.tag == theme.rawValue ? NSOnState : NSOffState
         }
     }
 
