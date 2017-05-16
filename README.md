@@ -287,7 +287,7 @@ features of the chart above:
 
 [binsearch]: https://en.wikipedia.org/wiki/Binary_search_algorithm
 
- 6. Finally, `Array.binarySearch` has highly prominent spikes at powers-of-two sizes. This isn't some random benchmarking artifact; the spikes are in fact a feature built directly into the binary search algorithm that we wrote. I won't spoil the mystery this time: you should try explaining them on your own. What makes power-of-two sizes so special for binary search? Try changing the algorithm so that you optimize away the spikes without affecting the overall shape and position of the curve!
+ 6. Finally, `Array.binarySearch` has highly prominent spikes at powers-of-two sizes. This isn't some random benchmarking artifact: the spikes are in fact due to *cache line aliasing*, an interesting (if unfortunate) interaction between the processor's L2 cache and our binary search algorithm. The series of memory accesses performed by binary search on a large enough continuous array with a power-of-two size tends to all fall into the same L2 cache line, quickly overwhelming its associative capacity. Try changing the algorithm so that you optimize away the spikes without affecting the overall shape and position of the curve!
 
 ## Create Less Interesting Charts
 
