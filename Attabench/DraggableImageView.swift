@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Quartz
 
 extension NSImage {
     func pngData() -> Data {
@@ -15,6 +16,13 @@ extension NSImage {
         rep.size = self.size
         let data = rep.representation(using: .PNG, properties: [:])
         return data!
+    }
+
+    func pdfData() -> Data {
+        let document = PDFDocument()
+        let page = PDFPage(image: self)!
+        document.insert(page, at: 0)
+        return document.dataRepresentation()!
     }
 }
 
@@ -30,21 +38,29 @@ class DraggableImageView: NSImageView, NSDraggingSource {
         return true
     }
 
+    func save(_ data: Data, to destination: URL, withExtension pathExtension: String) throws -> String {
+        let name = self.name.replacingOccurrences(of: "/", with: "-")
+        var filename = name + "." + pathExtension
+        var num = 1
+        var url = destination.appendingPathComponent(filename)
+        while (try? url.checkResourceIsReachable()) == true {
+            num += 1
+            filename = "\(name) \(num).\(pathExtension)"
+            url = destination.appendingPathComponent(filename)
+        }
+        try data.write(to: url)
+        return filename
+    }
+
     override func namesOfPromisedFilesDropped(atDestination dropDestination: URL) -> [String]? {
         Swift.print("dropDestination: \(dropDestination)")
         guard let image = self.image else { return nil }
-        let name = self.name.replacingOccurrences(of: "/", with: "-")
-        var filename = name + ".png"
-        var num = 1
-        var url = dropDestination.appendingPathComponent(filename)
-        while (try? url.checkResourceIsReachable()) == true {
-            num += 1
-            filename = "\(name) \(num).png"
-            url = dropDestination.appendingPathComponent(filename)
-        }
+
         do {
-            try image.pngData().write(to: url)
-            return [filename]
+            return try [
+                self.save(image.pngData(), to: dropDestination, withExtension: "png"),
+                self.save(image.pdfData(), to: dropDestination, withExtension: "pdf")
+            ]
         }
         catch {
             return nil
@@ -99,7 +115,7 @@ class DraggableImageView: NSImageView, NSDraggingSource {
             return [iconComponent]
         }
 
-        dragPromisedFiles(ofTypes: ["png"],
+        dragPromisedFiles(ofTypes: ["png", "pdf"],
                           from: CGRect(x: start.x - 26, y: start.y - 12, width: 32, height: 32),
                           source: self, slideBack: true, event: downEvent)
 
