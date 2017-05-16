@@ -233,7 +233,7 @@ That's it! To finish things off, we just need to modify the function `generateBe
 
 Running our brand new benchmark gets us a chart like this one:
 
-![Sample benchmark results](Images/Sample - All Tasks.png)
+![Sample benchmark results](Images/SampleBenchmark.png)
 
 The chart uses logarithmic scale on both axes, and displays amortized
 per-element execution time, where the elapsed time of each
@@ -300,7 +300,7 @@ to another chart type, just use the toggles in the View menu:
 For example, here is the same chart in linear scale, displaying raw
 execution times. 
 
-![Sample benchmark results in linear scale](Images/Sample - All Tasks 2.png)
+![Sample benchmark results in linear scale](Images/SampleBenchmark2.png)
 
 Note how the `Array.contains` case is completely invisible---its 16k
 cutoff is too small to even register on the horizontal axis. But the
