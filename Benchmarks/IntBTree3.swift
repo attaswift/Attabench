@@ -1,29 +1,31 @@
 //
-//  BTree2.swift
+//  IntBTree3.swift
 //  Attabench
 //
 //  Copyright © 2017 Károly Lőrentey.
 //
 
-public struct BTree2<Element: Comparable> {
-    fileprivate var root: Node<Element>
+private let internalOrder = 16
+
+public struct IntBTree3 {
+    fileprivate var root: Node
 
     public init(order: Int) {
-        self.root = Node<Element>(order: order)
+        self.root = Node(order: order)
     }
 }
 
-extension BTree2 {
+extension IntBTree3 {
     public init() {
-        self.init(order: Swift.max(16, cacheSize / (MemoryLayout<Element>.stride << 2)))
+        self.init(order: Swift.max(16, cacheSize / (MemoryLayout<Int>.stride << 2)))
     }
 }
 
-fileprivate class Node<Element: Comparable> {
+fileprivate class Node {
     let order: Int
     var mutationCount: Int64 = 0
     var elementCount: Int = 0
-    let elements: UnsafeMutablePointer<Element>
+    let elements: UnsafeMutablePointer<Int>
     var children: ContiguousArray<Node> = []
 
     init(order: Int) {
@@ -37,14 +39,14 @@ fileprivate class Node<Element: Comparable> {
     }
 }
 
-extension BTree2 {
-    public func forEach(_ body: (Element) throws -> Void) rethrows {
+extension IntBTree3 {
+    public func forEach(_ body: (Int) throws -> Void) rethrows {
         try root.forEach(body)
     }
 }
 
 extension Node {
-    func forEach(_ body: (Element) throws -> Void) rethrows {
+    func forEach(_ body: (Int) throws -> Void) rethrows {
         if isLeaf {
             for i in 0 ..< elementCount {
                 try body(elements[i])
@@ -61,7 +63,7 @@ extension Node {
 }
 
 extension Node {
-    internal func slot(of element: Element) -> (match: Bool, index: Int) {
+    internal func slot(of element: Int) -> (match: Bool, index: Int) {
         var start = 0
         var end = elementCount
         while start < end {
@@ -78,14 +80,14 @@ extension Node {
     }
 }
 
-extension BTree2 {
-    public func contains(_ element: Element) -> Bool {
+extension IntBTree3 {
+    public func contains(_ element: Int) -> Bool {
         return root.contains(element)
     }
 }
 
 extension Node {
-    func contains(_ element: Element) -> Bool {
+    func contains(_ element: Int) -> Bool {
         let slot = self.slot(of: element)
         if slot.match { return true }
         guard !children.isEmpty else { return false }
@@ -93,8 +95,8 @@ extension Node {
     }
 }
 
-extension BTree2 {
-    fileprivate mutating func makeRootUnique() -> Node<Element> {
+extension IntBTree3 {
+    fileprivate mutating func makeRootUnique() -> Node {
         if isKnownUniquelyReferenced(&root) { return root }
         root = root.clone()
         return root
@@ -128,20 +130,20 @@ extension Node {
 extension Node {
     var maxChildren: Int { return order }
     var minChildren: Int { return (maxChildren + 1) / 2 }
-    var maxElements: Int { return maxChildren - 1 }
-    var minElements: Int { return minChildren - 1 }
+    var maxInts: Int { return maxChildren - 1 }
+    var minInts: Int { return minChildren - 1 }
 
     var isLeaf: Bool { return children.isEmpty }
-    var isTooLarge: Bool { return elementCount > maxElements }
+    var isTooLarge: Bool { return elementCount > maxInts }
 }
 
-private struct Splinter<Element: Comparable> {
-    let separator: Element
-    let node: Node<Element>
+private struct Splinter {
+    let separator: Int
+    let node: Node
 }
 
 extension Node {
-    func split() -> Splinter<Element> {
+    func split() -> Splinter {
         let count = self.elementCount
         let middle = count / 2
 
@@ -163,7 +165,7 @@ extension Node {
 }
 
 extension Node {
-    fileprivate func _insertElement(_ element: Element, at slot: Int) {
+    fileprivate func _insertInt(_ element: Int, at slot: Int) {
         assert(slot >= 0 && slot <= elementCount)
         (elements + slot + 1).moveInitialize(from: elements + slot, count: elementCount - slot)
         (elements + slot).initialize(to: element)
@@ -172,7 +174,7 @@ extension Node {
 }
 
 extension Node {
-    func insert(_ element: Element) -> (old: Element?, splinter: Splinter<Element>?) {
+    func insert(_ element: Int) -> (old: Int?, splinter: Splinter?) {
         let slot = self.slot(of: element)
         if slot.match {
             // The element is already in the tree.
@@ -180,24 +182,24 @@ extension Node {
         }
         mutationCount += 1
         if self.isLeaf {
-            _insertElement(element, at: slot.index)
+            _insertInt(element, at: slot.index)
             return (nil, self.isTooLarge ? self.split() : nil)
         }
         let (old, splinter) = makeChildUnique(slot.index).insert(element)
         guard let s = splinter else { return (old, nil) }
-        _insertElement(s.separator, at: slot.index)
+        _insertInt(s.separator, at: slot.index)
         self.children.insert(s.node, at: slot.index + 1)
         return (old, self.isTooLarge ? self.split() : nil)
     }
 }
 
-extension BTree2 {
+extension IntBTree3 {
     @discardableResult
-    public mutating func insert(_ element: Element) -> (inserted: Bool, memberAfterInsert: Element) {
+    public mutating func insert(_ element: Int) -> (inserted: Bool, memberAfterInsert: Int) {
         let root = makeRootUnique()
         let (old, splinter) = root.insert(element)
         if let s = splinter {
-            let root = Node<Element>(order: root.order)
+            let root = Node(order: internalOrder)
             root.elementCount = 1
             root.elements.initialize(to: s.separator)
             root.children = [self.root, s.node]
@@ -208,11 +210,11 @@ extension BTree2 {
 }
 
 
-private struct PathElement<Element: Comparable> {
-    unowned(unsafe) let node: Node<Element>
+private struct PathElement {
+    unowned(unsafe) let node: Node
     var slot: Int
 
-    init(_ node: Node<Element>, _ slot: Int) {
+    init(_ node: Node, _ slot: Int) {
         self.node = node
         self.slot = slot
     }
@@ -221,11 +223,11 @@ private struct PathElement<Element: Comparable> {
 extension PathElement {
     var isLeaf: Bool { return node.isLeaf }
     var isAtEnd: Bool { return slot == node.elementCount }
-    var value: Element? {
+    var value: Int? {
         guard slot < node.elementCount else { return nil }
         return node.elements[slot]
     }
-    var child: Node<Element> {
+    var child: Node {
         return node.children[slot]
     }
 }
@@ -236,14 +238,14 @@ extension PathElement: Equatable {
     }
 }
 
-public struct BTree2Index<Element: Comparable>: Comparable {
-    fileprivate weak var root: Node<Element>?
+public struct IntBTree3Index: Comparable {
+    fileprivate weak var root: Node?
     fileprivate let mutationCount: Int64
 
-    fileprivate var path: [PathElement<Element>]
-    fileprivate var current: PathElement<Element>
+    fileprivate var path: [PathElement]
+    fileprivate var current: PathElement
 
-    init(startOf tree: BTree2<Element>) {
+    init(startOf tree: IntBTree3) {
         self.root = tree.root
         self.mutationCount = tree.root.mutationCount
         self.path = []
@@ -251,7 +253,7 @@ public struct BTree2Index<Element: Comparable>: Comparable {
         while !current.isLeaf { push(0) }
     }
 
-    init(endOf tree: BTree2<Element>) {
+    init(endOf tree: IntBTree3) {
         self.root = tree.root
         self.mutationCount = tree.root.mutationCount
         self.path = []
@@ -259,13 +261,13 @@ public struct BTree2Index<Element: Comparable>: Comparable {
     }
 }
 
-extension BTree2Index {
-    fileprivate func validate(for root: Node<Element>) {
+extension IntBTree3Index {
+    fileprivate func validate(for root: Node) {
         precondition(self.root === root)
         precondition(self.mutationCount == root.mutationCount)
     }
 
-    fileprivate static func validate(_ left: BTree2Index, _ right: BTree2Index) {
+    fileprivate static func validate(_ left: IntBTree3Index, _ right: IntBTree3Index) {
         precondition(left.root === right.root)
         precondition(left.mutationCount == right.mutationCount)
         precondition(left.root != nil)
@@ -273,7 +275,7 @@ extension BTree2Index {
     }
 }
 
-extension BTree2Index {
+extension IntBTree3Index {
     fileprivate mutating func push(_ slot: Int) {
         path.append(current)
         current = PathElement(current.node.children[current.slot], slot)
@@ -284,7 +286,7 @@ extension BTree2Index {
     }
 }
 
-extension BTree2Index {
+extension IntBTree3Index {
     fileprivate mutating func formSuccessor() {
         precondition(!current.isAtEnd, "Cannot advance beyond endIndex")
         current.slot += 1
@@ -301,7 +303,7 @@ extension BTree2Index {
     }
 }
 
-extension BTree2Index {
+extension IntBTree3Index {
     fileprivate mutating func formPredecessor() {
         if current.isLeaf {
             while current.slot == 0, current.node !== root {
@@ -319,14 +321,14 @@ extension BTree2Index {
     }
 }
 
-extension BTree2Index {
-    public static func ==(left: BTree2Index, right: BTree2Index) -> Bool {
-        BTree2Index.validate(left, right)
+extension IntBTree3Index {
+    public static func ==(left: IntBTree3Index, right: IntBTree3Index) -> Bool {
+        IntBTree3Index.validate(left, right)
         return left.current == right.current
     }
 
-    public static func <(left: BTree2Index, right: BTree2Index) -> Bool {
-        BTree2Index.validate(left, right)
+    public static func <(left: IntBTree3Index, right: IntBTree3Index) -> Bool {
+        IntBTree3Index.validate(left, right)
         switch (left.current.value, right.current.value) {
         case let (.some(a), .some(b)): return a < b
         case (.none, _): return false
@@ -335,13 +337,13 @@ extension BTree2Index {
     }
 }
 
-extension BTree2: SortedSet {
-    public typealias Index = BTree2Index<Element>
+extension IntBTree3: SortedSet {
+    public typealias Index = IntBTree3Index
 
     public var startIndex: Index { return Index(startOf: self) }
     public var endIndex: Index { return Index(endOf: self) }
 
-    public subscript(index: Index) -> Element {
+    public subscript(index: Index) -> Int {
         get {
             index.validate(for: root)
             return index.current.value!
@@ -373,7 +375,7 @@ extension BTree2: SortedSet {
     }
 }
 
-extension BTree2 {
+extension IntBTree3 {
     public var count: Int {
         return root.count
     }
@@ -385,39 +387,39 @@ extension Node {
     }
 }
 
-public struct BTree2Iterator<Element: Comparable>: IteratorProtocol {
-    let tree: BTree2<Element>
-    var index: BTree2Index<Element>
+public struct IntBTree3Iterator: IteratorProtocol {
+    let tree: IntBTree3
+    var index: IntBTree3Index
 
-    init(_ tree: BTree2<Element>) {
+    init(_ tree: IntBTree3) {
         self.tree = tree
         self.index = tree.startIndex
     }
 
-    public mutating func next() -> Element? {
+    public mutating func next() -> Int? {
         guard let result = index.current.value else { return nil }
         index.formSuccessor()
         return result
     }
 }
 
-extension BTree2 {
-    public func makeIterator() -> BTree2Iterator<Element> {
-        return BTree2Iterator(self)
+extension IntBTree3 {
+    public func makeIterator() -> IntBTree3Iterator {
+        return IntBTree3Iterator(self)
     }
 }
 
-extension BTree2 {
+extension IntBTree3 {
     public func validate() {
         _ = root.validate(level: 0)
     }
 }
 
 extension Node {
-    func validate(level: Int, min: Element? = nil, max: Element? = nil) -> Int {
+    func validate(level: Int, min: Int? = nil, max: Int? = nil) -> Int {
         // Check balance.
         precondition(!isTooLarge)
-        precondition(level == 0 || elementCount >= minElements)
+        precondition(level == 0 || elementCount >= minInts)
 
         if elementCount == 0 {
             precondition(children.isEmpty)

@@ -17,7 +17,7 @@ func indexingBenchmark() -> Benchmark<[Int]> {
     benchmark.descriptiveTitle = "Iteration using indexing"
     benchmark.descriptiveAmortizedTitle = "A single iteration step with indexing"
 
-    func add<T: OrderedSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<[Int]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
+    func add<T: SortedSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<[Int]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
         benchmark.addTask(title: title) { input in
             var set = initializer()
             for value in input {
@@ -40,10 +40,7 @@ func indexingBenchmark() -> Benchmark<[Int]> {
     }
 
     benchmark.addTask(title: "SortedArray") { input in
-        var set = SortedArray<Int>()
-        for value in 0 ..< input.count { // Cheating
-            set.append(value)
-        }
+        let set = SortedArray<Int>(sortedElements: 0 ..< input.count) // Cheating
         set.validate()
 
         return { timer in
@@ -58,50 +55,48 @@ func indexingBenchmark() -> Benchmark<[Int]> {
         }
     }
 
-    add("NSOrderedSet", for: MyOrderedSet<Int>.self, to: benchmark)
+    add("OrderedSet", for: OrderedSet<Int>.self, to: benchmark)
 
-    add("AlgebraicTree", for: AlgebraicTree<Int>.self, to: benchmark)
+    add("RedBlackTree", for: RedBlackTree<Int>.self, to: benchmark)
 
     //add("BinaryTree", for: BinaryTree<Int>.self, to: benchmark)
-    add("COWTree", for: COWTree<Int>.self, to: benchmark)
+    add("RedBlackTree2", for: RedBlackTree2<Int>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: benchmark) { BTree0<Int>(order: order) }
-    }
-    for order in orders {
-        add("BTree1/\(order)", to: benchmark) { BTree1<Int>(order: order) }
+        add("BTree/\(order)", to: benchmark) { BTree<Int>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: benchmark) { BTree2<Int>(order: order) }
     }
     for order in orders {
-        for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Int>(leafOrder: order, internalOrder: internalOrder) }
-        }
+        add("BTree3/\(order)", to: benchmark) { BTree3<Int>(order: order) }
     }
     for order in orders {
-        for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
-        }
+        add("BTree4/\(order)-16", to: benchmark) { BTree4<Int>(order: order) }
     }
-
-    benchmark.addTask(title: "IntBTree/1024-16, inlined") { input in
-        var set = IntBTree(leafOrder: 1024, internalOrder: 16)
-        for value in input {
-            set.insert(value)
-        }
-        return { timer in
-            var i = 0
-            var index = set.startIndex
-            let end = set.endIndex
-            while index != end {
-                guard set[index] == i else { fatalError("Expected \(i), got \(set[index])") }
-                i += 1
-                set.formIndex(after: &index)
-            }
-            guard i == input.count else { fatalError() }
-        }
-    }
+//    for order in orders {
+//        for internalOrder in internalOrders {
+//            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+//        }
+//    }
+//
+//    benchmark.addTask(title: "IntBTree/1024-16, inlined") { input in
+//        var set = IntBTree(leafOrder: 1024, internalOrder: 16)
+//        for value in input {
+//            set.insert(value)
+//        }
+//        return { timer in
+//            var i = 0
+//            var index = set.startIndex
+//            let end = set.endIndex
+//            while index != end {
+//                guard set[index] == i else { fatalError("Expected \(i), got \(set[index])") }
+//                i += 1
+//                set.formIndex(after: &index)
+//            }
+//            guard i == input.count else { fatalError() }
+//        }
+//    }
 
     benchmark.addTask(title: "Array") { input in
         let array = input.sorted()

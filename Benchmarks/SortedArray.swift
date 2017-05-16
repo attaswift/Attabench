@@ -6,30 +6,79 @@
 //  Copyright © 2017 Károly Lőrentey.
 //
 
-import Foundation
+public struct SortedArray<Element: Comparable>: SortedSet {
+    fileprivate var storage: [Element] = []
 
-public struct SortedArray<Element: Comparable>: RandomAccessCollection, OrderedSet {
-    public typealias Index = Int
-    public typealias IndexDistance = Int.Stride
-    public typealias Indices = CountableRange<Index>
+    public init() {}
+}
 
-    private var storage: ContiguousArray<Element>
-
-    public init() {
-        self.storage = []
+extension SortedArray {
+    func index(for element: Element) -> Int {
+        var start = 0
+        var end = storage.count
+        while start < end {
+            let middle = start + (end - start) / 2
+            if element > storage[middle] {
+                start = middle + 1
+            }
+            else {
+                end = middle
+            }
+        }
+        return start
     }
+}
 
-    public var startIndex: Int { return storage.startIndex }
-    public var endIndex: Int { return storage.endIndex }
-    public subscript(index: Int) -> Element { return storage[index] }
+extension SortedArray {
+    public func index(of element: Element) -> Int? {
+        let index = self.index(for: element)
+        guard index < count, self[index] == element else { return nil }
+        return index
+    }
+}
 
-    public func index(after i: Int) -> Int { return i + 1 }
-    public func formIndex(after i: inout Int) { i += 1 }
+extension SortedArray {
+    public func contains(_ element: Element) -> Bool {
+        let index = self.index(for: element)
+        return index < count && storage[index] == element
+    }
+}
 
+extension SortedArray {
     public func forEach(_ body: (Element) throws -> Void) rethrows {
         try storage.forEach(body)
     }
+}
 
+extension SortedArray {
+    public func sorted() -> [Element] {
+        return storage
+    }
+}
+
+extension SortedArray {
+    @discardableResult
+    public mutating func insert(_ newElement: Element) -> (inserted: Bool, memberAfterInsert: Element)
+    {
+        let index = self.index(for: newElement)
+        if index < count && storage[index] == newElement {
+            return (false, storage[index])
+        }
+        storage.insert(newElement, at: index)
+        return (true, newElement)
+    }
+}
+
+extension SortedArray: RandomAccessCollection {
+    public typealias Indices = CountableRange<Int>
+
+    public var startIndex: Int { return storage.startIndex }
+    public var endIndex: Int { return storage.endIndex }
+
+    public subscript(index: Int) -> Element { return storage[index] }
+}
+
+extension SortedArray {
     public func validate() {
         if var last = first {
             for element in self.suffix(from: 1) {
@@ -38,47 +87,77 @@ public struct SortedArray<Element: Comparable>: RandomAccessCollection, OrderedS
             }
         }
     }
+}
 
-    func slot(of element: Element) -> Int {
-        var i = 0
-        var j = storage.count
-        while i < j {
-            let middle = i + (j - i) / 2
+extension SortedArray {
+    public init<S: Sequence>(unsortedElements elements: S) where S.Iterator.Element == Element {
+        self.init()
+        self.storage = elements.sorted()
+    }
+
+    public init<S: Sequence>(sortedElements elements: S) where S.Iterator.Element == Element {
+        self.init()
+        self.storage = Array(elements)
+    }
+}
+
+extension SortedArray {
+    func index2(for element: Element) -> Int {
+        var start = 0
+        var end = storage.count
+        while start < end {
+            let diff = end - start
+            let middle = start + diff / 2 - (diff >> 6)
             if element > storage[middle] {
-                i = middle + 1
+                start = middle + 1
             }
             else {
-                j = middle
+                end = middle
             }
         }
-        return i
+        return start
     }
 
-    public func contains(_ element: Element) -> Bool {
-        return storage[slot(of: element)] == element
-    }
-
-    @discardableResult
-    public mutating func insert(_ newElement: Element) -> (inserted: Bool, memberAfterInsert: Element) {
-        let slot = self.slot(of: newElement)
-        if slot < storage.count && storage[slot] == newElement {
-            return (false, storage[slot])
+    func index3(for element: Element) -> Int {
+        var start = 0
+        var end = storage.count
+        while start < end {
+            let diff = end - start
+            if diff < 64 {
+                let middle = start + diff / 2
+                if element > storage[middle] {
+                    start = middle + 1
+                }
+                else {
+                    end = middle
+                }
+            }
+            else {
+                let third = diff / 3
+                let m1 = start + third
+                let m2 = end - third
+                let v2 = storage[m2]
+                let v1 = storage[m1]
+                if element > v2 {
+                    start = m2 + 1
+                }
+                else if element < v1 {
+                    end = m1
+                }
+                else {
+                    start = m1
+                    end = m2 + 1
+                }
+            }
         }
-        storage.insert(newElement, at: slot)
-        return (true, newElement)
+        return start
     }
 
-    public mutating func append(_ newElement: Element) {
-        precondition(isEmpty || storage.last! < newElement)
-        storage.append(newElement)
+    public func contains2(_ element: Element) -> Bool {
+        return storage[index2(for: element)] == element
     }
 
-    @discardableResult
-    public mutating func remove(_ element: Element) -> Element? {
-        let slot = self.slot(of: element)
-        guard slot < storage.count && storage[slot] == element else {
-            return nil
-        }
-        return storage.remove(at: slot)
+    public func contains3(_ element: Element) -> Bool {
+        return storage[index3(for: element)] == element
     }
 }

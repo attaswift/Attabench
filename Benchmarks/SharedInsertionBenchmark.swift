@@ -17,7 +17,7 @@ func sharedInsertionBenchmark(iterations: Int = 10, maxScale: Int = 15, random: 
     benchmark.descriptiveTitle = "Random insertions into shared storage"
     benchmark.descriptiveAmortizedTitle = "One random insertion into shared storage"
 
-    func add<T: OrderedSet>(_ title: String, for type: T.Type = T.self, maxCount: Int? = nil, to benchmark: Benchmark<[Int]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
+    func add<T: SortedSet>(_ title: String, for type: T.Type = T.self, maxCount: Int? = nil, to benchmark: Benchmark<[Int]>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
         benchmark.addTask(title: title) { input in
             if let maxCount = maxCount, input.count > maxCount { return nil }
             var first = true
@@ -70,30 +70,28 @@ func sharedInsertionBenchmark(iterations: Int = 10, maxScale: Int = 15, random: 
     }
 
     add("SortedArray", for: SortedArray<Int>.self, maxCount: 130_000, to: benchmark)
-    add("NSOrderedSet", for: MyOrderedSet<Int>.self, maxCount: 2048, to: benchmark)
-    add("AlgebraicTree", for: AlgebraicTree<Int>.self, to: benchmark)
+    add("OrderedSet", for: OrderedSet<Int>.self, maxCount: 2048, to: benchmark)
+    add("RedBlackTree", for: RedBlackTree<Int>.self, to: benchmark)
     //add("BinaryTree", for: BinaryTree<Int>.self, to: benchmark)
-    add("COWTree", for: COWTree<Int>.self, to: benchmark)
+    add("RedBlackTree2", for: RedBlackTree2<Int>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: benchmark) { BTree0<Int>(order: order) }
-    }
-    for order in orders {
-        add("BTree1/\(order)", to: benchmark) { BTree1<Int>(order: order) }
+        add("BTree/\(order)", to: benchmark) { BTree<Int>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: benchmark) { BTree2<Int>(order: order) }
     }
     for order in orders {
-        for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Int>(leafOrder: order, internalOrder: internalOrder) }
-        }
+        add("BTree3/\(order)", to: benchmark) { BTree3<Int>(order: order) }
     }
     for order in orders {
-        for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
-        }
+        add("BTree4/\(order)-16", to: benchmark) { BTree4<Int>(order: order) }
     }
+//    for order in orders {
+//        for internalOrder in internalOrders {
+//            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+//        }
+//    }
 
     benchmark.addTask(title: "Array.sort") { input in
         guard input.count < 130_000 else { return nil }

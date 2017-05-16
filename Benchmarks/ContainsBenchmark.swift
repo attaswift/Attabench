@@ -17,7 +17,7 @@ func containsBenchmark() -> Benchmark<([Int], [Int])> {
     benchmark.descriptiveTitle = "Looking up all members in random order"
     benchmark.descriptiveAmortizedTitle = "Looking up one random member"
 
-    func add<T: OrderedSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<([Int], [Int])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
+    func add<T: SortedSet>(_ title: String, for type: T.Type = T.self, to benchmark: Benchmark<([Int], [Int])>, _ initializer: @escaping () -> T = T.init) where T.Iterator.Element == Int {
         benchmark.addTask(title: title) { (input, lookups) in
             var set = initializer()
             for value in input {
@@ -34,10 +34,7 @@ func containsBenchmark() -> Benchmark<([Int], [Int])> {
     }
 
     benchmark.addTask(title: "SortedArray") { (input, lookups) in
-        var set = SortedArray<Int>()
-        for value in 0 ..< input.count { // Cheating
-            set.append(value)
-        }
+        let set = SortedArray<Int>(sortedElements: 0 ..< input.count) // Cheating
         set.validate()
 
         return { timer in
@@ -47,32 +44,30 @@ func containsBenchmark() -> Benchmark<([Int], [Int])> {
         }
     }
 
-    add("NSOrderedSet", for: MyOrderedSet<Int>.self, to: benchmark)
+    add("OrderedSet", for: OrderedSet<Int>.self, to: benchmark)
 
-    add("AlgebraicTree", for: AlgebraicTree<Int>.self, to: benchmark)
+    add("RedBlackTree", for: RedBlackTree<Int>.self, to: benchmark)
 
     //add("BinaryTree", for: BinaryTree<Int>.self, to: benchmark)
-    add("COWTree", for: COWTree<Int>.self, to: benchmark)
+    add("RedBlackTree2", for: RedBlackTree2<Int>.self, to: benchmark)
 
     for order in orders {
-        add("BTree0/\(order)", to: benchmark) { BTree0<Int>(order: order) }
-    }
-    for order in orders {
-        add("BTree1/\(order)", to: benchmark) { BTree1<Int>(order: order) }
+        add("BTree/\(order)", to: benchmark) { BTree<Int>(order: order) }
     }
     for order in orders {
         add("BTree2/\(order)", to: benchmark) { BTree2<Int>(order: order) }
     }
     for order in orders {
-        for internalOrder in internalOrders {
-            add("BTree3/\(order)-\(internalOrder)", to: benchmark) { BTree3<Int>(leafOrder: order, internalOrder: internalOrder) }
-        }
+        add("BTree3/\(order)", to: benchmark) { BTree3<Int>(order: order) }
     }
     for order in orders {
-        for internalOrder in internalOrders {
-            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
-        }
+        add("BTree4/\(order)-16", to: benchmark) { BTree4<Int>(order: order) }
     }
+//    for order in orders {
+//        for internalOrder in internalOrders {
+//            add("IntBTree/\(order)-\(internalOrder)", to: benchmark) { IntBTree(leafOrder: order, internalOrder: internalOrder) }
+//        }
+//    }
 
     benchmark.addTask(title: "Array") { (input, lookups) in
         if input.count > 100_000 { return nil }
