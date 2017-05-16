@@ -10,7 +10,7 @@ import Cocoa
 
 extension NSImage {
     func pngData() -> Data {
-        let cgimage = self.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+        let cgimage = self.cgImage(forProposedRect: nil, context: nil, hints: [NSImageHintCTM: NSAffineTransform(transform: AffineTransform.init(scale: 4))])!
         let rep = NSBitmapImageRep(cgImage: cgimage)
         rep.size = self.size
         let data = rep.representation(using: .PNG, properties: [:])
