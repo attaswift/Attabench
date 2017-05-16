@@ -312,10 +312,12 @@ extension AppDelegate {
 
     @IBAction func deleteResults(_ sender: AnyObject) {
         try? self.selectedSuite.reset()
+        self.refreshChart()
     }
 
     @IBAction func deleteAllResults(_ sender: AnyObject) {
         try? harness.reset()
+        self.refreshChart()
     }
 
     func scheduleSave() {
