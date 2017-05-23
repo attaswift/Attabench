@@ -29,7 +29,6 @@ func sharedInsertionBenchmark(iterations: Int = 10, maxScale: Int = 15, random: 
                         var k = 0
                         for value in input {
                             set.insert(value)
-                            print(Array(set))
                             precondition(!copy.contains(value))
                             precondition(set.contains(value))
                             copy = set
