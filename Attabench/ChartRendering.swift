@@ -276,7 +276,9 @@ class Chart {
         self.suite = suite
         self.amortized = amortized
         if amortized {
-            self.title = suite.benchmark.descriptiveAmortizedTitle ?? suite.title + " (amortized)"
+            self.title = suite.benchmark.descriptiveAmortizedTitle
+                ?? suite.benchmark.descriptiveTitle?.appending(" (amortized)")
+                ?? suite.title.appending(" (amortized)")
         }
         else {
             self.title = suite.benchmark.descriptiveTitle ?? suite.title
