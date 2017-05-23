@@ -105,6 +105,12 @@ public class Benchmark<Input>: BenchmarkProtocol {
         }
     }
 
+    public func addTimerTask(title: String, _ body: @escaping (Input, BenchmarkTimer) -> Void) {
+        self.addTask(title: title) { input in
+            return { timer in body(input, timer) }
+        }
+    }
+
     private func instance(for key: BenchmarkInstanceKey) -> ((BenchmarkTimer) -> Void)? {
         if let instance = instances[key] { return instance }
         guard let task = tasks[key.task] else { fatalError() }
