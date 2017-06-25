@@ -65,7 +65,7 @@ Attabench from source.
 3. Retrieve and build dependencies ([SipHash][siphash], [BTree][btree] and [GlueKit][gluekit]).
 
     ```
-    carthage bootstrap
+    carthage bootstrap --platform Mac
     ```
 
 4. Open the project file in Xcode 8.2, then build and run the Attabench target.
