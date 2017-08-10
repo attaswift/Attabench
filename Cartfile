@@ -1,2 +1,2 @@
 github "lorentey/GlueKit" "master"
-github "lorentey/SipHash" ~> 1.1
+github "lorentey/SipHash" "swift4"

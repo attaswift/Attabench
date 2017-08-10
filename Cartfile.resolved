@@ -1,3 +1,3 @@
-github "lorentey/BTree" "v4.0.2"
-github "lorentey/GlueKit" "cc205a8884c41c85806fbd6abcbce8a556dc708e"
-github "lorentey/SipHash" "v1.1.2"
+github "lorentey/BTree" "5e16b7f6323e08644468796aace80b1f1d29d261"
+github "lorentey/GlueKit" "360109b947293d03bf6b1ba0df46314eeee3d940"
+github "lorentey/SipHash" "4aeb517b8c7f6773d21bb6441533d0e69666e93f"
