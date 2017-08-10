@@ -2,3 +2,4 @@
 /Carthage/Checkouts
 .build
 /Output
+xcuserdata
