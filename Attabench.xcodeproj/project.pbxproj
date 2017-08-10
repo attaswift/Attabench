@@ -14,7 +14,6 @@
 		BB14EDEE1E6472D80006FD5F /* InsertionBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDED1E6472D80006FD5F /* InsertionBenchmark.swift */; };
 		BB14EDF01E6472F20006FD5F /* SharedInsertionBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDEF1E6472F20006FD5F /* SharedInsertionBenchmark.swift */; };
 		BB14EDF21E6473260006FD5F /* IterationBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF11E6473260006FD5F /* IterationBenchmark.swift */; };
-		BB14EDF41E6473D00006FD5F /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF31E6473D00006FD5F /* Noop.swift */; };
 		BB1E0A061E8D7D6500F98491 /* SortedSetBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1E0A051E8D7D6500F98491 /* SortedSetBenchmark.swift */; };
 		BB2709981E65C28600247AD5 /* SampleBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2709971E65C28600247AD5 /* SampleBenchmark.swift */; };
 		BB35FF971E344D03003ABBF3 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF961E344D03003ABBF3 /* RedBlackTree.swift */; };
@@ -29,7 +28,6 @@
 		BB8E0DF91E32383900505773 /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF31E32383900505773 /* BinaryTree.swift */; };
 		BB8E0DFA1E32383900505773 /* BTree2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF41E32383900505773 /* BTree2.swift */; };
 		BB8E0DFB1E32383900505773 /* RedBlackTree2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF51E32383900505773 /* RedBlackTree2.swift */; };
-		BB8E0DFC1E32383900505773 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF61E32383900505773 /* Shuffle.swift */; };
 		BB8E0DFD1E32383900505773 /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF71E32383900505773 /* SortedArray.swift */; };
 		BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DFE1E32384500505773 /* Benchmark.swift */; };
 		BB8E0E011E323F7700505773 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E001E323F7700505773 /* Timestamp.swift */; };
@@ -56,6 +54,8 @@
 		BBB9FA5C1E4CCE260074DFB1 /* BTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA5B1E4CCE260074DFB1 /* BTree.swift */; };
 		BBB9FA601E4CD3170074DFB1 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA5F1E4CD3170074DFB1 /* OrderedSet.swift */; };
 		BBB9FA621E4CD35B0074DFB1 /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FA611E4CD35B0074DFB1 /* SortedSet.swift */; };
+		BBE4CA3B1F3CDC400062A281 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF61E32383900505773 /* Shuffle.swift */; };
+		BBE4CA3C1F3CDC450062A281 /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF31E6473D00006FD5F /* Noop.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,8 +212,6 @@
 		BB14EDE81E64726F0006FD5F /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				BB8E0DF61E32383900505773 /* Shuffle.swift */,
-				BB14EDF31E6473D00006FD5F /* Noop.swift */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -284,6 +282,8 @@
 		BB8E0DD21E3237D900505773 /* BenchmarkingTools */ = {
 			isa = PBXGroup;
 			children = (
+				BB14EDF31E6473D00006FD5F /* Noop.swift */,
+				BB8E0DF61E32383900505773 /* Shuffle.swift */,
 				BB8E0DFE1E32384500505773 /* Benchmark.swift */,
 				BB8E0E001E323F7700505773 /* Timestamp.swift */,
 				BB8E0DD41E3237D900505773 /* Info.plist */,
@@ -478,13 +478,11 @@
 				BB35FF971E344D03003ABBF3 /* RedBlackTree.swift in Sources */,
 				BBB9FA5C1E4CCE260074DFB1 /* BTree.swift in Sources */,
 				BB928AA21E97D2F3009FD6A0 /* BTree4.swift in Sources */,
-				BB8E0DFC1E32383900505773 /* Shuffle.swift in Sources */,
 				BB14EDEE1E6472D80006FD5F /* InsertionBenchmark.swift in Sources */,
 				BB14EDE61E6472330006FD5F /* ForEachBenchmark.swift in Sources */,
 				BB2709981E65C28600247AD5 /* SampleBenchmark.swift in Sources */,
 				BB14EDF01E6472F20006FD5F /* SharedInsertionBenchmark.swift in Sources */,
 				BB14EDEC1E6472BA0006FD5F /* ContainsBenchmark.swift in Sources */,
-				BB14EDF41E6473D00006FD5F /* Noop.swift in Sources */,
 				BB14EDE41E6472080006FD5F /* ExpandedSample.swift in Sources */,
 				BB8E0DF91E32383900505773 /* BinaryTree.swift in Sources */,
 				BB928A9D1E977BC6009FD6A0 /* BTree3.swift in Sources */,
@@ -504,6 +502,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB8E0E011E323F7700505773 /* Timestamp.swift in Sources */,
+				BBE4CA3C1F3CDC450062A281 /* Noop.swift in Sources */,
+				BBE4CA3B1F3CDC400062A281 /* Shuffle.swift in Sources */,
 				BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
