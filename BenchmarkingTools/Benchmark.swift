@@ -8,14 +8,6 @@
 import Foundation
 import SipHash
 
-extension Array {
-    var randomElement: Element {
-        precondition(count > 0)
-        let index = Int(arc4random_uniform(UInt32(count)))
-        return self[index]
-    }
-}
-
 public class BenchmarkTimer {
     var elapsedTime: TimeInterval? = nil
 

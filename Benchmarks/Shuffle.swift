@@ -18,19 +18,34 @@ extension FixedWidthInteger {
         }
         var random: Self = 0
         repeat {
-            withUnsafeMutableBytes(of: &random) { buffer in
-                arc4random_buf(buffer.baseAddress, buffer.count)
+            random = 0
+            var bits = Self.bitWidth - limit.leadingZeroBitCount
+            while bits > 0 {
+                let r = arc4random()
+                let b = Swift.min(32, bits)
+                random <<= b
+                random |= Self(r >> (32 - b))
+                bits -= 32
             }
-            random >>= limit.leadingZeroBitCount
         } while random >= limit
         return random
     }
 }
 
-extension Array {
+extension RandomAccessCollection where IndexDistance: FixedWidthInteger {
+    public func randomElement() -> Element {
+        precondition(count > 0)
+        let offset = Self.IndexDistance.random(below: count)
+        let index = self.index(self.startIndex, offsetBy: offset)
+        return self[index]
+    }
+}
+
+extension RandomAccessCollection where Self: MutableCollection, IndexDistance: FixedWidthInteger {
     public mutating func shuffle() {
-        for i in 0 ..< count {
-            let j = i + Int.random(below: self.count - i)
+        for i in indices {
+            let offset = IndexDistance.random(below: self.distance(from: i, to: self.endIndex))
+            let j = self.index(i, offsetBy: offset)
             if i != j {
                 self.swapAt(i, j)
             }
