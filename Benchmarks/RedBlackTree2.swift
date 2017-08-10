@@ -58,7 +58,7 @@ extension RedBlackTree2 {
     }
 }
 
-private func diagram<Element: Comparable>(for node: Node<Element>?, _ top: String = "", _ root: String = "", _ bottom: String = "") -> String {
+private func diagram<Element>(for node: Node<Element>?, _ top: String = "", _ root: String = "", _ bottom: String = "") -> String {
     guard let node = node else {
         return root + "•\n"
     }

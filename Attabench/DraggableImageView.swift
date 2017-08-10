@@ -11,10 +11,10 @@ import Quartz
 
 extension NSImage {
     func pngData() -> Data {
-        let cgimage = self.cgImage(forProposedRect: nil, context: nil, hints: [NSImageHintCTM: NSAffineTransform(transform: AffineTransform.init(scale: 4))])!
+        let cgimage = self.cgImage(forProposedRect: nil, context: nil, hints: [.CTM: NSAffineTransform(transform: AffineTransform.init(scale: 4))])!
         let rep = NSBitmapImageRep(cgImage: cgimage)
         rep.size = self.size
-        let data = rep.representation(using: .PNG, properties: [:])
+        let data = rep.representation(using: .png, properties: [:])
         return data!
     }
 
@@ -105,7 +105,7 @@ class DraggableImageView: NSImageView, NSDraggingSource {
                                                     y: origin.y - iconSize.height / 2),
                                     size: iconSize)
         item.imageComponentsProvider = {
-            let iconComponent = NSDraggingImageComponent(key: NSDraggingImageComponentIconKey)
+            let iconComponent = NSDraggingImageComponent(key: .icon)
             let icon = NSImage(size: iconSize, flipped: false) { bounds in
                 image.draw(in: bounds)
                 return true

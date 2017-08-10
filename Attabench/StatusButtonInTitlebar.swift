@@ -39,7 +39,7 @@ class StatusButtonCell: NSButtonCell {
         let color = controlView.window?.isMainWindow == true
             ? NSColor(white: 0.2, alpha: 1)
             : NSColor(white: 0.6, alpha: 1)
-        title.setAttributes([NSForegroundColorAttributeName: color], range: NSRange(0 ..< title.length))
+        title.setAttributes([.foregroundColor: color], range: NSRange(0 ..< title.length))
         let bounds = title.boundingRect(with: frame.size, options: [])
         let frame = CGRect(x: floor(frame.midX - bounds.width / 2),
                            y: floor(frame.midY - bounds.height / 2 - (self.font?.descender ?? 0) / 2),

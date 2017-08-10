@@ -126,7 +126,7 @@ extension AppDelegate: NSApplicationDelegate {
                                   action: #selector(AppDelegate.didSelectTheme(_:)),
                                   keyEquivalent: "")
             item.tag = theme.rawValue
-            item.state = self.chartTheme.value == theme ? NSOnState : NSOffState
+            item.state = self.chartTheme.value == theme ? .onState : .offState
             themeMenu.addItem(item)
         }
 
@@ -188,7 +188,7 @@ extension AppDelegate: NSApplicationDelegate {
         return true
     }
 
-    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplicationTerminateReply {
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         if harness.state == .idle {
             return .terminateNow
         }
@@ -246,8 +246,8 @@ extension AppDelegate: NSWindowDelegate {
 extension AppDelegate {
     //MARK: Copy image to pasteboard
     @IBAction func copy(_ sender: Any?) {
-        guard let image = chartImageView.image else { NSBeep(); return }
-        let pb = NSPasteboard.general()
+        guard let image = chartImageView.image else { NSSound.beep(); return }
+        let pb = NSPasteboard.general
         pb.clearContents()
         pb.writeObjects([image])
     }
@@ -283,7 +283,7 @@ extension AppDelegate {
         }
     }
 
-    func refreshProgress() {
+    @objc func refreshProgress() {
         NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(AppDelegate.refreshProgress), object: nil)
         progressRefreshScheduled = false
 
@@ -303,7 +303,7 @@ extension AppDelegate {
         chartRefreshScheduled = false
     }
 
-    func refreshChart() {
+    @objc func refreshChart() {
         cancelChartRefresh()
         guard !harness.suites.isEmpty else { return }
         let suite = self.selectedSuite ?? self.harness.suites[0]
@@ -346,7 +346,7 @@ extension AppDelegate {
         saveScheduled = false
     }
 
-    func save() {
+    @objc func save() {
         let activity = ProcessInfo.processInfo.beginActivity(
             options: [.suddenTerminationDisabled],
             reason: "Saving")
@@ -417,7 +417,7 @@ extension AppDelegate {
         let theme = ChartTheme(rawValue: sender.tag) ?? .screen
         self.chartTheme.value = theme
         for item in themeMenu.items {
-            item.state = item.tag == theme.rawValue ? NSOnState : NSOffState
+            item.state = item.tag == theme.rawValue ? .onState : .offState
         }
     }
 
@@ -477,7 +477,7 @@ extension AppDelegate {
 
         for title in suite.taskTitles {
             let item = NSMenuItem(title: title, action: #selector(AppDelegate.toggleTask(_:)), keyEquivalent: "")
-            item.state = selected.contains(title) ? NSOnState : NSOffState
+            item.state = selected.contains(title) ? .onState : .offState
             menu.addItem(item)
 
             submenu.addItem(withTitle: title, action: #selector(AppDelegate.selectTask(_:)), keyEquivalent: "")

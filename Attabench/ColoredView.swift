@@ -20,7 +20,7 @@ class ColoredView: NSView {
 
     override func draw(_ dirtyRect: NSRect) {
         self.backgroundColor.setFill()
-        NSRectFill(dirtyRect)
+        dirtyRect.fill()
         super.draw(dirtyRect)
     }
 }

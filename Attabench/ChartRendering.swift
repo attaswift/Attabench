@@ -354,12 +354,12 @@ struct LineParams {
     let color: NSColor
     let dash: [CGFloat]
     let phase: CGFloat
-    let capStyle: NSLineCapStyle
-    let joinStyle: NSLineJoinStyle
+    let capStyle: NSBezierPath.LineCapStyle
+    let joinStyle: NSBezierPath.LineJoinStyle
     let shadowRadius: CGFloat
 
     init(lineWidth: CGFloat, color: NSColor, dash: [CGFloat] = [], phase: CGFloat = 0,
-         capStyle: NSLineCapStyle = .roundLineCapStyle, joinStyle: NSLineJoinStyle = .roundLineJoinStyle,
+         capStyle: NSBezierPath.LineCapStyle = .roundLineCapStyle, joinStyle: NSBezierPath.LineJoinStyle = .roundLineJoinStyle,
          shadowRadius: CGFloat = 0) {
         self.lineWidth = lineWidth
         self.color = color
@@ -382,9 +382,9 @@ struct TextParams {
     let font: NSFont
     let color: NSColor
 
-    var attributes: [String: Any] {
-        return [NSForegroundColorAttributeName: color,
-                NSFontAttributeName: font]
+    var attributes: [NSAttributedStringKey: Any] {
+        return [.foregroundColor: color,
+                .font: font]
     }
 }
 
@@ -650,7 +650,7 @@ struct ChartRenderer {
 
     func drawBackground() {
         params.backgroundColor.setFill()
-        NSRectFill(rect)
+        rect.fill()
     }
 
     func drawTitle() {
@@ -658,15 +658,15 @@ struct ChartRenderer {
                                y: chartRect.maxY,
                                width: bounds.width,
                                height: bounds.maxY - chartRect.maxY)
-        let paragraphStyle = NSParagraphStyle.default().mutableCopy() as! NSMutableParagraphStyle
+        let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
         paragraphStyle.alignment = .center
         paragraphStyle.lineBreakMode = .byTruncatingTail
         let title = NSAttributedString(
             string: chart.title,
             attributes: [
-                NSFontAttributeName: params.title.font,
-                NSForegroundColorAttributeName: params.title.color,
-                NSParagraphStyleAttributeName: paragraphStyle,
+                .font: params.title.font,
+                .foregroundColor: params.title.color,
+                .paragraphStyle: paragraphStyle,
                 ])
         title.draw(with: titleRect, options: .usesLineFragmentOrigin)
     }
@@ -677,7 +677,7 @@ struct ChartRenderer {
 
         // Draw gridlines
         NSGraphicsContext.saveGraphicsState()
-        NSRectClip(chartRect)
+        chartRect.clip()
         for gridline in gridlines {
             let path = NSBezierPath()
             path.move(to: CGPoint(x: 0, y: gridline.position))
@@ -757,7 +757,7 @@ struct ChartRenderer {
             path.stroke(with: params.lineParams(for: labeled ? .major : .minor))
         }
         NSGraphicsContext.saveGraphicsState()
-        NSRectClip(chartRect)
+        chartRect.clip()
         for (gridline, _, _) in labels {
             draw(gridline, labeled: true)
         }
@@ -784,7 +784,7 @@ struct ChartRenderer {
 
     func drawCurves() {
         NSGraphicsContext.saveGraphicsState()
-        NSRectClip(chartRect)
+        chartRect.clip()
         let lineParams = (0 ..< chart.curves.count).map { params.lineParams($0, chart.curves.count) }
         for pass in 0 ..< lineParams.reduce(0, { max($0, $1.count) }) {
             for index in 0 ..< chart.curves.count {
@@ -831,7 +831,7 @@ struct ChartRenderer {
             }
             else {
                 title = NSMutableAttributedString(string: "◼︎ " + curve.title, attributes: attributes)
-                title.setAttributes([NSForegroundColorAttributeName: lp.color],
+                title.setAttributes([.foregroundColor: lp.color],
                                     range: NSRange(0 ..< 1))
                 pos = CGPoint(x: params.legendPadding, y: y)
                 extraWidth = 0
@@ -864,7 +864,7 @@ struct ChartRenderer {
 
     func drawLegendBackground(with layout: LegendLayout) {
         params.backgroundColor.setFill()
-        NSRectFill(layout.frame)
+        layout.frame.fill()
     }
 
     func drawLegendContents(with layout: LegendLayout) {
