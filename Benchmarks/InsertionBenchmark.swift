@@ -13,7 +13,7 @@ func insertionBenchmark() -> Benchmark<[Int]> {
     let orders = [1024] //[8, 16, 32, 64, 128, 256, 512, 768, 1024, 1500, 2048]
     let internalOrders = [16] //[5, 8, 16, 32, 64, 128]
 
-    let benchmark = Benchmark<[Int]>(title: "Insertion", inputGenerator: inputGenerator)
+    let benchmark = Benchmark<[Int]>(title: "Insertion")
     benchmark.descriptiveTitle = "Construction by random insertions"
     benchmark.descriptiveAmortizedTitle = "Cost of one random insertion"
 

@@ -13,7 +13,7 @@ func indexingBenchmark() -> Benchmark<[Int]> {
     let orders = [1024] //[8, 16, 32, 64, 128, 256, 512, 768, 1024, 1500, 2048]
     let internalOrders = [16] //[5, 8, 16, 32, 64, 128]
 
-    let benchmark = Benchmark<[Int]>(title: "Indexing", inputGenerator: inputGenerator)
+    let benchmark = Benchmark<[Int]>(title: "Indexing")
     benchmark.descriptiveTitle = "Iteration using indexing"
     benchmark.descriptiveAmortizedTitle = "A single iteration step with indexing"
 

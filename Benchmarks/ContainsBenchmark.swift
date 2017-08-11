@@ -13,7 +13,7 @@ func containsBenchmark() -> Benchmark<([Int], [Int])> {
     let orders = [1024] //[8, 16, 32, 64, 128, 256, 512, 768, 1024, 1500, 2048]
     let internalOrders = [16] //[5, 8, 16, 32, 64, 128]
     
-    let benchmark = Benchmark<([Int], [Int])>(title: "Contains", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+    let benchmark = Benchmark<([Int], [Int])>(title: "Contains")
     benchmark.descriptiveTitle = "Looking up all members in random order"
     benchmark.descriptiveAmortizedTitle = "Looking up one random member"
 

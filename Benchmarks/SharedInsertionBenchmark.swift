@@ -13,7 +13,7 @@ func sharedInsertionBenchmark(iterations: Int = 10, maxScale: Int = 15, random: 
     let orders = [1024] //[8, 16, 32, 64, 128, 256, 512, 768, 1024, 1500, 2048]
     let internalOrders = [16] //[5, 8, 16, 32, 64, 128]
 
-    let benchmark = Benchmark<[Int]>(title: "SharedInsertion", inputGenerator: inputGenerator)
+    let benchmark = Benchmark<[Int]>(title: "SharedInsertion")
     benchmark.descriptiveTitle = "Random insertions into shared storage"
     benchmark.descriptiveAmortizedTitle = "One random insertion into shared storage"
 

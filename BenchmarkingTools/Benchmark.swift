@@ -80,6 +80,11 @@ public class Benchmark<Input>: BenchmarkProtocol {
     public private(set) var sizes: [Int] = []
     private var inputs: [Int: Input] = [:] // Input size to input data
 
+    public init<Generator: InputGeneratorProtocol>(title: String, inputGenerator: Generator) where Generator.Value == Input {
+        self.title = title
+        self.inputGenerator = inputGenerator.generate
+    }
+
     public init(title: String, inputGenerator: @escaping (Int) -> Input) {
         self.title = title
         self.inputGenerator = inputGenerator
@@ -139,5 +144,17 @@ public class Benchmark<Input>: BenchmarkProtocol {
         let stop = Timestamp()
         let elapsed = timer.elapsedTime ?? (stop - start)
         return elapsed
+    }
+}
+
+extension Benchmark where Input == [Int] {
+    public convenience init(title: String) {
+        self.init(title: title, inputGenerator: RandomArrayGenerator())
+    }
+}
+
+extension Benchmark where Input == ([Int], [Int]) {
+    public convenience init(title: String) {
+        self.init(title: title, inputGenerator: PairGenerator(RandomArrayGenerator(), RandomArrayGenerator()))
     }
 }

@@ -10,10 +10,7 @@ import Foundation
 import BenchmarkingTools
 
 func demoBenchmark() -> BenchmarkProtocol {
-    let inputGenerator: (Int) -> [Int] = { size in
-        return ((0 ..< size).shuffled())
-    }
-    let benchmark = Benchmark(title: "Demo", inputGenerator: inputGenerator)
+    let benchmark = Benchmark<[Int]>(title: "Demo")
     benchmark.descriptiveTitle = "Time spent on all elements"
     benchmark.descriptiveAmortizedTitle = "Average time spent on a single element"
 

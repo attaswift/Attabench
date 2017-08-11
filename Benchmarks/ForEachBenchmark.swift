@@ -14,7 +14,7 @@ func foreachBenchmark() -> Benchmark<[Int]> {
     let orders = [1024] //[8, 16, 32, 64, 128, 256, 512, 768, 1024, 1500, 2048]
     let internalOrders = [16] //[5, 8, 16, 32, 64, 128]
 
-    let benchmark = Benchmark<[Int]>(title: "ForEach", inputGenerator: inputGenerator)
+    let benchmark = Benchmark<[Int]>(title: "ForEach")
     benchmark.descriptiveTitle = "Iteration using “forEach”"
     benchmark.descriptiveAmortizedTitle = "A single iteration of “forEach”"
 

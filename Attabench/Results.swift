@@ -9,12 +9,25 @@
 import Foundation
 import BenchmarkingTools
 
-class TaskSample {
+final class TaskSample: Codable {
     internal private(set) var measurements: [TimeInterval] = []
     internal private(set) var sum: Double = 0
     internal private(set) var sumSquared: Double = 0
     internal private(set) var count: Double = 0
-
+    
+    init() {}
+    
+    convenience init(from decoder: Decoder) throws {
+        let minimum = try decoder.singleValueContainer().decode(TimeInterval.self)
+        self.init()
+        self.addMeasurement(minimum)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.minimum)
+    }
+    
     func addMeasurement(_ elapsedTime: TimeInterval) {
         self.measurements.append(elapsedTime)
         if measurements.count > 100 {
@@ -45,7 +58,7 @@ class TaskSample {
     }
 }
 
-class TaskResults {
+final class TaskResults: Codable {
     var samplesBySize: [Int: TaskSample] = [:]
 
     init() {}
@@ -66,6 +79,20 @@ class TaskResults {
             dict["\(size)"] = sample.minimum
         }
         return dict
+    }
+    
+    enum Keys: CodingKey {
+        case samples
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
+        self.samplesBySize = try container.decode([Int: TaskSample].self, forKey: .samples)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: Keys.self)
+        try container.encode(samplesBySize, forKey: .samples)
     }
 
     func addMeasurement(_ elapsedTime: TimeInterval, forSize size: Int) {

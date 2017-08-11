@@ -10,7 +10,8 @@ import Foundation
 import BenchmarkingTools
 
 func exampleBenchmark() -> BenchmarkProtocol {
-    let benchmark = Benchmark(title: "ExpandedSample", inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+    let benchmark = Benchmark(title: "ExpandedSample",
+                              inputGenerator: PairGenerator(RandomArrayGenerator(), RandomArrayGenerator()))
     benchmark.descriptiveTitle = "Time spent on all elements"
     benchmark.descriptiveAmortizedTitle = "Average time spent on a single element"
 

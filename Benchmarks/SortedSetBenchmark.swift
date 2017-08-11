@@ -16,9 +16,7 @@ func nullGenerator(_ size: Int) -> [Int] {
 }
 
 func sortedSetBenchmark() -> Benchmark<([Int], [Int])> {
-    let benchmark = Benchmark<([Int], [Int])>(
-        title: "SortedSet",
-        inputGenerator: { (inputGenerator($0), randomArrayGenerator($0)) })
+    let benchmark = Benchmark<([Int], [Int])>(title: "SortedSet")
     benchmark.descriptiveTitle = "SortedSet operations"
     benchmark.descriptiveAmortizedTitle = "SortedSet operations (amortized)"
 

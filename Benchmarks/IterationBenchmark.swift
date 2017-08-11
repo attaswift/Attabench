@@ -10,7 +10,7 @@ import Foundation
 import BenchmarkingTools
 
 func iterationBenchmark() -> BenchmarkProtocol {
-    let benchmark = Benchmark<[Int]>(title: "BTreeIteration", inputGenerator: inputGenerator)
+    let benchmark = Benchmark<[Int]>(title: "BTreeIteration")
     benchmark.descriptiveTitle = "Iterating over all elements"
     benchmark.descriptiveAmortizedTitle = "A single iteration step"
 
