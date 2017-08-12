@@ -68,17 +68,6 @@ extension Int {
     }
 }
 
-extension TimeInterval {
-    var timeLabel: String {
-        return self >= 1000 ? String(Int(self)) + "s"
-            : self >= 1 ? String(format: "%.3gs", self)
-            : self >= 1e-3 ? String(format: "%.3gms", self * 1e3)
-            : self >= 1e-6 ? String(format: "%.3gµs", self * 1e6)
-            : self >= 1e-9 ? String(format: "%.3gns", self * 1e9)
-            : self < 1e-12 ? "0s"
-            : String(format: "%.3gps", self * 1e12)
-    }
-}
 
 struct Gridline {
     enum Kind {
@@ -118,13 +107,15 @@ struct EmptyScale: ChartScale {
 
 struct LogarithmicScale: ChartScale {
     let decimal: Bool
-    let labeler: (Double) -> String
+    let labeler: (Int) -> String
     let min: Double
     let max: Double
+    let minExponent: Int
+    let maxExponent: Int
     let grid: (major: Double, minor: Double)
 
-    init(_ range: Range<Double>, decimal: Bool, labeler: @escaping (Double) -> String) {
-        precondition(range.lowerBound > 0)
+    init(_ range: Range<Double>, decimal: Bool, labeler: @escaping (Int) -> String) {
+        let range = (range.lowerBound > 0 ? range : 1e-30 ..< range.upperBound)
         self.decimal = decimal
         self.labeler = labeler
 
@@ -133,25 +124,34 @@ struct LogarithmicScale: ChartScale {
         // Find last major gridline below range.
         if range.lowerBound < 1 {
             var s: Double = 1
+            var minExponent = 0
             while range.lowerBound * s < 1 {
                 s *= step
+                minExponent -= 1
             }
             self.min = 1 / s
+            self.minExponent = minExponent
         }
         else {
             var s: Double = 1
-            while s * step < range.lowerBound {
+            var minExponent = 0
+            while s * step <= range.lowerBound {
                 s *= step
+                minExponent += 1
             }
             self.min = s
+            self.minExponent = minExponent
         }
 
         // Find first major gridline above range.
+        var maxExponent = minExponent
         var s = self.min
         while s < range.upperBound {
             s *= step
+            maxExponent += 1
         }
         self.max = s
+        self.maxExponent = maxExponent
 
         self.grid = (major: log(step) / (log(max) - log(min)),
                      minor: decimal ? log(2) / (log(max) - log(min)) : 0)
@@ -160,15 +160,13 @@ struct LogarithmicScale: ChartScale {
     var gridlines: [Gridline] {
         var gridlines: [Gridline] = []
         let step = decimal ? 10.0 : 2.0
-        var value = self.min
-        while value <= self.max {
-            let position = self.position(for: value)
-            let label = self.labeler(value)
+        for exponent in minExponent ... maxExponent {
+            let position = self.position(for: pow(step, Double(exponent)))
+            let label = self.labeler(exponent)
             gridlines.append(Gridline(.major, position: position, label: label))
-            value *= step
         }
         if decimal {
-            value = 2 * min
+            var value = 2 * min
             while true {
                 let position = self.position(for: value)
                 if position > 1.0001 { break }
@@ -180,7 +178,7 @@ struct LogarithmicScale: ChartScale {
     }
 
     func position(for value: Double) -> CGFloat {
-        precondition(value > 0)
+        if value <= 0 { return 0 }
         return CGFloat((log2(value) - log2(min)) / (log2(max) - log2(min)))
     }
 }
@@ -298,9 +296,10 @@ class Chart {
         var count = 0
         for (task, samples) in suite.samplesByTask where tasks.contains(task) {
             for (size, sample) in samples.samplesBySize {
+                guard let min = sample.average else { continue }
                 if size > maxSize { maxSize = size }
                 if size < minSize { minSize = size }
-                let time = amortized ? sample.minimum / Double(size) : sample.minimum
+                let time = amortized ? min.seconds / Double(size) : min.seconds
                 if time > maxTime { maxTime = time }
                 if time < minTime { minTime = time }
                 count += 1
@@ -315,19 +314,21 @@ class Chart {
             return
         }
 
-        let sizeLabeler: (Double) -> String = { value in Int(value).sizeLabel }
         if logarithmicSizeScale {
+            let sizeLabeler: (Int) -> String = { value in (1 << value).sizeLabel }
             self.sizeScale = LogarithmicScale(Double(minSize) ..< Double(maxSize), decimal: false, labeler: sizeLabeler)
         }
         else {
+            let sizeLabeler: (Double) -> String = { value in Int(value).sizeLabel }
             self.sizeScale = LinearScale(Double(minSize) ..< Double(maxSize), decimal: false, labeler: sizeLabeler)
         }
 
-        let timeLabeler: (Double) -> String = { value in TimeInterval(value).timeLabel }
         if logarithmicTimeScale {
+            let timeLabeler: (Int) -> String = { value in "\(Time(orderOfMagnitude: value))" }
             self.timeScale = LogarithmicScale(minTime ..< maxTime, decimal: true, labeler: timeLabeler)
         }
         else {
+            let timeLabeler: (Double) -> String = { value in "\(Time(value))" }
             self.timeScale = LinearScale(minTime ..< maxTime, decimal: true, labeler: timeLabeler)
         }
 
@@ -339,9 +340,10 @@ class Chart {
             guard let samples = suite.samplesByTask[task] else { continue }
 
             let path = NSBezierPath()
-            path.appendLines(between: samples.samplesBySize.sorted(by: { $0.0 < $1.0 }).map { (size, sample) in
+            path.appendLines(between: samples.samplesBySize.sorted(by: { $0.0 < $1.0 }).flatMap { (size, sample) in
+                guard let min = sample.average else { return nil }
                 return CGPoint(x: sizeScale.position(for: Double(size)),
-                               y: timeScale.position(for: amortized ? sample.minimum / Double(size) : sample.minimum))
+                               y: timeScale.position(for: amortized ? min.seconds / Double(size) : min.seconds))
             })
 
             self.curves.append(Curve(title: task, path: path))

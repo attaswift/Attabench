@@ -57,6 +57,9 @@
 		BBE4CA3B1F3CDC400062A281 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF61E32383900505773 /* Shuffle.swift */; };
 		BBE4CA3C1F3CDC450062A281 /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF31E6473D00006FD5F /* Noop.swift */; };
 		BBE4CA3E1F3CDCC40062A281 /* InputGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4CA3D1F3CDCC40062A281 /* InputGenerator.swift */; };
+		BBE4CA531F3DDD0D0062A281 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE4CA521F3DDD0D0062A281 /* BigInt.framework */; };
+		BBE4CA541F3DDD0D0062A281 /* BigInt.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBE4CA521F3DDD0D0062A281 /* BigInt.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBE4CA561F3DDD4B0062A281 /* BigInt.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BBE4CA551F3DDD4B0062A281 /* BigInt.framework.dSYM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +87,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				BB8E0E061E3253E500505773 /* Benchmarks.framework in Embed Frameworks */,
+				BBE4CA541F3DDD0D0062A281 /* BigInt.framework in Embed Frameworks */,
 				BB8E0DE71E3237D900505773 /* BenchmarkingTools.framework in Embed Frameworks */,
 				BB8E0E181E33D64000505773 /* SipHash.framework in Embed Frameworks */,
 				BB8E0E161E33D64000505773 /* GlueKit.framework in Embed Frameworks */,
@@ -98,6 +102,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				BBE4CA561F3DDD4B0062A281 /* BigInt.framework.dSYM in Copy dSYMs for Dependencies */,
 				BB8E0E1E1E33D69100505773 /* BTree.framework.dSYM in Copy dSYMs for Dependencies */,
 				BB8E0E1F1E33D69100505773 /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */,
 				BB8E0E201E33D69100505773 /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */,
@@ -155,10 +160,13 @@
 		BB928AA31E97D326009FD6A0 /* IntBTree3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntBTree3.swift; sourceTree = "<group>"; };
 		BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableImageView.swift; sourceTree = "<group>"; };
+		BBABCDD01F3DDDFF009CA8BC /* BigInt.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BigInt.framework.dSYM; path = Carthage/Build/Mac/BigInt.framework.dSYM; sourceTree = "<group>"; };
 		BBB9FA5B1E4CCE260074DFB1 /* BTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BTree.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BBB9FA5F1E4CD3170074DFB1 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		BBB9FA611E4CD35B0074DFB1 /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		BBE4CA3D1F3CDCC40062A281 /* InputGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenerator.swift; sourceTree = "<group>"; };
+		BBE4CA521F3DDD0D0062A281 /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = Carthage/Build/Mac/BigInt.framework; sourceTree = "<group>"; };
+		BBE4CA551F3DDD4B0062A281 /* BigInt.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BigInt.framework.dSYM; path = Carthage/Build/Mac/BigInt.framework.dSYM; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB8E0E051E3253E500505773 /* Benchmarks.framework in Frameworks */,
+				BBE4CA531F3DDD0D0062A281 /* BigInt.framework in Frameworks */,
 				BB8E0DE61E3237D900505773 /* BenchmarkingTools.framework in Frameworks */,
 				BB8E0E171E33D64000505773 /* SipHash.framework in Frameworks */,
 				BB8E0E151E33D64000505773 /* GlueKit.framework in Frameworks */,
@@ -221,6 +230,7 @@
 		BB1DA9C41E2E5923000F2B03 = {
 			isa = PBXGroup;
 			children = (
+				BBE4CA551F3DDD4B0062A281 /* BigInt.framework.dSYM */,
 				BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */,
 				BB17BB071E6733C700B05A22 /* README.md */,
 				BB17BB091E6733DA00B05A22 /* .travis.yml */,
@@ -229,6 +239,7 @@
 				BB83AAC51E3125D000BFE22D /* Benchmark */,
 				BB8E0DD21E3237D900505773 /* BenchmarkingTools */,
 				BB8E0E191E33D64A00505773 /* Dependencies */,
+				BBE4CA521F3DDD0D0062A281 /* BigInt.framework */,
 				BB1DA9CE1E2E5923000F2B03 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -300,6 +311,7 @@
 				BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */,
 				BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */,
 				BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */,
+				BBABCDD01F3DDDFF009CA8BC /* BigInt.framework.dSYM */,
 				BB8E0E101E33D64000505773 /* BTree.framework */,
 				BB8E0E111E33D64000505773 /* GlueKit.framework */,
 				BB8E0E121E33D64000505773 /* SipHash.framework */,

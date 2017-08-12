@@ -1,2 +1,3 @@
 github "lorentey/GlueKit" "master"
 github "lorentey/SipHash" "swift4"
+github "lorentey/BigInt" "swift4"
