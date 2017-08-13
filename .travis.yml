@@ -1,6 +1,9 @@
 language: objective-c
-osx_image: xcode8.3
+osx_image: xcode9
 install:
 - carthage bootstrap --platform macOS
 script:
-- xcrun xcodebuild -project Attabench.xcodeproj -scheme Attabench
+- xcrun xcodebuild -project Attabench.xcodeproj -scheme Benchmark
+- swift build
+- (cd SampleBenchmark.attabench && swift build)
+- (cd SortedSetBenchark.attabench && swift build)
