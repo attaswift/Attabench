@@ -3,7 +3,7 @@ osx_image: xcode9
 install:
 - carthage bootstrap --platform macOS
 script:
-- xcrun xcodebuild -project Attabench.xcodeproj -scheme Benchmark
+- xcrun xcodebuild -project Attabench.xcodeproj -scheme Benchmarking
 - swift build
 - (cd SampleBenchmark.attabench && swift build)
 - (cd SortedSetBenchmark.attabench && swift build)
