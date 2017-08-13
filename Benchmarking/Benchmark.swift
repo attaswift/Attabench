@@ -140,8 +140,10 @@ public class Benchmark<Input> {
     public func start() {
         print("\(title) started")
         for title in self.taskTitles {
-            if let time = self.run(title, 100) {
-                print("\(title):100 = \(time)")
+            for size in [1, 1, 1, 10, 10, 10, 10, 100, 200, 300, 400, 500, 1_000, 2_000, 5_000, 8_000, 10_000, 100_000] {
+                if let time = self.run(title, size) {
+                    print("\(title):\(size) = \(time)")
+                }
             }
         }
         print("\(title) finished")
