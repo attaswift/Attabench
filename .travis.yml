@@ -6,4 +6,4 @@ script:
 - xcrun xcodebuild -project Attabench.xcodeproj -scheme Benchmark
 - swift build
 - (cd SampleBenchmark.attabench && swift build)
-- (cd SortedSetBenchark.attabench && swift build)
+- (cd SortedSetBenchmark.attabench && swift build)
