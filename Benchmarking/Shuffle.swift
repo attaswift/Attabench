@@ -6,7 +6,7 @@
 //  Copyright © 2017 Károly Lőrentey.
 //
 
-import Foundation
+import Darwin
 
 extension FixedWidthInteger {
     /// Return a random nonnegative value that is less than `limit`, which must be positive.

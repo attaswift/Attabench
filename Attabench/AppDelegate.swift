@@ -8,8 +8,7 @@
 
 import Cocoa
 import GlueKit
-import BenchmarkingTools
-import Benchmarks
+import Benchmarking
 
 let minimumScale = 0
 let maximumScale = 32
@@ -209,7 +208,7 @@ extension AppDelegate: HarnessDelegate {
         self.status = "Measuring \(instance.benchmark) : \(instance.size.sizeLabel) : \(instance.task)"
     }
 
-    func harness(_ harness: Harness, didMeasure instance: BenchmarkInstanceKey, withResult time: TimeInterval) {
+    func harness(_ harness: Harness, didMeasure instance: BenchmarkInstanceKey, withResult time: Time) {
         scheduleChartRefresh()
         window.isDocumentEdited = true
         scheduleSave()

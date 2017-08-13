@@ -6,8 +6,6 @@
 //  Copyright © 2017 Károly Lőrentey.
 //
 
-import Foundation
-
 @_semantics("optimize.sil.never")
 @inline(never)
 public func noop<T>(_ value: T) {

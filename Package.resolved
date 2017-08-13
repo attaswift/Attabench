@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BTree",
+        "repositoryURL": "https://github.com/lorentey/BTree",
+        "state": {
+          "branch": "5.x",
+          "revision": "5e16b7f6323e08644468796aace80b1f1d29d261",
+          "version": null
+        }
+      },
+      {
+        "package": "BigInt",
+        "repositoryURL": "https://github.com/lorentey/BigInt",
+        "state": {
+          "branch": "swift4",
+          "revision": "193928e6324bb883ba30499d2c3eeee98c27d151",
+          "version": null
+        }
+      },
+      {
+        "package": "SipHash",
+        "repositoryURL": "https://github.com/lorentey/SipHash",
+        "state": {
+          "branch": "swift4",
+          "revision": "4aeb517b8c7f6773d21bb6441533d0e69666e93f",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -9,7 +9,7 @@ import Foundation
 import SipHash
 
 public class BenchmarkTimer {
-    var elapsedTime: TimeInterval? = nil
+    var elapsedTime: Time? = nil
 
     @inline(never)
     public func measure(_ body: () -> ()) {
@@ -56,27 +56,18 @@ public struct BenchmarkInstanceKey: SipHashable {
     }
 }
 
-public protocol BenchmarkProtocol {
-    var title: String { get }
-    var descriptiveTitle: String? { get }
-    var descriptiveAmortizedTitle: String? { get }
 
-    var taskTitles: [String] { get }
-    func run(_ title: String, _ size: Int) -> TimeInterval?
-    func forgetInputs() // FIXME: Move instances out of here
-    func forgetInstances() // FIXME: Move instances out of here
-}
-
-public class Benchmark<Input>: BenchmarkProtocol {
+public class Benchmark<Input> {
     public let title: String
     public var descriptiveTitle: String? = nil
     public var descriptiveAmortizedTitle: String? = nil
-    
+
     public private(set) var taskTitles: [String] = []
+    
     private var tasks: [String: BenchmarkTask<Input>] = [:]
     private var instances: [BenchmarkInstanceKey: (BenchmarkTimer) -> Void] = [:]
-
     private let inputGenerator: (Int) -> Input
+
     public private(set) var sizes: [Int] = []
     private var inputs: [Int: Input] = [:] // Input size to input data
 
@@ -135,7 +126,7 @@ public class Benchmark<Input>: BenchmarkProtocol {
     }
 
     @discardableResult @inline(never)
-    public func run(_ task: String, _ size: Int) -> TimeInterval? {
+    public func run(_ task: String, _ size: Int) -> Time? {
         let key = BenchmarkInstanceKey(benchmark: title, task: task, size: size)
         guard let instance = self.instance(for: key) else { return nil }
         let start = Timestamp()
@@ -144,6 +135,16 @@ public class Benchmark<Input>: BenchmarkProtocol {
         let stop = Timestamp()
         let elapsed = timer.elapsedTime ?? (stop - start)
         return elapsed
+    }
+    
+    public func start() {
+        print("\(title) started")
+        for title in self.taskTitles {
+            if let time = self.run(title, 100) {
+                print("\(title):100 = \(time)")
+            }
+        }
+        print("\(title) finished")
     }
 }
 

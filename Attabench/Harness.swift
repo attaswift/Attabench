@@ -11,7 +11,7 @@ import BenchmarkingTools
 
 protocol HarnessDelegate: class {
     func harness(_ harness: Harness, willStartMeasuring instance: BenchmarkInstanceKey)
-    func harness(_ harness: Harness, didMeasure instance: BenchmarkInstanceKey, withResult time: TimeInterval)
+    func harness(_ harness: Harness, didMeasure instance: BenchmarkInstanceKey, withResult time: Time)
     func harnessDidStopRunning(_ harness: Harness)
 }
 
@@ -153,7 +153,7 @@ class Harness {
     }
 }
 
-class Suite {
+class Suite: Codable {
     let benchmark: BenchmarkProtocol
     var samplesByTask: [String: TaskResults] = [:]
 
@@ -218,6 +218,9 @@ class Suite {
     }
 
     func save() throws {
+        var encoder = PropertyListEncoder()
+        let data = try PropertyListEncoder().encode(samplesByTask)
+
         var encoded: [String: Any] = [:]
         for (title, samples) in samplesByTask {
             encoded[title] = samples.encode()
@@ -250,7 +253,7 @@ class Suite {
         return samples
     }
 
-    func addMeasurement(_ task: String, _ size: Int, _ time: TimeInterval) {
+    func addMeasurement(_ task: String, _ size: Int, _ time: Time) {
         samples(for: task).addMeasurement(time, forSize: size)
     }
 }
