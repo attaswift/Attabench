@@ -2,8 +2,7 @@
 // This file is part of Attabench: https://github.com/lorentey/Attabench
 // For licensing information, see the file LICENSE.md in the Git repository above.
 
-import Foundation
-import BenchmarkingTools
+import Benchmarking
 
 let benchmark = Benchmark<([Int], [Int])>(title: "Sample")
 benchmark.descriptiveTitle = "Time spent on all elements"
