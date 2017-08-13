@@ -1,7 +1,7 @@
 language: objective-c
 osx_image: xcode9
 install:
-- carthage bootstrap --platform macOS
+- carthage bootstrap --platform macOS --no-use-binaries
 script:
 - xcrun xcodebuild -project Attabench.xcodeproj -scheme Benchmarking
 - swift build
