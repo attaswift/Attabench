@@ -19,7 +19,6 @@ extension BigInt {
 public struct Time: CustomStringConvertible, Comparable, Codable {
     var picoseconds: BigInt
 
-    public init() { self.picoseconds = 0 }
     public init(picoseconds: BigInt) {
         self.picoseconds = picoseconds
     }

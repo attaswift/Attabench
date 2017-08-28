@@ -1,10 +1,6 @@
-//
-//  Noop.swift
-//  Attabench
-//
-//  Created by Károly Lőrentey on 2017-02-27.
-//  Copyright © 2017 Károly Lőrentey.
-//
+// Copyright © 2017 Károly Lőrentey.
+// This file is part of Attabench: https://github.com/lorentey/Attabench
+// For licensing information, see the file LICENSE.md in the Git repository above.
 
 @_semantics("optimize.sil.never")
 @inline(never)

@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "OptionParser",
+        "repositoryURL": "https://github.com/attaswift/OptionParser",
+        "state": {
+          "branch": "master",
+          "revision": "049f1e2b9d4550c25d99c54e17a045149e723afb",
+          "version": null
+        }
+      },
+      {
         "package": "SipHash",
         "repositoryURL": "https://github.com/lorentey/SipHash",
         "state": {

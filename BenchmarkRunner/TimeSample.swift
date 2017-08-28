@@ -27,7 +27,7 @@ public final class TimeSample: Codable {
     public private(set) var minimum: Time? = nil
     public private(set) var maximum: Time? = nil
     public private(set) var count: Int = 0
-    public private(set) var sum = Time()
+    public private(set) var sum = Time(picoseconds: 0)
     public private(set) var sumSquared = TimeSquared()
 
     public init() {}
@@ -56,7 +56,7 @@ public final class TimeSample: Codable {
             minimum = nil
             maximum = nil
             count = 0
-            sum = Time()
+            sum = Time(picoseconds: 0)
             sumSquared = TimeSquared()
         }
         guard count == 0 || minimum != nil else {

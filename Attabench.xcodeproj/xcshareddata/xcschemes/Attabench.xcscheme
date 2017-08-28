@@ -39,6 +39,16 @@
                ReferencedContainer = "container:Attabench.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BB4F15651F409882003C05C3"
+               BuildableName = "BenchmarkRunnerTests.xctest"
+               BlueprintName = "BenchmarkRunnerTests"
+               ReferencedContainer = "container:Attabench.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

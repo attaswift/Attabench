@@ -1,30 +1,15 @@
-//
-//  Benchmark.swift
-//  Attabench
-//
-//  Copyright © 2017 Károly Lőrentey.
-//
+// Copyright © 2017 Károly Lőrentey.
+// This file is part of Attabench: https://github.com/lorentey/Attabench
+// For licensing information, see the file LICENSE.md in the Git repository above.
 
 import Foundation
-import SipHash
 
-public class BenchmarkTimer {
-    var elapsedTime: Time? = nil
-
-    @inline(never)
-    public func measure(_ body: () -> ()) {
-        let start = Timestamp()
-        body()
-        let end = Timestamp()
-        elapsedTime = end - start
-    }
-}
-
-fileprivate class BenchmarkTask<Input> {
+class BenchmarkTask<Input> {
     let title: String
     let body: (Input) -> ((BenchmarkTimer) -> Void)?
 
     init(_ title: String, _ body: @escaping (Input) -> ((BenchmarkTimer) -> Void)?) {
+        precondition(!title.starts(with: "-"), "Benchmark task title must not begin with '-'")
         self.title = title
         self.body = body
     }
@@ -34,29 +19,6 @@ fileprivate class BenchmarkTask<Input> {
     }
 }
 
-public struct BenchmarkInstanceKey: SipHashable {
-    public let benchmark: String
-    public let task: String
-    public let size: Int
-
-    public init(benchmark: String, task: String, size: Int) {
-        self.benchmark = benchmark
-        self.task = task
-        self.size = size
-    }
-
-    public func appendHashes(to hasher: inout SipHasher) {
-        hasher.append(benchmark)
-        hasher.append(task)
-        hasher.append(size)
-    }
-    
-    public static func ==(left: BenchmarkInstanceKey, right: BenchmarkInstanceKey) -> Bool {
-        return left.benchmark == right.benchmark && left.task == right.task && left.size == right.size
-    }
-}
-
-
 public class Benchmark<Input> {
     public let title: String
     public var descriptiveTitle: String? = nil
@@ -64,12 +26,8 @@ public class Benchmark<Input> {
 
     public private(set) var taskTitles: [String] = []
     
-    private var tasks: [String: BenchmarkTask<Input>] = [:]
-    private var instances: [BenchmarkInstanceKey: (BenchmarkTimer) -> Void] = [:]
-    private let inputGenerator: (Int) -> Input
-
-    public private(set) var sizes: [Int] = []
-    private var inputs: [Int: Input] = [:] // Input size to input data
+    private(set) var tasks: [String: BenchmarkTask<Input>] = [:]
+    let inputGenerator: (Int) -> Input
 
     public init<Generator: InputGeneratorProtocol>(title: String, inputGenerator: Generator) where Generator.Value == Input {
         self.title = title
@@ -98,56 +56,6 @@ public class Benchmark<Input> {
             return { timer in body(input, timer) }
         }
     }
-
-    private func instance(for key: BenchmarkInstanceKey) -> ((BenchmarkTimer) -> Void)? {
-        if let instance = instances[key] { return instance }
-        guard let task = tasks[key.task] else { fatalError() }
-        let input = self.input(for: key.size)
-        let instance = task.generate(input: input)
-        instances[key] = instance
-        return instance
-    }
-
-    public func forgetInputs() {
-        self.inputs = [:]
-        forgetInstances()
-    }
-
-    public func forgetInstances() {
-        self.instances = [:]
-    }
-
-    private func input(for size: Int) -> Input {
-        if let input = inputs[size] { return input }
-        let input = inputGenerator(size)
-        sizes.append(size)
-        inputs[size] = input
-        return input
-    }
-
-    @discardableResult @inline(never)
-    public func run(_ task: String, _ size: Int) -> Time? {
-        let key = BenchmarkInstanceKey(benchmark: title, task: task, size: size)
-        guard let instance = self.instance(for: key) else { return nil }
-        let start = Timestamp()
-        let timer = BenchmarkTimer()
-        instance(timer)
-        let stop = Timestamp()
-        let elapsed = timer.elapsedTime ?? (stop - start)
-        return elapsed
-    }
-    
-    public func start() {
-        print("\(title) started")
-        for title in self.taskTitles {
-            for size in [1, 1, 1, 10, 10, 10, 10, 100, 200, 300, 400, 500, 1_000, 2_000, 5_000, 8_000, 10_000, 100_000] {
-                if let time = self.run(title, size) {
-                    print("\(title):\(size) = \(time)")
-                }
-            }
-        }
-        print("\(title) finished")
-    }
 }
 
 extension Benchmark where Input == [Int] {
@@ -161,3 +69,4 @@ extension Benchmark where Input == ([Int], [Int]) {
         self.init(title: title, inputGenerator: PairGenerator(RandomArrayGenerator(), RandomArrayGenerator()))
     }
 }
+

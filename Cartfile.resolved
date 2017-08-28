@@ -1,4 +1,5 @@
+github "attaswift/OptionParser" "049f1e2b9d4550c25d99c54e17a045149e723afb"
 github "lorentey/BTree" "5e16b7f6323e08644468796aace80b1f1d29d261"
-github "lorentey/BigInt" "193928e6324bb883ba30499d2c3eeee98c27d151"
+github "lorentey/BigInt" "974b11ce5a4ac2235c69e3192d98d47fe01b4462"
 github "lorentey/GlueKit" "360109b947293d03bf6b1ba0df46314eeee3d940"
 github "lorentey/SipHash" "4aeb517b8c7f6773d21bb6441533d0e69666e93f"
