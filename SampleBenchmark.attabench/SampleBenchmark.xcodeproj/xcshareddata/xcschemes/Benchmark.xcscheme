@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB1BDEA51F3FC409007ADB5D"
-               BuildableName = "Benchmark"
+               BlueprintIdentifier = "BB6CD68B1F49DB4C0091697D"
+               BuildableName = "Benchmark.app"
                BlueprintName = "Benchmark"
                ReferencedContainer = "container:SampleBenchmark.xcodeproj">
             </BuildableReference>
@@ -29,12 +29,32 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BB6CD69C1F49DB4C0091697D"
+               BuildableName = "BenchmarkTests.xctest"
+               BlueprintName = "BenchmarkTests"
+               ReferencedContainer = "container:SampleBenchmark.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BB6CD6A71F49DB4C0091697D"
+               BuildableName = "BenchmarkUITests.xctest"
+               BlueprintName = "BenchmarkUITests"
+               ReferencedContainer = "container:SampleBenchmark.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB1BDEA51F3FC409007ADB5D"
-            BuildableName = "Benchmark"
+            BlueprintIdentifier = "BB6CD68B1F49DB4C0091697D"
+            BuildableName = "Benchmark.app"
             BlueprintName = "Benchmark"
             ReferencedContainer = "container:SampleBenchmark.xcodeproj">
          </BuildableReference>
@@ -57,12 +77,18 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB1BDEA51F3FC409007ADB5D"
-            BuildableName = "Benchmark"
+            BlueprintIdentifier = "BB6CD68B1F49DB4C0091697D"
+            BuildableName = "Benchmark.app"
             BlueprintName = "Benchmark"
             ReferencedContainer = "container:SampleBenchmark.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "help"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -76,8 +102,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB1BDEA51F3FC409007ADB5D"
-            BuildableName = "Benchmark"
+            BlueprintIdentifier = "BB6CD68B1F49DB4C0091697D"
+            BuildableName = "Benchmark.app"
             BlueprintName = "Benchmark"
             ReferencedContainer = "container:SampleBenchmark.xcodeproj">
          </BuildableReference>

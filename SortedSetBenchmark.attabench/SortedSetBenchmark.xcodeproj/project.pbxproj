@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		BB1BDEAA1F3FC409007ADB5D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BDEA91F3FC409007ADB5D /* main.swift */; };
+		BB6CD67E1F49D6C80091697D /* Benchmarking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6CD67D1F49D6C70091697D /* Benchmarking.framework */; };
+		BB6CD6861F49D7B70091697D /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6CD6841F49D7B70091697D /* BigInt.framework */; };
+		BB6CD6871F49D7B70091697D /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6CD6851F49D7B70091697D /* SipHash.framework */; };
 		BB7BC5711F3FC483004484EF /* RedBlackTree2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC55C1F3FC481004484EF /* RedBlackTree2.swift */; };
 		BB7BC5721F3FC483004484EF /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC55D1F3FC481004484EF /* RedBlackTree.swift */; };
 		BB7BC5731F3FC483004484EF /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC55E1F3FC481004484EF /* BinaryTree.swift */; };
@@ -19,7 +22,6 @@
 		BB7BC57B1F3FC483004484EF /* IntBTree3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC5661F3FC482004484EF /* IntBTree3.swift */; };
 		BB7BC57C1F3FC483004484EF /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC5671F3FC482004484EF /* OrderedSet.swift */; };
 		BB7BC57F1F3FC483004484EF /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC56A1F3FC482004484EF /* SortedArray.swift */; };
-		BB7BC5871F3FC624004484EF /* BenchmarkingTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7BC5861F3FC624004484EF /* BenchmarkingTools.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +40,9 @@
 		BB1BDEA61F3FC409007ADB5D /* Benchmark */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Benchmark; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB1BDEA91F3FC409007ADB5D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BB4F15491F3FC8E1003C05C3 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		BB6CD67D1F49D6C70091697D /* Benchmarking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Benchmarking.framework; path = "../../../Library/Developer/Xcode/DerivedData/Attabench-eevvdypphqqzvmdyjjrvtcchxnjf/Build/Products/Debug/Benchmarking.framework"; sourceTree = "<group>"; };
+		BB6CD6841F49D7B70091697D /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = ../Carthage/Build/Mac/BigInt.framework; sourceTree = "<group>"; };
+		BB6CD6851F49D7B70091697D /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = ../Carthage/Build/Mac/SipHash.framework; sourceTree = "<group>"; };
 		BB7BC55C1F3FC481004484EF /* RedBlackTree2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree2.swift; sourceTree = "<group>"; };
 		BB7BC55D1F3FC481004484EF /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		BB7BC55E1F3FC481004484EF /* BinaryTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryTree.swift; sourceTree = "<group>"; };
@@ -49,7 +54,6 @@
 		BB7BC5661F3FC482004484EF /* IntBTree3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntBTree3.swift; sourceTree = "<group>"; };
 		BB7BC5671F3FC482004484EF /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		BB7BC56A1F3FC482004484EF /* SortedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedArray.swift; sourceTree = "<group>"; };
-		BB7BC5861F3FC624004484EF /* BenchmarkingTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BenchmarkingTools.framework; path = ../build/WholeModule/BenchmarkingTools.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +61,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB7BC5871F3FC624004484EF /* BenchmarkingTools.framework in Frameworks */,
+				BB6CD6861F49D7B70091697D /* BigInt.framework in Frameworks */,
+				BB6CD6871F49D7B70091697D /* SipHash.framework in Frameworks */,
+				BB6CD67E1F49D6C80091697D /* Benchmarking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +110,9 @@
 		BB7BC5851F3FC624004484EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BB7BC5861F3FC624004484EF /* BenchmarkingTools.framework */,
+				BB6CD6841F49D7B70091697D /* BigInt.framework */,
+				BB6CD6851F49D7B70091697D /* SipHash.framework */,
+				BB6CD67D1F49D6C70091697D /* Benchmarking.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
