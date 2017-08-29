@@ -10,6 +10,27 @@ protocol OutputProtocol {
     func finish(task: String, size: Int, time: TimeInterval) throws
 }
 
+extension TimeInterval {
+    var humanReadableString: String {
+        let sign = self.sign == .minus ? "-" : ""
+
+        var value = self.magnitude
+        if value == 0 { return "\(sign)0s" }
+        if value.isInfinite { return "\(sign)infinity" }
+
+        let units = ["s", "ms", "µs", "ns", "ps", "fs", "as", "zs", "ys"]
+        var scale = 0
+        while value + 0.0005 < 1 {
+            value *= 1000
+            scale += 1
+        }
+        guard scale < units.count else {
+            return String(format: "%.3gs", self)
+        }
+        return String(format: "%@%.3g%@", sign, value, units[scale])
+    }
+}
+
 internal struct OutputFile {
     let fileHandle: FileHandle
     
@@ -48,7 +69,7 @@ internal struct OutputFile {
 internal struct PrettyOutput: OutputProtocol {
     private let output: OutputFile
     private let isatty: Bool
-    
+
     enum TerminalEffect: String {
         case none         = "\u{1b}[0m"
         
@@ -103,20 +124,23 @@ internal struct PrettyOutput: OutputProtocol {
     private func t(_ value: Any) -> String { return highlight(value, .brightGreen) }
     private func s(_ value: Any) -> String { return highlight(value, .brightYellow) }
     private func dim(_ value: Any) -> String { return highlight(value, .white) }
+    private func i(_ value: TimeInterval) -> String { return value.humanReadableString }
     
     func begin(task: String, size: Int) throws {
         try output.write("\(dim("Measuring")) \(t(task)) \(dim("for size")) \(s(size))\(dim("..."))")
     }
     func progress(task: String, size: Int, time: TimeInterval?) throws {
         if let time = time {
-            try output.write(" \(highlight(time, .gray))")
+            if time > 0.1 {
+                try output.write(" \(highlight(i(time), .gray))")
+            }
         }
         else {
-            try output.write(" .")
+            try output.write(".")
         }
     }
     func finish(task: String, size: Int, time: TimeInterval) throws {
-        try output.write(" \(highlight("min:", .red)) \(highlight(time, .brightRed))\n")
+        try output.write(" \(highlight("min:", .red)) \(highlight(i(time), .brightRed))\n")
     }
 }
 

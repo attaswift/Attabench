@@ -15,7 +15,7 @@
 		BB4F15741F409882003C05C3 /* BenchmarkRunner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB4F15801F409D36003C05C3 /* Complain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4F157F1F409D36003C05C3 /* Complain.swift */; };
 		BB6CD6781F49CE480091697D /* Output.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6CD6771F49CE480091697D /* Output.swift */; };
-		BB6CD67A1F49CED00091697D /* BenchmarkOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6CD6791F49CED00091697D /* BenchmarkOptions.swift */; };
+		BB6CD67A1F49CED00091697D /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6CD6791F49CED00091697D /* Run.swift */; };
 		BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AAC61E3125D000BFE22D /* AppDelegate.swift */; };
 		BB83AAC91E3125D000BFE22D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB83AAC81E3125D000BFE22D /* Assets.xcassets */; };
 		BB83AACC1E3125D000BFE22D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB83AACA1E3125D000BFE22D /* MainMenu.xib */; };
@@ -45,7 +45,7 @@
 		BBF83F961F546800006F61C5 /* TaskResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0D1E32A35500505773 /* TaskResults.swift */; };
 		BBF83F971F546806006F61C5 /* TimeSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CA1F3F86EB00014740 /* TimeSample.swift */; };
 		BBF83F981F546821006F61C5 /* Harness.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0B1E329E6F00505773 /* Harness.swift */; };
-		BBF83F9A1F546899006F61C5 /* BenchmarkTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF83F991F546899006F61C5 /* BenchmarkTimer.swift */; };
+		BBF83F9A1F546899006F61C5 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF83F991F546899006F61C5 /* Timer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,7 +124,7 @@
 		BB4F156F1F409882003C05C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB4F157F1F409D36003C05C3 /* Complain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complain.swift; sourceTree = "<group>"; };
 		BB6CD6771F49CE480091697D /* Output.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Output.swift; sourceTree = "<group>"; };
-		BB6CD6791F49CED00091697D /* BenchmarkOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkOptions.swift; sourceTree = "<group>"; };
+		BB6CD6791F49CED00091697D /* Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		BB83AAC41E3125CF00BFE22D /* Benchmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Benchmark.app; path = Attabench.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB83AAC61E3125D000BFE22D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BB83AAC81E3125D000BFE22D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 		BBE4CA551F3DDD4B0062A281 /* BigInt.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BigInt.framework.dSYM; path = Carthage/Build/Mac/BigInt.framework.dSYM; sourceTree = "<group>"; };
 		BBF83F911F533ADD006F61C5 /* OptionParser.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = OptionParser.framework.dSYM; path = Carthage/Build/Mac/OptionParser.framework.dSYM; sourceTree = "<group>"; };
 		BBF83F921F533AE7006F61C5 /* OptionParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OptionParser.framework; path = Carthage/Build/Mac/OptionParser.framework; sourceTree = "<group>"; };
-		BBF83F991F546899006F61C5 /* BenchmarkTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkTimer.swift; sourceTree = "<group>"; };
+		BBF83F991F546899006F61C5 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,8 +275,8 @@
 				BB6CD6771F49CE480091697D /* Output.swift */,
 				BBE4CA3D1F3CDCC40062A281 /* InputGenerator.swift */,
 				BB8E0DFE1E32384500505773 /* Benchmark.swift */,
-				BB6CD6791F49CED00091697D /* BenchmarkOptions.swift */,
-				BBF83F991F546899006F61C5 /* BenchmarkTimer.swift */,
+				BB6CD6791F49CED00091697D /* Run.swift */,
+				BBF83F991F546899006F61C5 /* Timer.swift */,
 				BB8E0DD41E3237D900505773 /* Info.plist */,
 			);
 			path = Benchmarking;
@@ -518,9 +518,9 @@
 				BB6CD6781F49CE480091697D /* Output.swift in Sources */,
 				BBE4CA3C1F3CDC450062A281 /* Noop.swift in Sources */,
 				BBE4CA3B1F3CDC400062A281 /* Shuffle.swift in Sources */,
-				BBF83F9A1F546899006F61C5 /* BenchmarkTimer.swift in Sources */,
+				BBF83F9A1F546899006F61C5 /* Timer.swift in Sources */,
 				BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */,
-				BB6CD67A1F49CED00091697D /* BenchmarkOptions.swift in Sources */,
+				BB6CD67A1F49CED00091697D /* Run.swift in Sources */,
 				BBE4CA3E1F3CDCC40062A281 /* InputGenerator.swift in Sources */,
 				BB4F15801F409D36003C05C3 /* Complain.swift in Sources */,
 			);
