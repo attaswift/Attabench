@@ -126,6 +126,27 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         }
     }
 
+    @IBOutlet weak var runButton: NSButton?
+    @IBOutlet weak var minimumSizeButton: NSPopUpButton?
+    @IBOutlet weak var maximumSizeButton: NSPopUpButton?
+    @IBOutlet weak var rootSplitView: NSSplitView?
+
+    @IBOutlet weak var leftPane: NSVisualEffectView?
+    @IBOutlet weak var leftVerticalSplitView: NSSplitView?
+    @IBOutlet weak var leftBar: ColoredView?
+    @IBOutlet weak var showRunOptionsButton: NSButton?
+    @IBOutlet weak var runOptionsPane: ColoredView?
+    @IBOutlet weak var tasksTableView: NSTableView?
+
+    @IBOutlet weak var middleSplitView: NSSplitView?
+    @IBOutlet weak var chartView: ChartView?
+    @IBOutlet weak var middleBar: ColoredView?
+    @IBOutlet weak var showLeftPaneButton: NSButton?
+    @IBOutlet weak var showConsoleButton: NSButton?
+    @IBOutlet weak var statusLabel: StatusLabel?
+    @IBOutlet weak var consolePane: NSView?
+    @IBOutlet weak var consoleTextView: NSTextView?
+
     var tasks: ArrayVariable<TaskModel> = []
     lazy var checkedTasks = self.tasks.filter { $0.checked }
     var minimumSizeScale: IntVariable = 0
@@ -151,14 +172,6 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     lazy var selectedSizes = minimumSizeScale.combined(maximumSizeScale, sizeSubdivisions) {
         AttabenchDocument.sizes(from: $0, through: $1, subdivisions: $2)
     }
-
-    @IBOutlet weak var tasksTableView: NSTableView?
-    @IBOutlet weak var consoleTextView: NSTextView?
-    @IBOutlet weak var chartView: ChartView?
-    @IBOutlet weak var runButton: NSButton?
-    @IBOutlet weak var minimumSizeButton: NSPopUpButton?
-    @IBOutlet weak var maximumSizeButton: NSPopUpButton?
-    @IBOutlet weak var statusLabel: StatusLabel?
 
     var tasksTableViewController: TasksTableViewController?
 
@@ -603,6 +616,49 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
                                          tasks: tasks,
                                          options: options)
     }
-
 }
 
+extension AttabenchDocument: NSSplitViewDelegate {
+    @IBAction func shoHideLeftPane(_ sender: Any) {
+        guard let pane = self.leftPane else { return }
+        pane.isHidden = !pane.isHidden
+    }
+
+    @IBAction func showHideRunOptions(_ sender: NSButton) {
+        guard let pane = self.runOptionsPane else { return }
+        pane.isHidden = !pane.isHidden
+    }
+    @IBAction func showHideConsole(_ sender: NSButton) {
+        guard let pane = self.consolePane else { return }
+        pane.isHidden = !pane.isHidden
+    }
+
+    func splitView(_ splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
+        if subview === self.leftPane { return true }
+        if subview === self.runOptionsPane { return true }
+        if subview === self.consolePane { return true }
+        return false
+    }
+
+    func splitViewDidResizeSubviews(_ notification: Notification) {
+        guard let splitView = notification.object as? NSSplitView else { return }
+        if splitView === rootSplitView {
+            let state: NSControl.StateValue = splitView.isSubviewCollapsed(self.leftPane!) ? .off : .on
+            if showLeftPaneButton!.state != state {
+                showLeftPaneButton!.state = state
+            }
+        }
+        else if splitView === leftVerticalSplitView {
+            let state: NSControl.StateValue = splitView.isSubviewCollapsed(self.runOptionsPane!) ? .off : .on
+            if showRunOptionsButton!.state != state {
+                showRunOptionsButton!.state = state
+            }
+        }
+        else if splitView === middleSplitView {
+            let state: NSControl.StateValue = splitView.isSubviewCollapsed(self.consolePane!) ? .off : .on
+            if showConsoleButton!.state != state {
+                showConsoleButton!.state = state
+            }
+        }
+    }
+}
