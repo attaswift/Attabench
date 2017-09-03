@@ -1,15 +1,12 @@
-//
-//  ColoredView.swift
-//  Attabench
-//
-//  Created by Károly Lőrentey on 2017-01-23.
-//  Copyright © 2017 Károly Lőrentey.
-//
+// Copyright © 2017 Károly Lőrentey.
+// This file is part of Attabench: https://github.com/lorentey/Attabench
+// For licensing information, see the file LICENSE.md in the Git repository above.
 
 import Cocoa
 
 @IBDesignable
 class ColoredView: NSView {
+
 
     @IBInspectable
     var backgroundColor: NSColor = .clear {

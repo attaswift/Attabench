@@ -31,12 +31,15 @@ public struct Time: CustomStringConvertible, Comparable, Codable {
     }
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        self.picoseconds = try container.decode(BigInt.self)
+        guard let picoseconds = BigInt(try container.decode(String.self), radix: 10) else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid big integer value")
+        }
+        self.picoseconds = picoseconds
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(self.picoseconds)
+        try container.encode(String(self.picoseconds, radix: 10))
     }
 
     public var seconds: TimeInterval {
@@ -119,12 +122,15 @@ public struct TimeSquared: Comparable, Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        self.value = try container.decode(BigInt.self)
+        guard let value = BigInt(try container.decode(String.self), radix: 10) else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid big integer value")
+        }
+        self.value = value
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(self.value)
+        try container.encode(String(self.value, radix: 10))
     }
 
     public func squareRoot() -> Time {

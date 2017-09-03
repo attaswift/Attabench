@@ -4,19 +4,12 @@
 
 import Foundation
 import OptionParser
+import BenchmarkIPC
 
-enum OutputFormat: String, OptionValue {
-    case pretty
-    case json
-}
+extension BenchmarkIPC.OutputFormat: OptionValue {}
 
-struct RunOptions {
-    var tasks: [String] = []
-    var sizes: [Int] = []
-    var outputFormat: OutputFormat = .pretty
-    var iterations: Int = 3
-    var minDuration: Double = 0
-    var maxDuration: Double = .infinity
+struct AttabenchOptions {
+    var reportFile: String = ""
 }
 
 extension Benchmark {
@@ -29,8 +22,8 @@ extension Benchmark {
     func run(tasks: [BenchmarkTask<Input>],
              sizes: [Int],
              output: OutputProtocol,
-             minDuration: TimeInterval,
-             maxDuration: TimeInterval,
+             minDuration: TimeInterval?,
+             maxDuration: TimeInterval?,
              iterations: Int) throws {
         var sizes = sizes
         while !sizes.isEmpty {
@@ -49,8 +42,8 @@ extension Benchmark {
                         try output.progress(task: task.title, size: size, time: elapsed)
                         duration += elapsed
                         iteration += 1
-                    } while (duration < maxDuration
-                        && (iteration < iterations || duration < minDuration))
+                    } while (duration < maxDuration ?? .infinity
+                        && (iteration < iterations || duration < minDuration ?? 0))
                     try output.finish(task: task.title, size: size, time: minimum!)
                     found = true
                 }
@@ -61,7 +54,7 @@ extension Benchmark {
         }
     }
 
-    func run(_ options: RunOptions) throws {
+    func run(_ options: BenchmarkIPC.RunOptions, output: OutputProtocol? = nil) throws {
         var tasks: [BenchmarkTask<Input>] = try options.tasks.map { title in
             guard let task = self.tasks[title] else {
                 throw OptionError("Unknown task '\(title)'")
@@ -82,19 +75,39 @@ extension Benchmark {
             throw OptionError("Invalid iteration count")
         }
 
-        let output: OutputProtocol
-        switch options.outputFormat {
-        case .pretty:
-            output = PrettyOutput(to: OutputFile(.standardOutput))
-        case .json:
-            output = JSONOutput(to: OutputFile(.standardOutput))
-        }
+        let output = output ?? {
+            switch options.outputFormat {
+            case .pretty:
+                return PrettyOutput(to: OutputFile(.standardOutput))
+            case .json:
+                return JSONOutput(to: OutputFile(.standardOutput))
+            }
+        }()
         try self.run(tasks: tasks,
                  sizes: sizes,
                  output: output,
                  minDuration: options.minDuration,
                  maxDuration: options.maxDuration,
                  iterations: options.iterations)
+    }
+
+    func attarun(reportFile: String) throws {
+        let decoder = JSONDecoder()
+        guard let outputHandle = FileHandle(forWritingAtPath: reportFile) else {
+            throw CocoaError.error(.fileNoSuchFile)
+        }
+        defer { outputHandle.closeFile() }
+        let output = OutputFile(outputHandle)
+        let input = FileHandle.standardInput.readDataToEndOfFile()
+        let command = try decoder.decode(BenchmarkIPC.Command.self, from: input)
+        switch command {
+        case .list:
+            let list = try! JSONEncoder().encode(BenchmarkIPC.Report.list(tasks: self.taskTitles))
+            try output.write(list + [0x0a])
+            sleep(1)
+        case .run(let options):
+            try self.run(options, output: JSONOutput(to: output))
+        }
     }
 
     public func start() {
@@ -108,9 +121,16 @@ extension Benchmark {
                          options: [],
                          parameters: [],
                          action: { _ in self.listTasks() }),
-                .command(for: RunOptions.self,
+                .command(for: AttabenchOptions.self,
+                         name: "attabench", docs: "Run benchmarks inside an Attabench session",
+                         initial: { _ in AttabenchOptions() },
+                         parameters: [
+                            .required(for: \.reportFile, metavariable: "<path>", docs: "Path to the report fifo")],
+                         action: { options in
+                            try self.attarun(reportFile: options.reportFile) }),
+                .command(for: BenchmarkIPC.RunOptions.self,
                          name: "run", docs: "Run selected benchmarks.",
-                         initial: { (_: Void) -> RunOptions in RunOptions() },
+                         initial: { _ in BenchmarkIPC.RunOptions() },
                          options: [
                             .array(of: String.self, for: \.tasks,
                                    name: "tasks", metavariable: "<name>",

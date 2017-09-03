@@ -7,106 +7,142 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */; };
-		BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */; };
-		BB4F15671F409882003C05C3 /* BenchmarkRunner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */; };
-		BB4F156E1F409882003C05C3 /* BenchmarkRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4F156D1F409882003C05C3 /* BenchmarkRunnerTests.swift */; };
-		BB4F15731F409882003C05C3 /* BenchmarkRunner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */; };
-		BB4F15741F409882003C05C3 /* BenchmarkRunner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB40F81B1F5C2AE700C5EB75 /* BenchmarkRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB40F81A1F5C2AE700C5EB75 /* BenchmarkRenderer.swift */; };
+		BB40F81D1F5C2D6600C5EB75 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB40F81C1F5C2D6600C5EB75 /* CoreGraphics.framework */; };
 		BB4F15801F409D36003C05C3 /* Complain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4F157F1F409D36003C05C3 /* Complain.swift */; };
+		BB65B0D91F59B998007EB717 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB888161F3FB0210072E0E2 /* BigInt.framework */; };
+		BB65B0DA1F59B9B5007EB717 /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
+		BB65B0F61F59BBA5007EB717 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */; };
+		BB65B0F81F59BBA5007EB717 /* AttabenchDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */; };
+		BB65B0FB1F59BBA5007EB717 /* AttabenchDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */; };
+		BB65B0FD1F59BBA5007EB717 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB65B0FC1F59BBA5007EB717 /* Assets.xcassets */; };
+		BB65B1001F59BBA5007EB717 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB65B0FE1F59BBA5007EB717 /* MainMenu.xib */; };
 		BB6CD6781F49CE480091697D /* Output.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6CD6771F49CE480091697D /* Output.swift */; };
 		BB6CD67A1F49CED00091697D /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6CD6791F49CED00091697D /* Run.swift */; };
-		BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83AAC61E3125D000BFE22D /* AppDelegate.swift */; };
-		BB83AAC91E3125D000BFE22D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB83AAC81E3125D000BFE22D /* Assets.xcassets */; };
-		BB83AACC1E3125D000BFE22D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB83AACA1E3125D000BFE22D /* MainMenu.xib */; };
-		BB8E0DE61E3237D900505773 /* Benchmarking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DD11E3237D900505773 /* Benchmarking.framework */; };
-		BB8E0DE71E3237D900505773 /* Benchmarking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0DD11E3237D900505773 /* Benchmarking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB805E7C1F5B0F2500D59657 /* StatusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35FF981E359756003ABBF3 /* StatusLabel.swift */; };
+		BB855CBF1F5C00B5008849E2 /* ChartView Dragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CBE1F5C00B4008849E2 /* ChartView Dragging.swift */; };
+		BB855CC11F5C0303008849E2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CC01F5C0303008849E2 /* Extensions.swift */; };
+		BB855CC31F5C0323008849E2 /* Size Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CC21F5C0323008849E2 /* Size Labels.swift */; };
+		BB855CC51F5C0359008849E2 /* Gridline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CC41F5C0359008849E2 /* Gridline.swift */; };
+		BB855CC71F5C0375008849E2 /* ChartScales.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CC61F5C0375008849E2 /* ChartScales.swift */; };
+		BB855CC91F5C039F008849E2 /* LineParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CC81F5C039F008849E2 /* LineParams.swift */; };
+		BB855CCB1F5C03B8008849E2 /* TextParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CCA1F5C03B8008849E2 /* TextParams.swift */; };
+		BB855CCF1F5C041D008849E2 /* BenchmarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CCE1F5C041D008849E2 /* BenchmarkTheme.swift */; };
+		BB855CD01F5C1021008849E2 /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
+		BB855CD21F5C2436008849E2 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CD11F5C2436008849E2 /* ChartView.swift */; };
 		BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DFE1E32384500505773 /* Benchmark.swift */; };
-		BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E091E3262C600505773 /* ChartRendering.swift */; };
-		BB8E0E131E33D64000505773 /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; };
-		BB8E0E141E33D64000505773 /* BTree.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BB8E0E151E33D64000505773 /* GlueKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E111E33D64000505773 /* GlueKit.framework */; };
-		BB8E0E161E33D64000505773 /* GlueKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E111E33D64000505773 /* GlueKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BB8E0E171E33D64000505773 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; };
-		BB8E0E181E33D64000505773 /* SipHash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BB8E0E1E1E33D69100505773 /* BTree.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */; };
-		BB8E0E1F1E33D69100505773 /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */; };
-		BB8E0E201E33D69100505773 /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */; };
-		BB8E0E211E33D6B300505773 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; };
-		BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */; };
-		BBB888171F3FB0300072E0E2 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB888161F3FB0210072E0E2 /* BigInt.framework */; };
+		BBC93D1C1F5C3912002E3777 /* RateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */; };
+		BBC93D1F1F5C49B4002E3777 /* NSImage Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC93D1D1F5C49A1002E3777 /* NSImage Export.swift */; };
+		BBCA26951F576B5500C6FB74 /* CommandLineProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA26941F576B5500C6FB74 /* CommandLineProcess.swift */; };
+		BBCA26971F576B9A00C6FB74 /* Dispatch Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA26961F576B9A00C6FB74 /* Dispatch Extensions.swift */; };
+		BBCA26991F57735300C6FB74 /* FileManager Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA26981F57735300C6FB74 /* FileManager Extensions.swift */; };
+		BBCA26C81F5853FD00C6FB74 /* BenchmarkIPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */; };
+		BBCA26C91F58540400C6FB74 /* BenchmarkIPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */; };
+		BBCA26CA1F5854BB00C6FB74 /* BenchmarkIPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA269F1F5852C000C6FB74 /* BenchmarkIPC.swift */; };
+		BBCA26CC1F585B2300C6FB74 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA26CB1F585B2300C6FB74 /* Tools.swift */; };
+		BBCA26CF1F596F8500C6FB74 /* BenchmarkProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA269A1F57777F00C6FB74 /* BenchmarkProcess.swift */; };
+		BBCA26FB1F59B8A400C6FB74 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889C81F3F85F200014740 /* Time.swift */; };
+		BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CC1F3F887A00014740 /* Timestamp.swift */; };
+		BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CA1F3F86EB00014740 /* TimeSample.swift */; };
+		BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0D1E32A35500505773 /* TaskResults.swift */; };
+		BBCA26FF1F59B8A400C6FB74 /* BenchmarkResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF83F9D1F5576BB006F61C5 /* BenchmarkResults.swift */; };
+		BBCC9F881F5ABE7300AE36DE /* BTree.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */; };
+		BBCC9F891F5ABE7300AE36DE /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */; };
+		BBCC9F8A1F5ABE7700AE36DE /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */; };
+		BBCC9F8B1F5ABE7900AE36DE /* BigInt.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BBABCDD01F3DDDFF009CA8BC /* BigInt.framework.dSYM */; };
+		BBCC9F8C1F5AD00400AE36DE /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB888161F3FB0210072E0E2 /* BigInt.framework */; };
+		BBCC9F8D1F5AD00400AE36DE /* BigInt.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBB888161F3FB0210072E0E2 /* BigInt.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9F8E1F5AD00400AE36DE /* BTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; };
+		BBCC9F8F1F5AD00400AE36DE /* BTree.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E101E33D64000505773 /* BTree.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9F901F5AD00400AE36DE /* GlueKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E111E33D64000505773 /* GlueKit.framework */; };
+		BBCC9F911F5AD00400AE36DE /* GlueKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E111E33D64000505773 /* GlueKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9F921F5AD00400AE36DE /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; };
+		BBCC9F931F5AD00400AE36DE /* SipHash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB8E0E121E33D64000505773 /* SipHash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9F941F5AD00400AE36DE /* BenchmarkRunner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */; };
+		BBCC9F951F5AD00400AE36DE /* BenchmarkRunner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9F981F5AD00400AE36DE /* BenchmarkIPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */; };
+		BBCC9F991F5AD00400AE36DE /* BenchmarkIPC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9F9C1F5AD00400AE36DE /* BenchmarkCharts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */; };
+		BBCC9F9D1F5AD00400AE36DE /* BenchmarkCharts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9FA01F5AD00400AE36DE /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
+		BBCC9FA11F5AD00400AE36DE /* BenchmarkResults.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9FA81F5AD2D000AE36DE /* attaresult.iconset in Resources */ = {isa = PBXBuildFile; fileRef = BBCC9FA71F5AD2B600AE36DE /* attaresult.iconset */; };
+		BBCC9FA91F5AD2D300AE36DE /* attabench.iconset in Resources */ = {isa = PBXBuildFile; fileRef = BBCC9FA61F5AD2B600AE36DE /* attabench.iconset */; };
+		BBCC9FAF1F5ADBEF00AE36DE /* DocumentWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */; };
+		BBCC9FB11F5AE11100AE36DE /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB01F5AE11100AE36DE /* ColoredView.swift */; };
+		BBCC9FB41F5AEEB400AE36DE /* BenchmarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E091E3262C600505773 /* BenchmarkChart.swift */; };
+		BBCC9FB61F5AFA6A00AE36DE /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */; };
+		BBCC9FB81F5AFA9A00AE36DE /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */; };
+		BBCC9FBC1F5B00F400AE36DE /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */; };
 		BBE4CA3B1F3CDC400062A281 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF61E32383900505773 /* Shuffle.swift */; };
 		BBE4CA3C1F3CDC450062A281 /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF31E6473D00006FD5F /* Noop.swift */; };
 		BBE4CA3E1F3CDCC40062A281 /* InputGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4CA3D1F3CDCC40062A281 /* InputGenerator.swift */; };
-		BBE4CA561F3DDD4B0062A281 /* BigInt.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BBE4CA551F3DDD4B0062A281 /* BigInt.framework.dSYM */; };
 		BBF83F931F533AF3006F61C5 /* OptionParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBF83F921F533AE7006F61C5 /* OptionParser.framework */; };
-		BBF83F941F5467BA006F61C5 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889C81F3F85F200014740 /* Time.swift */; };
-		BBF83F951F5467BA006F61C5 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CC1F3F887A00014740 /* Timestamp.swift */; };
-		BBF83F961F546800006F61C5 /* TaskResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0D1E32A35500505773 /* TaskResults.swift */; };
-		BBF83F971F546806006F61C5 /* TimeSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CA1F3F86EB00014740 /* TimeSample.swift */; };
-		BBF83F981F546821006F61C5 /* Harness.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0B1E329E6F00505773 /* Harness.swift */; };
 		BBF83F9A1F546899006F61C5 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF83F991F546899006F61C5 /* Timer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BB4F15681F409882003C05C3 /* PBXContainerItemProxy */ = {
+		BBCC9F961F5AD00400AE36DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = BB4F155D1F409882003C05C3;
 			remoteInfo = BenchmarkRunner;
 		};
-		BB4F156A1F409882003C05C3 /* PBXContainerItemProxy */ = {
+		BBCC9F9A1F5AD00400AE36DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = BB83AAC31E3125CF00BFE22D;
-			remoteInfo = Attabench;
+			remoteGlobalIDString = BBCA26A61F5853C200C6FB74;
+			remoteInfo = BenchmarkIPC;
 		};
-		BB4F15711F409882003C05C3 /* PBXContainerItemProxy */ = {
+		BBCC9F9E1F5AD00400AE36DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = BB4F155D1F409882003C05C3;
-			remoteInfo = BenchmarkRunner;
+			remoteGlobalIDString = BBCA26D91F59B82C00C6FB74;
+			remoteInfo = ChartRenderer;
 		};
-		BB8E0DE41E3237D900505773 /* PBXContainerItemProxy */ = {
+		BBCC9FA21F5AD00400AE36DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB1DA9C51E2E5923000F2B03 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = BB8E0DD01E3237D900505773;
-			remoteInfo = BenchmarkingTools;
+			remoteGlobalIDString = BBCA26EC1F59B88E00C6FB74;
+			remoteInfo = BenchmarkResults;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BB8E0DCA1E316CC800505773 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BB8E0DE71E3237D900505773 /* Benchmarking.framework in Embed Frameworks */,
-				BB8E0E181E33D64000505773 /* SipHash.framework in Embed Frameworks */,
-				BB8E0E161E33D64000505773 /* GlueKit.framework in Embed Frameworks */,
-				BB4F15741F409882003C05C3 /* BenchmarkRunner.framework in Embed Frameworks */,
-				BB8E0E141E33D64000505773 /* BTree.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB8E0E1A1E33D66700505773 /* Copy dSYMs for Dependencies */ = {
+		BBCC9F871F5ABE5600AE36DE /* Copy dSYMs for Dependencies */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				BBE4CA561F3DDD4B0062A281 /* BigInt.framework.dSYM in Copy dSYMs for Dependencies */,
-				BB8E0E1E1E33D69100505773 /* BTree.framework.dSYM in Copy dSYMs for Dependencies */,
-				BB8E0E1F1E33D69100505773 /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */,
-				BB8E0E201E33D69100505773 /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */,
+				BBCC9F881F5ABE7300AE36DE /* BTree.framework.dSYM in Copy dSYMs for Dependencies */,
+				BBCC9F891F5ABE7300AE36DE /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */,
+				BBCC9F8A1F5ABE7700AE36DE /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */,
+				BBCC9F8B1F5ABE7900AE36DE /* BigInt.framework.dSYM in Copy dSYMs for Dependencies */,
 			);
 			name = "Copy dSYMs for Dependencies";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCC9FA41F5AD00400AE36DE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BBCC9F8D1F5AD00400AE36DE /* BigInt.framework in Embed Frameworks */,
+				BBCC9F931F5AD00400AE36DE /* SipHash.framework in Embed Frameworks */,
+				BBCC9F9D1F5AD00400AE36DE /* BenchmarkCharts.framework in Embed Frameworks */,
+				BBCC9FA11F5AD00400AE36DE /* BenchmarkResults.framework in Embed Frameworks */,
+				BBCC9F8F1F5AD00400AE36DE /* BTree.framework in Embed Frameworks */,
+				BBCC9F991F5AD00400AE36DE /* BenchmarkIPC.framework in Embed Frameworks */,
+				BBCC9F951F5AD00400AE36DE /* BenchmarkRunner.framework in Embed Frameworks */,
+				BBCC9F911F5AD00400AE36DE /* GlueKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -115,27 +151,36 @@
 		BB14EDF31E6473D00006FD5F /* Noop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Noop.swift; sourceTree = "<group>"; };
 		BB17BB071E6733C700B05A22 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB17BB091E6733DA00B05A22 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
-		BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusButtonInTitlebar.swift; sourceTree = "<group>"; };
-		BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
+		BB35FF981E359756003ABBF3 /* StatusLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusLabel.swift; sourceTree = "<group>"; };
+		BB40F81A1F5C2AE700C5EB75 /* BenchmarkRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkRenderer.swift; sourceTree = "<group>"; };
+		BB40F81C1F5C2D6600C5EB75 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkRunner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB4F15611F409882003C05C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB4F15661F409882003C05C3 /* BenchmarkRunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BenchmarkRunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB4F156D1F409882003C05C3 /* BenchmarkRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkRunnerTests.swift; sourceTree = "<group>"; };
-		BB4F156F1F409882003C05C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB4F157F1F409D36003C05C3 /* Complain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complain.swift; sourceTree = "<group>"; };
+		BB65B0F31F59BBA4007EB717 /* Attabench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Attabench.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttabenchDocument.swift; sourceTree = "<group>"; };
+		BB65B0FA1F59BBA5007EB717 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AttabenchDocument.xib; sourceTree = "<group>"; };
+		BB65B0FC1F59BBA5007EB717 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB65B0FF1F59BBA5007EB717 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BB65B1011F59BBA5007EB717 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB65B1021F59BBA5007EB717 /* Attabench.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Attabench.entitlements; sourceTree = "<group>"; };
 		BB6CD6771F49CE480091697D /* Output.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Output.swift; sourceTree = "<group>"; };
 		BB6CD6791F49CED00091697D /* Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
-		BB83AAC41E3125CF00BFE22D /* Benchmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Benchmark.app; path = Attabench.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB83AAC61E3125D000BFE22D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		BB83AAC81E3125D000BFE22D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BB83AACB1E3125D000BFE22D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		BB83AACD1E3125D000BFE22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB855CBE1F5C00B4008849E2 /* ChartView Dragging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChartView Dragging.swift"; sourceTree = "<group>"; };
+		BB855CC01F5C0303008849E2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BB855CC21F5C0323008849E2 /* Size Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Size Labels.swift"; sourceTree = "<group>"; };
+		BB855CC41F5C0359008849E2 /* Gridline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gridline.swift; sourceTree = "<group>"; };
+		BB855CC61F5C0375008849E2 /* ChartScales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartScales.swift; sourceTree = "<group>"; };
+		BB855CC81F5C039F008849E2 /* LineParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineParams.swift; sourceTree = "<group>"; };
+		BB855CCA1F5C03B8008849E2 /* TextParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextParams.swift; sourceTree = "<group>"; };
+		BB855CCE1F5C041D008849E2 /* BenchmarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkTheme.swift; sourceTree = "<group>"; };
+		BB855CD11F5C2436008849E2 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		BB8E0DD11E3237D900505773 /* Benchmarking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Benchmarking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8E0DD41E3237D900505773 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB8E0DF61E32383900505773 /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
 		BB8E0DFE1E32384500505773 /* Benchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Benchmark.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		BB8E0E091E3262C600505773 /* ChartRendering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ChartRendering.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		BB8E0E0B1E329E6F00505773 /* Harness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Harness.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		BB8E0E091E3262C600505773 /* BenchmarkChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BenchmarkChart.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BB8E0E0D1E32A35500505773 /* TaskResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskResults.swift; sourceTree = "<group>"; };
 		BB8E0E0F1E33D43400505773 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		BB8E0E101E33D64000505773 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/Mac/BTree.framework; sourceTree = "<group>"; };
@@ -148,15 +193,35 @@
 		BB9889CA1F3F86EB00014740 /* TimeSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSample.swift; sourceTree = "<group>"; };
 		BB9889CC1F3F887A00014740 /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
-		BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableImageView.swift; sourceTree = "<group>"; };
 		BBABCDD01F3DDDFF009CA8BC /* BigInt.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BigInt.framework.dSYM; path = Carthage/Build/Mac/BigInt.framework.dSYM; sourceTree = "<group>"; };
 		BBB888161F3FB0210072E0E2 /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = Carthage/Build/Mac/BigInt.framework; sourceTree = "<group>"; };
 		BBB8881A1F3FBE160072E0E2 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateLimiter.swift; sourceTree = "<group>"; };
+		BBC93D1D1F5C49A1002E3777 /* NSImage Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage Export.swift"; sourceTree = "<group>"; };
+		BBCA26941F576B5500C6FB74 /* CommandLineProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLineProcess.swift; sourceTree = "<group>"; };
+		BBCA26961F576B9A00C6FB74 /* Dispatch Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dispatch Extensions.swift"; sourceTree = "<group>"; };
+		BBCA26981F57735300C6FB74 /* FileManager Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager Extensions.swift"; sourceTree = "<group>"; };
+		BBCA269A1F57777F00C6FB74 /* BenchmarkProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkProcess.swift; sourceTree = "<group>"; };
+		BBCA269F1F5852C000C6FB74 /* BenchmarkIPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkIPC.swift; sourceTree = "<group>"; };
+		BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkIPC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBCA26AA1F5853C200C6FB74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBCA26CB1F585B2300C6FB74 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkCharts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBCA26DD1F59B82C00C6FB74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkResults.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBCA26F01F59B88E00C6FB74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBCC9FA61F5AD2B600AE36DE /* attabench.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = attabench.iconset; sourceTree = "<group>"; };
+		BBCC9FA71F5AD2B600AE36DE /* attaresult.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = attaresult.iconset; sourceTree = "<group>"; };
+		BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentWindowController.swift; sourceTree = "<group>"; };
+		BBCC9FB01F5AE11100AE36DE /* ColoredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
+		BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
+		BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
+		BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
 		BBE4CA3D1F3CDCC40062A281 /* InputGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenerator.swift; sourceTree = "<group>"; };
-		BBE4CA551F3DDD4B0062A281 /* BigInt.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BigInt.framework.dSYM; path = Carthage/Build/Mac/BigInt.framework.dSYM; sourceTree = "<group>"; };
 		BBF83F911F533ADD006F61C5 /* OptionParser.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = OptionParser.framework.dSYM; path = Carthage/Build/Mac/OptionParser.framework.dSYM; sourceTree = "<group>"; };
 		BBF83F921F533AE7006F61C5 /* OptionParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OptionParser.framework; path = Carthage/Build/Mac/OptionParser.framework; sourceTree = "<group>"; };
 		BBF83F991F546899006F61C5 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		BBF83F9D1F5576BB006F61C5 /* BenchmarkResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkResults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,27 +229,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB65B0DA1F59B9B5007EB717 /* BenchmarkResults.framework in Frameworks */,
+				BBCA26C91F58540400C6FB74 /* BenchmarkIPC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BB4F15631F409882003C05C3 /* Frameworks */ = {
+		BB65B0F01F59BBA4007EB717 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB4F15671F409882003C05C3 /* BenchmarkRunner.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB83AAC11E3125CF00BFE22D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BBB888171F3FB0300072E0E2 /* BigInt.framework in Frameworks */,
-				BB8E0DE61E3237D900505773 /* Benchmarking.framework in Frameworks */,
-				BB8E0E171E33D64000505773 /* SipHash.framework in Frameworks */,
-				BB8E0E151E33D64000505773 /* GlueKit.framework in Frameworks */,
-				BB4F15731F409882003C05C3 /* BenchmarkRunner.framework in Frameworks */,
-				BB8E0E131E33D64000505773 /* BTree.framework in Frameworks */,
+				BBCC9F8C1F5AD00400AE36DE /* BigInt.framework in Frameworks */,
+				BBCC9F921F5AD00400AE36DE /* SipHash.framework in Frameworks */,
+				BBCC9F9C1F5AD00400AE36DE /* BenchmarkCharts.framework in Frameworks */,
+				BBCC9FA01F5AD00400AE36DE /* BenchmarkResults.framework in Frameworks */,
+				BBCC9F8E1F5AD00400AE36DE /* BTree.framework in Frameworks */,
+				BBCC9F981F5AD00400AE36DE /* BenchmarkIPC.framework in Frameworks */,
+				BBCC9F941F5AD00400AE36DE /* BenchmarkRunner.framework in Frameworks */,
+				BBCC9F901F5AD00400AE36DE /* GlueKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,8 +253,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBCA26C81F5853FD00C6FB74 /* BenchmarkIPC.framework in Frameworks */,
 				BBF83F931F533AF3006F61C5 /* OptionParser.framework in Frameworks */,
-				BB8E0E211E33D6B300505773 /* SipHash.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26A31F5853C200C6FB74 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26D61F59B82C00C6FB74 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB40F81D1F5C2D6600C5EB75 /* CoreGraphics.framework in Frameworks */,
+				BB855CD01F5C1021008849E2 /* BenchmarkResults.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26E91F59B88E00C6FB74 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB65B0D91F59B998007EB717 /* BigInt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,28 +288,32 @@
 		BB1DA9C41E2E5923000F2B03 = {
 			isa = PBXGroup;
 			children = (
-				BBE4CA551F3DDD4B0062A281 /* BigInt.framework.dSYM */,
 				BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */,
 				BB17BB071E6733C700B05A22 /* README.md */,
 				BB17BB091E6733DA00B05A22 /* .travis.yml */,
 				BB8E0E0F1E33D43400505773 /* Cartfile */,
 				BBB8881A1F3FBE160072E0E2 /* Package.swift */,
-				BB83AAC51E3125D000BFE22D /* Attabench */,
+				BB65B0F41F59BBA5007EB717 /* Attabench */,
+				BBCA26A11F5852C700C6FB74 /* BenchmarkIPC */,
 				BB8E0DD21E3237D900505773 /* Benchmarking */,
+				BBCA26EE1F59B88E00C6FB74 /* BenchmarkResults */,
 				BB4F155F1F409882003C05C3 /* BenchmarkRunner */,
-				BB4F156C1F409882003C05C3 /* BenchmarkRunnerTests */,
+				BBCA26DB1F59B82C00C6FB74 /* BenchmarkCharts */,
 				BB8E0E191E33D64A00505773 /* Dependencies */,
 				BB1DA9CE1E2E5923000F2B03 /* Products */,
+				BBCA268A1F559B3A00C6FB74 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		BB1DA9CE1E2E5923000F2B03 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BB83AAC41E3125CF00BFE22D /* Benchmark.app */,
 				BB8E0DD11E3237D900505773 /* Benchmarking.framework */,
 				BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */,
-				BB4F15661F409882003C05C3 /* BenchmarkRunnerTests.xctest */,
+				BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */,
+				BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */,
+				BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */,
+				BB65B0F31F59BBA4007EB717 /* Attabench.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -232,36 +321,37 @@
 		BB4F155F1F409882003C05C3 /* BenchmarkRunner */ = {
 			isa = PBXGroup;
 			children = (
-				BB8E0E0B1E329E6F00505773 /* Harness.swift */,
-				BB9889C81F3F85F200014740 /* Time.swift */,
-				BB9889CC1F3F887A00014740 /* Timestamp.swift */,
-				BB9889CA1F3F86EB00014740 /* TimeSample.swift */,
-				BB8E0E0D1E32A35500505773 /* TaskResults.swift */,
+				BBCA269A1F57777F00C6FB74 /* BenchmarkProcess.swift */,
+				BBCA26981F57735300C6FB74 /* FileManager Extensions.swift */,
+				BBCA26961F576B9A00C6FB74 /* Dispatch Extensions.swift */,
+				BBCA26941F576B5500C6FB74 /* CommandLineProcess.swift */,
+				BBCA26CB1F585B2300C6FB74 /* Tools.swift */,
 				BB4F15611F409882003C05C3 /* Info.plist */,
 			);
 			path = BenchmarkRunner;
 			sourceTree = "<group>";
 		};
-		BB4F156C1F409882003C05C3 /* BenchmarkRunnerTests */ = {
+		BB65B0F41F59BBA5007EB717 /* Attabench */ = {
 			isa = PBXGroup;
 			children = (
-				BB4F156D1F409882003C05C3 /* BenchmarkRunnerTests.swift */,
-				BB4F156F1F409882003C05C3 /* Info.plist */,
-			);
-			path = BenchmarkRunnerTests;
-			sourceTree = "<group>";
-		};
-		BB83AAC51E3125D000BFE22D /* Attabench */ = {
-			isa = PBXGroup;
-			children = (
-				BB83AAC61E3125D000BFE22D /* AppDelegate.swift */,
-				BB8E0E091E3262C600505773 /* ChartRendering.swift */,
-				BB9CEB761E33F4E70007C8C9 /* DraggableImageView.swift */,
-				BB35FF981E359756003ABBF3 /* StatusButtonInTitlebar.swift */,
-				BB35FF9A1E363B90003ABBF3 /* ColoredView.swift */,
-				BB83AAC81E3125D000BFE22D /* Assets.xcassets */,
-				BB83AACA1E3125D000BFE22D /* MainMenu.xib */,
-				BB83AACD1E3125D000BFE22D /* Info.plist */,
+				BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */,
+				BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */,
+				BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */,
+				BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */,
+				BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */,
+				BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */,
+				BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */,
+				BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */,
+				BB855CD11F5C2436008849E2 /* ChartView.swift */,
+				BB855CBE1F5C00B4008849E2 /* ChartView Dragging.swift */,
+				BBCC9FB01F5AE11100AE36DE /* ColoredView.swift */,
+				BB35FF981E359756003ABBF3 /* StatusLabel.swift */,
+				BB65B0FC1F59BBA5007EB717 /* Assets.xcassets */,
+				BB65B0FE1F59BBA5007EB717 /* MainMenu.xib */,
+				BB65B1011F59BBA5007EB717 /* Info.plist */,
+				BBCC9FA71F5AD2B600AE36DE /* attaresult.iconset */,
+				BBCC9FA61F5AD2B600AE36DE /* attabench.iconset */,
+				BB65B1021F59BBA5007EB717 /* Attabench.entitlements */,
 			);
 			path = Attabench;
 			sourceTree = "<group>";
@@ -299,6 +389,54 @@
 			name = Dependencies;
 			sourceTree = "<group>";
 		};
+		BBCA268A1F559B3A00C6FB74 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB40F81C1F5C2D6600C5EB75 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BBCA26A11F5852C700C6FB74 /* BenchmarkIPC */ = {
+			isa = PBXGroup;
+			children = (
+				BBCA269F1F5852C000C6FB74 /* BenchmarkIPC.swift */,
+				BBCA26AA1F5853C200C6FB74 /* Info.plist */,
+			);
+			path = BenchmarkIPC;
+			sourceTree = "<group>";
+		};
+		BBCA26DB1F59B82C00C6FB74 /* BenchmarkCharts */ = {
+			isa = PBXGroup;
+			children = (
+				BB8E0E091E3262C600505773 /* BenchmarkChart.swift */,
+				BB40F81A1F5C2AE700C5EB75 /* BenchmarkRenderer.swift */,
+				BB855CCE1F5C041D008849E2 /* BenchmarkTheme.swift */,
+				BB855CC21F5C0323008849E2 /* Size Labels.swift */,
+				BB855CC41F5C0359008849E2 /* Gridline.swift */,
+				BB855CC61F5C0375008849E2 /* ChartScales.swift */,
+				BB855CC81F5C039F008849E2 /* LineParams.swift */,
+				BB855CCA1F5C03B8008849E2 /* TextParams.swift */,
+				BB855CC01F5C0303008849E2 /* Extensions.swift */,
+				BBC93D1D1F5C49A1002E3777 /* NSImage Export.swift */,
+				BBCA26DD1F59B82C00C6FB74 /* Info.plist */,
+			);
+			path = BenchmarkCharts;
+			sourceTree = "<group>";
+		};
+		BBCA26EE1F59B88E00C6FB74 /* BenchmarkResults */ = {
+			isa = PBXGroup;
+			children = (
+				BB9889C81F3F85F200014740 /* Time.swift */,
+				BB9889CC1F3F887A00014740 /* Timestamp.swift */,
+				BB9889CA1F3F86EB00014740 /* TimeSample.swift */,
+				BB8E0E0D1E32A35500505773 /* TaskResults.swift */,
+				BBF83F9D1F5576BB006F61C5 /* BenchmarkResults.swift */,
+				BBCA26F01F59B88E00C6FB74 /* Info.plist */,
+			);
+			path = BenchmarkResults;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -310,6 +448,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BB8E0DCE1E3237D900505773 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26A41F5853C200C6FB74 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26D71F59B82C00C6FB74 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26EA1F59B88E00C6FB74 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -337,44 +496,27 @@
 			productReference = BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		BB4F15651F409882003C05C3 /* BenchmarkRunnerTests */ = {
+		BB65B0F21F59BBA4007EB717 /* Attabench */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BB4F157A1F409882003C05C3 /* Build configuration list for PBXNativeTarget "BenchmarkRunnerTests" */;
+			buildConfigurationList = BB65B1031F59BBA5007EB717 /* Build configuration list for PBXNativeTarget "Attabench" */;
 			buildPhases = (
-				BB4F15621F409882003C05C3 /* Sources */,
-				BB4F15631F409882003C05C3 /* Frameworks */,
-				BB4F15641F409882003C05C3 /* Resources */,
+				BB65B0EF1F59BBA4007EB717 /* Sources */,
+				BB65B0F01F59BBA4007EB717 /* Frameworks */,
+				BB65B0F11F59BBA4007EB717 /* Resources */,
+				BBCC9F871F5ABE5600AE36DE /* Copy dSYMs for Dependencies */,
+				BBCC9FA41F5AD00400AE36DE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				BB4F15691F409882003C05C3 /* PBXTargetDependency */,
-				BB4F156B1F409882003C05C3 /* PBXTargetDependency */,
-			);
-			name = BenchmarkRunnerTests;
-			productName = BenchmarkRunnerTests;
-			productReference = BB4F15661F409882003C05C3 /* BenchmarkRunnerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		BB83AAC31E3125CF00BFE22D /* Attabench */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB83AAD21E3125D000BFE22D /* Build configuration list for PBXNativeTarget "Attabench" */;
-			buildPhases = (
-				BB83AAC01E3125CF00BFE22D /* Sources */,
-				BB83AAC11E3125CF00BFE22D /* Frameworks */,
-				BB83AAC21E3125CF00BFE22D /* Resources */,
-				BB8E0DCA1E316CC800505773 /* Embed Frameworks */,
-				BB8E0E1A1E33D66700505773 /* Copy dSYMs for Dependencies */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BB8E0DE51E3237D900505773 /* PBXTargetDependency */,
-				BB4F15721F409882003C05C3 /* PBXTargetDependency */,
+				BBCC9F971F5AD00400AE36DE /* PBXTargetDependency */,
+				BBCC9F9B1F5AD00400AE36DE /* PBXTargetDependency */,
+				BBCC9F9F1F5AD00400AE36DE /* PBXTargetDependency */,
+				BBCC9FA31F5AD00400AE36DE /* PBXTargetDependency */,
 			);
 			name = Attabench;
-			productName = Benchmark;
-			productReference = BB83AAC41E3125CF00BFE22D /* Benchmark.app */;
+			productName = Attabench;
+			productReference = BB65B0F31F59BBA4007EB717 /* Attabench.app */;
 			productType = "com.apple.product-type.application";
 		};
 		BB8E0DD01E3237D900505773 /* Benchmarking */ = {
@@ -395,6 +537,60 @@
 			productReference = BB8E0DD11E3237D900505773 /* Benchmarking.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		BBCA26A61F5853C200C6FB74 /* BenchmarkIPC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBCA26BE1F5853C200C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkIPC" */;
+			buildPhases = (
+				BBCA26A21F5853C200C6FB74 /* Sources */,
+				BBCA26A31F5853C200C6FB74 /* Frameworks */,
+				BBCA26A41F5853C200C6FB74 /* Headers */,
+				BBCA26A51F5853C200C6FB74 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BenchmarkIPC;
+			productName = BenchmarkIPC;
+			productReference = BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BBCA26D91F59B82C00C6FB74 /* BenchmarkCharts */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBCA26E31F59B82C00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkCharts" */;
+			buildPhases = (
+				BBCA26D51F59B82C00C6FB74 /* Sources */,
+				BBCA26D61F59B82C00C6FB74 /* Frameworks */,
+				BBCA26D71F59B82C00C6FB74 /* Headers */,
+				BBCA26D81F59B82C00C6FB74 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BenchmarkCharts;
+			productName = GraphRenderer;
+			productReference = BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BBCA26EC1F59B88E00C6FB74 /* BenchmarkResults */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBCA26F61F59B88E00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkResults" */;
+			buildPhases = (
+				BBCA26E81F59B88E00C6FB74 /* Sources */,
+				BBCA26E91F59B88E00C6FB74 /* Frameworks */,
+				BBCA26EA1F59B88E00C6FB74 /* Headers */,
+				BBCA26EB1F59B88E00C6FB74 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BenchmarkResults;
+			productName = BenchmarkResults;
+			productReference = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -407,19 +603,32 @@
 				TargetAttributes = {
 					BB4F155D1F409882003C05C3 = {
 						CreatedOnToolsVersion = 9.0;
-					};
-					BB4F15651F409882003C05C3 = {
-						CreatedOnToolsVersion = 9.0;
-						TestTargetID = BB83AAC31E3125CF00BFE22D;
-					};
-					BB83AAC31E3125CF00BFE22D = {
-						CreatedOnToolsVersion = 8.2.1;
-						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+					};
+					BB65B0F21F59BBA4007EB717 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
 					};
 					BB8E0DD01E3237D900505773 = {
 						CreatedOnToolsVersion = 8.2.1;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
+					};
+					BBCA26A61F5853C200C6FB74 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+					};
+					BBCA26D91F59B82C00C6FB74 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+					};
+					BBCA26EC1F59B88E00C6FB74 = {
+						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -437,10 +646,12 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BB83AAC31E3125CF00BFE22D /* Attabench */,
+				BB65B0F21F59BBA4007EB717 /* Attabench */,
+				BBCA26A61F5853C200C6FB74 /* BenchmarkIPC */,
 				BB8E0DD01E3237D900505773 /* Benchmarking */,
+				BBCA26EC1F59B88E00C6FB74 /* BenchmarkResults */,
 				BB4F155D1F409882003C05C3 /* BenchmarkRunner */,
-				BB4F15651F409882003C05C3 /* BenchmarkRunnerTests */,
+				BBCA26D91F59B82C00C6FB74 /* BenchmarkCharts */,
 			);
 		};
 /* End PBXProject section */
@@ -453,23 +664,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BB4F15641F409882003C05C3 /* Resources */ = {
+		BB65B0F11F59BBA4007EB717 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB83AAC21E3125CF00BFE22D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB83AAC91E3125D000BFE22D /* Assets.xcassets in Resources */,
-				BB83AACC1E3125D000BFE22D /* MainMenu.xib in Resources */,
+				BB65B0FD1F59BBA5007EB717 /* Assets.xcassets in Resources */,
+				BB65B0FB1F59BBA5007EB717 /* AttabenchDocument.xib in Resources */,
+				BB65B1001F59BBA5007EB717 /* MainMenu.xib in Resources */,
+				BBCC9FA91F5AD2D300AE36DE /* attabench.iconset in Resources */,
+				BBCC9FA81F5AD2D000AE36DE /* attaresult.iconset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BB8E0DCF1E3237D900505773 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26A51F5853C200C6FB74 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26D81F59B82C00C6FB74 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26EB1F59B88E00C6FB74 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -483,31 +711,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBF83F971F546806006F61C5 /* TimeSample.swift in Sources */,
-				BBF83F981F546821006F61C5 /* Harness.swift in Sources */,
-				BBF83F951F5467BA006F61C5 /* Timestamp.swift in Sources */,
-				BBF83F961F546800006F61C5 /* TaskResults.swift in Sources */,
-				BBF83F941F5467BA006F61C5 /* Time.swift in Sources */,
+				BBCA26CC1F585B2300C6FB74 /* Tools.swift in Sources */,
+				BBCA26991F57735300C6FB74 /* FileManager Extensions.swift in Sources */,
+				BBCA26971F576B9A00C6FB74 /* Dispatch Extensions.swift in Sources */,
+				BBCA26951F576B5500C6FB74 /* CommandLineProcess.swift in Sources */,
+				BBCA26CF1F596F8500C6FB74 /* BenchmarkProcess.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BB4F15621F409882003C05C3 /* Sources */ = {
+		BB65B0EF1F59BBA4007EB717 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB4F156E1F409882003C05C3 /* BenchmarkRunnerTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB83AAC01E3125CF00BFE22D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB83AAC71E3125D000BFE22D /* AppDelegate.swift in Sources */,
-				BB35FF991E359756003ABBF3 /* StatusButtonInTitlebar.swift in Sources */,
-				BB9CEB771E33F4E70007C8C9 /* DraggableImageView.swift in Sources */,
-				BB35FF9B1E363B90003ABBF3 /* ColoredView.swift in Sources */,
-				BB8E0E0A1E3262C600505773 /* ChartRendering.swift in Sources */,
+				BB805E7C1F5B0F2500D59657 /* StatusLabel.swift in Sources */,
+				BB855CBF1F5C00B5008849E2 /* ChartView Dragging.swift in Sources */,
+				BBCC9FB61F5AFA6A00AE36DE /* TasksTableViewController.swift in Sources */,
+				BB855CD21F5C2436008849E2 /* ChartView.swift in Sources */,
+				BB65B0F81F59BBA5007EB717 /* AttabenchDocument.swift in Sources */,
+				BBCC9FBC1F5B00F400AE36DE /* TaskCellView.swift in Sources */,
+				BB65B0F61F59BBA5007EB717 /* AppDelegate.swift in Sources */,
+				BBC93D1C1F5C3912002E3777 /* RateLimiter.swift in Sources */,
+				BBCC9FAF1F5ADBEF00AE36DE /* DocumentWindowController.swift in Sources */,
+				BBCC9FB11F5AE11100AE36DE /* ColoredView.swift in Sources */,
+				BBCC9FB81F5AFA9A00AE36DE /* TaskModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,36 +752,81 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BBCA26A21F5853C200C6FB74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBCA26CA1F5854BB00C6FB74 /* BenchmarkIPC.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26D51F59B82C00C6FB74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBCC9FB41F5AEEB400AE36DE /* BenchmarkChart.swift in Sources */,
+				BB855CCF1F5C041D008849E2 /* BenchmarkTheme.swift in Sources */,
+				BB855CC71F5C0375008849E2 /* ChartScales.swift in Sources */,
+				BB40F81B1F5C2AE700C5EB75 /* BenchmarkRenderer.swift in Sources */,
+				BB855CC31F5C0323008849E2 /* Size Labels.swift in Sources */,
+				BBC93D1F1F5C49B4002E3777 /* NSImage Export.swift in Sources */,
+				BB855CC91F5C039F008849E2 /* LineParams.swift in Sources */,
+				BB855CC11F5C0303008849E2 /* Extensions.swift in Sources */,
+				BB855CCB1F5C03B8008849E2 /* TextParams.swift in Sources */,
+				BB855CC51F5C0359008849E2 /* Gridline.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBCA26E81F59B88E00C6FB74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */,
+				BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */,
+				BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */,
+				BBCA26FF1F59B8A400C6FB74 /* BenchmarkResults.swift in Sources */,
+				BBCA26FB1F59B8A400C6FB74 /* Time.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BB4F15691F409882003C05C3 /* PBXTargetDependency */ = {
+		BBCC9F971F5AD00400AE36DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BB4F155D1F409882003C05C3 /* BenchmarkRunner */;
-			targetProxy = BB4F15681F409882003C05C3 /* PBXContainerItemProxy */;
+			targetProxy = BBCC9F961F5AD00400AE36DE /* PBXContainerItemProxy */;
 		};
-		BB4F156B1F409882003C05C3 /* PBXTargetDependency */ = {
+		BBCC9F9B1F5AD00400AE36DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BB83AAC31E3125CF00BFE22D /* Attabench */;
-			targetProxy = BB4F156A1F409882003C05C3 /* PBXContainerItemProxy */;
+			target = BBCA26A61F5853C200C6FB74 /* BenchmarkIPC */;
+			targetProxy = BBCC9F9A1F5AD00400AE36DE /* PBXContainerItemProxy */;
 		};
-		BB4F15721F409882003C05C3 /* PBXTargetDependency */ = {
+		BBCC9F9F1F5AD00400AE36DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BB4F155D1F409882003C05C3 /* BenchmarkRunner */;
-			targetProxy = BB4F15711F409882003C05C3 /* PBXContainerItemProxy */;
+			target = BBCA26D91F59B82C00C6FB74 /* BenchmarkCharts */;
+			targetProxy = BBCC9F9E1F5AD00400AE36DE /* PBXContainerItemProxy */;
 		};
-		BB8E0DE51E3237D900505773 /* PBXTargetDependency */ = {
+		BBCC9FA31F5AD00400AE36DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BB8E0DD01E3237D900505773 /* Benchmarking */;
-			targetProxy = BB8E0DE41E3237D900505773 /* PBXContainerItemProxy */;
+			target = BBCA26EC1F59B88E00C6FB74 /* BenchmarkResults */;
+			targetProxy = BBCC9FA21F5AD00400AE36DE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		BB83AACA1E3125D000BFE22D /* MainMenu.xib */ = {
+		BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BB83AACB1E3125D000BFE22D /* Base */,
+				BB65B0FA1F59BBA5007EB717 /* Base */,
+			);
+			name = AttabenchDocument.xib;
+			sourceTree = "<group>";
+		};
+		BB65B0FE1F59BBA5007EB717 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BB65B0FF1F59BBA5007EB717 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -759,22 +1030,27 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BenchmarkRunner/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkRunner;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -790,7 +1066,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -811,17 +1086,22 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -834,10 +1114,10 @@
 				INFOPLIST_FILE = BenchmarkRunner/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkRunner;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -855,7 +1135,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -876,17 +1155,22 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -899,10 +1183,10 @@
 				INFOPLIST_FILE = BenchmarkRunner/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkRunner;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -920,7 +1204,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -941,17 +1224,22 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -964,10 +1252,10 @@
 				INFOPLIST_FILE = BenchmarkRunner/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkRunner;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -977,33 +1265,39 @@
 			};
 			name = Unchecked;
 		};
-		BB4F157B1F409882003C05C3 /* Debug */ = {
+		BB65B1041F59BBA5007EB717 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BenchmarkRunnerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Attabench/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Attabench.app/Contents/MacOS/Attabench";
 			};
 			name = Debug;
 		};
-		BB4F157C1F409882003C05C3 /* Optimized */ = {
+		BB65B1051F59BBA5007EB717 /* Optimized */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1030,11 +1324,16 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1043,24 +1342,24 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkRunnerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Attabench/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Attabench.app/Contents/MacOS/Attabench";
 			};
 			name = Optimized;
 		};
-		BB4F157D1F409882003C05C3 /* WholeModule */ = {
+		BB65B1061F59BBA5007EB717 /* WholeModule */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1087,11 +1386,16 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1100,24 +1404,24 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkRunnerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Attabench/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Attabench.app/Contents/MacOS/Attabench";
 			};
 			name = WholeModule;
 		};
-		BB4F157E1F409882003C05C3 /* Unchecked */ = {
+		BB65B1071F59BBA5007EB717 /* Unchecked */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1144,11 +1448,16 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1157,97 +1466,21 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkRunnerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Attabench/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.BenchmarkRunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Attabench.app/Contents/MacOS/Attabench";
-			};
-			name = Unchecked;
-		};
-		BB83AACE1E3125D000BFE22D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
-				INFOPLIST_FILE = Attabench/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		BB83AACF1E3125D000BFE22D /* Optimized */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
-				INFOPLIST_FILE = Attabench/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Optimized;
-		};
-		BB83AAD01E3125D000BFE22D /* WholeModule */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
-				INFOPLIST_FILE = Attabench/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = WholeModule;
-		};
-		BB83AAD11E3125D000BFE22D /* Unchecked */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
-				INFOPLIST_FILE = Attabench/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 			};
 			name = Unchecked;
 		};
 		BB8E0DE91E3237D900505773 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1261,7 +1494,7 @@
 				INFOPLIST_FILE = Benchmarking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.Benchmarking;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.Benchmarking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1273,7 +1506,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1288,7 +1520,7 @@
 				INFOPLIST_FILE = Benchmarking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.Benchmarking;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.Benchmarking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1300,7 +1532,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1315,7 +1546,7 @@
 				INFOPLIST_FILE = Benchmarking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.Benchmarking;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.Benchmarking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1327,7 +1558,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1342,9 +1572,713 @@
 				INFOPLIST_FILE = Benchmarking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = hu.lorentey.Attabench.Benchmarking;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.Benchmarking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Unchecked;
+		};
+		BBCA26BF1F5853C200C6FB74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BenchmarkIPC/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkIPC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BBCA26C01F5853C200C6FB74 /* Optimized */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkIPC/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkIPC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Optimized;
+		};
+		BBCA26C11F5853C200C6FB74 /* WholeModule */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkIPC/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkIPC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = WholeModule;
+		};
+		BBCA26C21F5853C200C6FB74 /* Unchecked */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkIPC/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkIPC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Unchecked;
+		};
+		BBCA26E41F59B82C00C6FB74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BenchmarkCharts/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkCharts;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BBCA26E51F59B82C00C6FB74 /* Optimized */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkCharts/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkCharts;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Optimized;
+		};
+		BBCA26E61F59B82C00C6FB74 /* WholeModule */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkCharts/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkCharts;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = WholeModule;
+		};
+		BBCA26E71F59B82C00C6FB74 /* Unchecked */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkCharts/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkCharts;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Unchecked;
+		};
+		BBCA26F71F59B88E00C6FB74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BBCA26F81F59B88E00C6FB74 /* Optimized */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Optimized;
+		};
+		BBCA26F91F59B88E00C6FB74 /* WholeModule */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = WholeModule;
+		};
+		BBCA26FA1F59B88E00C6FB74 /* Unchecked */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1375,24 +2309,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Optimized;
 		};
-		BB4F157A1F409882003C05C3 /* Build configuration list for PBXNativeTarget "BenchmarkRunnerTests" */ = {
+		BB65B1031F59BBA5007EB717 /* Build configuration list for PBXNativeTarget "Attabench" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BB4F157B1F409882003C05C3 /* Debug */,
-				BB4F157C1F409882003C05C3 /* Optimized */,
-				BB4F157D1F409882003C05C3 /* WholeModule */,
-				BB4F157E1F409882003C05C3 /* Unchecked */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Optimized;
-		};
-		BB83AAD21E3125D000BFE22D /* Build configuration list for PBXNativeTarget "Attabench" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB83AACE1E3125D000BFE22D /* Debug */,
-				BB83AACF1E3125D000BFE22D /* Optimized */,
-				BB83AAD01E3125D000BFE22D /* WholeModule */,
-				BB83AAD11E3125D000BFE22D /* Unchecked */,
+				BB65B1041F59BBA5007EB717 /* Debug */,
+				BB65B1051F59BBA5007EB717 /* Optimized */,
+				BB65B1061F59BBA5007EB717 /* WholeModule */,
+				BB65B1071F59BBA5007EB717 /* Unchecked */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Optimized;
@@ -1404,6 +2327,39 @@
 				BB8E0DEA1E3237D900505773 /* Optimized */,
 				BB8E0DEB1E3237D900505773 /* WholeModule */,
 				BB8E0DEC1E3237D900505773 /* Unchecked */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Optimized;
+		};
+		BBCA26BE1F5853C200C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkIPC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBCA26BF1F5853C200C6FB74 /* Debug */,
+				BBCA26C01F5853C200C6FB74 /* Optimized */,
+				BBCA26C11F5853C200C6FB74 /* WholeModule */,
+				BBCA26C21F5853C200C6FB74 /* Unchecked */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Optimized;
+		};
+		BBCA26E31F59B82C00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkCharts" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBCA26E41F59B82C00C6FB74 /* Debug */,
+				BBCA26E51F59B82C00C6FB74 /* Optimized */,
+				BBCA26E61F59B82C00C6FB74 /* WholeModule */,
+				BBCA26E71F59B82C00C6FB74 /* Unchecked */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Optimized;
+		};
+		BBCA26F61F59B88E00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkResults" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBCA26F71F59B88E00C6FB74 /* Debug */,
+				BBCA26F81F59B88E00C6FB74 /* Optimized */,
+				BBCA26F91F59B88E00C6FB74 /* WholeModule */,
+				BBCA26FA1F59B88E00C6FB74 /* Unchecked */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Optimized;

@@ -54,6 +54,7 @@
 		BB7BC5661F3FC482004484EF /* IntBTree3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntBTree3.swift; sourceTree = "<group>"; };
 		BB7BC5671F3FC482004484EF /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		BB7BC56A1F3FC482004484EF /* SortedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedArray.swift; sourceTree = "<group>"; };
+		BB805E7D1F5B226B00D59657 /* run.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				BB4F15491F3FC8E1003C05C3 /* Package.swift */,
+				BB805E7D1F5B226B00D59657 /* run.sh */,
 				BB1BDEA81F3FC409007ADB5D /* Sources */,
 				BB1BDEA71F3FC409007ADB5D /* Products */,
 				BB7BC5851F3FC624004484EF /* Frameworks */,

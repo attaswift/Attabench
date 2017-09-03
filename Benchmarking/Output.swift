@@ -3,10 +3,11 @@
 // For licensing information, see the file LICENSE.md in the Git repository above.
 
 import Foundation
+import BenchmarkIPC
 
 protocol OutputProtocol {
     func begin(task: String, size: Int) throws
-    func progress(task: String, size: Int, time: TimeInterval?) throws
+    func progress(task: String, size: Int, time: TimeInterval) throws
     func finish(task: String, size: Int, time: TimeInterval) throws
 }
 
@@ -33,6 +34,7 @@ extension TimeInterval {
 
 internal struct OutputFile {
     let fileHandle: FileHandle
+    var fileDescriptor: Int32 { return fileHandle.fileDescriptor }
     
     init(_ fileHandle: FileHandle) {
         self.fileHandle = fileHandle
@@ -129,11 +131,9 @@ internal struct PrettyOutput: OutputProtocol {
     func begin(task: String, size: Int) throws {
         try output.write("\(dim("Measuring")) \(t(task)) \(dim("for size")) \(s(size))\(dim("..."))")
     }
-    func progress(task: String, size: Int, time: TimeInterval?) throws {
-        if let time = time {
-            if time > 0.1 {
-                try output.write(" \(highlight(i(time), .gray))")
-            }
+    func progress(task: String, size: Int, time: TimeInterval) throws {
+        if time > 0.1 {
+            try output.write(" \(highlight(i(time), .gray))")
         }
         else {
             try output.write(".")
@@ -145,18 +145,6 @@ internal struct PrettyOutput: OutputProtocol {
 }
 
 internal struct JSONOutput: OutputProtocol {
-    private struct OutputItem: Encodable {
-        enum State: String, Encodable {
-            case begin
-            case progress
-            case finish
-        }
-        let state: State
-        let task: String
-        let size: Int
-        let time: Double?
-    }
-    
     let output: OutputFile
     let encoder: JSONEncoder
     
@@ -166,19 +154,19 @@ internal struct JSONOutput: OutputProtocol {
         self.encoder.nonConformingFloatEncodingStrategy = .throw
     }
     
-    private func send(_ item: OutputItem) throws {
-        var data = try encoder.encode(item)
+    private func send(_ report: BenchmarkIPC.Report) throws {
+        var data = try encoder.encode(report)
         data.append(0x0a) // newline
         try output.write(data)
     }
     
     func begin(task: String, size: Int) throws {
-        try send(OutputItem(state: .begin, task: task, size: size, time: nil))
+        try send(.begin(task: task, size: size))
     }
-    func progress(task: String, size: Int, time: TimeInterval?) throws {
-        //try send(OutputItem(state: .progress, task: task, size: size, time: time))
+    func progress(task: String, size: Int, time: TimeInterval) throws {
+        // Do nothing
     }
     func finish(task: String, size: Int, time: TimeInterval) throws {
-        try send(OutputItem(state: .finish, task: task, size: size, time: time))
+        try send(.finish(task: task, size: size, time: time))
     }
 }

@@ -30,7 +30,13 @@ public final class TimeSample: Codable {
     public private(set) var sum = Time(picoseconds: 0)
     public private(set) var sumSquared = TimeSquared()
 
-    public init() {}
+    public init() {
+    }
+
+    public convenience init(time: Time) {
+        self.init()
+        self.addMeasurement(time)
+    }
 
     enum Key: CodingKey {
         case minimum
@@ -106,5 +112,38 @@ public final class TimeSample: Codable {
         let c = BigInt(count)
         let s2 = (c * sumSquared - sum.squared()).dividingWithRounding(by: c * (c - 1))
         return s2.squareRoot()
+    }
+
+    public func bounds(for bands: [Band]) -> ClosedRange<Time>? {
+        guard count > 0 else { return nil }
+        var lower: Time? = nil
+        var upper: Time? = nil
+        for band in bands {
+            guard let v = self[band] else { continue }
+            lower = min(lower, v)
+            upper = max(upper, v)
+        }
+        guard let l = lower, let u = upper else { return nil }
+        return l ... u
+    }
+}
+
+extension TimeSample {
+    public enum Band {
+        case maximum
+        case sigma(Int)
+        case average
+        case minimum
+    }
+
+    public subscript(_ band: Band) -> Time? {
+        switch band {
+        case .maximum: return maximum
+        case .sigma(let count):
+            guard let average = self.average else { return nil }
+            return average + count * (standardDeviation ?? .zero)
+        case .average: return average
+        case .minimum: return minimum
+        }
     }
 }

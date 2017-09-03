@@ -1,0 +1,594 @@
+{
+  "results" : {
+    "RedBlackTree.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "21814004",
+          "count" : 2,
+          "maximum" : "22346997",
+          "sumSquared" : "975239045430025",
+          "sum" : "44161001"
+        }
+      }
+    },
+    "RedBlackTree2.for-in2" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "66045999",
+          "count" : 2,
+          "maximum" : "69432993",
+          "sumSquared" : "9183014500846050",
+          "sum" : "135478992"
+        }
+      }
+    },
+    "BTree4.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "2079999",
+          "count" : 1,
+          "maximum" : "2079999",
+          "sumSquared" : "4326395840001",
+          "sum" : "2079999"
+        }
+      }
+    },
+    "SortedArray.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "3052002",
+          "count" : 2,
+          "maximum" : "3242996",
+          "sumSquared" : "19831739264020",
+          "sum" : "6294998"
+        },
+        "1000" : {
+          "minimum" : "77896998",
+          "count" : 1,
+          "maximum" : "77896998",
+          "sumSquared" : "6067942297412004",
+          "sum" : "77896998"
+        }
+      }
+    },
+    "SortedArray.contains2" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "3125001",
+          "count" : 2,
+          "maximum" : "3364002",
+          "sumSquared" : "21082140706005",
+          "sum" : "6489003"
+        },
+        "1000" : {
+          "minimum" : "57288998",
+          "count" : 1,
+          "maximum" : "57288998",
+          "sumSquared" : "3282029291844004",
+          "sum" : "57288998"
+        }
+      }
+    },
+    "IntBTree3.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "2551001",
+          "count" : 1,
+          "maximum" : "2551001",
+          "sumSquared" : "6507606102001",
+          "sum" : "2551001"
+        }
+      }
+    },
+    "BTree3.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "2567998",
+          "count" : 2,
+          "maximum" : "2685999",
+          "sumSquared" : "13809204356005",
+          "sum" : "5253997"
+        }
+      }
+    },
+    "OrderedSet.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "299947001",
+          "count" : 2,
+          "maximum" : "301959000",
+          "sumSquared" : "181147441089894001",
+          "sum" : "601906001"
+        }
+      }
+    },
+    "SortedArray.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "1000997",
+          "count" : 2,
+          "maximum" : "1010004",
+          "sumSquared" : "2022103074025",
+          "sum" : "2011001"
+        },
+        "1000" : {
+          "minimum" : "50478003",
+          "count" : 1,
+          "maximum" : "50478003",
+          "sumSquared" : "2548028786868009",
+          "sum" : "50478003"
+        }
+      }
+    },
+    "BTree.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "5296999",
+          "count" : 2,
+          "maximum" : "5556998",
+          "sumSquared" : "58938425178005",
+          "sum" : "10853997"
+        }
+      }
+    },
+    "IntBTree3.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "26749999",
+          "count" : 1,
+          "maximum" : "26749999",
+          "sumSquared" : "715562446500001",
+          "sum" : "26749999"
+        }
+      }
+    },
+    "BTree3.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "3225999",
+          "count" : 2,
+          "maximum" : "3403998",
+          "sumSquared" : "21994271932005",
+          "sum" : "6629997"
+        }
+      }
+    },
+    "RedBlackTree2.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "5260000",
+          "count" : 2,
+          "maximum" : "5538000",
+          "sumSquared" : "58337044000000",
+          "sum" : "10798000"
+        }
+      }
+    },
+    "BTree4.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "27934001",
+          "count" : 1,
+          "maximum" : "27934001",
+          "sumSquared" : "780308411868001",
+          "sum" : "27934001"
+        }
+      }
+    },
+    "BTree2.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "3329994",
+          "count" : 2,
+          "maximum" : "3346998",
+          "sumSquared" : "22291255652040",
+          "sum" : "6676992"
+        }
+      }
+    },
+    "SortedArray.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "22246997",
+          "count" : 2,
+          "maximum" : "23014996",
+          "sumSquared" : "1024618916398025",
+          "sum" : "45261993"
+        }
+      }
+    },
+    "OrderedSet.contains2" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "12143005",
+          "count" : 2,
+          "maximum" : "12851000",
+          "sumSquared" : "312600771430025",
+          "sum" : "24994005"
+        }
+      }
+    },
+    "OrderedSet.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "1374519997",
+          "count" : 2,
+          "maximum" : "1471832998",
+          "sumSquared" : "4055597596154548013",
+          "sum" : "2846352995"
+        }
+      }
+    },
+    "IntBTree3.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "665997",
+          "count" : 1,
+          "maximum" : "665997",
+          "sumSquared" : "443552004009",
+          "sum" : "665997"
+        }
+      }
+    },
+    "Array.sort" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "891996",
+          "count" : 1,
+          "maximum" : "891996",
+          "sumSquared" : "795656864016",
+          "sum" : "891996"
+        }
+      }
+    },
+    "BTree2.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "2415996",
+          "count" : 2,
+          "maximum" : "2417997",
+          "sumSquared" : "11683746164025",
+          "sum" : "4833993"
+        }
+      }
+    },
+    "RedBlackTree.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "86606996",
+          "count" : 2,
+          "maximum" : "88719003",
+          "sumSquared" : "15371833249458025",
+          "sum" : "175325999"
+        }
+      }
+    },
+    "RedBlackTree2.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "84692001",
+          "count" : 2,
+          "maximum" : "88018998",
+          "sumSquared" : "14920079042308005",
+          "sum" : "172710999"
+        }
+      }
+    },
+    "OrderedSet.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "13598997",
+          "count" : 2,
+          "maximum" : "14336001",
+          "sumSquared" : "390453644078010",
+          "sum" : "27934998"
+        }
+      }
+    },
+    "BTree.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "1961998",
+          "count" : 2,
+          "maximum" : "1963002",
+          "sumSquared" : "7702813004008",
+          "sum" : "3925000"
+        }
+      }
+    },
+    "SortedArray.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "127998",
+          "count" : 2,
+          "maximum" : "133994",
+          "sumSquared" : "34337880040",
+          "sum" : "261992"
+        }
+      }
+    },
+    "RedBlackTree2.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "8627997",
+          "count" : 2,
+          "maximum" : "9055998",
+          "sumSquared" : "156453432008013",
+          "sum" : "17683995"
+        }
+      }
+    },
+    "RedBlackTree2.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "156914997",
+          "count" : 2,
+          "maximum" : "157090995",
+          "sumSquared" : "49299896993600034",
+          "sum" : "314005992"
+        }
+      }
+    },
+    "BTree.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "2560998",
+          "count" : 2,
+          "maximum" : "2700995",
+          "sumSquared" : "13854084746029",
+          "sum" : "5261993"
+        }
+      }
+    },
+    "RedBlackTree.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "85403997",
+          "count" : 2,
+          "maximum" : "88125001",
+          "sumSquared" : "15059858504826010",
+          "sum" : "173528998"
+        }
+      }
+    },
+    "OrderedSet.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "216901004",
+          "count" : 2,
+          "maximum" : "230642996",
+          "sumSquared" : "100242237140064032",
+          "sum" : "447544000"
+        }
+      }
+    },
+    "RedBlackTree2.for-in3" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "66020002",
+          "count" : 2,
+          "maximum" : "69444002",
+          "sumSquared" : "9181110077856008",
+          "sum" : "135464004"
+        }
+      }
+    },
+    "SortedArray.contains3" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "982996",
+          "count" : 2,
+          "maximum" : "1025000",
+          "sumSquared" : "2016906136016",
+          "sum" : "2007996"
+        },
+        "1000" : {
+          "minimum" : "47021996",
+          "count" : 1,
+          "maximum" : "47021996",
+          "sumSquared" : "2211068107824016",
+          "sum" : "47021996"
+        }
+      }
+    },
+    "BTree2.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "1972999",
+          "count" : 2,
+          "maximum" : "2078995",
+          "sumSquared" : "8214945264026",
+          "sum" : "4051994"
+        }
+      }
+    },
+    "IntBTree3.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "1964996",
+          "count" : 1,
+          "maximum" : "1964996",
+          "sumSquared" : "3861209280016",
+          "sum" : "1964996"
+        }
+      }
+    },
+    "BTree2.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "27135996",
+          "count" : 2,
+          "maximum" : "27740003",
+          "sumSquared" : "1505870045352025",
+          "sum" : "54875999"
+        }
+      }
+    },
+    "SortedArray.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "126994",
+          "count" : 2,
+          "maximum" : "141997",
+          "sumSquared" : "36290624045",
+          "sum" : "268991"
+        }
+      }
+    },
+    "BTree4.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "666004",
+          "count" : 1,
+          "maximum" : "666004",
+          "sumSquared" : "443561328016",
+          "sum" : "666004"
+        }
+      }
+    },
+    "BTree.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "726999",
+          "count" : 2,
+          "maximum" : "749001",
+          "sumSquared" : "1089530044002",
+          "sum" : "1476000"
+        }
+      }
+    },
+    "OrderedSet.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "20704996",
+          "count" : 2,
+          "maximum" : "21093001",
+          "sumSquared" : "873611550546017",
+          "sum" : "41797997"
+        }
+      }
+    },
+    "BTree.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "38396006",
+          "count" : 2,
+          "maximum" : "39582999",
+          "sumSquared" : "3041067086586037",
+          "sum" : "77979005"
+        }
+      }
+    },
+    "IntBTree3.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "3353001",
+          "count" : 1,
+          "maximum" : "3353001",
+          "sumSquared" : "11242615706001",
+          "sum" : "3353001"
+        }
+      }
+    },
+    "RedBlackTree2.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "17344995",
+          "count" : 2,
+          "maximum" : "17818994",
+          "sumSquared" : "618365398722061",
+          "sum" : "35163989"
+        }
+      }
+    },
+    "BTree3.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "2079003",
+          "count" : 2,
+          "maximum" : "2138993",
+          "sumSquared" : "8897544528058",
+          "sum" : "4217996"
+        }
+      }
+    },
+    "BTree3.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "637999",
+          "count" : 2,
+          "maximum" : "684995",
+          "sumSquared" : "876260874026",
+          "sum" : "1322994"
+        }
+      }
+    },
+    "RedBlackTree.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "16099998",
+          "count" : 2,
+          "maximum" : "16730002",
+          "sumSquared" : "539102902520008",
+          "sum" : "32830000"
+        }
+      }
+    },
+    "RedBlackTree.forEach" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "7317001",
+          "count" : 2,
+          "maximum" : "7677997",
+          "sumSquared" : "112490141566010",
+          "sum" : "14994998"
+        }
+      }
+    },
+    "BTree4.contains" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "2552995",
+          "count" : 1,
+          "maximum" : "2552995",
+          "sumSquared" : "6517783470025",
+          "sum" : "2552995"
+        }
+      }
+    },
+    "BTree3.sharedInsert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "25738998",
+          "count" : 1,
+          "maximum" : "25738998",
+          "sumSquared" : "662496018044004",
+          "sum" : "25738998"
+        }
+      }
+    },
+    "BTree2.for-in" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "633001",
+          "count" : 2,
+          "maximum" : "676001",
+          "sumSquared" : "857667618002",
+          "sum" : "1309002"
+        }
+      }
+    },
+    "BTree4.insert" : {
+      "samples" : {
+        "100" : {
+          "minimum" : "3189001",
+          "count" : 1,
+          "maximum" : "3189001",
+          "sumSquared" : "10169727378001",
+          "sum" : "3189001"
+        }
+      }
+    }
+  },
+  "source" : "Ym9va7QDAAAAAAQQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsAIAAAUAAAABAQAAVXNlcnMAAAAIAAAAAQEAAGxvcmVudGV5AwAAAAEBAABHaXQACQAAAAEBAABBdHRhYmVuY2gAAAAcAAAAAQEAAFNvcnRlZFNldEJlbmNobWFyay5hdHRhYmVuY2gUAAAAAQYAAAQAAAAUAAAAJAAAADAAAABEAAAACAAAAAQDAADcaQYAAAAAAAgAAAAEAwAAJ60JAAAAAAAIAAAABAMAACbEDgAAAAAACAAAAAQDAADkFhsAAAAAAAgAAAAEAwAA+QsoAAIAAAAUAAAAAQYAAIQAAACUAAAApAAAALQAAADEAAAACAAAAAAEAABBvz+wZHGyJBgAAAABAgAAAgAAAAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAQDAAADAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAJAQQXQAAAAIAAAAAAQAAEG+t9\/xAAAAJAAAAAEBAAA1RDc3RDYxNy0yMDY3LTNEQ0EtQTZEOS0wRjFGODY3NEZCNjEYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAxQAAAAECAAAzNjUyYmI0YzdiYTg4ZDU4ZWVkNjRjNWQ1NzYwOGVkYzNkODQwZTc5OzAwMDAwMDAwOzAwMDAwMDAwOzAwMDAwMDAwMDAwMDAwMjA7Y29tLmFwcGxlLmFwcC1zYW5kYm94LnJlYWQtd3JpdGU7MDE7MDEwMDAwMDU7MDAwMDAwMDIwMDI4MGJmOTsvdXNlcnMvbG9yZW50ZXkvZ2l0L2F0dGFiZW5jaC9zb3J0ZWRzZXRiZW5jaG1hcmsuYXR0YWJlbmNoAAAAAMwAAAD+\/\/\/\/AQAAAAAAAAAQAAAABBAAAGgAAAAAAAAABRAAANQAAAAAAAAAEBAAAAABAAAAAAAAQBAAAPAAAAAAAAAAAiAAAMwBAAAAAAAABSAAADwBAAAAAAAAECAAAEwBAAAAAAAAESAAAIABAAAAAAAAEiAAAGABAAAAAAAAEyAAAHABAAAAAAAAICAAAKwBAAAAAAAAMCAAANgBAAAAAAAAAcAAACABAAAAAAAAEcAAABQAAAAAAAAAEsAAADABAAAAAAAAgPAAAOABAAAAAAAA"
+}

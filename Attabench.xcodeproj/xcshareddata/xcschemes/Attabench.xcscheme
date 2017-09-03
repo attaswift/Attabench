@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+               BlueprintIdentifier = "BB65B0F21F59BBA4007EB717"
                BuildableName = "Attabench.app"
                BlueprintName = "Attabench"
                ReferencedContainer = "container:Attabench.xcodeproj">
@@ -29,31 +29,11 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB8E0DD81E3237D900505773"
-               BuildableName = "BenchmarkingToolsTests.xctest"
-               BlueprintName = "BenchmarkingToolsTests"
-               ReferencedContainer = "container:Attabench.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB4F15651F409882003C05C3"
-               BuildableName = "BenchmarkRunnerTests.xctest"
-               BlueprintName = "BenchmarkRunnerTests"
-               ReferencedContainer = "container:Attabench.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+            BlueprintIdentifier = "BB65B0F21F59BBA4007EB717"
             BuildableName = "Attabench.app"
             BlueprintName = "Attabench"
             ReferencedContainer = "container:Attabench.xcodeproj">
@@ -63,7 +43,7 @@
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "WholeModule"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       language = ""
@@ -77,7 +57,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+            BlueprintIdentifier = "BB65B0F21F59BBA4007EB717"
             BuildableName = "Attabench.app"
             BlueprintName = "Attabench"
             ReferencedContainer = "container:Attabench.xcodeproj">
@@ -96,7 +76,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB83AAC31E3125CF00BFE22D"
+            BlueprintIdentifier = "BB65B0F21F59BBA4007EB717"
             BuildableName = "Attabench.app"
             BlueprintName = "Attabench"
             ReferencedContainer = "container:Attabench.xcodeproj">
