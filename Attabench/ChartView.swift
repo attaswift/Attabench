@@ -76,9 +76,13 @@ class ChartView: NSView {
         }
     }
 
-    override func setBoundsSize(_ newSize: NSSize) {
-        if imageSize == nil {
-            self.image = render()
+    override var frame: NSRect {
+        get { return super.frame }
+        set {
+            super.frame = newValue
+            if imageSize == nil {
+                self.image = render()
+            }
         }
     }
 }
