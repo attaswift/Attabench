@@ -6,19 +6,20 @@ import Cocoa
 import GlueKit
 
 class TaskModel: Hashable {
-    let name: StringVariable = ""
+    let name: String
     let checked: BoolVariable = false
+    let isRunnable: BoolVariable = false
 
     init(name: String, checked: Bool) {
-        self.name.value = name
+        self.name = name
         self.checked.value = checked
     }
 
     var hashValue: Int {
-        return ObjectIdentifier(self).hashValue
+        return name.hashValue
     }
 
     static func ==(left: TaskModel, right: TaskModel) -> Bool {
-        return left === right
+        return left.name == right.name
     }
 }

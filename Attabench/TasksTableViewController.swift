@@ -10,39 +10,40 @@ extension NSUserInterfaceItemIdentifier {
 }
 
 class TasksTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
-    unowned let document: AttabenchDocument
+    let contents: AnyObservableArray<TaskModel>
+    let tableView: NSTableView
 
-    init(_ document: AttabenchDocument) {
-        self.document = document
+    init(tableView: NSTableView, contents: AnyObservableArray<TaskModel>) {
+        self.tableView = tableView
+        self.contents = contents
         super.init()
-        self.glue.connector.connect(document.tasks.changes) { [unowned self] change in
+        self.glue.connector.connect(contents.changes) { [unowned self] change in
             self.apply(change)
         }
     }
 
     func apply(_ change: ArrayChange<TaskModel>) {
-        guard let table = document.tasksTableView else { return }
         let batch = change.separated()
-        table.beginUpdates()
-        table.removeRows(at: batch.deleted, withAnimation: [.effectFade, .slideUp])
-        table.insertRows(at: batch.inserted, withAnimation: [.effectFade, .slideDown])
+        tableView.beginUpdates()
+        tableView.removeRows(at: batch.deleted, withAnimation: [.effectFade, .slideUp])
+        tableView.insertRows(at: batch.inserted, withAnimation: [.effectFade, .slideDown])
         for (from, to) in batch.moved {
-            table.moveRow(at: from, to: to)
+            tableView.moveRow(at: from, to: to)
         }
-        table.endUpdates()
+        tableView.endUpdates()
         print("Removed: \(batch.deleted), inserted: \(batch.inserted), moved: \(batch.moved)")
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return document.tasks.count
+        return contents.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         guard let id = tableColumn?.identifier, id == .taskColumn else { return nil }
-        let task = document.tasks[row]
+        let task = contents[row]
         let cell = tableView.makeView(withIdentifier: .taskColumn, owner: nil) as! TaskCellView
         cell.task = task
-        cell.document = document
+        cell.context = self
         return cell
     }
 

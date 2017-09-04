@@ -336,8 +336,8 @@
 			children = (
 				BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */,
 				BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */,
-				BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */,
 				BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */,
+				BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */,
 				BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */,
 				BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */,
 				BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */,

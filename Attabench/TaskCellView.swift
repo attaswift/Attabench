@@ -7,7 +7,7 @@ import GlueKit
 
 class TaskCellView: NSTableCellView {
     @IBOutlet weak var checkbox: NSButton?
-    weak var document: AttabenchDocument?
+    weak var context: TasksTableViewController?
 
     override func awakeFromNib() {
         self.appearance = NSAppearance(named: .vibrantLight)
@@ -18,9 +18,7 @@ class TaskCellView: NSTableCellView {
         didSet {
             taskConnections.disconnect()
             if let task = task {
-                taskConnections.connect(task.name.values) { [unowned self] value in
-                    self.textField?.stringValue = value
-                }
+                self.textField?.stringValue = task.name
                 taskConnections.connect(task.checked.values) { [unowned self] value in
                     guard let checkbox = self.checkbox else { return }
                     let v: NSControl.StateValue = (value ? .on : .off)
@@ -28,13 +26,23 @@ class TaskCellView: NSTableCellView {
                         checkbox.state = v
                     }
                 }
+                taskConnections.connect(task.isRunnable.values) { [unowned self, task] value in
+                    if let label = self.textField {
+                        let title = task.name + (value ? "" : " ✖︎")
+                        if label.stringValue != title {
+                            label.stringValue = title
+                        }
+                    }
+                }
             }
         }
     }
 
     @IBAction func checkboxAction(_ sender: NSButton) {
-        guard let document = document else { return }
-        guard let tableView = document.tasksTableView else { return }
+        guard let context = context else { return }
+        let tasks = context.contents
+        let tableView = context.tableView
+
         let row = tableView.row(for: self)
         guard row != -1 else { return }
 
@@ -46,18 +54,18 @@ class TaskCellView: NSTableCellView {
 
         let value = (sender.state == .on)
 
-        let tasks = selectedRows.map { document.tasks[$0] }
+        let selectedTasks = selectedRows.map { tasks[$0] }
         let clearedTasks = clearOthers
             ? (IndexSet(integersIn: 0 ..< tableView.numberOfRows)
                 .subtracting(selectedRows)
-                .map { document.tasks[$0] })
+                .map { tasks[$0] })
             : []
 
-        tasks.forEach { $0.checked.apply(.beginTransaction) }
+        selectedTasks.forEach { $0.checked.apply(.beginTransaction) }
         clearedTasks.forEach { $0.checked.apply(.beginTransaction) }
-        tasks.forEach { $0.checked.value = value }
+        selectedTasks.forEach { $0.checked.value = value }
         clearedTasks.forEach { $0.checked.value = false }
-        tasks.forEach { $0.checked.apply(.endTransaction) }
+        selectedTasks.forEach { $0.checked.apply(.endTransaction) }
         clearedTasks.forEach { $0.checked.apply(.endTransaction) }
     }
 }

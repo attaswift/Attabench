@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AttabenchDocument" customModule="Attabench" customModuleProvider="target">
             <connections>
+                <outlet property="batchCheckbox" destination="ikv-2a-wet" id="rww-6p-HP1"/>
                 <outlet property="chartView" destination="i14-DF-IKD" id="Cwb-7d-vmu"/>
                 <outlet property="consolePane" destination="c1O-He-7va" id="djg-zK-gRj"/>
                 <outlet property="consoleTextView" destination="trv-Ti-K8g" id="8M2-Ue-KP3"/>
@@ -25,6 +26,7 @@
                 <outlet property="showLeftPaneButton" destination="l2g-1I-7US" id="mK6-YU-KbG"/>
                 <outlet property="showRunOptionsButton" destination="7bl-F8-T8v" id="CNa-tz-wtH"/>
                 <outlet property="statusLabel" destination="nAl-9b-Vd5" id="lmH-fH-ul7"/>
+                <outlet property="taskFilterTextField" destination="x7t-Qb-yxf" id="7Uc-2P-fX4"/>
                 <outlet property="tasksTableView" destination="FCj-n2-LsA" id="Rq5-nA-qWR"/>
                 <outlet property="window" destination="xOd-HO-29H" id="JIz-fz-R2o"/>
             </connections>
@@ -41,14 +43,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="800" height="500"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <splitView wantsLayer="YES" autosaveName="HorizontalSplitView" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T8n-N8-ln5" userLabel="Root Split View">
+                    <splitView identifier="RootSplitView" wantsLayer="YES" autosaveName="HorizontalSplitView" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T8n-N8-ln5" userLabel="Root Split View">
                         <rect key="frame" x="0.0" y="0.0" width="800" height="500"/>
                         <subviews>
                             <visualEffectView blendingMode="behindWindow" material="sidebar" state="followsWindowActiveState" id="gG5-EF-oMY">
                                 <rect key="frame" x="0.0" y="0.0" width="211" height="500"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
-                                    <splitView arrangesAllSubviews="NO" dividerStyle="thin" translatesAutoresizingMaskIntoConstraints="NO" id="Bc9-KC-2nD" userLabel="Left Split View">
+                                    <splitView identifier="LeftSplitView" arrangesAllSubviews="NO" dividerStyle="thin" translatesAutoresizingMaskIntoConstraints="NO" id="Bc9-KC-2nD" userLabel="Left Split View">
                                         <rect key="frame" x="0.0" y="0.0" width="211" height="500"/>
                                         <subviews>
                                             <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="bNP-3x-NB1">
@@ -96,7 +98,7 @@
                                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Task Name" usesSingleLineMode="YES" id="iqp-Dq-uQ0">
                                                                                         <font key="font" metaFont="system"/>
                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                                     </textFieldCell>
                                                                                 </textField>
                                                                             </subviews>
@@ -134,10 +136,13 @@
                                                 <subviews>
                                                     <button toolTip="Check or uncheck all displayed tasks" translatesAutoresizingMaskIntoConstraints="NO" id="f4B-71-bgS">
                                                         <rect key="frame" x="2" y="5" width="18" height="18"/>
-                                                        <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="only" alignment="center" state="on" inset="2" id="ikv-2a-wet">
+                                                        <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="only" alignment="center" state="on" allowsMixedState="YES" inset="2" id="ikv-2a-wet">
                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                        <connections>
+                                                            <action selector="batchCheckboxAction:" target="-2" id="5CJ-bD-f37"/>
+                                                        </connections>
                                                     </button>
                                                     <searchField wantsLayer="YES" horizontalHuggingPriority="246" verticalHuggingPriority="750" horizontalCompressionResistancePriority="745" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7t-Qb-yxf">
                                                         <rect key="frame" x="21" y="3" width="166" height="22"/>
@@ -146,6 +151,9 @@
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </searchFieldCell>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="-2" id="4pZ-h0-7KT"/>
+                                                        </connections>
                                                     </searchField>
                                                     <button toolTip="Show or hide the Run Options area" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7bl-F8-T8v">
                                                         <rect key="frame" x="190" y="-2" width="18" height="32"/>
@@ -333,7 +341,7 @@
                                     <constraint firstItem="Bc9-KC-2nD" firstAttribute="leading" secondItem="gG5-EF-oMY" secondAttribute="leading" id="qnz-u5-HH9"/>
                                 </constraints>
                             </visualEffectView>
-                            <splitView fixedFrame="YES" autosaveName="VerticalSplitView" dividerStyle="thin" id="G4p-w7-27R" userLabel="Middle Split View">
+                            <splitView identifier="MiddleSplitView" fixedFrame="YES" autosaveName="VerticalSplitView" dividerStyle="thin" id="G4p-w7-27R" userLabel="Middle Split View">
                                 <rect key="frame" x="212" y="0.0" width="588" height="500"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
@@ -502,6 +510,22 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="6B6E46BC-8F10-4F79-9105-870941A7B09E" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="JyG-F9-Agw">
                 <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="BAEDB49A-257D-4028-8C0F-DF7E491D02A6" label="Reload" paletteLabel="Reload" image="RefreshTemplate" visibilityPriority="3" id="Wmz-t1-Dse" userLabel="Refresh">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="40" height="28"/>
+                        <size key="maxSize" width="40" height="28"/>
+                        <button key="view" toolTip="Reload Benchmark" verticalHuggingPriority="750" id="Jo6-pc-YrG">
+                            <rect key="frame" x="2" y="14" width="40" height="28"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="RefreshTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="G0B-ik-u7j">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="reloadAction:" target="-2" id="dxp-Ht-TIg"/>
+                            </connections>
+                        </button>
+                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="944C2207-D40C-4BB9-947F-91074BBC9AF4" label="Run" paletteLabel="Run" image="RunTemplate" visibilityPriority="3" id="GaH-lI-0CK">
                         <nil key="toolTip"/>
                         <size key="minSize" width="40" height="28"/>
@@ -562,6 +586,7 @@
                 <defaultToolbarItems>
                     <toolbarItem reference="ApD-tD-Tu6"/>
                     <toolbarItem reference="Znh-eH-hvH"/>
+                    <toolbarItem reference="Wmz-t1-Dse"/>
                     <toolbarItem reference="GaH-lI-0CK"/>
                     <toolbarItem reference="S71-Vo-5QY"/>
                 </defaultToolbarItems>
@@ -577,6 +602,7 @@
         <image name="CloseLeftTemplate" width="18" height="18"/>
         <image name="OpenRightTemplate" width="18" height="18"/>
         <image name="OpenUpTemplate" width="18" height="18"/>
+        <image name="RefreshTemplate" width="18" height="18"/>
         <image name="RunTemplate" width="18" height="18"/>
     </resources>
 </document>

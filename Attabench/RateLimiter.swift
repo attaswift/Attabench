@@ -38,4 +38,8 @@ class RateLimiter: NSObject {
         }
     }
 
+    func nowIfNeeded() {
+        if scheduled { now() }
+    }
+
 }
