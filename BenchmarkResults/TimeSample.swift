@@ -23,14 +23,15 @@ func max<C: Comparable>(_ a: C?, _ b: C?) -> C? {
     }
 }
 
-public final class TimeSample: Codable {
+@objc public final class TimeSample: NSObject, Codable {
+    @objc dynamic public private(set) var count: Int = 0
     public private(set) var minimum: Time? = nil
     public private(set) var maximum: Time? = nil
-    public private(set) var count: Int = 0
     public private(set) var sum = Time(picoseconds: 0)
     public private(set) var sumSquared = TimeSquared()
 
-    public init() {
+    public override init() {
+        super.init()
     }
 
     public convenience init(time: Time) {
@@ -65,6 +66,7 @@ public final class TimeSample: Codable {
             sum = Time(picoseconds: 0)
             sumSquared = TimeSquared()
         }
+        super.init()
         guard count == 0 || minimum != nil else {
             throw DecodingError.dataCorruptedError(
                 forKey: .minimum, in: container,
@@ -134,6 +136,7 @@ extension TimeSample {
         case sigma(Int)
         case average
         case minimum
+        case count // Fixme this isn't a time
     }
 
     public subscript(_ band: Band) -> Time? {
@@ -144,6 +147,7 @@ extension TimeSample {
             return average + count * (standardDeviation ?? .zero)
         case .average: return average
         case .minimum: return minimum
+        case .count: return Time(Double(count))
         }
     }
 }

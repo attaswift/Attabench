@@ -7,7 +7,7 @@ import GlueKit
 import BenchmarkResults
 import BenchmarkRunner
 import BenchmarkCharts
-
+import BenchmarkIPC
 
 enum UTI {
     static let png = "public.png"
@@ -48,9 +48,12 @@ enum ConsoleAttributes {
 }
 
 
+
+
 class AttabenchDocument: NSDocument, BenchmarkDelegate {
 
     enum State {
+        case noBenchmark
         case idle
         case loading(BenchmarkProcess)
         case waiting // We should be running, but parameters aren't ready yet
@@ -74,66 +77,8 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         }
     }
 
-    var sourceDisplayName: String {
-        guard let source = results.source else { return "benchmark" }
-        return FileManager().displayName(atPath: source.path)
-    }
-
     var state: State = .idle {
-        didSet {
-            switch oldValue {
-            case .loading(let process):
-                process.stop()
-            case .running(let process):
-                process.stop()
-            default:
-                break
-            }
-
-            switch state {
-            case .idle:
-                self.setStatus(.immediate, "Ready")
-            case .loading(_):
-                self.setStatus(.immediate, "Loading \(sourceDisplayName)...")
-            case .waiting:
-                self.setStatus(.immediate, "No executable tasks selected, pausing")
-            case .running(_):
-                self.setStatus(.immediate, "Starting \(sourceDisplayName)...")
-            case .stopping(_, then: .restart):
-                self.setStatus(.immediate, "Restarting \(sourceDisplayName)...")
-            case .stopping(_, then: _):
-                self.setStatus(.immediate, "Stopping \(sourceDisplayName)...")
-            case .failedBenchmark:
-                self.setStatus(.immediate, "Failed")
-            }
-            self.refreshRunButton()
-        }
-    }
-
-    func refreshRunButton() {
-        switch state {
-        case .idle:
-            self.runButton?.isEnabled = true
-            self.runButton?.image = #imageLiteral(resourceName: "RunTemplate")
-        case .loading(_):
-            self.runButton?.isEnabled = true
-            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
-        case .waiting:
-            self.runButton?.isEnabled = true
-            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
-        case .running(_):
-            self.runButton?.isEnabled = true
-            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
-        case .stopping(_, then: .restart):
-            self.runButton?.isEnabled = true
-            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
-        case .stopping(_, then: _):
-            self.runButton?.isEnabled = false
-            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
-        case .failedBenchmark:
-            self.runButton?.image = #imageLiteral(resourceName: "RunTemplate")
-            self.runButton?.isEnabled = true
-        }
+        didSet { stateDidChange(from: oldValue, to: state) }
     }
 
     @IBOutlet weak var runButton: NSButton?
@@ -148,6 +93,7 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     @IBOutlet weak var taskFilterTextField: NSSearchField!
     @IBOutlet weak var showRunOptionsButton: NSButton?
     @IBOutlet weak var runOptionsPane: ColoredView?
+    @IBOutlet var runOptionsViewController: RunOptionsViewController?
     @IBOutlet weak var tasksTableView: NSTableView?
 
     @IBOutlet weak var middleSplitView: NSSplitView?
@@ -162,10 +108,21 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     var _log: NSMutableAttributedString? = nil
     var _status: String = "Ready"
 
-    var results = BenchmarkResults()
+    @objc dynamic var model = Attaresult() {
+        didSet {
+            self.tasks.value = model.taskNames.map { TaskModel(name: $0, checked: true) }
+            self.runOptionsViewController?.model = model
+        }
+    }
     var tasks: ArrayVariable<TaskModel> = []
-    let taskFilterString: OptionalVariable<String> = nil
+    lazy var selectedSizes: AnyObservableValue<Set<Int>>
+        = self.observable(for: \.model.minimumSizeScale).combined(
+            self.observable(for: \.model.maximumSizeScale),
+            self.observable(for: \.model.sizeSubdivisions)) { [unowned self] _, _, _ in
+                self.model.selectedSizes
+    }
 
+    let taskFilterString: OptionalVariable<String> = nil
     lazy var visibleTasks: AnyObservableArray<TaskModel>
         = self.tasks.filter { [taskFilterString] model -> AnyObservableValue<Bool> in
             let name = model.name.lowercased()
@@ -174,13 +131,15 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
                 return name.contains(p)
             }
     }
+
     lazy var checkedTasks = self.visibleTasks.filter { $0.checked }
     lazy var tasksToRun = self.visibleTasks.filter { $0.checked && $0.isRunnable }
+
     lazy var batchCheckboxState: AnyObservableValue<NSControl.StateValue>
         = visibleTasks.observableCount.combined(checkedTasks.observableCount) { c1, c2 in
-            return c1 == c2 ? .on
-                : c2 == 0 ? .off
-                : .mixed
+            if c1 == c2 { return .on }
+            if c2 == 0 { return .off }
+            return .mixed
     }
 
     let logarithmicSizeScale: AnyUpdatableValue<Bool> = UserDefaults.standard.glue.updatable(forKey: "LogarithmicSize", defaultValue: true)
@@ -192,30 +151,6 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
 
     lazy var refreshChart = RateLimiter(maxDelay: 5) { [unowned self] in self._refreshChart() }
 
-    var minimumSizeScale: IntVariable = 0
-    var maximumSizeScale: IntVariable = 20
-    var sizeSubdivisions: IntVariable = 8
-    var iterations: IntVariable = 3
-    let minDuration: DoubleVariable = 0.01
-    let maxDuration: DoubleVariable = 10.0
-
-    var largestSizeScaleAvailable: IntVariable = 32
-
-    static func sizes(from start: Int, through end: Int, subdivisions: Int = 8) -> Set<Int> {
-        let a = max(0, min(start, end))
-        let b = max(0, max(start, end))
-        var sizes: Set<Int> = []
-        for i in subdivisions * a ... subdivisions * b {
-            let size = exp2(Double(i) / Double(subdivisions))
-            sizes.insert(Int(size))
-        }
-        return sizes
-    }
-
-    lazy var selectedSizes = minimumSizeScale.combined(maximumSizeScale, sizeSubdivisions) {
-        AttabenchDocument.sizes(from: $0, through: $1, subdivisions: $2)
-    }
-
     var tasksTableViewController: TasksTableViewController?
 
     override init() {
@@ -224,10 +159,11 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         let runOptionsDidChangeSource
             = AnySource<Void>.merge(tasksToRun.changes.mapToVoid(),
                                     selectedSizes.changes.mapToVoid(),
-                                    minDuration.changes.mapToVoid(),
-                                    maxDuration.changes.mapToVoid(),
-                                    iterations.changes.mapToVoid())
+                                    self.observable(for: \.model.iterations).changes.mapToVoid(),
+                                    self.observable(for: \.model.minimumDuration).changes.mapToVoid(),
+                                    self.observable(for: \.model.maximumDuration).changes.mapToVoid())
         self.glue.connector.connect(runOptionsDidChangeSource) { [unowned self] change in
+            self.updateChangeCount(.changeDone)
             self.runOptionsDidChange()
         }
 
@@ -238,13 +174,9 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
             self.refreshChart.now()
         }
 
-        self.glue.connector.connect(largestSizeScaleAvailable.values) { [unowned self] value in
-            self.refreshSizePopUpMenus()
-        }
-
         let sizeChangeSource
-            = AnySource<Void>.merge(minimumSizeScale.changes.mapToVoid(),
-                                    maximumSizeScale.changes.mapToVoid())
+            = AnySource<Void>.merge(self.observable(for: \.model.minimumSizeScale).changes.mapToVoid(),
+                                    self.observable(for: \.model.maximumSizeScale).changes.mapToVoid())
         self.glue.connector.connect(sizeChangeSource) { [unowned self] _ in
             self.refreshSizePopUpState()
         }
@@ -279,9 +211,76 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         self.statusLabel!.immediateStatus = _status
         self.chartView!.documentBasename = self.displayName
         self.batchCheckbox.state = self.batchCheckboxState.value
+
+        self.runOptionsViewController!.model = model
+        let runOptionsView = self.runOptionsViewController!.view
+        runOptionsView.frame = self.runOptionsPane!.bounds
+        self.runOptionsPane!.addSubview(runOptionsView)
+
         refreshRunButton()
         refreshSizePopUpMenus()
         refreshSizePopUpState()
+        refreshChart.now()
+    }
+
+    func stateDidChange(from old: State, to new: State) {
+        switch old {
+        case .loading(let process):
+            process.stop()
+        case .running(let process):
+            process.stop()
+        default:
+            break
+        }
+
+        switch new {
+        case .noBenchmark:
+            self.setStatus(.immediate, "Attabench document cannot be found; can't take new measurements")
+        case .idle:
+            self.setStatus(.immediate, "Ready")
+        case .loading(_):
+            self.setStatus(.immediate, "Loading \(model.benchmarkDisplayName)...")
+        case .waiting:
+            self.setStatus(.immediate, "No executable tasks selected, pausing")
+        case .running(_):
+            self.setStatus(.immediate, "Starting \(model.benchmarkDisplayName)...")
+        case .stopping(_, then: .restart):
+            self.setStatus(.immediate, "Restarting \(model.benchmarkDisplayName)...")
+        case .stopping(_, then: _):
+            self.setStatus(.immediate, "Stopping \(model.benchmarkDisplayName)...")
+        case .failedBenchmark:
+            self.setStatus(.immediate, "Failed")
+        }
+        self.refreshRunButton()
+    }
+
+    func refreshRunButton() {
+        switch state {
+        case .noBenchmark:
+            self.runButton?.isEnabled = false
+            self.runButton?.image = #imageLiteral(resourceName: "RunTemplate")
+        case .idle:
+            self.runButton?.isEnabled = true
+            self.runButton?.image = #imageLiteral(resourceName: "RunTemplate")
+        case .loading(_):
+            self.runButton?.isEnabled = true
+            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
+        case .waiting:
+            self.runButton?.isEnabled = true
+            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
+        case .running(_):
+            self.runButton?.isEnabled = true
+            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
+        case .stopping(_, then: .restart):
+            self.runButton?.isEnabled = true
+            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
+        case .stopping(_, then: _):
+            self.runButton?.isEnabled = false
+            self.runButton?.image = #imageLiteral(resourceName: "StopTemplate")
+        case .failedBenchmark:
+            self.runButton?.image = #imageLiteral(resourceName: "RunTemplate")
+            self.runButton?.isEnabled = true
+        }
     }
 }
 
@@ -293,35 +292,19 @@ extension AttabenchDocument {
     override func data(ofType typeName: String) throws -> Data {
         switch typeName {
         case UTI.attaresult:
-            return try self.encode()
+            model.taskNames = self.tasks.value.map { $0.name }
+            return try JSONEncoder().encode(model)
         default:
             throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         }
-    }
-
-    struct SavedContents: Codable {
-        let taskNames: [String]
-        let results: BenchmarkResults
-    }
-
-    func decode(from data: Data) throws {
-        let contents = try JSONDecoder().decode(SavedContents.self, from: data)
-        self.tasks.value = contents.taskNames.map { TaskModel(name: $0, checked: true) }
-        self.results = contents.results
-    }
-
-    func encode() throws -> Data {
-        let contents = SavedContents(taskNames: tasks.value.map { $0.name },
-                                     results: results)
-        return try JSONEncoder().encode(contents)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
         switch typeName {
         case UTI.attaresult:
             let data = try Data(contentsOf: url)
-            try self.decode(from: data)
-            if let url = results.source {
+            self.model = try JSONDecoder().decode(Attaresult.self, from: data)
+            if let url = model.benchmarkURL {
                 do {
                     log(.status, "Loading \(FileManager().displayName(atPath: url.path))")
                     self.state = .loading(try BenchmarkProcess(url: url, command: .list, delegate: self, on: .main))
@@ -332,8 +315,7 @@ extension AttabenchDocument {
                 }
             }
             else {
-                log(.status, "Attabench document cannot be found; can't take new measurements")
-                self.state = .idle
+                self.state = .noBenchmark
             }
         case UTI.attabench:
             log(.status, "Loading \(FileManager().displayName(atPath: url.path))")
@@ -343,12 +325,13 @@ extension AttabenchDocument {
                 self.fileType = UTI.attaresult
                 if (try? resultsURL.checkResourceIsReachable()) == true {
                     let data = try Data(contentsOf: resultsURL)
-                    try self.decode(from: data)
-                    results.source = url
+                    self.model = try JSONDecoder().decode(Attaresult.self, from: data)
+                    model.benchmarkURL = url
                     self.fileModificationDate = (try? resultsURL.resourceValues(forKeys: [URLResourceKey.contentModificationDateKey]))?.contentModificationDate
                 }
                 else {
-                    self.results = BenchmarkResults(source: url)
+                    self.model = Attaresult()
+                    self.model.benchmarkURL = url
                     self.isDraft = true
                 }
                 self.state = .loading(try BenchmarkProcess(url: url, command: .list, delegate: self, on: .main))
@@ -444,7 +427,7 @@ extension AttabenchDocument {
 
     func benchmark(_ benchmark: BenchmarkProcess, didMeasureTask task: String, atSize size: Int, withResult time: Time) {
         guard case .running(let process) = state, process === benchmark else { benchmark.stop(); return }
-        self.results.addMeasurement(time, forTask: task, size: size)
+        model.addMeasurement(time, forTask: task, size: size)
         self.updateChangeCount(.changeDone)
         self.refreshChart.later()
     }
@@ -498,8 +481,11 @@ extension AttabenchDocument {
             let startLabel = "Start Running"
             let stopLabel = "Stop Running"
 
-            guard results.source != nil else { return false }
+            guard model.benchmarkURL != nil else { return false }
             switch self.state {
+            case .noBenchmark:
+                menuItem.title = startLabel
+                return false
             case .idle:
                 menuItem.title = startLabel
                 return true
@@ -527,9 +513,25 @@ extension AttabenchDocument {
         }
     }
 
+    @IBAction func chooseBenchmark(_ sender: AnyObject) {
+        guard let window = self.windowControllers.first?.window else { return }
+        let openPanel = NSOpenPanel()
+        openPanel.message = "This result file has no associated Attabench document. To add more measurements, you need to select a benchmark file."
+        openPanel.prompt = "Choose"
+        openPanel.canChooseFiles = true
+        openPanel.allowedFileTypes = [UTI.attabench]
+        openPanel.treatsFilePackagesAsDirectories = false
+        openPanel.beginSheetModal(for: window) { response in
+            guard response == .OK else { return }
+            guard let url = openPanel.urls.first else { return }
+            self.model.benchmarkURL = url
+            self._reload()
+        }
+    }
+
     func _reload() {
         do {
-            guard let url = results.source else { NSSound.beep(); return }
+            guard let url = model.benchmarkURL else { chooseBenchmark(self); return }
             log(.status, "Loading \(FileManager().displayName(atPath: url.path))")
             self.state = .loading(try BenchmarkProcess(url: url, command: .list, delegate: self, on: .main))
         }
@@ -541,6 +543,8 @@ extension AttabenchDocument {
 
     @IBAction func reloadAction(_ sender: AnyObject) {
         switch state {
+        case .noBenchmark:
+            chooseBenchmark(sender)
         case .idle, .failedBenchmark, .waiting:
             _reload()
         case .running(let process):
@@ -556,6 +560,8 @@ extension AttabenchDocument {
 
     @IBAction func startStopAction(_ sender: AnyObject) {
         switch state {
+        case .noBenchmark, .failedBenchmark:
+            NSSound.beep()
         case .idle:
             guard !tasks.isEmpty else { return }
             self.startMeasuring()
@@ -573,30 +579,28 @@ extension AttabenchDocument {
             self.state = .stopping(process, then: .idle)
         case .stopping(let process, then: .idle):
             self.state = .stopping(process, then: .restart)
-        case .failedBenchmark:
-            NSSound.beep()
         }
     }
 
     func startMeasuring() {
+        guard let source = self.model.benchmarkURL else { log(.status, "Can't start measuring"); return }
         switch self.state {
         case .waiting, .idle: break
         default: return
         }
         let tasks = tasksToRun.value.map { $0.name }
-        let sizes = selectedSizes.value.sorted()
+        let sizes = model.selectedSizes.sorted()
         guard !tasks.isEmpty, !sizes.isEmpty else {
             self.state = .waiting
             return
         }
-        guard let source = self.results.source else { log(.status, "Can't start measuring"); return }
 
-        log(.status, "\nRunning \(sourceDisplayName) with \(tasks.count) tasks at sizes from \(sizes.first!.sizeLabel) to \(sizes.last!.sizeLabel).")
-        let options = BenchmarkRunOptions(tasks: tasks,
-                                          sizes: sizes,
-                                          iterations: iterations.value,
-                                          minDuration: minDuration.value,
-                                          maxDuration: maxDuration.value)
+        log(.status, "\nRunning \(model.benchmarkDisplayName) with \(tasks.count) tasks at sizes from \(sizes.first!.sizeLabel) to \(sizes.last!.sizeLabel).")
+        let options = RunOptions(tasks: tasks,
+                                 sizes: sizes,
+                                 iterations: model.iterations,
+                                 minimumDuration: model.minimumDuration,
+                                 maximumDuration: model.maximumDuration)
         do {
             self.state = .running(try BenchmarkProcess(url: source, command: .run(options), delegate: self, on: .main))
         }
@@ -624,7 +628,7 @@ extension AttabenchDocument {
     func refreshSizePopUpMenus() {
         if let minButton = self.minimumSizeButton {
             let minSizeMenu = NSMenu()
-            for i in 0 ... largestSizeScaleAvailable.value {
+            for i in 0 ... model.largestPossibleSizeScale {
                 let item = NSMenuItem(title: "\((1 << i).sizeLabel)≤",
                     action: #selector(AttabenchDocument.didSelectMinimumSize(_:)),
                     keyEquivalent: "")
@@ -636,7 +640,7 @@ extension AttabenchDocument {
 
         if let maxButton = self.maximumSizeButton {
             let maxSizeMenu = NSMenu()
-            for i in 0 ... largestSizeScaleAvailable.value {
+            for i in 0 ... model.largestPossibleSizeScale {
                 let item = NSMenuItem(title: "≤\((1 << i).sizeLabel)",
                     action: #selector(AttabenchDocument.didSelectMaximumSize(_:)),
                     keyEquivalent: "")
@@ -649,14 +653,14 @@ extension AttabenchDocument {
 
     func refreshSizePopUpState() {
         if let button = self.minimumSizeButton {
-            let scale = self.minimumSizeScale.value
+            let scale = model.minimumSizeScale
             let item = button.menu?.items.first(where: { $0.tag == scale })
             if button.selectedItem !== item {
                 button.select(item)
             }
         }
         if let button = self.maximumSizeButton {
-            let maxScale = self.maximumSizeScale.value
+            let maxScale = model.maximumSizeScale
             let item = button.menu?.items.first(where: { $0.tag == maxScale })
             if button.selectedItem !== item {
                 button.select(item)
@@ -666,47 +670,47 @@ extension AttabenchDocument {
 
     @IBAction func didSelectMinimumSize(_ sender: NSMenuItem) {
         let scale = sender.tag
-        self.minimumSizeScale.value = scale
-        if self.maximumSizeScale.value < scale {
-            self.maximumSizeScale.value = scale
+        model.minimumSizeScale = scale
+        if model.maximumSizeScale < scale {
+            model.maximumSizeScale = scale
         }
     }
 
     @IBAction func didSelectMaximumSize(_ sender: NSMenuItem) {
         let scale = sender.tag
-        self.maximumSizeScale.value = scale
-        if self.minimumSizeScale.value > scale {
-            self.minimumSizeScale.value = scale
+        model.maximumSizeScale = scale
+        if model.minimumSizeScale > scale {
+            model.minimumSizeScale = scale
         }
     }
 
     @IBAction func increaseMinScale(_ sender: AnyObject) {
-        let v = self.minimumSizeScale.value + 1
-        guard v <= self.largestSizeScaleAvailable.value else { return }
-        self.minimumSizeScale.value = v
-        if self.maximumSizeScale.value < v {
-            self.maximumSizeScale.value = v
+        let v = model.minimumSizeScale + 1
+        guard v <= model.largestPossibleSizeScale else { return }
+        model.minimumSizeScale = v
+        if model.maximumSizeScale < v {
+            model.maximumSizeScale = v
         }
     }
 
     @IBAction func decreaseMinScale(_ sender: AnyObject) {
-        let v = self.minimumSizeScale.value - 1
+        let v = model.minimumSizeScale - 1
         guard v >= 0 else { return }
-        self.minimumSizeScale.value = v
+        model.minimumSizeScale = v
     }
 
     @IBAction func increaseMaxScale(_ sender: AnyObject) {
-        let v = self.maximumSizeScale.value + 1
-        guard v <= self.largestSizeScaleAvailable.value else { return }
-        self.maximumSizeScale.value = v
+        let v = model.maximumSizeScale + 1
+        guard v <= model.largestPossibleSizeScale else { return }
+        model.maximumSizeScale = v
     }
 
     @IBAction func decreaseMaxScale(_ sender: AnyObject) {
-        let v = self.maximumSizeScale.value - 1
+        let v = model.maximumSizeScale - 1
         guard v >= 0 else { return }
-        self.maximumSizeScale.value = v
-        if self.minimumSizeScale.value > v {
-            self.minimumSizeScale.value = v
+        model.maximumSizeScale = v
+        if model.minimumSizeScale > v {
+            model.minimumSizeScale = v
         }
     }
 }
@@ -725,19 +729,19 @@ extension AttabenchDocument {
         options.logarithmicTime = self.logarithmicTimeScale.value
 
         if highlightActiveRange.value {
-            options.sizeRange = (1 << minimumSizeScale.value) ... (1 << maximumSizeScale.value)
+            options.sizeRange = model.selectedSizeRange
         }
         options.alsoIncludeMeasuredSizes = true
         options.alsoIncludeMeasuredTimes = true
 
         options.centerBand = .average
-        if tasks.count < 10 {
+        if tasks.count < 100 {
             options.topBand = .sigma(2)
             options.bottomBand = .minimum
         }
 
         chartView.chart = BenchmarkChart(title: "",
-                                         results: results,
+                                         results: model.results,
                                          tasks: tasks,
                                          options: options)
     }

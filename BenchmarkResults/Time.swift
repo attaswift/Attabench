@@ -16,8 +16,12 @@ extension BigInt {
     }
 }
 
-public struct Time: CustomStringConvertible, Comparable, Codable {
+public struct Time: CustomStringConvertible, ExpressibleByFloatLiteral, Comparable, Codable {
     var picoseconds: BigInt
+
+    public init(floatLiteral value: Double) {
+        self.init(value)
+    }
 
     public init(picoseconds: BigInt) {
         self.picoseconds = picoseconds
@@ -53,11 +57,37 @@ public struct Time: CustomStringConvertible, Comparable, Codable {
     public static let picosecond = Time(picoseconds: 1)
     public static let zero = Time(picoseconds: 0)
 
+    private static let scaleFromSuffix: [String: Time] = [
+        "": .second,
+        "s": .second,
+        "ms": .millisecond,
+        "ns": .nanosecond,
+        "ps": .picosecond
+    ]
+    private static let floatingPointCharacterSet = CharacterSet(charactersIn: "+-0123456789.e")
+
+    public init?(description: String) {
+        var description = description.trimmingCharacters(in: .whitespacesAndNewlines)
+        description = description.lowercased()
+        if let i = description.rangeOfCharacter(from: Time.floatingPointCharacterSet.inverted) {
+            let number = description.prefix(upTo: i.lowerBound)
+            let suffix = description.suffix(from: i.lowerBound)
+            guard let value = Double(number) else { return nil }
+            guard let scale = Time.scaleFromSuffix[String(suffix)] else { return nil }
+            self = Time(value * scale.seconds)
+        }
+        else {
+            guard let value = Double(description) else { return nil }
+            self = Time(value)
+        }
+    }
+    
     public var description: String {
-        if self < Time.nanosecond { return "\(picoseconds)ps" }
-        if self < Time.microsecond { return String(format: "%.3gns", Double(picoseconds) / 1e3) }
-        if self < Time.millisecond { return String(format: "%.3gµs", Double(picoseconds) / 1e6) }
-        if self < Time.second { return String(format: "%.3gms", Double(picoseconds) / 1e9) }
+        if self == .zero { return "0" }
+        if self < .nanosecond { return "\(picoseconds)ps" }
+        if self < .microsecond { return String(format: "%.3gns", Double(picoseconds) / 1e3) }
+        if self < .millisecond { return String(format: "%.3gµs", Double(picoseconds) / 1e6) }
+        if self < .second { return String(format: "%.3gms", Double(picoseconds) / 1e9) }
         return String(format: "%.3gs", seconds)
     }
 
@@ -89,15 +119,19 @@ public func -(left: Time, right: Time) -> Time {
 public func -=(left: inout Time, right: Time) {
     left.picoseconds -= right.picoseconds
 }
-public func *(left: Time, right: Time) -> TimeSquared {
-    return TimeSquared(value: left.picoseconds * right.picoseconds)
-}
 public func *<I: BinaryInteger>(left: I, right: Time) -> Time {
     return Time(picoseconds: BigInt(left) * right.picoseconds)
+}
+public func /<I: BinaryInteger>(left: Time, right: I) -> Time {
+    return Time(picoseconds: left.picoseconds / BigInt(right))
+}
+public func *(left: Time, right: Time) -> TimeSquared {
+    return TimeSquared(value: left.picoseconds * right.picoseconds)
 }
 public func *<I: BinaryInteger>(left: I, right: TimeSquared) -> TimeSquared {
     return TimeSquared(value: BigInt(left) * right.value)
 }
+
 public func +(left: TimeSquared, right: TimeSquared) -> TimeSquared {
     return TimeSquared(value: left.value + right.value)
 }

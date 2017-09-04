@@ -9,26 +9,29 @@
 import Foundation
 
 
-public final class TaskResults: Codable {
+@objc public final class TaskResults: NSObject, Codable {
     public typealias Bounds = BenchmarkResults.Bounds
     public typealias Band = TimeSample.Band
 
-    public private(set) var samples: [Int: TimeSample] = [:]
+    @objc dynamic public private(set) var samples: [Int: TimeSample] = [:]
 
-    public init() {}
+    public override init() {
+        super.init()
+    }
 
     public func addMeasurement(_ time: Time, forSize size: Int) {
         samples.value(for: size, default: TimeSample()).addMeasurement(time)
     }
 
-    public func bounds(for band: Band, amortized: Bool) -> Bounds? {
-        var bounds: Bounds? = nil
+    public func bounds(for band: Band, amortized: Bool) -> (size: Bounds<Int>, time: Bounds<Time>) {
+        var sizeBounds = Bounds<Int>()
+        var timeBounds = Bounds<Time>()
         for (size, sample) in samples {
-            guard let time = sample[band] else { continue }
-            let t = amortized ? time.seconds / TimeInterval(size) : time.seconds
-            let b = Bounds(size: size, time: t)
-            bounds = bounds?.union(with: b) ?? b
+            guard let t = sample[band] else { continue }
+            let time = amortized ? t / size : t
+            sizeBounds.insert(size)
+            timeBounds.insert(time)
         }
-        return bounds
+        return (sizeBounds, timeBounds)
     }
 }

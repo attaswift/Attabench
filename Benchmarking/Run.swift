@@ -6,7 +6,7 @@ import Foundation
 import OptionParser
 import BenchmarkIPC
 
-extension BenchmarkIPC.OutputFormat: OptionValue {}
+extension RunOptions.OutputFormat: OptionValue {}
 
 struct AttabenchOptions {
     var reportFile: String = ""
@@ -22,8 +22,8 @@ extension Benchmark {
     func run(tasks: [BenchmarkTask<Input>],
              sizes: [Int],
              output: OutputProtocol,
-             minDuration: TimeInterval?,
-             maxDuration: TimeInterval?,
+             minimumDuration: TimeInterval?,
+             maximumDuration: TimeInterval?,
              iterations: Int) throws {
         var sizes = sizes
         while !sizes.isEmpty {
@@ -42,8 +42,8 @@ extension Benchmark {
                         try output.progress(task: task.title, size: size, time: elapsed)
                         duration += elapsed
                         iteration += 1
-                    } while (duration < maxDuration ?? .infinity
-                        && (iteration < iterations || duration < minDuration ?? 0))
+                    } while (duration < maximumDuration ?? .infinity
+                        && (iteration < iterations || duration < minimumDuration ?? 0))
                     try output.finish(task: task.title, size: size, time: minimum!)
                     found = true
                 }
@@ -54,7 +54,8 @@ extension Benchmark {
         }
     }
 
-    func run(_ options: BenchmarkIPC.RunOptions, output: OutputProtocol? = nil) throws {
+    func run(_ options: RunOptions, output: OutputProtocol? = nil) throws {
+        print(options)
         var tasks: [BenchmarkTask<Input>] = try options.tasks.map { title in
             guard let task = self.tasks[title] else {
                 throw OptionError("Unknown task '\(title)'")
@@ -86,8 +87,8 @@ extension Benchmark {
         try self.run(tasks: tasks,
                  sizes: sizes,
                  output: output,
-                 minDuration: options.minDuration,
-                 maxDuration: options.maxDuration,
+                 minimumDuration: options.minimumDuration,
+                 maximumDuration: options.maximumDuration,
                  iterations: options.iterations)
     }
 
@@ -99,10 +100,10 @@ extension Benchmark {
         defer { outputHandle.closeFile() }
         let output = OutputFile(outputHandle)
         let input = FileHandle.standardInput.readDataToEndOfFile()
-        let command = try decoder.decode(BenchmarkIPC.Command.self, from: input)
+        let command = try decoder.decode(Command.self, from: input)
         switch command {
         case .list:
-            let list = try! JSONEncoder().encode(BenchmarkIPC.Report.list(tasks: self.taskTitles))
+            let list = try! JSONEncoder().encode(Report.list(tasks: self.taskTitles))
             try output.write(list + [0x0a])
             sleep(1)
         case .run(let options):
@@ -128,9 +129,9 @@ extension Benchmark {
                             .required(for: \.reportFile, metavariable: "<path>", docs: "Path to the report fifo")],
                          action: { options in
                             try self.attarun(reportFile: options.reportFile) }),
-                .command(for: BenchmarkIPC.RunOptions.self,
+                .command(for: RunOptions.self,
                          name: "run", docs: "Run selected benchmarks.",
-                         initial: { _ in BenchmarkIPC.RunOptions() },
+                         initial: { _ in RunOptions() },
                          options: [
                             .array(of: String.self, for: \.tasks,
                                    name: "tasks", metavariable: "<name>",
@@ -141,10 +142,10 @@ extension Benchmark {
                             .value(for: \.iterations,
                                    name: "iterations", metavariable: "<int>",
                                    docs: "Number of iterations to run (default: 1)"),
-                            .value(for: \.minDuration,
+                            .value(for: \.minimumDuration,
                                    name: "min-duration", metavariable: "<seconds>",
                                    docs: "Repeat each task for at least this amount of seconds (default: 0.0)"),
-                            .value(for: \.maxDuration,
+                            .value(for: \.maximumDuration,
                                    name: "max-duration", metavariable: "<seconds>",
                                    docs: "Stop repeating tasks after this amount of time (default: +infinity)"),
                             .value(for: \.outputFormat,

@@ -103,6 +103,7 @@ struct RawCurve {
     }
 }
 
+/// Contains a preprocessed copy of selected data from a bunch of benchmark results, according to given parameters.
 public struct BenchmarkChart {
     public typealias Bounds = BenchmarkResults.Bounds
     public typealias Band = TimeSample.Band
@@ -143,19 +144,17 @@ public struct BenchmarkChart {
 
     public let title: String
     public let tasks: [String]
-    public let results: BenchmarkResults
     public let options: Options
     private(set) var curves: [Curve] = []
     let sizeScale: ChartScale
     let timeScale: ChartScale
 
     public init(title: String,
-                results: BenchmarkResults,
+                results: [String: TaskResults],
                 tasks: [String],
                 options: Options) {
         self.title = title
         self.tasks = tasks
-        self.results = results
         self.options = options
 
         #if false
@@ -179,7 +178,7 @@ public struct BenchmarkChart {
         var rawCurves: [RawCurve] = []
         for task in tasks {
             var rawCurve = RawCurve(title: task)
-            if let taskResult = results.results[task] {
+            if let taskResult = results[task] {
                 for (size, sample) in taskResult.samples.sorted(by: { $0.key < $1.key }) {
                     for bi in BandIndex.all {
                         guard let band = options[bi] else { continue }

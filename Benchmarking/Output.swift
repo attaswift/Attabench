@@ -154,7 +154,7 @@ internal struct JSONOutput: OutputProtocol {
         self.encoder.nonConformingFloatEncodingStrategy = .throw
     }
     
-    private func send(_ report: BenchmarkIPC.Report) throws {
+    private func send(_ report: Report) throws {
         var data = try encoder.encode(report)
         data.append(0x0a) // newline
         try output.write(data)

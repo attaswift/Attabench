@@ -10,6 +10,7 @@
 		BB40F81B1F5C2AE700C5EB75 /* BenchmarkRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB40F81A1F5C2AE700C5EB75 /* BenchmarkRenderer.swift */; };
 		BB40F81D1F5C2D6600C5EB75 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB40F81C1F5C2D6600C5EB75 /* CoreGraphics.framework */; };
 		BB4F15801F409D36003C05C3 /* Complain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4F157F1F409D36003C05C3 /* Complain.swift */; };
+		BB61397A1F5DBB80005455D5 /* Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6139791F5DBB80005455D5 /* Bounds.swift */; };
 		BB65B0D91F59B998007EB717 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB888161F3FB0210072E0E2 /* BigInt.framework */; };
 		BB65B0DA1F59B9B5007EB717 /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
 		BB65B0F61F59BBA5007EB717 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */; };
@@ -30,6 +31,10 @@
 		BB855CCF1F5C041D008849E2 /* BenchmarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CCE1F5C041D008849E2 /* BenchmarkTheme.swift */; };
 		BB855CD01F5C1021008849E2 /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
 		BB855CD21F5C2436008849E2 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CD11F5C2436008849E2 /* ChartView.swift */; };
+		BB888E981F5D703400AB2652 /* RunOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB888E961F5D703400AB2652 /* RunOptionsViewController.swift */; };
+		BB888E991F5D703400AB2652 /* RunOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB888E971F5D703400AB2652 /* RunOptionsViewController.xib */; };
+		BB888E9B1F5D8BB000AB2652 /* TimeTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB888E9A1F5D8BB000AB2652 /* TimeTransformer.swift */; };
+		BB888E9D1F5DAC5000AB2652 /* Attaresult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */; };
 		BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DFE1E32384500505773 /* Benchmark.swift */; };
 		BBC93D1C1F5C3912002E3777 /* RateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */; };
 		BBC93D1F1F5C49B4002E3777 /* NSImage Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC93D1D1F5C49A1002E3777 /* NSImage Export.swift */; };
@@ -45,7 +50,6 @@
 		BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CC1F3F887A00014740 /* Timestamp.swift */; };
 		BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CA1F3F86EB00014740 /* TimeSample.swift */; };
 		BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0D1E32A35500505773 /* TaskResults.swift */; };
-		BBCA26FF1F59B8A400C6FB74 /* BenchmarkResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF83F9D1F5576BB006F61C5 /* BenchmarkResults.swift */; };
 		BBCC9F881F5ABE7300AE36DE /* BTree.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */; };
 		BBCC9F891F5ABE7300AE36DE /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */; };
 		BBCC9F8A1F5ABE7700AE36DE /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */; };
@@ -157,6 +161,7 @@
 		BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkRunner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB4F15611F409882003C05C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB4F157F1F409D36003C05C3 /* Complain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complain.swift; sourceTree = "<group>"; };
+		BB6139791F5DBB80005455D5 /* Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bounds.swift; sourceTree = "<group>"; };
 		BB65B0F31F59BBA4007EB717 /* Attabench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Attabench.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttabenchDocument.swift; sourceTree = "<group>"; };
@@ -176,6 +181,10 @@
 		BB855CCA1F5C03B8008849E2 /* TextParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextParams.swift; sourceTree = "<group>"; };
 		BB855CCE1F5C041D008849E2 /* BenchmarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkTheme.swift; sourceTree = "<group>"; };
 		BB855CD11F5C2436008849E2 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		BB888E961F5D703400AB2652 /* RunOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunOptionsViewController.swift; sourceTree = "<group>"; };
+		BB888E971F5D703400AB2652 /* RunOptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RunOptionsViewController.xib; sourceTree = "<group>"; };
+		BB888E9A1F5D8BB000AB2652 /* TimeTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTransformer.swift; sourceTree = "<group>"; };
+		BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attaresult.swift; sourceTree = "<group>"; };
 		BB8E0DD11E3237D900505773 /* Benchmarking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Benchmarking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8E0DD41E3237D900505773 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB8E0DF61E32383900505773 /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
@@ -221,7 +230,6 @@
 		BBF83F911F533ADD006F61C5 /* OptionParser.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = OptionParser.framework.dSYM; path = Carthage/Build/Mac/OptionParser.framework.dSYM; sourceTree = "<group>"; };
 		BBF83F921F533AE7006F61C5 /* OptionParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OptionParser.framework; path = Carthage/Build/Mac/OptionParser.framework; sourceTree = "<group>"; };
 		BBF83F991F546899006F61C5 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
-		BBF83F9D1F5576BB006F61C5 /* BenchmarkResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkResults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,6 +346,9 @@
 				BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */,
 				BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */,
 				BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */,
+				BB888E961F5D703400AB2652 /* RunOptionsViewController.swift */,
+				BB888E971F5D703400AB2652 /* RunOptionsViewController.xib */,
+				BB888E9A1F5D8BB000AB2652 /* TimeTransformer.swift */,
 				BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */,
 				BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */,
 				BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */,
@@ -431,7 +442,8 @@
 				BB9889CC1F3F887A00014740 /* Timestamp.swift */,
 				BB9889CA1F3F86EB00014740 /* TimeSample.swift */,
 				BB8E0E0D1E32A35500505773 /* TaskResults.swift */,
-				BBF83F9D1F5576BB006F61C5 /* BenchmarkResults.swift */,
+				BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */,
+				BB6139791F5DBB80005455D5 /* Bounds.swift */,
 				BBCA26F01F59B88E00C6FB74 /* Info.plist */,
 			);
 			path = BenchmarkResults;
@@ -671,6 +683,7 @@
 				BB65B0FD1F59BBA5007EB717 /* Assets.xcassets in Resources */,
 				BB65B0FB1F59BBA5007EB717 /* AttabenchDocument.xib in Resources */,
 				BB65B1001F59BBA5007EB717 /* MainMenu.xib in Resources */,
+				BB888E991F5D703400AB2652 /* RunOptionsViewController.xib in Resources */,
 				BBCC9FA91F5AD2D300AE36DE /* attabench.iconset in Resources */,
 				BBCC9FA81F5AD2D000AE36DE /* attaresult.iconset in Resources */,
 			);
@@ -731,7 +744,9 @@
 				BBCC9FBC1F5B00F400AE36DE /* TaskCellView.swift in Sources */,
 				BB65B0F61F59BBA5007EB717 /* AppDelegate.swift in Sources */,
 				BBC93D1C1F5C3912002E3777 /* RateLimiter.swift in Sources */,
+				BB888E9B1F5D8BB000AB2652 /* TimeTransformer.swift in Sources */,
 				BBCC9FAF1F5ADBEF00AE36DE /* DocumentWindowController.swift in Sources */,
+				BB888E981F5D703400AB2652 /* RunOptionsViewController.swift in Sources */,
 				BBCC9FB11F5AE11100AE36DE /* ColoredView.swift in Sources */,
 				BBCC9FB81F5AFA9A00AE36DE /* TaskModel.swift in Sources */,
 			);
@@ -781,10 +796,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB61397A1F5DBB80005455D5 /* Bounds.swift in Sources */,
+				BB888E9D1F5DAC5000AB2652 /* Attaresult.swift in Sources */,
 				BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */,
 				BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */,
 				BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */,
-				BBCA26FF1F59B8A400C6FB74 /* BenchmarkResults.swift in Sources */,
 				BBCA26FB1F59B8A400C6FB74 /* Time.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

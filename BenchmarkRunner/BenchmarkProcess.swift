@@ -7,9 +7,6 @@ import Darwin
 import BenchmarkIPC
 import BenchmarkResults
 
-public typealias BenchmarkCommand = BenchmarkIPC.Command
-public typealias BenchmarkRunOptions = BenchmarkIPC.RunOptions
-
 public protocol BenchmarkDelegate {
     func benchmark(_ benchmark: BenchmarkProcess, didReceiveListOfTasks tasks: [String])
     func benchmark(_ benchmark: BenchmarkProcess, willMeasureTask task: String, atSize size: Int)
@@ -86,7 +83,7 @@ public class BenchmarkProcess {
     var killTimer: DispatchSourceTimer? = nil
     var hasFailed = false
 
-    public init(url: URL, command: BenchmarkCommand, delegate: BenchmarkDelegate, on delegateQueue: DispatchQueue) throws {
+    public init(url: URL, command: Command, delegate: BenchmarkDelegate, on delegateQueue: DispatchQueue) throws {
         let input = try JSONEncoder().encode(command)
         self.url = url
         self.delegate = delegate
