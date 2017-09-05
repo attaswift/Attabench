@@ -166,9 +166,6 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
             self.refreshChart.now()
         }
 
-        self.glue.connector.connect(model.map{$0.selectedSizes.tick}) { [unowned self] _ in
-            self.refreshSizePopUpState()
-        }
         self.glue.connector.connect(batchCheckboxState.futureValues) { [unowned self] state in
             self.batchCheckbox?.state = state
         }
@@ -207,8 +204,8 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
 
         self.iterationsField!.glue.value <-- model.map{$0.iterations}
         self.iterationsStepper!.glue.intValue <-- model.map{$0.iterations}
-        self.minimumDurationField!.glue.value <-- model.map{$0.minimumDuration}
-        self.maximumDurationField!.glue.value <-- model.map{$0.maximumDuration}
+        self.minimumDurationField!.glue.value <-- model.map{$0.durationRange.lowerBound}
+        self.maximumDurationField!.glue.value <-- model.map{$0.durationRange.upperBound}
 
         self.amortizedCheckbox!.glue.state <-- model.map{$0.amortizedTime}
         self.logarithmicSizeCheckbox!.glue.state <-- model.map{$0.logarithmicSizeScale}
@@ -243,12 +240,21 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
             model: self.theme,
             values: BenchmarkTheme.Predefined.themes.map { (label: $0.name, value: $0) })
 
+        let sizeChoices: [(label: String, value: Int)]
+            = (0 ... Attaresult.largestPossibleSizeScale).map { ((1 << $0).sizeLabel, $0) }
+
+        self.minimumSizeButton!.glue <-- NSPopUpButton.Choices<Int>(
+            model: model.map{$0.sizeScaleRange.lowerBound},
+            values: sizeChoices.map { (label: "\($0.0) ≤", value: $0.1) })
+        
+        self.maximumSizeButton!.glue <-- NSPopUpButton.Choices<Int>(
+            model: model.map{$0.sizeScaleRange.upperBound},
+            values: sizeChoices.map { (label: "≤ \($0.0)", value: $0.1) })
+
         refreshRunButton()
-        refreshSizePopUpMenus()
-        refreshSizePopUpState()
         refreshChart.now()
     }
-
+    
     enum CurveBandValues: Equatable {
         case none
         case average
@@ -709,8 +715,8 @@ extension AttabenchDocument {
         let options = RunOptions(tasks: tasks,
                                  sizes: sizes,
                                  iterations: m.iterations.value,
-                                 minimumDuration: m.minimumDuration.value.seconds,
-                                 maximumDuration: m.maximumDuration.value.seconds)
+                                 minimumDuration: m.durationRange.value.lowerBound.seconds,
+                                 maximumDuration: m.durationRange.value.upperBound.seconds)
         do {
             self.state = .running(try BenchmarkProcess(url: source, command: .run(options), delegate: self, on: .main))
         }
@@ -735,93 +741,20 @@ extension AttabenchDocument {
 extension AttabenchDocument {
     //MARK: Size selection
 
-    func refreshSizePopUpMenus() {
-        if let minButton = self.minimumSizeButton {
-            let minSizeMenu = NSMenu()
-            for i in 0 ... Attaresult.largestPossibleSizeScale {
-                let item = NSMenuItem(title: "\((1 << i).sizeLabel)≤",
-                    action: #selector(AttabenchDocument.didSelectMinimumSize(_:)),
-                    keyEquivalent: "")
-                item.tag = i
-                minSizeMenu.addItem(item)
-            }
-            minButton.menu = minSizeMenu
-        }
-
-        if let maxButton = self.maximumSizeButton {
-            let maxSizeMenu = NSMenu()
-            for i in 0 ... Attaresult.largestPossibleSizeScale {
-                let item = NSMenuItem(title: "≤\((1 << i).sizeLabel)",
-                    action: #selector(AttabenchDocument.didSelectMaximumSize(_:)),
-                    keyEquivalent: "")
-                item.tag = i
-                maxSizeMenu.addItem(item)
-            }
-            maxButton.menu = maxSizeMenu
-        }
-    }
-
-    func refreshSizePopUpState() {
-        if let button = self.minimumSizeButton {
-            let scale = m.minimumSizeScale.value
-            let item = button.menu?.items.first(where: { $0.tag == scale })
-            if button.selectedItem !== item {
-                button.select(item)
-            }
-        }
-        if let button = self.maximumSizeButton {
-            let maxScale = m.maximumSizeScale.value
-            let item = button.menu?.items.first(where: { $0.tag == maxScale })
-            if button.selectedItem !== item {
-                button.select(item)
-            }
-        }
-    }
-
-    @IBAction func didSelectMinimumSize(_ sender: NSMenuItem) {
-        let scale = sender.tag
-        m.minimumSizeScale.value = scale
-        if m.maximumSizeScale.value < scale {
-            m.maximumSizeScale.value = scale
-        }
-    }
-
-    @IBAction func didSelectMaximumSize(_ sender: NSMenuItem) {
-        let scale = sender.tag
-        m.maximumSizeScale.value = scale
-        if m.minimumSizeScale.value > scale {
-            m.minimumSizeScale.value = scale
-        }
-    }
-
     @IBAction func increaseMinScale(_ sender: AnyObject) {
-        let v = m.minimumSizeScale.value + 1
-        guard v <= Attaresult.largestPossibleSizeScale else { return }
-        m.minimumSizeScale.value = v
-        if m.maximumSizeScale.value < v {
-            m.maximumSizeScale.value = v
-        }
+        m.sizeScaleRange.lowerBound.value += 1
     }
 
     @IBAction func decreaseMinScale(_ sender: AnyObject) {
-        let v = m.minimumSizeScale.value - 1
-        guard v >= 0 else { return }
-        m.minimumSizeScale.value = v
+        m.sizeScaleRange.lowerBound.value -= 1
     }
 
     @IBAction func increaseMaxScale(_ sender: AnyObject) {
-        let v = m.maximumSizeScale.value + 1
-        guard v <= Attaresult.largestPossibleSizeScale else { return }
-        m.maximumSizeScale.value = v
+        m.sizeScaleRange.upperBound.value += 1
     }
 
     @IBAction func decreaseMaxScale(_ sender: AnyObject) {
-        let v = m.maximumSizeScale.value - 1
-        guard v >= 0 else { return }
-        m.maximumSizeScale.value = v
-        if m.minimumSizeScale.value > v {
-            m.minimumSizeScale.value = v
-        }
+        m.sizeScaleRange.upperBound.value -= 1
     }
 }
 
@@ -838,19 +771,33 @@ extension AttabenchDocument {
         options.logarithmicSize = m.logarithmicSizeScale.value
         options.logarithmicTime = m.logarithmicTimeScale.value
 
+        var sizeBounds = Bounds<Int>()
         if m.highlightSelectedSizeRange.value {
-            options.displaySizeRange = m.selectedSizeRange.value
+            let r = m.sizeScaleRange.value
+            sizeBounds.formUnion(with: Bounds((1 << r.lowerBound) ... (1 << r.upperBound)))
         }
-        options.displayAllMeasuredSizes = m.displayAllMeasuredSizes.value
-        options.displayAllMeasuredTimes = m.displayAllMeasuredTimes.value
+        if m.displayIncludeSizeScaleRange.value {
+            let r = m.displaySizeScaleRange.value
+            sizeBounds.formUnion(with: Bounds((1 << r.lowerBound) ... (1 << r.upperBound)))
+        }
+        options.displaySizeRange = sizeBounds.range
+        options.displayAllMeasuredSizes = m.displayIncludeAllMeasuredSizes.value
+
+        var timeBounds = Bounds<Time>()
+        if m.displayIncludeTimeRange.value {
+            let r = m.displayTimeRange.value
+            timeBounds.formUnion(with: Bounds(r))
+        }
+        if let r = timeBounds.range {
+            options.displayTimeRange = r.lowerBound.seconds ... r.upperBound.seconds
+        }
+        options.displayAllMeasuredTimes = m.displayIncludeAllMeasuredTimes.value
 
         options.topBand = m.topBand.value
         options.centerBand = m.centerBand.value
         options.bottomBand = m.bottomBand.value
 
-        chartView.chart = BenchmarkChart(title: "",
-                                         tasks: tasks,
-                                         options: options)
+        chartView.chart = BenchmarkChart(title: "", tasks: tasks, options: options)
     }
 }
 

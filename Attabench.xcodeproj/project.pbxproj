@@ -34,6 +34,7 @@
 		BB855CD21F5C2436008849E2 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CD11F5C2436008849E2 /* ChartView.swift */; };
 		BB888E9D1F5DAC5000AB2652 /* Attaresult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */; };
 		BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DFE1E32384500505773 /* Benchmark.swift */; };
+		BBB482511F5F0ABE00A6C9DD /* ClosedRangeVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4824D1F5F0A5D00A6C9DD /* ClosedRangeVariable.swift */; };
 		BBC93D1C1F5C3912002E3777 /* RateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */; };
 		BBC93D1F1F5C49B4002E3777 /* NSImage Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC93D1D1F5C49A1002E3777 /* NSImage Export.swift */; };
 		BBCA26951F576B5500C6FB74 /* CommandLineProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA26941F576B5500C6FB74 /* CommandLineProcess.swift */; };
@@ -198,6 +199,7 @@
 		BB9889CC1F3F887A00014740 /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		BB9A6C671E4B7F4E0051BCDB /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		BBABCDD01F3DDDFF009CA8BC /* BigInt.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BigInt.framework.dSYM; path = Carthage/Build/Mac/BigInt.framework.dSYM; sourceTree = "<group>"; };
+		BBB4824D1F5F0A5D00A6C9DD /* ClosedRangeVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosedRangeVariable.swift; sourceTree = "<group>"; };
 		BBB888161F3FB0210072E0E2 /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = Carthage/Build/Mac/BigInt.framework; sourceTree = "<group>"; };
 		BBB8881A1F3FBE160072E0E2 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateLimiter.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				BB9889CA1F3F86EB00014740 /* TimeSample.swift */,
 				BB8E0E0D1E32A35500505773 /* TaskResults.swift */,
 				BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */,
+				BBB4824D1F5F0A5D00A6C9DD /* ClosedRangeVariable.swift */,
 				BB5B02D81F5E2A4C0084D86B /* Task.swift */,
 				BB6139791F5DBB80005455D5 /* Bounds.swift */,
 				BBCA26F01F59B88E00C6FB74 /* Info.plist */,
@@ -632,6 +635,7 @@
 					};
 					BBCA26EC1F59B88E00C6FB74 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -785,6 +789,7 @@
 			files = (
 				BB61397A1F5DBB80005455D5 /* Bounds.swift in Sources */,
 				BB888E9D1F5DAC5000AB2652 /* Attaresult.swift in Sources */,
+				BBB482511F5F0ABE00A6C9DD /* ClosedRangeVariable.swift in Sources */,
 				BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */,
 				BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */,
 				BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */,
@@ -2056,6 +2061,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
@@ -2078,6 +2084,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkModel;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

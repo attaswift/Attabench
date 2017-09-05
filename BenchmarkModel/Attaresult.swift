@@ -43,19 +43,23 @@ public class Attaresult: NSObject, Codable {
 
     // Run options
 
-    public let iterations: IntVariable = 3
-    public let minimumDuration: Variable<Time> = .init(0.01)
-    public let maximumDuration: Variable<Time> = .init(10.0)
-
     public static let largestPossibleSizeScale: Int = 32
-    public let minimumSizeScale: IntVariable = 0
-    public let maximumSizeScale: IntVariable = 20
+    public static let sizeScaleLimits: ClosedRange<Int> = 0 ... 32
+
+    public static let timeScaleLimits: ClosedRange<Time>
+        = Time(picoseconds: 1) ... Time(1_000_000.0)
+
+
+    public let iterations: IntVariable = 3
+    public let durationRange = ClosedRangeVariable<Time>(0.01 ... 10.0, limits: Attaresult.timeScaleLimits)
+
+    public let sizeScaleRange = ClosedRangeVariable<Int>(0 ... 20, limits: Attaresult.sizeScaleLimits)
     public let sizeSubdivisions: IntVariable = 8
 
     public private(set) lazy var selectedSizes: AnyObservableValue<Set<Int>>
-        = self.sizeSubdivisions.combined(self.minimumSizeScale, self.maximumSizeScale) { subs, start, end in
-            let lower = min(Attaresult.largestPossibleSizeScale, max(0, min(start, end)))
-            let upper = min(Attaresult.largestPossibleSizeScale, max(0, max(start, end)))
+        = self.sizeSubdivisions.combined(self.sizeScaleRange) { subs, range in
+            let lower = max(0, min(Attaresult.largestPossibleSizeScale, range.lowerBound))
+            let upper = max(0, min(Attaresult.largestPossibleSizeScale, range.upperBound))
             var sizes: Set<Int> = []
             for i in subs * lower ... subs * upper {
                 let size = exp2(Double(i) / Double(subs))
@@ -64,17 +68,10 @@ public class Attaresult: NSObject, Codable {
             return sizes
     }
 
-    public private(set) lazy var selectedSizeRange: AnyObservableValue<ClosedRange<Int>>
-        = self.minimumSizeScale.combined(self.maximumSizeScale) { min, max in
-            (1 << Swift.min(min, max)) ... (1 << Swift.max(min, max))
-    }
-
     public private(set) lazy var runOptionsTick: MergedSource<Void>
         = [iterations.tick,
-           minimumDuration.tick,
-           maximumDuration.tick,
-           minimumSizeScale.tick,
-           maximumSizeScale.tick,
+           durationRange.tick,
+           sizeScaleRange.tick,
            sizeSubdivisions.tick].gather()
 
     // Chart options
@@ -89,11 +86,13 @@ public class Attaresult: NSObject, Codable {
 
     public let highlightSelectedSizeRange: BoolVariable = true
 
-    public let displaySizeRange: OptionalVariable<ClosedRange<Int>> = nil
-    public let displayAllMeasuredSizes: BoolVariable = true
+    public let displaySizeScaleRange = ClosedRangeVariable<Int>(0 ... 20, limits: Attaresult.sizeScaleLimits)
+    public let displayIncludeSizeScaleRange: BoolVariable = false
+    public let displayIncludeAllMeasuredSizes: BoolVariable = true
 
-    public let displayTimeRange: OptionalVariable<ClosedRange<Time>> = nil
-    public let displayAllMeasuredTimes: BoolVariable = true
+    public let displayTimeRange = ClosedRangeVariable<Time>(Time.nanosecond ... Time.second, limits: Attaresult.timeScaleLimits)
+    public let displayIncludeTimeRange: BoolVariable = false
+    public let displayIncludeAllMeasuredTimes: BoolVariable = true
 
     public let themeName: StringVariable = ""
     public let displayRefreshInterval: Variable<Time> = .init(5.0)
@@ -107,10 +106,12 @@ public class Attaresult: NSObject, Codable {
         centerBand.tick,
         bottomBand.tick,
         highlightSelectedSizeRange.tick,
-        displaySizeRange.tick,
-        displayAllMeasuredSizes.tick,
+        displaySizeScaleRange.tick,
+        displayIncludeSizeScaleRange.tick,
+        displayIncludeAllMeasuredSizes.tick,
         displayTimeRange.tick,
-        displayAllMeasuredTimes.tick,
+        displayIncludeTimeRange.tick,
+        displayIncludeAllMeasuredTimes.tick,
         themeName.tick,
         displayRefreshInterval.tick].gather()
 
@@ -140,12 +141,14 @@ public class Attaresult: NSObject, Codable {
         case centerBand
         case bottomBand
         case highlightSelectedSizeRange
-        case displaySizeRangeMin
-        case displaySizeRangeMax
-        case displayAllMeasuredSizes
+        case displaySizeScaleRangeMin
+        case displaySizeScaleRangeMax
+        case displayIncludeSizeScaleRange
+        case displayIncludeAllMeasuredSizes
         case displayTimeRangeMin
         case displayTimeRangeMax
-        case displayAllMeasuredTimes
+        case displayIncludeTimeRange
+        case displayIncludeAllMeasuredTimes
         case themeName
         case displayRefreshInterval
     }
@@ -157,10 +160,10 @@ public class Attaresult: NSObject, Codable {
         }
         try container.encode(self.tasks.value, forKey: .tasks)
         try container.encode(self.iterations.value, forKey: .iterations)
-        try container.encode(self.minimumDuration.value.seconds, forKey: .minimumDuration)
-        try container.encode(self.maximumDuration.value.seconds, forKey: .maximumDuration)
-        try container.encode(self.minimumSizeScale.value, forKey: .minimumSizeScale)
-        try container.encode(self.maximumSizeScale.value, forKey: .maximumSizeScale)
+        try container.encode(self.durationRange.value.lowerBound.seconds, forKey: .minimumDuration)
+        try container.encode(self.durationRange.value.lowerBound.seconds, forKey: .maximumDuration)
+        try container.encode(self.sizeScaleRange.value.lowerBound, forKey: .minimumSizeScale)
+        try container.encode(self.sizeScaleRange.value.upperBound, forKey: .maximumSizeScale)
         try container.encode(self.sizeSubdivisions.value, forKey: .sizeSubdivisions)
         try container.encode(self.amortizedTime.value, forKey: .amortizedTime)
         try container.encode(self.logarithmicSizeScale.value, forKey: .logarithmicSizeScale)
@@ -169,16 +172,17 @@ public class Attaresult: NSObject, Codable {
         try container.encode(self.centerBand.value, forKey: .centerBand)
         try container.encode(self.bottomBand.value, forKey: .bottomBand)
         try container.encode(self.highlightSelectedSizeRange.value, forKey: .highlightSelectedSizeRange)
-        if let range = self.displaySizeRange.value {
-            try container.encode(range.lowerBound, forKey: .displaySizeRangeMin)
-            try container.encode(range.upperBound, forKey: .displaySizeRangeMax)
-        }
-        try container.encode(self.displayAllMeasuredSizes.value, forKey: .displayAllMeasuredSizes)
-        if let range = self.displayTimeRange.value {
-            try container.encode(range.lowerBound, forKey: .displayTimeRangeMin)
-            try container.encode(range.upperBound, forKey: .displayTimeRangeMax)
-        }
-        try container.encode(self.displayAllMeasuredTimes.value, forKey: .displayAllMeasuredTimes)
+
+        try container.encode(self.displaySizeScaleRange.value.lowerBound, forKey: .displaySizeScaleRangeMin)
+        try container.encode(self.displaySizeScaleRange.value.upperBound, forKey: .displaySizeScaleRangeMax)
+        try container.encode(self.displayIncludeSizeScaleRange.value, forKey: .displayIncludeSizeScaleRange)
+        try container.encode(self.displayIncludeAllMeasuredSizes.value, forKey: .displayIncludeAllMeasuredSizes)
+
+        try container.encode(self.displayTimeRange.value.lowerBound.seconds, forKey: .displayTimeRangeMin)
+        try container.encode(self.displayTimeRange.value.upperBound.seconds, forKey: .displayTimeRangeMax)
+        try container.encode(self.displayIncludeTimeRange.value, forKey: .displayIncludeTimeRange)
+        try container.encode(self.displayIncludeAllMeasuredTimes.value, forKey: .displayIncludeAllMeasuredTimes)
+
         try container.encode(self.themeName.value, forKey: .themeName)
         try container.encode(self.displayRefreshInterval.value, forKey: .displayRefreshInterval)
     }
@@ -195,21 +199,19 @@ public class Attaresult: NSObject, Codable {
         }
 
         self.tasks.value = try container.decode([Task].self, forKey: .tasks)
-
+        
         if let v = try container.decodeIfPresent(Int.self, forKey: .iterations) {
             self.iterations.value = v
         }
-        if let v = try container.decodeIfPresent(Double.self, forKey: .minimumDuration) {
-            self.minimumDuration.value = Time(v)
+        if let lower = try container.decodeIfPresent(Double.self, forKey: .minimumDuration),
+            let upper = try container.decodeIfPresent(Double.self, forKey: .maximumDuration) {
+            self.durationRange.value = (Time(Swift.min(lower, upper)) ... Time(Swift.max(lower, upper)))
+                .clamped(to: Attaresult.timeScaleLimits)
         }
-        if let v = try container.decodeIfPresent(Double.self, forKey: .maximumDuration) {
-            self.maximumDuration.value = Time(v)
-        }
-        if let v = try container.decodeIfPresent(Int.self, forKey: .minimumSizeScale) {
-            self.minimumSizeScale.value = v
-        }
-        if let v = try container.decodeIfPresent(Int.self, forKey: .maximumSizeScale) {
-            self.maximumSizeScale.value = v
+        if let lower = try container.decodeIfPresent(Int.self, forKey: .minimumSizeScale),
+            let upper = try container.decodeIfPresent(Int.self, forKey: .maximumSizeScale) {
+            self.sizeScaleRange.value = (Swift.min(lower, upper) ... Swift.max(lower, upper))
+                .clamped(to: Attaresult.sizeScaleLimits)
         }
         if let v = try container.decodeIfPresent(Int.self, forKey: .sizeSubdivisions) {
             self.sizeSubdivisions.value = v
@@ -237,27 +239,22 @@ public class Attaresult: NSObject, Codable {
             self.highlightSelectedSizeRange.value = v
         }
 
-        if let min = try container.decodeIfPresent(Int.self, forKey: .displaySizeRangeMin),
-            let max = try container.decodeIfPresent(Int.self, forKey: .displaySizeRangeMax) {
-            self.displaySizeRange.value = min ... max
+        if let lower = try container.decodeIfPresent(Int.self, forKey: .displaySizeScaleRangeMin),
+            let upper = try container.decodeIfPresent(Int.self, forKey: .displaySizeScaleRangeMax) {
+            self.displaySizeScaleRange.value = (Swift.min(lower, upper) ... Swift.max(lower, upper))
+                .clamped(to: Attaresult.sizeScaleLimits)
         }
-        else {
-            self.displaySizeRange.value = nil
-        }
+        self.displayIncludeSizeScaleRange.value = try container.decodeIfPresent(Bool.self, forKey: .displayIncludeSizeScaleRange) ?? false
+        self.displayIncludeAllMeasuredSizes.value = try container.decodeIfPresent(Bool.self, forKey: .displayIncludeAllMeasuredSizes) ?? true
 
-        if let v = try container.decodeIfPresent(Bool.self, forKey: .displayAllMeasuredSizes) {
-            self.displayAllMeasuredSizes.value = v
+        if let lower = try container.decodeIfPresent(Time.self, forKey: .displayTimeRangeMin),
+            let upper = try container.decodeIfPresent(Time.self, forKey: .displayTimeRangeMax) {
+            self.displayTimeRange.value = (Swift.min(lower, upper) ... Swift.max(lower, upper))
+                .clamped(to: Attaresult.timeScaleLimits)
         }
-        if let min = try container.decodeIfPresent(Time.self, forKey: .displayTimeRangeMin),
-            let max = try container.decodeIfPresent(Time.self, forKey: .displayTimeRangeMax) {
-            self.displayTimeRange.value = min ... max
-        }
-        else {
-            self.displayTimeRange.value = nil
-        }
-        if let v = try container.decodeIfPresent(Bool.self, forKey: .displayAllMeasuredTimes) {
-            self.displayAllMeasuredTimes.value = v
-        }
+        self.displayIncludeTimeRange.value = try container.decodeIfPresent(Bool.self, forKey: .displayIncludeTimeRange) ?? false
+        self.displayIncludeAllMeasuredTimes.value = try container.decodeIfPresent(Bool.self, forKey: .displayIncludeAllMeasuredTimes) ?? true
+
         if let v = try container.decodeIfPresent(String.self, forKey: .themeName) {
             self.themeName.value = v
         }
