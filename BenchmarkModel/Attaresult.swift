@@ -65,7 +65,9 @@ public class Attaresult: NSObject, Codable {
     }
 
     public private(set) lazy var selectedSizeRange: AnyObservableValue<ClosedRange<Int>>
-        = self.minimumSizeScale.combined(self.maximumSizeScale) { min, max in (1 << min) ... (1 << max) }
+        = self.minimumSizeScale.combined(self.maximumSizeScale) { min, max in
+            (1 << Swift.min(min, max)) ... (1 << Swift.max(min, max))
+    }
 
     public private(set) lazy var runOptionsTick: MergedSource<Void>
         = [iterations.tick,
