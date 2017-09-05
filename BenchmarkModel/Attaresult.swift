@@ -161,7 +161,7 @@ public class Attaresult: NSObject, Codable {
         try container.encode(self.tasks.value, forKey: .tasks)
         try container.encode(self.iterations.value, forKey: .iterations)
         try container.encode(self.durationRange.value.lowerBound.seconds, forKey: .minimumDuration)
-        try container.encode(self.durationRange.value.lowerBound.seconds, forKey: .maximumDuration)
+        try container.encode(self.durationRange.value.upperBound.seconds, forKey: .maximumDuration)
         try container.encode(self.sizeScaleRange.value.lowerBound, forKey: .minimumSizeScale)
         try container.encode(self.sizeScaleRange.value.upperBound, forKey: .maximumSizeScale)
         try container.encode(self.sizeSubdivisions.value, forKey: .sizeSubdivisions)
@@ -247,9 +247,9 @@ public class Attaresult: NSObject, Codable {
         self.displayIncludeSizeScaleRange.value = try container.decodeIfPresent(Bool.self, forKey: .displayIncludeSizeScaleRange) ?? false
         self.displayIncludeAllMeasuredSizes.value = try container.decodeIfPresent(Bool.self, forKey: .displayIncludeAllMeasuredSizes) ?? true
 
-        if let lower = try container.decodeIfPresent(Time.self, forKey: .displayTimeRangeMin),
-            let upper = try container.decodeIfPresent(Time.self, forKey: .displayTimeRangeMax) {
-            self.displayTimeRange.value = (Swift.min(lower, upper) ... Swift.max(lower, upper))
+        if let lower = try container.decodeIfPresent(Double.self, forKey: .displayTimeRangeMin),
+            let upper = try container.decodeIfPresent(Double.self, forKey: .displayTimeRangeMax) {
+            self.displayTimeRange.value = (Time(Swift.min(lower, upper)) ... Time(Swift.max(lower, upper)))
                 .clamped(to: Attaresult.timeScaleLimits)
         }
         self.displayIncludeTimeRange.value = try container.decodeIfPresent(Bool.self, forKey: .displayIncludeTimeRange) ?? false
