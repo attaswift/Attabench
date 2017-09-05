@@ -133,10 +133,11 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     @IBOutlet weak var showLeftPaneButton: NSButton?
     @IBOutlet weak var showConsoleButton: NSButton?
     @IBOutlet weak var statusLabel: StatusLabel?
+    @IBOutlet weak var showRightPaneButton: NSButton?
     @IBOutlet weak var consolePane: NSView?
     @IBOutlet weak var consoleTextView: NSTextView?
 
-    @IBOutlet weak var righPane: ColoredView?
+    @IBOutlet weak var rightPane: ColoredView?
     @IBOutlet weak var amortizedCheckbox: NSButton?
     @IBOutlet weak var logarithmicSizeCheckbox: NSButton?
     @IBOutlet weak var logarithmicTimeCheckbox: NSButton?
@@ -802,8 +803,13 @@ extension AttabenchDocument {
 }
 
 extension AttabenchDocument: NSSplitViewDelegate {
-    @IBAction func shoHideLeftPane(_ sender: Any) {
+    @IBAction func showHideLeftPane(_ sender: Any) {
         guard let pane = self.leftPane else { return }
+        pane.isHidden = !pane.isHidden
+    }
+
+    @IBAction func showHideRightPane(_ sender: Any) {
+        guard let pane = self.rightPane else { return }
         pane.isHidden = !pane.isHidden
     }
 
