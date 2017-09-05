@@ -256,7 +256,7 @@
                                                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YNd-km-Uqr">
                                                         <rect key="frame" x="189" y="61" width="15" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="1000" id="Ysv-4K-BFd"/>
+                                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="1" maxValue="1000" doubleValue="1" id="Ysv-4K-BFd"/>
                                                     </stepper>
                                                 </subviews>
                                             </customView>

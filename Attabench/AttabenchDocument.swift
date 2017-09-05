@@ -199,14 +199,15 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         self.chartView!.documentBasename = self.displayName
         self.batchCheckbox.state = self.batchCheckboxState.value
 
-        self.iterationsField!.glue <-- model.map{$0.iterations}
-        self.minimumDurationField!.glue <-- model.map{$0.minimumDuration}
-        self.maximumDurationField!.glue <-- model.map{$0.maximumDuration}
+        self.iterationsField!.glue.value <-- model.map{$0.iterations}
+        self.iterationsStepper!.glue.intValue <-- model.map{$0.iterations}
+        self.minimumDurationField!.glue.value <-- model.map{$0.minimumDuration}
+        self.maximumDurationField!.glue.value <-- model.map{$0.maximumDuration}
 
-        self.amortizedCheckbox!.glue <-- model.map{$0.amortizedTime}
-        self.logarithmicSizeCheckbox!.glue <-- model.map{$0.logarithmicSizeScale}
-        self.logarithmicTimeCheckbox!.glue <-- model.map{$0.logarithmicTimeScale}
-        self.displayRefreshIntervalField!.glue <-- model.map{$0.displayRefreshInterval}
+        self.amortizedCheckbox!.glue.state <-- model.map{$0.amortizedTime}
+        self.logarithmicSizeCheckbox!.glue.state <-- model.map{$0.logarithmicSizeScale}
+        self.logarithmicTimeCheckbox!.glue.state <-- model.map{$0.logarithmicTimeScale}
+        self.displayRefreshIntervalField!.glue.value <-- model.map{$0.displayRefreshInterval}
 
         refreshRunButton()
         refreshSizePopUpMenus()
