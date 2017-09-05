@@ -3,19 +3,19 @@
     "pins": [
       {
         "package": "BTree",
-        "repositoryURL": "https://github.com/lorentey/BTree",
+        "repositoryURL": "https://github.com/attaswift/BTree",
         "state": {
           "branch": "5.x",
-          "revision": "5e16b7f6323e08644468796aace80b1f1d29d261",
+          "revision": "9e34b5311b0d44846d91245b8361a42d7e06275a",
           "version": null
         }
       },
       {
         "package": "BigInt",
-        "repositoryURL": "https://github.com/lorentey/BigInt",
+        "repositoryURL": "https://github.com/attaswift/BigInt",
         "state": {
           "branch": "swift4",
-          "revision": "193928e6324bb883ba30499d2c3eeee98c27d151",
+          "revision": "b4bfe356e9bd76c59e0781d8584c495ab348b1f6",
           "version": null
         }
       },
@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/attaswift/GlueKit",
         "state": {
           "branch": "master",
-          "revision": "4dddf130aa754ec1e0b2d66828ce0753bbe6814f",
+          "revision": "3b29189d183d1f00b1ed40f2371f8a8a944483bb",
           "version": null
         }
       },
@@ -39,10 +39,10 @@
       },
       {
         "package": "SipHash",
-        "repositoryURL": "https://github.com/lorentey/SipHash",
+        "repositoryURL": "https://github.com/attaswift/SipHash",
         "state": {
           "branch": "swift4",
-          "revision": "4aeb517b8c7f6773d21bb6441533d0e69666e93f",
+          "revision": "059de25c8d7eccc2a7b8e6a98356f0016d3549bc",
           "version": null
         }
       }
