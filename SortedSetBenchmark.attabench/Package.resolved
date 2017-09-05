@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "Attabench",
-        "repositoryURL": "https://github.com/lorentey/Attabench",
-        "state": {
-          "branch": "swift4",
-          "revision": "8f6b26788422770c90bc6e1ba24366cb97c3fc7e",
-          "version": null
-        }
-      },
-      {
         "package": "BTree",
         "repositoryURL": "https://github.com/lorentey/BTree",
         "state": {
@@ -25,6 +16,15 @@
         "state": {
           "branch": "swift4",
           "revision": "974b11ce5a4ac2235c69e3192d98d47fe01b4462",
+          "version": null
+        }
+      },
+      {
+        "package": "GlueKit",
+        "repositoryURL": "https://github.com/attaswift/GlueKit",
+        "state": {
+          "branch": "master",
+          "revision": "c0563680f28193ff859d82f3eef3a5bf9350bd51",
           "version": null
         }
       },

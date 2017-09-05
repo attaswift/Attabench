@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "GlueKit",
+        "repositoryURL": "https://github.com/attaswift/GlueKit",
+        "state": {
+          "branch": "master",
+          "revision": "4dddf130aa754ec1e0b2d66828ce0753bbe6814f",
+          "version": null
+        }
+      },
+      {
         "package": "OptionParser",
         "repositoryURL": "https://github.com/attaswift/OptionParser",
         "state": {

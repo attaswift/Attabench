@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import BenchmarkResults
+import BenchmarkModel
 
 func min<C: Comparable>(_ a: C?, _ b: C?) -> C? {
     switch (a, b) {
@@ -105,7 +105,7 @@ struct RawCurve {
 
 /// Contains a preprocessed copy of selected data from a bunch of benchmark results, according to given parameters.
 public struct BenchmarkChart {
-    public typealias Bounds = BenchmarkResults.Bounds
+    public typealias Bounds = BenchmarkModel.Bounds
     public typealias Band = TimeSample.Band
 
     public struct Options {
@@ -116,11 +116,11 @@ public struct BenchmarkChart {
         public var centerBand: Band? = .average
         public var bottomBand: Band? = nil
 
-        public var sizeRange: ClosedRange<Int>? = nil
-        public var alsoIncludeMeasuredSizes = true
+        public var displaySizeRange: ClosedRange<Int>? = nil
+        public var displayAllMeasuredSizes = true
 
-        public var timeRange: ClosedRange<TimeInterval>? = nil
-        public var alsoIncludeMeasuredTimes = true
+        public var displayTimeRange: ClosedRange<TimeInterval>? = nil
+        public var displayAllMeasuredTimes = true
 
         public init() {}
         
@@ -150,11 +150,10 @@ public struct BenchmarkChart {
     let timeScale: ChartScale
 
     public init(title: String,
-                results: [String: TaskResults],
-                tasks: [String],
+                tasks: [Task],
                 options: Options) {
         self.title = title
-        self.tasks = tasks
+        self.tasks = tasks.map { $0.name }
         self.options = options
 
         #if false
@@ -169,30 +168,28 @@ public struct BenchmarkChart {
             }
         #endif
 
-        var minSize = options.sizeRange?.lowerBound
-        var maxSize = options.sizeRange?.upperBound
-        var minTime = options.timeRange?.lowerBound
-        var maxTime = options.timeRange?.upperBound
+        var minSize = options.displaySizeRange?.lowerBound
+        var maxSize = options.displaySizeRange?.upperBound
+        var minTime = options.displayTimeRange?.lowerBound
+        var maxTime = options.displayTimeRange?.upperBound
 
         // Gather data.
         var rawCurves: [RawCurve] = []
         for task in tasks {
-            var rawCurve = RawCurve(title: task)
-            if let taskResult = results[task] {
-                for (size, sample) in taskResult.samples.sorted(by: { $0.key < $1.key }) {
-                    for bi in BandIndex.all {
-                        guard let band = options[bi] else { continue }
-                        guard let time = sample[band] else { continue }
-                        let t = options.amortizedTime ? time.seconds / Double(size) : time.seconds
-                        rawCurve.append(.init(size: size, time: t), at: bi)
-                        if options.alsoIncludeMeasuredSizes {
-                            minSize = min(minSize, size)
-                            maxSize = max(maxSize, size)
-                        }
-                        if options.alsoIncludeMeasuredTimes {
-                            minTime = min(minTime, t)
-                            maxTime = max(maxTime, t)
-                        }
+            var rawCurve = RawCurve(title: task.name)
+            for (size, sample) in task.samples.sorted(by: { $0.key < $1.key }) {
+                for bi in BandIndex.all {
+                    guard let band = options[bi] else { continue }
+                    guard let time = sample[band] else { continue }
+                    let t = options.amortizedTime ? time.seconds / Double(size) : time.seconds
+                    rawCurve.append(.init(size: size, time: t), at: bi)
+                    if options.displayAllMeasuredSizes {
+                        minSize = min(minSize, size)
+                        maxSize = max(maxSize, size)
+                    }
+                    if options.displayAllMeasuredTimes {
+                        minTime = min(minTime, t)
+                        maxTime = max(maxTime, t)
                     }
                 }
             }

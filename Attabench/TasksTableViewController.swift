@@ -4,16 +4,17 @@
 
 import Cocoa
 import GlueKit
+import BenchmarkModel
 
 extension NSUserInterfaceItemIdentifier {
     static let taskColumn = NSUserInterfaceItemIdentifier(rawValue: "TaskColumn")
 }
 
 class TasksTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
-    let contents: AnyObservableArray<TaskModel>
+    let contents: AnyObservableArray<Task>
     let tableView: NSTableView
 
-    init(tableView: NSTableView, contents: AnyObservableArray<TaskModel>) {
+    init(tableView: NSTableView, contents: AnyObservableArray<Task>) {
         self.tableView = tableView
         self.contents = contents
         super.init()
@@ -22,7 +23,7 @@ class TasksTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSo
         }
     }
 
-    func apply(_ change: ArrayChange<TaskModel>) {
+    func apply(_ change: ArrayChange<Task>) {
         let batch = change.separated()
         tableView.beginUpdates()
         tableView.removeRows(at: batch.deleted, withAnimation: [.effectFade, .slideUp])

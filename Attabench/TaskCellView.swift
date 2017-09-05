@@ -4,6 +4,7 @@
 
 import Cocoa
 import GlueKit
+import BenchmarkModel
 
 class TaskCellView: NSTableCellView {
     @IBOutlet weak var checkbox: NSButton?
@@ -14,7 +15,7 @@ class TaskCellView: NSTableCellView {
     }
 
     private var taskConnections = Connector()
-    var task: TaskModel? = nil {
+    var task: Task? = nil {
         didSet {
             taskConnections.disconnect()
             if let task = task {

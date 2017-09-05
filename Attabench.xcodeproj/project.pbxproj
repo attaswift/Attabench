@@ -10,9 +10,10 @@
 		BB40F81B1F5C2AE700C5EB75 /* BenchmarkRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB40F81A1F5C2AE700C5EB75 /* BenchmarkRenderer.swift */; };
 		BB40F81D1F5C2D6600C5EB75 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB40F81C1F5C2D6600C5EB75 /* CoreGraphics.framework */; };
 		BB4F15801F409D36003C05C3 /* Complain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4F157F1F409D36003C05C3 /* Complain.swift */; };
+		BB5B02D91F5E2A4C0084D86B /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5B02D81F5E2A4C0084D86B /* Task.swift */; };
 		BB61397A1F5DBB80005455D5 /* Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6139791F5DBB80005455D5 /* Bounds.swift */; };
 		BB65B0D91F59B998007EB717 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB888161F3FB0210072E0E2 /* BigInt.framework */; };
-		BB65B0DA1F59B9B5007EB717 /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
+		BB65B0DA1F59B9B5007EB717 /* BenchmarkModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkModel.framework */; };
 		BB65B0F61F59BBA5007EB717 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */; };
 		BB65B0F81F59BBA5007EB717 /* AttabenchDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */; };
 		BB65B0FB1F59BBA5007EB717 /* AttabenchDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */; };
@@ -29,11 +30,8 @@
 		BB855CC91F5C039F008849E2 /* LineParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CC81F5C039F008849E2 /* LineParams.swift */; };
 		BB855CCB1F5C03B8008849E2 /* TextParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CCA1F5C03B8008849E2 /* TextParams.swift */; };
 		BB855CCF1F5C041D008849E2 /* BenchmarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CCE1F5C041D008849E2 /* BenchmarkTheme.swift */; };
-		BB855CD01F5C1021008849E2 /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
+		BB855CD01F5C1021008849E2 /* BenchmarkModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkModel.framework */; };
 		BB855CD21F5C2436008849E2 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB855CD11F5C2436008849E2 /* ChartView.swift */; };
-		BB888E981F5D703400AB2652 /* RunOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB888E961F5D703400AB2652 /* RunOptionsViewController.swift */; };
-		BB888E991F5D703400AB2652 /* RunOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB888E971F5D703400AB2652 /* RunOptionsViewController.xib */; };
-		BB888E9B1F5D8BB000AB2652 /* TimeTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB888E9A1F5D8BB000AB2652 /* TimeTransformer.swift */; };
 		BB888E9D1F5DAC5000AB2652 /* Attaresult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */; };
 		BB8E0DFF1E32384500505773 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DFE1E32384500505773 /* Benchmark.swift */; };
 		BBC93D1C1F5C3912002E3777 /* RateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */; };
@@ -68,15 +66,14 @@
 		BBCC9F991F5AD00400AE36DE /* BenchmarkIPC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BBCC9F9C1F5AD00400AE36DE /* BenchmarkCharts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */; };
 		BBCC9F9D1F5AD00400AE36DE /* BenchmarkCharts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BBCC9FA01F5AD00400AE36DE /* BenchmarkResults.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; };
-		BBCC9FA11F5AD00400AE36DE /* BenchmarkResults.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BBCC9FA01F5AD00400AE36DE /* BenchmarkModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkModel.framework */; };
+		BBCC9FA11F5AD00400AE36DE /* BenchmarkModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BBCA26ED1F59B88E00C6FB74 /* BenchmarkModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BBCC9FA81F5AD2D000AE36DE /* attaresult.iconset in Resources */ = {isa = PBXBuildFile; fileRef = BBCC9FA71F5AD2B600AE36DE /* attaresult.iconset */; };
 		BBCC9FA91F5AD2D300AE36DE /* attabench.iconset in Resources */ = {isa = PBXBuildFile; fileRef = BBCC9FA61F5AD2B600AE36DE /* attabench.iconset */; };
 		BBCC9FAF1F5ADBEF00AE36DE /* DocumentWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */; };
 		BBCC9FB11F5AE11100AE36DE /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB01F5AE11100AE36DE /* ColoredView.swift */; };
 		BBCC9FB41F5AEEB400AE36DE /* BenchmarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E091E3262C600505773 /* BenchmarkChart.swift */; };
 		BBCC9FB61F5AFA6A00AE36DE /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */; };
-		BBCC9FB81F5AFA9A00AE36DE /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */; };
 		BBCC9FBC1F5B00F400AE36DE /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */; };
 		BBE4CA3B1F3CDC400062A281 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF61E32383900505773 /* Shuffle.swift */; };
 		BBE4CA3C1F3CDC450062A281 /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF31E6473D00006FD5F /* Noop.swift */; };
@@ -140,7 +137,7 @@
 				BBCC9F8D1F5AD00400AE36DE /* BigInt.framework in Embed Frameworks */,
 				BBCC9F931F5AD00400AE36DE /* SipHash.framework in Embed Frameworks */,
 				BBCC9F9D1F5AD00400AE36DE /* BenchmarkCharts.framework in Embed Frameworks */,
-				BBCC9FA11F5AD00400AE36DE /* BenchmarkResults.framework in Embed Frameworks */,
+				BBCC9FA11F5AD00400AE36DE /* BenchmarkModel.framework in Embed Frameworks */,
 				BBCC9F8F1F5AD00400AE36DE /* BTree.framework in Embed Frameworks */,
 				BBCC9F991F5AD00400AE36DE /* BenchmarkIPC.framework in Embed Frameworks */,
 				BBCC9F951F5AD00400AE36DE /* BenchmarkRunner.framework in Embed Frameworks */,
@@ -161,6 +158,7 @@
 		BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkRunner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB4F15611F409882003C05C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB4F157F1F409D36003C05C3 /* Complain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complain.swift; sourceTree = "<group>"; };
+		BB5B02D81F5E2A4C0084D86B /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		BB6139791F5DBB80005455D5 /* Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bounds.swift; sourceTree = "<group>"; };
 		BB65B0F31F59BBA4007EB717 /* Attabench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Attabench.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB65B0F51F59BBA5007EB717 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -181,9 +179,6 @@
 		BB855CCA1F5C03B8008849E2 /* TextParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextParams.swift; sourceTree = "<group>"; };
 		BB855CCE1F5C041D008849E2 /* BenchmarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkTheme.swift; sourceTree = "<group>"; };
 		BB855CD11F5C2436008849E2 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
-		BB888E961F5D703400AB2652 /* RunOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunOptionsViewController.swift; sourceTree = "<group>"; };
-		BB888E971F5D703400AB2652 /* RunOptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RunOptionsViewController.xib; sourceTree = "<group>"; };
-		BB888E9A1F5D8BB000AB2652 /* TimeTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTransformer.swift; sourceTree = "<group>"; };
 		BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attaresult.swift; sourceTree = "<group>"; };
 		BB8E0DD11E3237D900505773 /* Benchmarking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Benchmarking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8E0DD41E3237D900505773 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -217,14 +212,13 @@
 		BBCA26CB1F585B2300C6FB74 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkCharts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA26DD1F59B82C00C6FB74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkResults.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBCA26ED1F59B88E00C6FB74 /* BenchmarkModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA26F01F59B88E00C6FB74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBCC9FA61F5AD2B600AE36DE /* attabench.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = attabench.iconset; sourceTree = "<group>"; };
 		BBCC9FA71F5AD2B600AE36DE /* attaresult.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = attaresult.iconset; sourceTree = "<group>"; };
 		BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentWindowController.swift; sourceTree = "<group>"; };
 		BBCC9FB01F5AE11100AE36DE /* ColoredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
 		BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
-		BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
 		BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
 		BBE4CA3D1F3CDCC40062A281 /* InputGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenerator.swift; sourceTree = "<group>"; };
 		BBF83F911F533ADD006F61C5 /* OptionParser.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = OptionParser.framework.dSYM; path = Carthage/Build/Mac/OptionParser.framework.dSYM; sourceTree = "<group>"; };
@@ -237,7 +231,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB65B0DA1F59B9B5007EB717 /* BenchmarkResults.framework in Frameworks */,
+				BB65B0DA1F59B9B5007EB717 /* BenchmarkModel.framework in Frameworks */,
 				BBCA26C91F58540400C6FB74 /* BenchmarkIPC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,7 +243,7 @@
 				BBCC9F8C1F5AD00400AE36DE /* BigInt.framework in Frameworks */,
 				BBCC9F921F5AD00400AE36DE /* SipHash.framework in Frameworks */,
 				BBCC9F9C1F5AD00400AE36DE /* BenchmarkCharts.framework in Frameworks */,
-				BBCC9FA01F5AD00400AE36DE /* BenchmarkResults.framework in Frameworks */,
+				BBCC9FA01F5AD00400AE36DE /* BenchmarkModel.framework in Frameworks */,
 				BBCC9F8E1F5AD00400AE36DE /* BTree.framework in Frameworks */,
 				BBCC9F981F5AD00400AE36DE /* BenchmarkIPC.framework in Frameworks */,
 				BBCC9F941F5AD00400AE36DE /* BenchmarkRunner.framework in Frameworks */,
@@ -278,7 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB40F81D1F5C2D6600C5EB75 /* CoreGraphics.framework in Frameworks */,
-				BB855CD01F5C1021008849E2 /* BenchmarkResults.framework in Frameworks */,
+				BB855CD01F5C1021008849E2 /* BenchmarkModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,7 +298,7 @@
 				BB65B0F41F59BBA5007EB717 /* Attabench */,
 				BBCA26A11F5852C700C6FB74 /* BenchmarkIPC */,
 				BB8E0DD21E3237D900505773 /* Benchmarking */,
-				BBCA26EE1F59B88E00C6FB74 /* BenchmarkResults */,
+				BBCA26EE1F59B88E00C6FB74 /* BenchmarkModel */,
 				BB4F155F1F409882003C05C3 /* BenchmarkRunner */,
 				BBCA26DB1F59B82C00C6FB74 /* BenchmarkCharts */,
 				BB8E0E191E33D64A00505773 /* Dependencies */,
@@ -320,7 +314,7 @@
 				BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */,
 				BBCA26A71F5853C200C6FB74 /* BenchmarkIPC.framework */,
 				BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */,
-				BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */,
+				BBCA26ED1F59B88E00C6FB74 /* BenchmarkModel.framework */,
 				BB65B0F31F59BBA4007EB717 /* Attabench.app */,
 			);
 			name = Products;
@@ -346,10 +340,6 @@
 				BB65B0F71F59BBA5007EB717 /* AttabenchDocument.swift */,
 				BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */,
 				BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */,
-				BB888E961F5D703400AB2652 /* RunOptionsViewController.swift */,
-				BB888E971F5D703400AB2652 /* RunOptionsViewController.xib */,
-				BB888E9A1F5D8BB000AB2652 /* TimeTransformer.swift */,
-				BBCC9FB71F5AFA9A00AE36DE /* TaskModel.swift */,
 				BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */,
 				BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */,
 				BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */,
@@ -435,7 +425,7 @@
 			path = BenchmarkCharts;
 			sourceTree = "<group>";
 		};
-		BBCA26EE1F59B88E00C6FB74 /* BenchmarkResults */ = {
+		BBCA26EE1F59B88E00C6FB74 /* BenchmarkModel */ = {
 			isa = PBXGroup;
 			children = (
 				BB9889C81F3F85F200014740 /* Time.swift */,
@@ -443,10 +433,11 @@
 				BB9889CA1F3F86EB00014740 /* TimeSample.swift */,
 				BB8E0E0D1E32A35500505773 /* TaskResults.swift */,
 				BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */,
+				BB5B02D81F5E2A4C0084D86B /* Task.swift */,
 				BB6139791F5DBB80005455D5 /* Bounds.swift */,
 				BBCA26F01F59B88E00C6FB74 /* Info.plist */,
 			);
-			path = BenchmarkResults;
+			path = BenchmarkModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -585,9 +576,9 @@
 			productReference = BBCA26DA1F59B82C00C6FB74 /* BenchmarkCharts.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		BBCA26EC1F59B88E00C6FB74 /* BenchmarkResults */ = {
+		BBCA26EC1F59B88E00C6FB74 /* BenchmarkModel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BBCA26F61F59B88E00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkResults" */;
+			buildConfigurationList = BBCA26F61F59B88E00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkModel" */;
 			buildPhases = (
 				BBCA26E81F59B88E00C6FB74 /* Sources */,
 				BBCA26E91F59B88E00C6FB74 /* Frameworks */,
@@ -598,9 +589,9 @@
 			);
 			dependencies = (
 			);
-			name = BenchmarkResults;
+			name = BenchmarkModel;
 			productName = BenchmarkResults;
-			productReference = BBCA26ED1F59B88E00C6FB74 /* BenchmarkResults.framework */;
+			productReference = BBCA26ED1F59B88E00C6FB74 /* BenchmarkModel.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -661,7 +652,7 @@
 				BB65B0F21F59BBA4007EB717 /* Attabench */,
 				BBCA26A61F5853C200C6FB74 /* BenchmarkIPC */,
 				BB8E0DD01E3237D900505773 /* Benchmarking */,
-				BBCA26EC1F59B88E00C6FB74 /* BenchmarkResults */,
+				BBCA26EC1F59B88E00C6FB74 /* BenchmarkModel */,
 				BB4F155D1F409882003C05C3 /* BenchmarkRunner */,
 				BBCA26D91F59B82C00C6FB74 /* BenchmarkCharts */,
 			);
@@ -683,7 +674,6 @@
 				BB65B0FD1F59BBA5007EB717 /* Assets.xcassets in Resources */,
 				BB65B0FB1F59BBA5007EB717 /* AttabenchDocument.xib in Resources */,
 				BB65B1001F59BBA5007EB717 /* MainMenu.xib in Resources */,
-				BB888E991F5D703400AB2652 /* RunOptionsViewController.xib in Resources */,
 				BBCC9FA91F5AD2D300AE36DE /* attabench.iconset in Resources */,
 				BBCC9FA81F5AD2D000AE36DE /* attaresult.iconset in Resources */,
 			);
@@ -744,11 +734,8 @@
 				BBCC9FBC1F5B00F400AE36DE /* TaskCellView.swift in Sources */,
 				BB65B0F61F59BBA5007EB717 /* AppDelegate.swift in Sources */,
 				BBC93D1C1F5C3912002E3777 /* RateLimiter.swift in Sources */,
-				BB888E9B1F5D8BB000AB2652 /* TimeTransformer.swift in Sources */,
 				BBCC9FAF1F5ADBEF00AE36DE /* DocumentWindowController.swift in Sources */,
-				BB888E981F5D703400AB2652 /* RunOptionsViewController.swift in Sources */,
 				BBCC9FB11F5AE11100AE36DE /* ColoredView.swift in Sources */,
-				BBCC9FB81F5AFA9A00AE36DE /* TaskModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,6 +788,7 @@
 				BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */,
 				BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */,
 				BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */,
+				BB5B02D91F5E2A4C0084D86B /* Task.swift in Sources */,
 				BBCA26FB1F59B8A400C6FB74 /* Time.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -825,7 +813,7 @@
 		};
 		BBCC9FA31F5AD00400AE36DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BBCA26EC1F59B88E00C6FB74 /* BenchmarkResults */;
+			target = BBCA26EC1F59B88E00C6FB74 /* BenchmarkModel */;
 			targetProxy = BBCC9FA21F5AD00400AE36DE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2083,11 +2071,11 @@
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INFOPLIST_FILE = BenchmarkModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkModel;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -2149,11 +2137,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INFOPLIST_FILE = BenchmarkModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkModel;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2217,11 +2205,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INFOPLIST_FILE = BenchmarkModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkModel;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2285,11 +2273,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BenchmarkResults/Info.plist;
+				INFOPLIST_FILE = BenchmarkModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkResults;
+				PRODUCT_BUNDLE_IDENTIFIER = org.attaswift.Attabench.BenchmarkModel;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2369,7 +2357,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Optimized;
 		};
-		BBCA26F61F59B88E00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkResults" */ = {
+		BBCA26F61F59B88E00C6FB74 /* Build configuration list for PBXNativeTarget "BenchmarkModel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BBCA26F71F59B88E00C6FB74 /* Debug */,

@@ -16,7 +16,7 @@ extension BigInt {
     }
 }
 
-public struct Time: CustomStringConvertible, ExpressibleByFloatLiteral, Comparable, Codable {
+public struct Time: CustomStringConvertible, LosslessStringConvertible, ExpressibleByFloatLiteral, Comparable, Codable {
     var picoseconds: BigInt
 
     public init(floatLiteral value: Double) {
@@ -66,7 +66,7 @@ public struct Time: CustomStringConvertible, ExpressibleByFloatLiteral, Comparab
     ]
     private static let floatingPointCharacterSet = CharacterSet(charactersIn: "+-0123456789.e")
 
-    public init?(description: String) {
+    public init?(_ description: String) {
         var description = description.trimmingCharacters(in: .whitespacesAndNewlines)
         description = description.lowercased()
         if let i = description.rangeOfCharacter(from: Time.floatingPointCharacterSet.inverted) {

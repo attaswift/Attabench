@@ -8,21 +8,29 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AttabenchDocument" customModule="Attabench" customModuleProvider="target">
             <connections>
+                <outlet property="amortizedCheckbox" destination="63Y-3n-A9t" id="TZ5-VY-fgF"/>
                 <outlet property="batchCheckbox" destination="ikv-2a-wet" id="rww-6p-HP1"/>
                 <outlet property="chartView" destination="i14-DF-IKD" id="Cwb-7d-vmu"/>
                 <outlet property="consolePane" destination="c1O-He-7va" id="djg-zK-gRj"/>
                 <outlet property="consoleTextView" destination="trv-Ti-K8g" id="8M2-Ue-KP3"/>
+                <outlet property="displayRefreshIntervalField" destination="hYW-ls-VZB" id="8ZQ-yv-7uF"/>
+                <outlet property="iterationsField" destination="eJI-Tj-Z6N" id="DeW-Xg-cvp"/>
+                <outlet property="iterationsStepper" destination="YNd-km-Uqr" id="d8e-dk-CKp"/>
                 <outlet property="leftBar" destination="nIc-Zf-1gG" id="7ZS-b2-d3w"/>
                 <outlet property="leftPane" destination="gG5-EF-oMY" id="u5Q-Dr-NUG"/>
                 <outlet property="leftVerticalSplitView" destination="Bc9-KC-2nD" id="cgr-fJ-hNT"/>
+                <outlet property="logarithmicSizeCheckbox" destination="K5S-pC-LBI" id="jSs-iX-33V"/>
+                <outlet property="logarithmicTimeCheckbox" destination="gvn-ou-g6b" id="F5K-un-tea"/>
+                <outlet property="maximumDurationField" destination="leR-Jq-ajy" id="2Xi-Ad-XAc"/>
                 <outlet property="maximumSizeButton" destination="bmF-T3-VAg" id="Jed-KU-jRP"/>
                 <outlet property="middleBar" destination="0ef-G1-rw4" id="EUA-5b-egf"/>
                 <outlet property="middleSplitView" destination="G4p-w7-27R" id="1lw-mK-5lx"/>
+                <outlet property="minimumDurationField" destination="1OQ-tz-Ik1" id="1ie-00-OBG"/>
                 <outlet property="minimumSizeButton" destination="2Xg-Ri-VEB" id="e3u-zd-eHb"/>
+                <outlet property="righPane" destination="rVP-Ze-pJJ" id="NfE-tW-U9F"/>
                 <outlet property="rootSplitView" destination="T8n-N8-ln5" id="7X6-lC-afU"/>
                 <outlet property="runButton" destination="lGG-bz-ZG9" id="7EG-zR-HKe"/>
-                <outlet property="runOptionsPane" destination="Gfm-05-Lyk" id="Vkx-qp-Zh9"/>
-                <outlet property="runOptionsViewController" destination="Sdk-6h-31Z" id="wPX-qD-pqS"/>
+                <outlet property="runOptionsPane" destination="U1I-9B-jCA" id="iTa-s3-CZr"/>
                 <outlet property="showConsoleButton" destination="vns-ud-AWF" id="dTe-sK-hH3"/>
                 <outlet property="showLeftPaneButton" destination="l2g-1I-7US" id="mK6-YU-KbG"/>
                 <outlet property="showRunOptionsButton" destination="7bl-F8-T8v" id="CNa-tz-wtH"/>
@@ -55,14 +63,14 @@
                                         <rect key="frame" x="0.0" y="0.0" width="211" height="500"/>
                                         <subviews>
                                             <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="bNP-3x-NB1">
-                                                <rect key="frame" x="0.0" y="0.0" width="211" height="370"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="211" height="360"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <clipView key="contentView" drawsBackground="NO" id="BDK-JC-PBX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="211" height="370"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="211" height="360"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="20" viewBased="YES" id="FCj-n2-LsA">
-                                                            <rect key="frame" x="0.0" y="0.0" width="211" height="370"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="211" height="360"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
@@ -132,7 +140,7 @@
                                                 </scroller>
                                             </scrollView>
                                             <customView identifier="LeftStatusBar" id="nIc-Zf-1gG" userLabel="Left Bar" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="371" width="211" height="28"/>
+                                                <rect key="frame" x="0.0" y="361" width="211" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                 <subviews>
                                                     <button toolTip="Check or uncheck all displayed tasks" translatesAutoresizingMaskIntoConstraints="NO" id="f4B-71-bgS">
@@ -178,12 +186,79 @@
                                                     <constraint firstItem="f4B-71-bgS" firstAttribute="centerY" secondItem="nIc-Zf-1gG" secondAttribute="centerY" id="tyr-he-Kdt"/>
                                                 </constraints>
                                             </customView>
-                                            <customView identifier="RunOptions" id="Gfm-05-Lyk" userLabel="RunOptions" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="400" width="211" height="100"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="110" id="4RF-Lm-85d"/>
-                                                </constraints>
+                                            <customView identifier="RunOptions" fixedFrame="YES" id="U1I-9B-jCA" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="390" width="211" height="110"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <subviews>
+                                                    <textField horizontalHuggingPriority="247" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EEu-yW-tnC">
+                                                        <rect key="frame" x="6" y="90" width="198" height="14"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Run Options" id="rtQ-62-p4p">
+                                                            <font key="font" metaFont="smallSystemBold"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField horizontalHuggingPriority="247" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vbt-45-mcZ">
+                                                        <rect key="frame" x="12" y="66" width="76" height="14"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Iterations" id="pXq-ZX-PxL">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField toolTip="The number of times to repeat a task before reporting the lowest measurement." horizontalHuggingPriority="220" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJI-Tj-Z6N">
+                                                        <rect key="frame" x="91" y="63" width="100" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="iW9-lB-Pms">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField toolTip="Keep repeating measurements until this amount of time has elapsed." horizontalHuggingPriority="220" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1OQ-tz-Ik1">
+                                                        <rect key="frame" x="91" y="38" width="111" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="rq5-6r-4SP">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField horizontalHuggingPriority="247" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qGP-Ty-rUj">
+                                                        <rect key="frame" x="12" y="16" width="76" height="14"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Max Duration" id="4NF-hZ-ALV">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField toolTip="Stop repeating measurements after this amount of time has elapsed. (The last measurement will not be canceled.)" horizontalHuggingPriority="220" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="leR-Jq-ajy">
+                                                        <rect key="frame" x="91" y="13" width="111" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Htw-w9-5Q0">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField horizontalHuggingPriority="247" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ag-Sy-p1P">
+                                                        <rect key="frame" x="12" y="42" width="76" height="14"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Min Duration" id="eqp-Lm-nbe">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YNd-km-Uqr">
+                                                        <rect key="frame" x="189" y="61" width="15" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="1000" id="Ysv-4K-BFd"/>
+                                                    </stepper>
+                                                </subviews>
                                             </customView>
                                         </subviews>
                                         <holdingPriorities>
@@ -205,11 +280,11 @@
                                 </constraints>
                             </visualEffectView>
                             <splitView identifier="MiddleSplitView" fixedFrame="YES" autosaveName="VerticalSplitView" dividerStyle="thin" id="G4p-w7-27R" userLabel="Middle Split View">
-                                <rect key="frame" x="212" y="0.0" width="588" height="500"/>
+                                <rect key="frame" x="212" y="0.0" width="424" height="500"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <customView id="i14-DF-IKD" customClass="ChartView" customModule="Attabench" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="588" height="335"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="424" height="335"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="1mq-Vd-XKk"/>
@@ -222,11 +297,11 @@
                                         </userDefinedRuntimeAttributes>
                                     </customView>
                                     <customView identifier="MiddleBar" id="0ef-G1-rw4" userLabel="Middle Bar" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="336" width="588" height="28"/>
+                                        <rect key="frame" x="0.0" y="336" width="424" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                         <subviews>
                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I7l-6D-bUv">
-                                                <rect key="frame" x="5" y="-2" width="580" height="32"/>
+                                                <rect key="frame" x="5" y="-2" width="416" height="32"/>
                                                 <subviews>
                                                     <button toolTip="Show or hide the left panel" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="l2g-1I-7US">
                                                         <rect key="frame" x="0.0" y="0.0" width="18" height="32"/>
@@ -249,7 +324,7 @@
                                                         </connections>
                                                     </button>
                                                     <textField horizontalHuggingPriority="1" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nAl-9b-Vd5" customClass="StatusLabel" customModule="Attabench" customModuleProvider="target">
-                                                        <rect key="frame" x="46" y="8" width="490" height="17"/>
+                                                        <rect key="frame" x="46" y="8" width="326" height="17"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" sendsActionOnEndEditing="YES" title="Status Message" usesSingleLineMode="YES" id="uL1-bP-Rr1">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="windowFrameTextColor" catalog="System" colorSpace="catalog"/>
@@ -257,7 +332,7 @@
                                                         </textFieldCell>
                                                     </textField>
                                                     <button toolTip="Clear Console area" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="UJD-AI-pDj">
-                                                        <rect key="frame" x="540" y="6" width="40" height="19"/>
+                                                        <rect key="frame" x="376" y="6" width="40" height="19"/>
                                                         <buttonCell key="cell" type="roundTextured" title="Clear" bezelStyle="texturedRounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZAz-uA-Lhb">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="smallSystem"/>
@@ -289,21 +364,21 @@
                                         </constraints>
                                     </customView>
                                     <customView identifier="Console" id="c1O-He-7va" userLabel="Console">
-                                        <rect key="frame" x="0.0" y="365" width="588" height="135"/>
+                                        <rect key="frame" x="0.0" y="365" width="424" height="135"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
                                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oS-10-PFy">
-                                                <rect key="frame" x="0.0" y="0.0" width="588" height="135"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="424" height="135"/>
                                                 <clipView key="contentView" id="IGZ-po-v1k">
-                                                    <rect key="frame" x="0.0" y="0.0" width="588" height="135"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="424" height="135"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textView editable="NO" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" id="trv-Ti-K8g">
-                                                            <rect key="frame" x="0.0" y="0.0" width="588" height="135"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="424" height="135"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <size key="minSize" width="588" height="135"/>
+                                                            <size key="minSize" width="424" height="135"/>
                                                             <size key="maxSize" width="705" height="10000000"/>
                                                             <attributedString key="textStorage">
                                                                 <fragment content="Console output">
@@ -331,7 +406,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
                                                 <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="SWM-gY-A1g">
-                                                    <rect key="frame" x="572" y="0.0" width="16" height="135"/>
+                                                    <rect key="frame" x="408" y="0.0" width="16" height="135"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
                                             </scrollView>
@@ -354,10 +429,59 @@
                                     <outlet property="delegate" destination="-2" id="uPl-46-ra0"/>
                                 </connections>
                             </splitView>
+                            <customView fixedFrame="YES" id="rVP-Ze-pJJ" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
+                                <rect key="frame" x="637" y="0.0" width="163" height="500"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <subviews>
+                                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="63Y-3n-A9t">
+                                        <rect key="frame" x="-3" y="463" width="158" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Amortized Time" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="zhV-YI-OK9">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="smallSystem"/>
+                                        </buttonCell>
+                                    </button>
+                                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K5S-pC-LBI">
+                                        <rect key="frame" x="-3" y="443" width="158" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Logarithmic Size Scale" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="t2b-sc-n2l">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="smallSystem"/>
+                                        </buttonCell>
+                                    </button>
+                                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gvn-ou-g6b">
+                                        <rect key="frame" x="-3" y="423" width="158" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Logarithmic Time Scale" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="3aV-mJ-hZB">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="smallSystem"/>
+                                        </buttonCell>
+                                    </button>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dLS-hn-UeT">
+                                        <rect key="frame" x="2" y="390" width="49" height="14"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Refresh" id="RXr-d9-vo6">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hYW-ls-VZB">
+                                        <rect key="frame" x="57" y="387" width="96" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="G5O-E7-ccN">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                            </customView>
                         </subviews>
                         <holdingPriorities>
                             <real value="250"/>
                             <real value="249"/>
+                            <real value="250"/>
                         </holdingPriorities>
                         <connections>
                             <outlet property="delegate" destination="-2" id="AAX-AP-AR2"/>
@@ -459,7 +583,6 @@
             </connections>
             <point key="canvasLocation" x="139" y="140"/>
         </window>
-        <viewController nibName="RunOptionsViewController" id="Sdk-6h-31Z" customClass="RunOptionsViewController" customModule="Attabench" customModuleProvider="target"/>
     </objects>
     <resources>
         <image name="CloseDownTemplate" width="18" height="18"/>

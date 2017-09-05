@@ -5,7 +5,7 @@
 import Foundation
 
 class RateLimiter: NSObject {
-    let maxDelay: TimeInterval
+    var maxDelay: TimeInterval
     let action: () -> Void
     private var scheduled = false
     private var next = Date.distantPast

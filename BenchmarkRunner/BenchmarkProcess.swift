@@ -5,7 +5,7 @@
 import Foundation
 import Darwin
 import BenchmarkIPC
-import BenchmarkResults
+import BenchmarkModel
 
 public protocol BenchmarkDelegate {
     func benchmark(_ benchmark: BenchmarkProcess, didReceiveListOfTasks tasks: [String])

@@ -131,12 +131,52 @@ func max<C: Comparable>(_ a: C?, _ b: C?) -> C? {
 }
 
 extension TimeSample {
-    public enum Band {
+    public enum Band: LosslessStringConvertible, Codable {
         case maximum
         case sigma(Int)
         case average
         case minimum
         case count // Fixme this isn't a time
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let string = try container.decode(String.self)
+            guard let band = Band(string) else {
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid band")
+            }
+            self = band
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode("\(self)")
+        }
+
+        public init?(_ description: String) {
+            switch description {
+            case "maximum": self = .maximum
+            case "minimum": self = .minimum
+            case "average": self = .average
+            case "count": self = .count
+            case _ where description.hasSuffix("sigma"):
+                let number = description.dropLast(5)
+                guard let s = Int(number, radix: 10) else { return nil }
+                self = .sigma(s)
+            default:
+                return nil
+            }
+        }
+
+        public var description: String {
+            switch self {
+            case .maximum: return "maximum"
+            case .sigma(let s): return "\(s.magnitude)sigma"
+            case .average: return "average"
+            case .minimum: return "minimum"
+            case .count: return "count"
+            }
+        }
+
     }
 
     public subscript(_ band: Band) -> Time? {

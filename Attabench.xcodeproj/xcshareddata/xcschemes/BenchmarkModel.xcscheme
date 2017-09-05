@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BBCA26EC1F59B88E00C6FB74"
-               BuildableName = "BenchmarkResults.framework"
-               BlueprintName = "BenchmarkResults"
+               BuildableName = "BenchmarkModel.framework"
+               BlueprintName = "BenchmarkModel"
                ReferencedContainer = "container:Attabench.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -48,8 +48,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BBCA26EC1F59B88E00C6FB74"
-            BuildableName = "BenchmarkResults.framework"
-            BlueprintName = "BenchmarkResults"
+            BuildableName = "BenchmarkModel.framework"
+            BlueprintName = "BenchmarkModel"
             ReferencedContainer = "container:Attabench.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -66,8 +66,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BBCA26EC1F59B88E00C6FB74"
-            BuildableName = "BenchmarkResults.framework"
-            BlueprintName = "BenchmarkResults"
+            BuildableName = "BenchmarkModel.framework"
+            BlueprintName = "BenchmarkModel"
             ReferencedContainer = "container:Attabench.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
