@@ -93,6 +93,7 @@ public class Attaresult: NSObject, Codable {
     public let displayTimeRange: OptionalVariable<ClosedRange<Time>> = nil
     public let displayAllMeasuredTimes: BoolVariable = true
 
+    public let themeName: StringVariable = ""
     public let displayRefreshInterval: Variable<Time> = .init(5.0)
 
     public private(set) lazy var chartOptionsTick: MergedSource<Void>
@@ -108,6 +109,7 @@ public class Attaresult: NSObject, Codable {
         displayAllMeasuredSizes.tick,
         displayTimeRange.tick,
         displayAllMeasuredTimes.tick,
+        themeName.tick,
         displayRefreshInterval.tick].gather()
 
     public override init() {
@@ -142,6 +144,7 @@ public class Attaresult: NSObject, Codable {
         case displayTimeRangeMin
         case displayTimeRangeMax
         case displayAllMeasuredTimes
+        case themeName
         case displayRefreshInterval
     }
 
@@ -174,6 +177,7 @@ public class Attaresult: NSObject, Codable {
             try container.encode(range.upperBound, forKey: .displayTimeRangeMax)
         }
         try container.encode(self.displayAllMeasuredTimes.value, forKey: .displayAllMeasuredTimes)
+        try container.encode(self.themeName.value, forKey: .themeName)
         try container.encode(self.displayRefreshInterval.value, forKey: .displayRefreshInterval)
     }
 
@@ -251,6 +255,9 @@ public class Attaresult: NSObject, Codable {
         }
         if let v = try container.decodeIfPresent(Bool.self, forKey: .displayAllMeasuredTimes) {
             self.displayAllMeasuredTimes.value = v
+        }
+        if let v = try container.decodeIfPresent(String.self, forKey: .themeName) {
+            self.themeName.value = v
         }
         if let v = try container.decodeIfPresent(Time.self, forKey: .displayRefreshInterval) {
             self.displayRefreshInterval.value = v

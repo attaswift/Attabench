@@ -4,6 +4,7 @@
 
 import Cocoa
 import BenchmarkCharts
+import GlueKit
 
 @IBDesignable
 class ChartView: NSView {
@@ -15,11 +16,19 @@ class ChartView: NSView {
         }
     }
 
-    var theme: BenchmarkTheme = BenchmarkTheme.Predefined.screen
+    private var themeConnection: Connection? = nil
+    var theme: AnyObservableValue<BenchmarkTheme> = .constant(BenchmarkTheme.Predefined.screen) {
+        didSet {
+            self.image = render()
+            themeConnection?.disconnect()
+            themeConnection = theme.values.subscribe { [unowned self] theme in
+                self.image = self.render()
+            }
+        }
+    }
 
     var imageSize: CGSize? = nil {
         didSet {
-            self.image = render()
             self.needsDisplay = true
         }
     }
@@ -53,7 +62,7 @@ class ChartView: NSView {
         options.legendVerticalMargin = legendMargin
 
         let renderer = BenchmarkRenderer(chart: chart,
-                                         theme: self.theme,
+                                         theme: self.theme.value,
                                          options: options,
                                          in: CGRect(origin: .zero, size: size))
         return renderer.image

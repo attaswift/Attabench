@@ -131,7 +131,7 @@ func max<C: Comparable>(_ a: C?, _ b: C?) -> C? {
 }
 
 extension TimeSample {
-    public enum Band: LosslessStringConvertible, Codable {
+    public enum Band: LosslessStringConvertible, Codable, Equatable {
         case maximum
         case sigma(Int)
         case average
@@ -174,6 +174,17 @@ extension TimeSample {
             case .average: return "average"
             case .minimum: return "minimum"
             case .count: return "count"
+            }
+        }
+
+        public static func ==(left: Band, right: Band) -> Bool {
+            switch (left, right) {
+            case (.maximum, .maximum): return true
+            case let (.sigma(l), .sigma(r)): return l == r
+            case (.average, .average): return true
+            case (.minimum, .minimum): return true
+            case (.count, .count): return true
+            default: return false
             }
         }
 

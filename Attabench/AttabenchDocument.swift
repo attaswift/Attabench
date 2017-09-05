@@ -107,6 +107,8 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
             return .mixed
     }
 
+    let theme = Variable<BenchmarkTheme>(BenchmarkTheme.Predefined.screen)
+
     @IBOutlet weak var runButton: NSButton?
     @IBOutlet weak var minimumSizeButton: NSPopUpButton?
     @IBOutlet weak var maximumSizeButton: NSPopUpButton?
@@ -139,6 +141,9 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     @IBOutlet weak var logarithmicSizeCheckbox: NSButton?
     @IBOutlet weak var logarithmicTimeCheckbox: NSButton?
     @IBOutlet weak var displayRefreshIntervalField: NSTextField?
+    @IBOutlet weak var centerBandPopUpButton: NSPopUpButton?
+    @IBOutlet weak var errorBandPopUpButton: NSPopUpButton?
+    @IBOutlet weak var themePopUpButton: NSPopUpButton?
 
     var _log: NSMutableAttributedString? = nil
     var _status: String = "Ready"
@@ -197,6 +202,7 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         self.tasksTableView!.dataSource = tasksTVC
         self.statusLabel!.immediateStatus = _status
         self.chartView!.documentBasename = self.displayName
+        self.chartView!.theme = self.theme.anyObservableValue
         self.batchCheckbox.state = self.batchCheckboxState.value
 
         self.iterationsField!.glue.value <-- model.map{$0.iterations}
@@ -209,10 +215,120 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         self.logarithmicTimeCheckbox!.glue.state <-- model.map{$0.logarithmicTimeScale}
         self.displayRefreshIntervalField!.glue.value <-- model.map{$0.displayRefreshInterval}
 
+        self.centerBandPopUpButton!.glue <-- NSPopUpButton.Choices<CurveBandValues>(
+            model: model.map{$0.centerBand}
+                .map({ CurveBandValues($0) },
+                     inverse: { $0.band }),
+            values: [
+                "None": .none,
+                "Minimum": .minimum,
+                "Average": .average,
+                "Maximum": .maximum,
+                "Sample Size": .count,
+            ])
+
+        self.errorBandPopUpButton!.glue <-- NSPopUpButton.Choices<ErrorBandValues>(
+            model: model.map{$0.topBand}.combined(model.map{$0.bottomBand})
+                .map({ ErrorBandValues(top: $0.0, bottom: $0.1) },
+                     inverse: { ($0.top, $0.bottom) }),
+            values: [
+                "None": .none,
+                "Maximum": .maximum,
+                "μ + σ": .sigma1,
+                "μ + 2σ": .sigma2,
+                "μ + 3σ": .sigma3,
+            ])
+
+        self.themePopUpButton!.glue <-- NSPopUpButton.Choices<BenchmarkTheme>(
+            model: self.theme,
+            values: BenchmarkTheme.Predefined.themes.map { (label: $0.name, value: $0) })
+
         refreshRunButton()
         refreshSizePopUpMenus()
         refreshSizePopUpState()
         refreshChart.now()
+    }
+
+    enum CurveBandValues: Equatable {
+        case none
+        case average
+        case minimum
+        case maximum
+        case count
+        case other(TimeSample.Band?)
+
+        init(_ band: TimeSample.Band?) {
+            switch band {
+            case nil: self = .none
+            case .average?: self = .average
+            case .minimum?: self = .minimum
+            case .maximum?: self = .maximum
+            case .count?: self = .count
+            default: self = .other(band)
+            }
+        }
+
+        var band: TimeSample.Band? {
+            switch self {
+            case .none: return nil
+            case .average: return .average
+            case .minimum: return .minimum
+            case .maximum: return .maximum
+            case .count: return .count
+            case .other(let band): return band
+            }
+        }
+
+        static func ==(left: CurveBandValues, right: CurveBandValues) -> Bool {
+            return left.band == right.band
+        }
+    }
+
+    enum ErrorBandValues: Equatable {
+        case none
+        case maximum
+        case sigma1
+        case sigma2
+        case sigma3
+        case other(top: TimeSample.Band?, bottom: TimeSample.Band?)
+
+        var top: TimeSample.Band? {
+            switch self {
+            case .none: return nil
+            case .maximum: return .maximum
+            case .sigma1: return .sigma(1)
+            case .sigma2: return .sigma(2)
+            case .sigma3: return .sigma(3)
+            case .other(top: let top, bottom: _): return top
+            }
+        }
+
+        var bottom: TimeSample.Band? {
+            switch self {
+            case .none: return nil
+            case .maximum: return .minimum
+            case .sigma1: return .minimum
+            case .sigma2: return .minimum
+            case .sigma3: return .minimum
+            case .other(top: _, bottom: let bottom): return bottom
+            }
+        }
+
+        init(top: TimeSample.Band?, bottom: TimeSample.Band?) {
+            switch (top, bottom) {
+            case (nil, nil): self = .none
+            case (.maximum?, .minimum?): self = .maximum
+            case (.sigma(1)?, .minimum?): self = .sigma1
+            case (.sigma(2)?, .minimum?): self = .sigma2
+            case (.sigma(3)?, .minimum?): self = .sigma3
+            case let (t, b): self = .other(top: t, bottom: b)
+            }
+        }
+
+        static func ==(left: ErrorBandValues, right: ErrorBandValues) -> Bool {
+            return left.top == right.top && left.bottom == right.bottom
+        }
+
     }
 
     func stateDidChange(from old: State, to new: State) {
