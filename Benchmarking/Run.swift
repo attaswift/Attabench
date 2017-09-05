@@ -25,8 +25,10 @@ extension Benchmark {
              minimumDuration: TimeInterval?,
              maximumDuration: TimeInterval?,
              iterations: Int) throws {
+        print("Running \(tasks.count) tasks at \(sizes.count) sizes from \(sizes.min()!) to \(sizes.max()!)")
         var sizes = sizes
         while !sizes.isEmpty {
+            let startCycle = Date()
             for size in sizes {
                 let input = self.inputGenerator(size)
                 var found = false
@@ -51,11 +53,11 @@ extension Benchmark {
                     sizes = sizes.filter { $0 != size }
                 }
             }
+            print("Finished one full cycle in \(Date().timeIntervalSince(startCycle)) seconds.")
         }
     }
 
     func run(_ options: RunOptions, output: OutputProtocol? = nil) throws {
-        print(options)
         var tasks: [BenchmarkTask<Input>] = try options.tasks.map { title in
             guard let task = self.tasks[title] else {
                 throw OptionError("Unknown task '\(title)'")
