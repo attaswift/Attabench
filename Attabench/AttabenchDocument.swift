@@ -77,7 +77,7 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         }
     }
 
-    var state: State = .idle {
+    var state: State = .noBenchmark {
         didSet { stateDidChange(from: oldValue, to: state) }
     }
 
@@ -138,13 +138,27 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     @IBOutlet weak var consoleTextView: NSTextView?
 
     @IBOutlet weak var rightPane: ColoredView?
+    
+    @IBOutlet weak var themePopUpButton: NSPopUpButton?
     @IBOutlet weak var amortizedCheckbox: NSButton?
     @IBOutlet weak var logarithmicSizeCheckbox: NSButton?
     @IBOutlet weak var logarithmicTimeCheckbox: NSButton?
-    @IBOutlet weak var displayRefreshIntervalField: NSTextField?
+
     @IBOutlet weak var centerBandPopUpButton: NSPopUpButton?
     @IBOutlet weak var errorBandPopUpButton: NSPopUpButton?
-    @IBOutlet weak var themePopUpButton: NSPopUpButton?
+    
+    @IBOutlet weak var highlightSelectedSizeRangeCheckbox: NSButton?
+    @IBOutlet weak var displayIncludeAllMeasuredSizesCheckbox: NSButton?
+    @IBOutlet weak var displayIncludeSizeScaleRangeCheckbox: NSButton?
+    @IBOutlet weak var displaySizeScaleRangeMinPopUpButton: NSPopUpButton?
+    @IBOutlet weak var displaySizeScaleRangeMaxPopUpButton: NSPopUpButton?
+
+    @IBOutlet weak var displayIncludeAllMeasuredTimesCheckbox: NSButton?
+    @IBOutlet weak var displayIncludeTimeRangeCheckbox: NSButton?
+    @IBOutlet weak var displayTimeRangeMinPopUpButton: NSPopUpButton?
+    @IBOutlet weak var displayTimeRangeMaxPopUpButton: NSPopUpButton?
+
+    @IBOutlet weak var displayRefreshIntervalField: NSTextField?
 
     var _log: NSMutableAttributedString? = nil
     var _status: String = "Ready"
@@ -243,14 +257,42 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
 
         let sizeChoices: [(label: String, value: Int)]
             = (0 ... Attaresult.largestPossibleSizeScale).map { ((1 << $0).sizeLabel, $0) }
-
+        let lowerBoundSizeChoices = sizeChoices.map { (label: "\($0.0) ≤", value: $0.1) }
+        let upperBoundSizeChoices = sizeChoices.map { (label: "≤ \($0.0)", value: $0.1) }
+        
         self.minimumSizeButton!.glue <-- NSPopUpButton.Choices<Int>(
             model: model.map{$0.sizeScaleRange.lowerBound},
-            values: sizeChoices.map { (label: "\($0.0) ≤", value: $0.1) })
+            values: lowerBoundSizeChoices)
         
         self.maximumSizeButton!.glue <-- NSPopUpButton.Choices<Int>(
             model: model.map{$0.sizeScaleRange.upperBound},
-            values: sizeChoices.map { (label: "≤ \($0.0)", value: $0.1) })
+            values: upperBoundSizeChoices)
+        
+        self.highlightSelectedSizeRangeCheckbox!.glue.state <-- model.map{$0.highlightSelectedSizeRange}
+        self.displayIncludeAllMeasuredSizesCheckbox!.glue.state <-- model.map{$0.displayIncludeAllMeasuredSizes}
+        self.displayIncludeSizeScaleRangeCheckbox!.glue.state <-- model.map{$0.displayIncludeSizeScaleRange}
+        self.displaySizeScaleRangeMinPopUpButton!.glue <-- NSPopUpButton.Choices<Int>(
+            model: model.map{$0.displaySizeScaleRange.lowerBound},
+            values: lowerBoundSizeChoices)
+        self.displaySizeScaleRangeMaxPopUpButton!.glue <-- NSPopUpButton.Choices<Int>(
+            model: model.map{$0.displaySizeScaleRange.upperBound},
+            values: upperBoundSizeChoices)
+        
+        
+        var timeChoices: [(label: String, value: Time)] = []
+        var time = Time(picoseconds: 1)
+        for _ in 0 ..< 20 {
+            timeChoices.append(("\(time)", time))
+            time = 10 * time
+        }
+        self.displayIncludeAllMeasuredTimesCheckbox!.glue.state <-- model.map{$0.displayIncludeAllMeasuredTimes}
+        self.displayIncludeTimeRangeCheckbox!.glue.state <-- model.map{$0.displayIncludeTimeRange}
+        self.displayTimeRangeMinPopUpButton!.glue <-- NSPopUpButton.Choices<Time>(
+            model: model.map{$0.displayTimeRange.lowerBound},
+            values: timeChoices)
+        self.displayTimeRangeMaxPopUpButton!.glue <-- NSPopUpButton.Choices<Time>(
+            model: model.map{$0.displayTimeRange.upperBound},
+            values: timeChoices)
 
         refreshRunButton()
         refreshChart.now()
@@ -633,7 +675,7 @@ extension AttabenchDocument {
     @IBAction func chooseBenchmark(_ sender: AnyObject) {
         guard let window = self.windowControllers.first?.window else { return }
         let openPanel = NSOpenPanel()
-        openPanel.message = "This result file has no associated Attabench document. To add more measurements, you need to select a benchmark file."
+        openPanel.message = "This result file has no associated Attabench document. To add measurements, you need to select a benchmark file."
         openPanel.prompt = "Choose"
         openPanel.canChooseFiles = true
         openPanel.allowedFileTypes = [UTI.attabench]
@@ -824,6 +866,7 @@ extension AttabenchDocument: NSSplitViewDelegate {
 
     func splitView(_ splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
         if subview === self.leftPane { return true }
+        if subview === self.rightPane { return true }
         if subview === self.runOptionsPane { return true }
         if subview === self.consolePane { return true }
         return false
@@ -835,6 +878,12 @@ extension AttabenchDocument: NSSplitViewDelegate {
             let state: NSControl.StateValue = splitView.isSubviewCollapsed(self.leftPane!) ? .off : .on
             if showLeftPaneButton!.state != state {
                 showLeftPaneButton!.state = state
+            }
+        }
+        if splitView === rootSplitView {
+            let state: NSControl.StateValue = splitView.isSubviewCollapsed(self.rightPane!) ? .off : .on
+            if showRightPaneButton!.state != state {
+                showRightPaneButton!.state = state
             }
         }
         else if splitView === leftVerticalSplitView {
@@ -850,6 +899,16 @@ extension AttabenchDocument: NSSplitViewDelegate {
             }
         }
     }
+    
+    func splitView(_ splitView: NSSplitView, additionalEffectiveRectOfDividerAt dividerIndex: Int) -> NSRect {
+        if splitView === middleSplitView, dividerIndex == 1 {
+            let status = splitView.convert(self.statusLabel!.bounds, from: self.statusLabel!)
+            let bar = splitView.convert(self.middleBar!.bounds, from: self.middleBar!)
+            return CGRect(x: status.minX, y: bar.minY, width: status.width, height: bar.height)
+        }
+        return .zero
+    }
+
 }
 
 extension AttabenchDocument {

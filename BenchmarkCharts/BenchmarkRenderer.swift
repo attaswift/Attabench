@@ -56,7 +56,9 @@ public struct BenchmarkRenderer {
 
         let scaleWidth = 3 * theme.axisLabel.font.maximumAdvancement.width
         self.chartRect = CGRect(x: bottomRect.minX + scaleWidth,
-                                y: bottomRect.minY + theme.axisLabel.font.boundingRectForFont.height,
+                                y: bottomRect.minY
+                                    + 1.2 * (theme.branding?.font.boundingRectForFont.height ?? 0)
+                                    + theme.axisLabel.font.boundingRectForFont.height,
                                 width: bottomRect.width - 2 * scaleWidth,
                                 height: bottomRect.height - theme.axisLabel.font.boundingRectForFont.height - theme.axisLabel.font.leading)
 
