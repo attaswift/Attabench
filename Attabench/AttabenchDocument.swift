@@ -80,6 +80,7 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     var state: State = .noBenchmark {
         didSet { stateDidChange(from: oldValue, to: state) }
     }
+    var activity: NSObjectProtocol? // Preventing system sleep
 
     let model = Variable<Attaresult>(Attaresult())
     var m: Attaresult {
@@ -627,6 +628,10 @@ extension AttabenchDocument {
     //MARK: Start/stop
 
     func processDidStop(success: Bool) {
+        if let activity = self.activity {
+            ProcessInfo.processInfo.endActivity(activity)
+            self.activity = nil
+        }
         refreshChart.nowIfNeeded()
         switch self.state {
         case .loading(_):
@@ -771,6 +776,9 @@ extension AttabenchDocument {
                                  maximumDuration: m.durationRange.value.upperBound.seconds)
         do {
             self.state = .running(try BenchmarkProcess(url: source, command: .run(options), delegate: self, on: .main))
+            self.activity = ProcessInfo.processInfo.beginActivity(options: [.automaticTerminationDisabled, .idleSystemSleepDisabled],
+                                                                 reason: "Benchmarking")
+
         }
         catch {
             self.log(.status, error.localizedDescription)
