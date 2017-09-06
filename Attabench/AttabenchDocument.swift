@@ -89,15 +89,32 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     }
 
     let taskFilterString: OptionalVariable<String> = nil
+    lazy var taskFilter: AnyObservableValue<TaskFilter>
+        = self.taskFilterString.map { TaskFilter($0) }
 
     lazy var visibleTasks: AnyObservableArray<Task>
-        = self.model.map{$0.tasks}.filter { [taskFilterString] model -> AnyObservableValue<Bool> in
-            let name = model.name.lowercased()
-            return taskFilterString.map { pattern -> Bool in
-                guard let p = pattern?.lowercased() else { return true }
-                return name.contains(p)
+        = self.model.map{$0.tasks}.filter { [taskFilter] task in taskFilter.map { $0.test(task) } }
+
+    struct TaskFilter {
+        let patterns: [String]
+
+        init(_ pattern: String?) {
+            self.patterns = (pattern ?? "")
+                .lowercased()
+                .components(separatedBy: ",")
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+        }
+
+        func test(_ task: Task) -> Bool {
+            guard !patterns.isEmpty else { return true }
+            for pattern in patterns {
+                if task.name.lowercased().contains(pattern) { return true }
             }
+            return false
+        }
     }
+
     lazy var checkedTasks = self.visibleTasks.filter { $0.checked }
     lazy var tasksToRun = self.visibleTasks.filter { $0.checked && $0.isRunnable }
 
