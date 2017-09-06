@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Attabench",
+        "repositoryURL": "https://github.com/attaswift/Benchmarking",
+        "state": {
+          "branch": "master",
+          "revision": "104863756dcab5a496bd9ea51fce5fcbfe0c85c7",
+          "version": null
+        }
+      },
+      {
         "package": "BTree",
         "repositoryURL": "https://github.com/attaswift/BTree",
         "state": {
