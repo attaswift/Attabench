@@ -186,7 +186,7 @@
                                                     </button>
                                                     <searchField wantsLayer="YES" horizontalHuggingPriority="246" verticalHuggingPriority="750" horizontalCompressionResistancePriority="745" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7t-Qb-yxf">
                                                         <rect key="frame" x="21" y="3" width="208" height="22"/>
-                                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" placeholderString="Filter" usesSingleLineMode="YES" bezelStyle="round" id="adq-Q7-78u">
+                                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" placeholderString="Filter Query" usesSingleLineMode="YES" bezelStyle="round" id="adq-Q7-78u">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -696,12 +696,12 @@
                                                             <subviews>
                                                                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ApN-io-XrD">
                                                                     <rect key="frame" x="77" y="71" width="73" height="22"/>
-                                                                    <popUpButtonCell key="cell" type="push" title="min size" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Oaa-10-t5l" id="PKa-n5-p5Q">
+                                                                    <popUpButtonCell key="cell" type="push" title="min" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Oaa-10-t5l" id="PKa-n5-p5Q">
                                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <menu key="menu" id="MLQ-oY-kq4">
                                                                             <items>
-                                                                                <menuItem title="min size" state="on" id="Oaa-10-t5l"/>
+                                                                                <menuItem title="min" state="on" id="Oaa-10-t5l"/>
                                                                                 <menuItem title="Item 2" id="6Ih-RO-u75"/>
                                                                                 <menuItem title="Item 3" id="hnh-25-A9F"/>
                                                                             </items>
@@ -710,12 +710,12 @@
                                                                 </popUpButton>
                                                                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SVl-Sw-GBR">
                                                                     <rect key="frame" x="150" y="71" width="73" height="22"/>
-                                                                    <popUpButtonCell key="cell" type="push" title="max size" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="fGR-i9-fwe" id="tnb-bG-fRW">
+                                                                    <popUpButtonCell key="cell" type="push" title="max" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="fGR-i9-fwe" id="tnb-bG-fRW">
                                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <menu key="menu" id="uyO-xG-dcP">
                                                                             <items>
-                                                                                <menuItem title="max size" state="on" id="fGR-i9-fwe"/>
+                                                                                <menuItem title="max" state="on" id="fGR-i9-fwe"/>
                                                                                 <menuItem title="Item 2" id="LLq-fJ-Ibi"/>
                                                                                 <menuItem title="Item 3" id="SyC-th-jys"/>
                                                                             </items>

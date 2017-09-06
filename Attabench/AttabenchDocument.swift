@@ -96,22 +96,33 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         = self.model.map{$0.tasks}.filter { [taskFilter] task in taskFilter.map { $0.test(task) } }
 
     struct TaskFilter {
-        let patterns: [String]
+        typealias Pattern = (string: String, isNegative: Bool)
+        let patterns: [[Pattern]]
 
         init(_ pattern: String?) {
             self.patterns = (pattern ?? "")
                 .lowercased()
                 .components(separatedBy: ",")
-                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .map { (pattern: String) -> [Pattern] in
+                    pattern
+                        .components(separatedBy: .whitespacesAndNewlines)
+                        .map { (word: String) -> Pattern in
+                            word.hasPrefix("!")
+                                ? (string: String(word.dropFirst()), isNegative: true)
+                                : (string: word, isNegative: false) }
+                        .filter { (pattern: Pattern) -> Bool in !pattern.string.isEmpty }
+            }
                 .filter { !$0.isEmpty }
         }
 
         func test(_ task: Task) -> Bool {
             guard !patterns.isEmpty else { return true }
-            for pattern in patterns {
-                if task.name.lowercased().contains(pattern) { return true }
+            let name = task.name.lowercased()
+            return patterns.contains { (conjunctive: [Pattern]) -> Bool in
+                !conjunctive.contains { (pattern: Pattern) -> Bool in
+                    name.contains(pattern.string) == pattern.isNegative
+                }
             }
-            return false
         }
     }
 
@@ -800,7 +811,7 @@ extension AttabenchDocument {
             self.startMeasuring()
         case .waiting:
             self.state = .idle
-        case .running(let process):
+        case .running(_):
             stopMeasuring()
         case .loading(let process):
             self.state = .failedBenchmark
