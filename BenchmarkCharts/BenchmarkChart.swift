@@ -66,7 +66,7 @@ struct Curve {
 struct RawCurve {
     struct Sample {
         let size: Int
-        let time: TimeInterval
+        let time: Time
     }
     var title: String
     var topBand: [Sample] = []
@@ -119,7 +119,7 @@ public struct BenchmarkChart {
         public var displaySizeRange: ClosedRange<Int>? = nil
         public var displayAllMeasuredSizes = true
 
-        public var displayTimeRange: ClosedRange<TimeInterval>? = nil
+        public var displayTimeRange: ClosedRange<Time>? = nil
         public var displayAllMeasuredTimes = true
 
         public init() {}
@@ -181,7 +181,7 @@ public struct BenchmarkChart {
                 for bi in BandIndex.all {
                     guard let band = options[bi] else { continue }
                     guard let time = sample[band] else { continue }
-                    let t = options.amortizedTime ? time.seconds / Double(size) : time.seconds
+                    let t = options.amortizedTime ? time / size : time
                     rawCurve.append(.init(size: size, time: t), at: bi)
                     if options.displayAllMeasuredSizes {
                         minSize = min(minSize, size)
@@ -213,7 +213,7 @@ public struct BenchmarkChart {
         }
 
         if let minTime = minTime, let maxTime = maxTime {
-            let yrange = minTime ... maxTime
+            let yrange = minTime.seconds ... maxTime.seconds
             if options.logarithmicTime {
                 let labeler: (Int) -> String = { value in "\(Time(orderOfMagnitude: value))" }
                 self.timeScale = LogarithmicScale(yrange, decimal: true, labeler: labeler)
@@ -231,7 +231,7 @@ public struct BenchmarkChart {
         // Calculate curves.
         func transform(_ s: RawCurve.Sample) -> CGPoint {
             return CGPoint(x: sizeScale.position(for: Double(s.size)),
-                           y: timeScale.position(for: s.time))
+                           y: timeScale.position(for: s.time.seconds))
         }
         for raw in rawCurves {
             var curve = Curve(title: raw.title)

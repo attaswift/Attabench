@@ -40,16 +40,20 @@ struct LogarithmicScale: ChartScale {
 
         let step = decimal ? 10.0 : 2.0
 
+        let smudge = 0.001
+        
         // Find last major gridline below range.
+        let rescaledUpperBound: Double
         if range.lowerBound < 1 {
             var s: Double = 1
             var minExponent = 0
-            while range.lowerBound * s < 1 {
+            while range.lowerBound * s + smudge < 1 {
                 s *= step
                 minExponent -= 1
             }
             self.min = 1 / s
             self.minExponent = minExponent
+            rescaledUpperBound = range.upperBound * s
         }
         else {
             var s: Double = 1
@@ -60,16 +64,17 @@ struct LogarithmicScale: ChartScale {
             }
             self.min = s
             self.minExponent = minExponent
+            rescaledUpperBound = range.upperBound / s
         }
 
         // Find first major gridline above range.
         var maxExponent = minExponent
-        var s = self.min
-        while s < range.upperBound {
+        var s: Double = 1
+        repeat {
             s *= step
             maxExponent += 1
-        }
-        self.max = s
+        } while s < rescaledUpperBound * (1 - smudge)
+        self.max = self.min * s
         self.maxExponent = maxExponent
 
         self.grid = (major: log(step) / (log(max) - log(min)),

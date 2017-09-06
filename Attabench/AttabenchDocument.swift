@@ -841,7 +841,7 @@ extension AttabenchDocument {
             timeBounds.formUnion(with: Bounds(r))
         }
         if let r = timeBounds.range {
-            options.displayTimeRange = r.lowerBound.seconds ... r.upperBound.seconds
+            options.displayTimeRange = r.lowerBound ... r.upperBound
         }
         options.displayAllMeasuredTimes = m.displayIncludeAllMeasuredTimes.value
 
