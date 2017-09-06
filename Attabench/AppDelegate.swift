@@ -15,7 +15,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
-        sender.sendAction(#selector(NSDocumentController.openDocument(_:)), to: nil, from: sender)
+        if sender.windows.isEmpty {
+            sender.sendAction(#selector(NSDocumentController.openDocument(_:)), to: nil, from: sender)
+        }
         return false
     }
     
