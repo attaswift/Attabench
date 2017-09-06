@@ -67,14 +67,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="923" height="484"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <splitView identifier="RootSplitView" wantsLayer="YES" autosaveName="HorizontalSplitView" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T8n-N8-ln5" userLabel="Root Split View">
+                    <splitView identifier="RootSplitView" wantsLayer="YES" autosaveName="RootSplitView" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T8n-N8-ln5" userLabel="Root Split View">
                         <rect key="frame" x="0.0" y="0.0" width="923" height="484"/>
                         <subviews>
                             <visualEffectView blendingMode="behindWindow" material="sidebar" state="followsWindowActiveState" id="gG5-EF-oMY">
                                 <rect key="frame" x="0.0" y="0.0" width="253" height="484"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
-                                    <splitView identifier="LeftSplitView" arrangesAllSubviews="NO" dividerStyle="thin" translatesAutoresizingMaskIntoConstraints="NO" id="Bc9-KC-2nD" userLabel="Left Split View">
+                                    <splitView identifier="LeftSplitView" arrangesAllSubviews="NO" autosaveName="LeftSplitView" dividerStyle="thin" translatesAutoresizingMaskIntoConstraints="NO" id="Bc9-KC-2nD" userLabel="Left Split View">
                                         <rect key="frame" x="0.0" y="0.0" width="253" height="484"/>
                                         <subviews>
                                             <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="bNP-3x-NB1">
@@ -84,7 +84,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="253" height="358"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="20" viewBased="YES" id="FCj-n2-LsA">
+                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" typeSelect="NO" autosaveName="TaskTable" rowHeight="20" viewBased="YES" id="FCj-n2-LsA">
                                                             <rect key="frame" x="0.0" y="0.0" width="253" height="358"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -353,7 +353,7 @@
                                     <constraint firstItem="Bc9-KC-2nD" firstAttribute="leading" secondItem="gG5-EF-oMY" secondAttribute="leading" id="qnz-u5-HH9"/>
                                 </constraints>
                             </visualEffectView>
-                            <splitView identifier="MiddleSplitView" fixedFrame="YES" autosaveName="VerticalSplitView" dividerStyle="thin" id="G4p-w7-27R" userLabel="Middle Split View">
+                            <splitView identifier="MiddleSplitView" fixedFrame="YES" autosaveName="MiddleSplitView" dividerStyle="thin" id="G4p-w7-27R" userLabel="Middle Split View">
                                 <rect key="frame" x="254" y="0.0" width="442" height="484"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
