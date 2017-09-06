@@ -118,24 +118,38 @@
                                                                                     </connections>
                                                                                 </button>
                                                                                 <textField horizontalHuggingPriority="239" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ZZR-24-yUe">
-                                                                                    <rect key="frame" x="18" y="10" width="232" height="17"/>
+                                                                                    <rect key="frame" x="18" y="10" width="197" height="17"/>
                                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Task Name" usesSingleLineMode="YES" id="iqp-Dq-uQ0">
                                                                                         <font key="font" metaFont="system"/>
                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                                     </textFieldCell>
                                                                                 </textField>
+                                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jxk-Yy-51E">
+                                                                                    <rect key="frame" x="215" y="10" width="33" height="14"/>
+                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" drawsBackground="YES" id="MXl-Zm-yR8">
+                                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                                                        <color key="backgroundColor" red="0.8673805100312505" green="0.8673805100312505" blue="0.8673805100312505" alpha="0.0" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                    </textFieldCell>
+                                                                                    <connections>
+                                                                                        <action selector="detail:" target="-1" id="jCd-dJ-lfr"/>
+                                                                                    </connections>
+                                                                                </textField>
                                                                             </subviews>
                                                                             <constraints>
                                                                                 <constraint firstItem="ZZR-24-yUe" firstAttribute="centerY" secondItem="HYe-2M-9UE" secondAttribute="centerY" id="6ou-jP-2s5"/>
                                                                                 <constraint firstItem="ZZR-24-yUe" firstAttribute="leading" secondItem="vfP-2p-plh" secondAttribute="trailing" constant="3" id="BMi-81-joj"/>
                                                                                 <constraint firstItem="vfP-2p-plh" firstAttribute="leading" secondItem="HYe-2M-9UE" secondAttribute="leading" constant="3" id="He1-8M-tom"/>
-                                                                                <constraint firstAttribute="trailing" secondItem="ZZR-24-yUe" secondAttribute="trailing" constant="2" id="act-K2-6ro"/>
+                                                                                <constraint firstItem="ZZR-24-yUe" firstAttribute="firstBaseline" secondItem="jxk-Yy-51E" secondAttribute="firstBaseline" id="Lre-t4-ST4"/>
+                                                                                <constraint firstAttribute="trailing" secondItem="jxk-Yy-51E" secondAttribute="trailing" constant="2" id="MS0-73-9Co"/>
                                                                                 <constraint firstItem="vfP-2p-plh" firstAttribute="height" secondItem="HYe-2M-9UE" secondAttribute="height" id="jb0-8X-d5s"/>
+                                                                                <constraint firstItem="jxk-Yy-51E" firstAttribute="leading" secondItem="ZZR-24-yUe" secondAttribute="trailing" constant="2" id="wol-EJ-I1D"/>
                                                                                 <constraint firstItem="vfP-2p-plh" firstAttribute="centerY" secondItem="HYe-2M-9UE" secondAttribute="centerY" id="zup-EZ-8ZI"/>
                                                                             </constraints>
                                                                             <connections>
                                                                                 <outlet property="checkbox" destination="vfP-2p-plh" id="Dog-Gq-aP1"/>
+                                                                                <outlet property="detail" destination="jxk-Yy-51E" id="Kwi-nt-m2y"/>
                                                                                 <outlet property="textField" destination="ZZR-24-yUe" id="GJZ-EA-LpA"/>
                                                                             </connections>
                                                                         </tableCellView>

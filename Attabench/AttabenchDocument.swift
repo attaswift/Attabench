@@ -127,6 +127,22 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
 
     let theme = Variable<BenchmarkTheme>(BenchmarkTheme.Predefined.screen)
 
+    var _log: NSMutableAttributedString? = nil
+    var _status: String = "Ready"
+
+    lazy var refreshChart = RateLimiter(maxDelay: 5, async: true) { [unowned self] in self._refreshChart() }
+    var tasksTableViewController: TasksTableViewController?
+
+    var pendingResults: [(task: String, size: Int, time: Time)] = []
+    lazy var processPendingResults = RateLimiter(maxDelay: 0.2) { [unowned self] in
+        for (task, size, time) in self.pendingResults {
+            self.m.addMeasurement(time, forTask: task, size: size)
+        }
+        self.pendingResults = []
+        self.updateChangeCount(.changeDone)
+        self.refreshChart.later()
+    }
+
     @IBOutlet weak var runButton: NSButton?
     @IBOutlet weak var minimumSizeButton: NSPopUpButton?
     @IBOutlet weak var maximumSizeButton: NSPopUpButton?
@@ -177,12 +193,6 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     @IBOutlet weak var displayTimeRangeMaxPopUpButton: NSPopUpButton?
 
     @IBOutlet weak var displayRefreshIntervalField: NSTextField?
-
-    var _log: NSMutableAttributedString? = nil
-    var _status: String = "Ready"
-
-    lazy var refreshChart = RateLimiter(maxDelay: 5) { [unowned self] in self._refreshChart() }
-    var tasksTableViewController: TasksTableViewController?
 
     override init() {
         super.init()
@@ -614,9 +624,14 @@ extension AttabenchDocument {
 
     func benchmark(_ benchmark: BenchmarkProcess, didMeasureTask task: String, atSize size: Int, withResult time: Time) {
         guard case .running(let process) = state, process === benchmark else { benchmark.stop(); return }
-        m.addMeasurement(time, forTask: task, size: size)
-        self.updateChangeCount(.changeDone)
-        self.refreshChart.later()
+        pendingResults.append((task, size, time))
+        processPendingResults.later()
+        if pendingResults.count > 10000 {
+            // Don't let reports swamp the run loop.
+            log(.status, "Receiving reports too quickly; terminating benchmark.")
+            log(.status, "Try selected larger sizes, or increasing the iteration count or minimum duration in Run Options.")
+            stopMeasuring()
+        }
     }
 
     func benchmark(_ benchmark: BenchmarkProcess, didPrintToStandardOutput line: String) {
@@ -779,8 +794,7 @@ extension AttabenchDocument {
         case .waiting:
             self.state = .idle
         case .running(let process):
-            self.state = .stopping(process, then: .idle)
-            process.stop()
+            stopMeasuring()
         case .loading(let process):
             self.state = .failedBenchmark
             process.stop()
@@ -791,6 +805,12 @@ extension AttabenchDocument {
         case .stopping(let process, then: .idle):
             self.state = .stopping(process, then: .restart)
         }
+    }
+
+    func stopMeasuring() {
+        guard case .running(let process) = state else { return }
+        self.state = .stopping(process, then: .idle)
+        process.stop()
     }
 
     func startMeasuring() {

@@ -8,6 +8,8 @@ import BenchmarkModel
 
 class TaskCellView: NSTableCellView {
     @IBOutlet weak var checkbox: NSButton?
+    @IBOutlet weak var detail: NSTextField?
+
     weak var context: TasksTableViewController?
 
     override func awakeFromNib() {
@@ -28,12 +30,15 @@ class TaskCellView: NSTableCellView {
                     }
                 }
                 taskConnections.connect(task.isRunnable.values) { [unowned self, task] value in
-                    if let label = self.textField {
-                        let title = task.name + (value ? "" : " ✖︎")
-                        if label.stringValue != title {
-                            label.stringValue = title
-                        }
+                    guard let label = self.textField else { return }
+                    let title = task.name + (value ? "" : " ✖︎")
+                    if label.stringValue != title {
+                        label.stringValue = title
                     }
+                }
+                taskConnections.connect(task.sampleCount.values) { [unowned self] value in
+                    guard let detail = self.detail else { return }
+                    detail.stringValue = "\(value)"
                 }
             }
         }

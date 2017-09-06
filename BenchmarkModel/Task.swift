@@ -13,6 +13,7 @@ public final class Task: Codable, Hashable {
     public internal(set) var samples: [Int: TimeSample] = [:]
     public let checked: BoolVariable = true
     public let isRunnable: BoolVariable = false // transient
+    public let sampleCount: IntVariable = 0 // transient
 
     enum CodingKey: String, Swift.CodingKey {
         case name
@@ -30,6 +31,7 @@ public final class Task: Codable, Hashable {
         let container = try decoder.container(keyedBy: CodingKey.self)
         self.name = try container.decode(String.self, forKey: .name)
         self.samples = try container.decode([Int: TimeSample].self, forKey: .samples)
+        self.sampleCount.value = self.samples.values.reduce(0) { $0 + $1.count }
         if let checked = try container.decodeIfPresent(Bool.self, forKey: .checked) {
             self.checked.value = checked
         }
@@ -45,6 +47,7 @@ public final class Task: Codable, Hashable {
     public func addMeasurement(_ time: Time, forSize size: Int) {
         samples.value(for: size, default: TimeSample()).addMeasurement(time)
         newMeasurements.send((size, time))
+        self.sampleCount.value += 1
     }
 
     public func bounds(for band: Band, amortized: Bool) -> (size: Bounds<Int>, time: Bounds<Time>) {
@@ -69,5 +72,6 @@ public final class Task: Codable, Hashable {
     
     public func deleteResults() {
         samples = [:]
+        sampleCount.value = 0
     }
 }
