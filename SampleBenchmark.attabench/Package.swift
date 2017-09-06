@@ -7,7 +7,7 @@ let package = Package(
         .executable(name: "Benchmark", targets: ["Benchmark"])
     ],
     dependencies: [
-        .package(url: "https://github.com/lorentey/Attabench", .branch("swift4"))
+        .package(url: "https://github.com/attaswift/Benchmarking", .branch("master"))
     ],
     targets: [
         .target(name: "Benchmark", dependencies: ["Benchmarking"], path: "Sources"),

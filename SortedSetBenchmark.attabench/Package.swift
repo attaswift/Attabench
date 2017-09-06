@@ -7,12 +7,11 @@ let package = Package(
         .executable(name: "Benchmark", targets: ["Benchmark"])
     ],
     dependencies: [
-        .package(url: "https://github.com/lorentey/Attabench", .branch("swift4")),
-        .package(url: "https://github.com/lorentey/SipHash", .branch("swift4")),
-        .package(url: "https://github.com/lorentey/BTree", .branch("5.x"))
+        .package(url: "https://github.com/attaswift/Benchmarking", .branch("master")),
+        .package(url: "https://github.com/attaswift/BTree", .branch("5.x"))
     ],
     targets: [
-        .target(name: "Benchmark", dependencies: ["Benchmarking", "BTree", "SipHash"], path: "Sources"),
+        .target(name: "Benchmark", dependencies: ["Benchmarking", "BTree"], path: "Sources"),
     ],
     swiftLanguageVersions: [4]
 )
