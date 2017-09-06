@@ -532,6 +532,7 @@ benchmark.addTask(title: "BTree3.sharedInsert") { input, lookups in
     }
 }
 
+#if false
 benchmark.addTask(title: "BTree4.insert") { input, lookups in
     return { timer in
         var set = BTree4<Int>(order: 1024)
@@ -665,6 +666,7 @@ benchmark.addTask(title: "IntBTree3.sharedInsert") { input, lookups in
         }
     }
 }
+#endif
 
 benchmark.addTask(title: "Array.sort") { input, lookups in
     return { timer in
