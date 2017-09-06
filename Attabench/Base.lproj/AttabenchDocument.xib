@@ -1037,9 +1037,9 @@
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="S71-Vo-5QY"/>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
+                    <toolbarItem reference="Wmz-t1-Dse"/>
                     <toolbarItem reference="ApD-tD-Tu6"/>
                     <toolbarItem reference="Znh-eH-hvH"/>
-                    <toolbarItem reference="Wmz-t1-Dse"/>
                     <toolbarItem reference="GaH-lI-0CK"/>
                     <toolbarItem reference="S71-Vo-5QY"/>
                 </defaultToolbarItems>

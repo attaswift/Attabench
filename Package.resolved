@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/attaswift/GlueKit",
         "state": {
           "branch": "master",
-          "revision": "43d55daa637dab287d5894778bd3adf67b065797",
+          "revision": "a1283dba1d57578e34ded41bd9b5f24a2b9bf72f",
           "version": null
         }
       },
@@ -42,7 +42,7 @@
         "repositoryURL": "https://github.com/attaswift/SipHash",
         "state": {
           "branch": "swift4",
-          "revision": "059de25c8d7eccc2a7b8e6a98356f0016d3549bc",
+          "revision": "7f83e142126db134b8d9175cb98b65ba95c18a1f",
           "version": null
         }
       }

@@ -271,13 +271,17 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         self.highlightSelectedSizeRangeCheckbox!.glue.state <-- model.map{$0.highlightSelectedSizeRange}
         self.displayIncludeAllMeasuredSizesCheckbox!.glue.state <-- model.map{$0.displayIncludeAllMeasuredSizes}
         self.displayIncludeSizeScaleRangeCheckbox!.glue.state <-- model.map{$0.displayIncludeSizeScaleRange}
+        
         self.displaySizeScaleRangeMinPopUpButton!.glue <-- NSPopUpButton.Choices<Int>(
             model: model.map{$0.displaySizeScaleRange.lowerBound},
             values: lowerBoundSizeChoices)
+        self.displaySizeScaleRangeMinPopUpButton!.glue.isEnabled <-- model.map{$0.displayIncludeSizeScaleRange}
+
         self.displaySizeScaleRangeMaxPopUpButton!.glue <-- NSPopUpButton.Choices<Int>(
             model: model.map{$0.displaySizeScaleRange.upperBound},
             values: upperBoundSizeChoices)
-        
+        self.displaySizeScaleRangeMaxPopUpButton!.glue.isEnabled <-- model.map{$0.displayIncludeSizeScaleRange}
+
         
         var timeChoices: [(label: String, value: Time)] = []
         var time = Time(picoseconds: 1)
@@ -286,13 +290,18 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
             time = 10 * time
         }
         self.displayIncludeAllMeasuredTimesCheckbox!.glue.state <-- model.map{$0.displayIncludeAllMeasuredTimes}
+
         self.displayIncludeTimeRangeCheckbox!.glue.state <-- model.map{$0.displayIncludeTimeRange}
+        
         self.displayTimeRangeMinPopUpButton!.glue <-- NSPopUpButton.Choices<Time>(
             model: model.map{$0.displayTimeRange.lowerBound},
             values: timeChoices)
+        self.displayTimeRangeMinPopUpButton!.glue.isEnabled <-- model.map{$0.displayIncludeTimeRange}
+        
         self.displayTimeRangeMaxPopUpButton!.glue <-- NSPopUpButton.Choices<Time>(
             model: model.map{$0.displayTimeRange.upperBound},
             values: timeChoices)
+        self.displayTimeRangeMaxPopUpButton!.glue.isEnabled <-- model.map{$0.displayIncludeTimeRange}
 
         refreshRunButton()
         refreshChart.now()
