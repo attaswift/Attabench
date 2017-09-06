@@ -192,7 +192,8 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     @IBOutlet weak var displayTimeRangeMinPopUpButton: NSPopUpButton?
     @IBOutlet weak var displayTimeRangeMaxPopUpButton: NSPopUpButton?
 
-    @IBOutlet weak var displayRefreshIntervalField: NSTextField?
+    @IBOutlet weak var progressRefreshIntervalField: NSTextField?
+    @IBOutlet weak var chartRefreshIntervalField: NSTextField?
 
     override init() {
         super.init()
@@ -222,7 +223,11 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
                 self.taskFilterTextField.stringValue = filter ?? ""
             }
         }
-        self.glue.connector.connect(model.map{$0.displayRefreshInterval}.values) { [unowned self] interval in
+        self.glue.connector.connect(model.map{$0.progressRefreshInterval}.values) { [unowned self] interval in
+            self.statusLabel?.refreshRate = interval.seconds
+            self.processPendingResults.maxDelay = interval.seconds
+        }
+        self.glue.connector.connect(model.map{$0.chartRefreshInterval}.values) { [unowned self] interval in
             self.refreshChart.maxDelay = interval.seconds
         }
     }
@@ -257,7 +262,9 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
         self.amortizedCheckbox!.glue.state <-- model.map{$0.amortizedTime}
         self.logarithmicSizeCheckbox!.glue.state <-- model.map{$0.logarithmicSizeScale}
         self.logarithmicTimeCheckbox!.glue.state <-- model.map{$0.logarithmicTimeScale}
-        self.displayRefreshIntervalField!.glue.value <-- model.map{$0.displayRefreshInterval}
+
+        self.progressRefreshIntervalField!.glue.value <-- model.map{$0.progressRefreshInterval}
+        self.chartRefreshIntervalField!.glue.value <-- model.map{$0.chartRefreshInterval}
 
         self.centerBandPopUpButton!.glue <-- NSPopUpButton.Choices<CurveBandValues>(
             model: model.map{$0.centerBand}
@@ -1009,26 +1016,16 @@ extension AttabenchDocument: NSTextFieldDelegate {
 extension AttabenchDocument {
     //MARK: State restoration
     enum RestorationKey: String {
-        case checkedTasks = "checkedTasks"
-        case taskFilterString = "taskFilterString"
+        case taskFilterString
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
         super.encodeRestorableState(with: coder)
         coder.encode(self.taskFilterString.value, forKey: RestorationKey.taskFilterString.rawValue)
-        coder.encode(m.tasks.value.filter { $0.checked.value }.map { $0.name } as NSArray,
-                     forKey: RestorationKey.checkedTasks.rawValue)
     }
 
     override func restoreState(with coder: NSCoder) {
         super.restoreState(with: coder)
         self.taskFilterString.value = coder.decodeObject(forKey: RestorationKey.taskFilterString.rawValue) as? String
-
-        if let taskNames = coder.decodeObject(forKey: RestorationKey.checkedTasks.rawValue) as? [String] {
-            let names = Set(taskNames)
-            for task in m.tasks.value {
-                task.checked.value = names.contains(task.name)
-            }
-        }
     }
 }

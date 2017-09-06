@@ -95,7 +95,8 @@ public class Attaresult: NSObject, Codable {
     public let displayIncludeAllMeasuredTimes: BoolVariable = true
 
     public let themeName: StringVariable = ""
-    public let displayRefreshInterval: Variable<Time> = .init(5.0)
+    public let progressRefreshInterval: Variable<Time> = .init(0.2)
+    public let chartRefreshInterval: Variable<Time> = .init(0.5)
 
     public private(set) lazy var chartOptionsTick: MergedSource<Void>
      = [amortizedTime.tick,
@@ -113,7 +114,8 @@ public class Attaresult: NSObject, Codable {
         displayIncludeTimeRange.tick,
         displayIncludeAllMeasuredTimes.tick,
         themeName.tick,
-        displayRefreshInterval.tick].gather()
+        progressRefreshInterval.tick,
+        chartRefreshInterval.tick].gather()
 
     public override init() {
         super.init()
@@ -150,7 +152,8 @@ public class Attaresult: NSObject, Codable {
         case displayIncludeTimeRange
         case displayIncludeAllMeasuredTimes
         case themeName
-        case displayRefreshInterval
+        case progressRefreshInterval
+        case chartRefreshInterval
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -184,7 +187,8 @@ public class Attaresult: NSObject, Codable {
         try container.encode(self.displayIncludeAllMeasuredTimes.value, forKey: .displayIncludeAllMeasuredTimes)
 
         try container.encode(self.themeName.value, forKey: .themeName)
-        try container.encode(self.displayRefreshInterval.value, forKey: .displayRefreshInterval)
+        try container.encode(self.progressRefreshInterval.value, forKey: .progressRefreshInterval)
+        try container.encode(self.chartRefreshInterval.value, forKey: .chartRefreshInterval)
     }
 
     public required init(from decoder: Decoder) throws {
@@ -258,8 +262,11 @@ public class Attaresult: NSObject, Codable {
         if let v = try container.decodeIfPresent(String.self, forKey: .themeName) {
             self.themeName.value = v
         }
-        if let v = try container.decodeIfPresent(Time.self, forKey: .displayRefreshInterval) {
-            self.displayRefreshInterval.value = v
+        if let v = try container.decodeIfPresent(Time.self, forKey: .progressRefreshInterval) {
+            self.progressRefreshInterval.value = v
+        }
+        if let v = try container.decodeIfPresent(Time.self, forKey: .chartRefreshInterval) {
+            self.chartRefreshInterval.value = v
         }
     }
 

@@ -10,6 +10,11 @@ class StatusLabel: NSTextField {
         self.stringValue = self._status
     }
 
+    var refreshRate: TimeInterval {
+        get { return refreshStatus.maxDelay }
+        set { refreshStatus.maxDelay = newValue }
+    }
+
     // Rate-limited status setter. Helpful if you need to update status frequently without consuming too much CPU.
     var lazyStatus: String {
         get {

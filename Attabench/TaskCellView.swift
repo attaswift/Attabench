@@ -69,7 +69,7 @@ class TaskCellView: NSTableCellView {
 
         selectedTasks.forEach { $0.checked.apply(.beginTransaction) }
         clearedTasks.forEach { $0.checked.apply(.beginTransaction) }
-        selectedTasks.forEach { $0.checked.value = value }
+        selectedTasks.forEach { $0.checked.value = clearOthers ? true : value }
         clearedTasks.forEach { $0.checked.value = false }
         selectedTasks.forEach { $0.checked.apply(.endTransaction) }
         clearedTasks.forEach { $0.checked.apply(.endTransaction) }

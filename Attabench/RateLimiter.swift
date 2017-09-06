@@ -5,7 +5,9 @@
 import Foundation
 
 class RateLimiter: NSObject {
-    var maxDelay: TimeInterval
+    var maxDelay: TimeInterval {
+        didSet { now() }
+    }
     let action: () -> Void
     private var scheduled = false
     private var async = false
