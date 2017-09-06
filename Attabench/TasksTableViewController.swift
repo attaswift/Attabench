@@ -32,7 +32,7 @@ class TasksTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSo
             tableView.moveRow(at: from, to: to)
         }
         tableView.endUpdates()
-        print("Removed: \(batch.deleted), inserted: \(batch.inserted), moved: \(batch.moved)")
+        //print("Removed: \(batch.deleted), inserted: \(batch.inserted), moved: \(batch.moved)")
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
