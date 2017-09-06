@@ -2,29 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "BTree",
-        "repositoryURL": "https://github.com/lorentey/BTree",
-        "state": {
-          "branch": "5.x",
-          "revision": "5e16b7f6323e08644468796aace80b1f1d29d261",
-          "version": null
-        }
-      },
-      {
-        "package": "BigInt",
-        "repositoryURL": "https://github.com/lorentey/BigInt",
-        "state": {
-          "branch": "swift4",
-          "revision": "974b11ce5a4ac2235c69e3192d98d47fe01b4462",
-          "version": null
-        }
-      },
-      {
-        "package": "GlueKit",
-        "repositoryURL": "https://github.com/attaswift/GlueKit",
+        "package": "Attabench",
+        "repositoryURL": "https://github.com/attaswift/Benchmarking",
         "state": {
           "branch": "master",
-          "revision": "a1283dba1d57578e34ded41bd9b5f24a2b9bf72f",
+          "revision": "d64217a7f82b879c535ca461a33b744176bfe28b",
           "version": null
         }
       },
@@ -34,15 +16,6 @@
         "state": {
           "branch": "master",
           "revision": "049f1e2b9d4550c25d99c54e17a045149e723afb",
-          "version": null
-        }
-      },
-      {
-        "package": "SipHash",
-        "repositoryURL": "https://github.com/lorentey/SipHash",
-        "state": {
-          "branch": "swift4",
-          "revision": "4aeb517b8c7f6773d21bb6441533d0e69666e93f",
           "version": null
         }
       }
