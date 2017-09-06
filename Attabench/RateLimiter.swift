@@ -8,6 +8,7 @@ class RateLimiter: NSObject {
     var maxDelay: TimeInterval
     let action: () -> Void
     private var scheduled = false
+    private var performing = false
     private var next = Date.distantPast
 
     init(maxDelay: TimeInterval, action: @escaping () -> Void) {
@@ -21,13 +22,19 @@ class RateLimiter: NSObject {
     }
 
     @objc func now() {
+        if performing { return }
         cancel()
-        action()
-        next = Date(timeIntervalSinceNow: maxDelay)
+        performing = true
+        DispatchQueue.main.async {
+            self.performing = false
+            self.action()
+            self.next = Date(timeIntervalSinceNow: self.maxDelay)
+        }
     }
 
     func later() {
         if scheduled { return }
+        if performing { return }
         let now = Date()
         if next < now {
             self.now()
@@ -41,5 +48,4 @@ class RateLimiter: NSObject {
     func nowIfNeeded() {
         if scheduled { now() }
     }
-
 }
