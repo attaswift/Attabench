@@ -66,4 +66,8 @@ public final class Task: Codable, Hashable {
     public static func ==(left: Task, right: Task) -> Bool {
         return left.name == right.name
     }
+    
+    public func deleteResults() {
+        samples = [:]
+    }
 }

@@ -650,8 +650,9 @@ extension AttabenchDocument {
     }
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        switch menuItem.action {
-        case #selector(AttabenchDocument.startStopAction(_:))?:
+        guard let action = menuItem.action else { return super.validateMenuItem(menuItem) }
+        switch action {
+        case #selector(AttabenchDocument.startStopAction(_:)):
             let startLabel = "Start Running"
             let stopLabel = "Stop Running"
 
@@ -682,10 +683,29 @@ extension AttabenchDocument {
                 menuItem.title = stopLabel
                 return false
             }
+        case #selector(AttabenchDocument.delete(_:)):
+            return self.tasksTableView?.selectedRowIndexes.isEmpty == false
         default:
             return super.validateMenuItem(menuItem)
         }
     }
+    
+    
+    @IBAction func delete(_ sender: AnyObject) {
+        // FIXME this is horrible. Implement Undo etc.
+        let tasks = (self.tasksTableView?.selectedRowIndexes ?? []).map { self.visibleTasks[$0] }
+        m.tasks.withTransaction {
+            for task in tasks {
+                task.deleteResults()
+                if !task.isRunnable.value {
+                    self.m.remove(task)
+                }
+            }
+        }
+        self.refreshChart.now()
+        self.updateChangeCount(.changeDone)
+    }
+
 
     @IBAction func chooseBenchmark(_ sender: AnyObject) {
         guard let window = self.windowControllers.first?.window else { return }

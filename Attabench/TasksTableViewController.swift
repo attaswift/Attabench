@@ -60,5 +60,4 @@ class TasksTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSo
     func tableView(_ tableView: NSTableView, shouldSelect tableColumn: NSTableColumn?) -> Bool {
         return false
     }
-
 }

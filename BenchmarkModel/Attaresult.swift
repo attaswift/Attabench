@@ -265,6 +265,11 @@ public class Attaresult: NSObject, Codable {
 
     // MARK: Measurements
 
+    public func remove(_ task: Task) {
+        let i = tasks.value.index(of: task)!
+        tasks.remove(at: i)
+        tasksByName.removeValue(forKey: task.name)
+    }
     public func task(for name: String) -> Task {
         if let task = self.tasksByName[name] { return task }
         let task = Task(name: name)
