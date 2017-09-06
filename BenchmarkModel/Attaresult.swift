@@ -80,9 +80,9 @@ public class Attaresult: NSObject, Codable {
     public let logarithmicSizeScale: BoolVariable = true
     public let logarithmicTimeScale: BoolVariable = true
 
-    public let topBand: OptionalVariable<Band> = nil
+    public let topBand: OptionalVariable<Band> = .init(.sigma(2))
     public let centerBand: OptionalVariable<Band> = .init(.average)
-    public let bottomBand: OptionalVariable<Band> = nil
+    public let bottomBand: OptionalVariable<Band> = .init(.minimum)
 
     public let highlightSelectedSizeRange: BoolVariable = true
 
