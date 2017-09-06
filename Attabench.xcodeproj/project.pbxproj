@@ -48,7 +48,6 @@
 		BBCA26FB1F59B8A400C6FB74 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889C81F3F85F200014740 /* Time.swift */; };
 		BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CC1F3F887A00014740 /* Timestamp.swift */; };
 		BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889CA1F3F86EB00014740 /* TimeSample.swift */; };
-		BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E0D1E32A35500505773 /* TaskResults.swift */; };
 		BBCC9F881F5ABE7300AE36DE /* BTree.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1B1E33D69100505773 /* BTree.framework.dSYM */; };
 		BBCC9F891F5ABE7300AE36DE /* GlueKit.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1C1E33D69100505773 /* GlueKit.framework.dSYM */; };
 		BBCC9F8A1F5ABE7700AE36DE /* SipHash.framework.dSYM in Copy dSYMs for Dependencies */ = {isa = PBXBuildFile; fileRef = BB8E0E1D1E33D69100505773 /* SipHash.framework.dSYM */; };
@@ -186,7 +185,6 @@
 		BB8E0DF61E32383900505773 /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
 		BB8E0DFE1E32384500505773 /* Benchmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Benchmark.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BB8E0E091E3262C600505773 /* BenchmarkChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BenchmarkChart.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		BB8E0E0D1E32A35500505773 /* TaskResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskResults.swift; sourceTree = "<group>"; };
 		BB8E0E0F1E33D43400505773 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		BB8E0E101E33D64000505773 /* BTree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BTree.framework; path = Carthage/Build/Mac/BTree.framework; sourceTree = "<group>"; };
 		BB8E0E111E33D64000505773 /* GlueKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GlueKit.framework; path = Carthage/Build/Mac/GlueKit.framework; sourceTree = "<group>"; };
@@ -433,7 +431,6 @@
 				BB9889C81F3F85F200014740 /* Time.swift */,
 				BB9889CC1F3F887A00014740 /* Timestamp.swift */,
 				BB9889CA1F3F86EB00014740 /* TimeSample.swift */,
-				BB8E0E0D1E32A35500505773 /* TaskResults.swift */,
 				BB888E9C1F5DAC5000AB2652 /* Attaresult.swift */,
 				BBB4824D1F5F0A5D00A6C9DD /* ClosedRangeVariable.swift */,
 				BB5B02D81F5E2A4C0084D86B /* Task.swift */,
@@ -791,7 +788,6 @@
 				BB888E9D1F5DAC5000AB2652 /* Attaresult.swift in Sources */,
 				BBB482511F5F0ABE00A6C9DD /* ClosedRangeVariable.swift in Sources */,
 				BBCA26FC1F59B8A400C6FB74 /* Timestamp.swift in Sources */,
-				BBCA26FE1F59B8A400C6FB74 /* TaskResults.swift in Sources */,
 				BBCA26FD1F59B8A400C6FB74 /* TimeSample.swift in Sources */,
 				BB5B02D91F5E2A4C0084D86B /* Task.swift in Sources */,
 				BBCA26FB1F59B8A400C6FB74 /* Time.swift in Sources */,
