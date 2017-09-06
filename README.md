@@ -2,7 +2,7 @@
 
 [![Xcode 8.2](https://img.shields.io/badge/Xcode-8.2-blue.svg)](https://developer.apple.com/xcode/) 
 [![Platform](https://img.shields.io/badge/platforms-macOS-blue.svg)](https://developer.apple.com/platforms/)
-[![Build Status](https://travis-ci.org/lorentey/Attabench.svg?branch=master)](https://travis-ci.org/lorentey/Attabench)
+[![Build Status](https://travis-ci.org/attaswift/Attabench.svg?branch=master)](https://travis-ci.org/attaswift/Attabench)
 
 Attabench is a microbenchmarking app for macOS, designed to measure
 and visualize the performance of Swift code.
@@ -52,7 +52,7 @@ Attabench from source.
 1. Clone this repo to your Mac.
 
     ```
-    git clone https://github.com/lorentey/Attabench.git Attabench
+    git clone https://github.com/attaswift/Attabench.git Attabench
     cd Attabench
     ```
 
@@ -76,9 +76,9 @@ Attabench from source.
 
 [carthage]: https://github.com/Carthage/Carthage
 [brew]: https://brew.sh
-[siphash]: https://github.com/lorentey/SipHash
-[btree]: https://github.com/lorentey/BTree
-[gluekit]: https://github.com/lorentey/GlueKit
+[siphash]: https://github.com/attaswift/SipHash
+[btree]: https://github.com/attaswift/BTree
+[gluekit]: https://github.com/attaswift/GlueKit
 
 ## Usage
 
@@ -109,7 +109,7 @@ works.
 
 Benchmarks are currently compiled directly into the app, and cannot be changed at runtime. (I know, I know, this is awful. [Pull requests are welcome!][issue1])
 
-[issue1]: https://github.com/lorentey/Attabench/issues/1
+[issue1]: https://github.com/attaswift/Attabench/issues/1
 
 You can add new benchmarks or change existing ones by modifying the
 source files of the `Benchmarks` target in the Xcode project. To

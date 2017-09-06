@@ -1,4 +1,4 @@
-github "lorentey/GlueKit" "master"
-github "lorentey/SipHash" "swift4"
-github "lorentey/BigInt" "swift4"
+github "attaswift/GlueKit" "master"
+github "attaswift/SipHash" "swift4"
+github "attaswift/BigInt" "swift4"
 github "attaswift/OptionParser" "master"
