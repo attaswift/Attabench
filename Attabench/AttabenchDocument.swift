@@ -496,19 +496,13 @@ extension AttabenchDocument {
         case UTI.attabench:
             log(.status, "Loading \(FileManager().displayName(atPath: url.path))")
             do {
-                let resultsURL = url.deletingPathExtension().appendingPathExtension(attaresultExtension)
-                self.fileURL = resultsURL
+                self.isDraft = true
                 self.fileType = UTI.attaresult
-                if (try? resultsURL.checkResourceIsReachable()) == true {
-                    try self.readAttaresult(try Data(contentsOf: resultsURL))
-                    m.benchmarkURL.value = url
-                    self.fileModificationDate = (try? resultsURL.resourceValues(forKeys: [URLResourceKey.contentModificationDateKey]))?.contentModificationDate
-                }
-                else {
-                    self.m = Attaresult()
-                    self.m.benchmarkURL.value = url
-                    self.isDraft = true
-                }
+                self.fileURL = nil
+                self.fileModificationDate = nil
+                self.displayName = url.deletingPathExtension().lastPathComponent
+                self.m = Attaresult()
+                self.m.benchmarkURL.value = url
                 self.state = .loading(try BenchmarkProcess(url: url, command: .list, delegate: self, on: .main))
             }
             catch {
@@ -783,9 +777,9 @@ extension AttabenchDocument {
                                  maximumDuration: m.durationRange.value.upperBound.seconds)
         do {
             self.state = .running(try BenchmarkProcess(url: source, command: .run(options), delegate: self, on: .main))
-            self.activity = ProcessInfo.processInfo.beginActivity(options: [.automaticTerminationDisabled, .idleSystemSleepDisabled],
-                                                                 reason: "Benchmarking")
-
+            self.activity = ProcessInfo.processInfo.beginActivity(
+                options: [.idleSystemSleepDisabled, .automaticTerminationDisabled, .suddenTerminationDisabled],
+                reason: "Benchmarking")
         }
         catch {
             self.log(.status, error.localizedDescription)

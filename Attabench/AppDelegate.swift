@@ -13,5 +13,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
+    
+    func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
+        sender.sendAction(#selector(NSDocumentController.openDocument(_:)), to: nil, from: sender)
+        return false
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return false // But automatic app termination may do it anyway. That's fine.
+    }
 }
 
