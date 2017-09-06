@@ -78,14 +78,14 @@
                                         <rect key="frame" x="0.0" y="0.0" width="253" height="500"/>
                                         <subviews>
                                             <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="bNP-3x-NB1">
-                                                <rect key="frame" x="0.0" y="0.0" width="253" height="342"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="253" height="374"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <clipView key="contentView" drawsBackground="NO" id="BDK-JC-PBX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="253" height="342"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="253" height="374"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="20" viewBased="YES" id="FCj-n2-LsA">
-                                                            <rect key="frame" x="0.0" y="0.0" width="253" height="342"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="253" height="374"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
@@ -155,7 +155,7 @@
                                                 </scroller>
                                             </scrollView>
                                             <customView identifier="LeftStatusBar" id="nIc-Zf-1gG" userLabel="Left Bar" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="343" width="253" height="28"/>
+                                                <rect key="frame" x="0.0" y="375" width="253" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <button toolTip="Check or uncheck all displayed tasks" translatesAutoresizingMaskIntoConstraints="NO" id="f4B-71-bgS">
@@ -202,20 +202,20 @@
                                                 </constraints>
                                             </customView>
                                             <customView id="t6g-3B-ujU" customClass="ColoredView" customModule="Attabench" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="372" width="253" height="128"/>
+                                                <rect key="frame" x="0.0" y="404" width="253" height="96"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <subviews>
                                                     <box borderType="none" title="Run Options" translatesAutoresizingMaskIntoConstraints="NO" id="Zpy-nB-gHO">
-                                                        <rect key="frame" x="-3" y="-4" width="259" height="126"/>
+                                                        <rect key="frame" x="-3" y="-4" width="259" height="94"/>
                                                         <view key="contentView" id="9YK-HB-OXG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="259" height="111"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="259" height="79"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <customView autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2di-RX-nn6">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="259" height="111"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="259" height="79"/>
                                                                     <subviews>
                                                                         <textField autoresizesSubviews="NO" toolTip="Keep repeating measurements until this amount of time has elapsed." horizontalHuggingPriority="220" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ayq-Lb-3HF">
-                                                                            <rect key="frame" x="80" y="61" width="81" height="19"/>
+                                                                            <rect key="frame" x="80" y="29" width="81" height="19"/>
                                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="seconds" drawsBackground="YES" id="0O5-SR-Myp">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -223,11 +223,11 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QvT-9n-GAv">
-                                                                            <rect key="frame" x="234" y="84" width="15" height="22"/>
+                                                                            <rect key="frame" x="234" y="52" width="15" height="22"/>
                                                                             <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="1" maxValue="1000" doubleValue="1" id="6iU-hi-CfQ"/>
                                                                         </stepper>
                                                                         <textField horizontalHuggingPriority="247" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ywB-bH-GFa">
-                                                                            <rect key="frame" x="10" y="64" width="66" height="14"/>
+                                                                            <rect key="frame" x="10" y="32" width="66" height="14"/>
                                                                             <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Duration" id="H3o-XF-OnB">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -235,7 +235,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField toolTip="The number of times to repeat a task before reporting the lowest measurement." horizontalHuggingPriority="220" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yL8-DN-rbo">
-                                                                            <rect key="frame" x="80" y="86" width="156" height="19"/>
+                                                                            <rect key="frame" x="80" y="54" width="156" height="19"/>
                                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="count" drawsBackground="YES" id="LJX-ds-F56">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -243,7 +243,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField horizontalHuggingPriority="247" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="syF-gR-Wxi">
-                                                                            <rect key="frame" x="10" y="89" width="66" height="14"/>
+                                                                            <rect key="frame" x="10" y="57" width="66" height="14"/>
                                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Iterations" id="DL2-RU-qL3">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -251,7 +251,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dGH-fk-LnY">
-                                                                            <rect key="frame" x="78" y="44" width="23" height="14"/>
+                                                                            <rect key="frame" x="78" y="12" width="23" height="14"/>
                                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Min" id="0pL-5w-uw9">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -259,7 +259,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1na-tO-jly">
-                                                                            <rect key="frame" x="165" y="44" width="26" height="14"/>
+                                                                            <rect key="frame" x="165" y="12" width="26" height="14"/>
                                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Max" id="gqX-zR-ruo">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -267,7 +267,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField toolTip="Stop repeating measurements after this amount of time has elapsed. (The last measurement will not be canceled.)" horizontalHuggingPriority="220" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ggj-kc-6JG">
-                                                                            <rect key="frame" x="167" y="61" width="80" height="19"/>
+                                                                            <rect key="frame" x="167" y="29" width="80" height="19"/>
                                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="seconds" drawsBackground="YES" id="oPY-wM-5m9">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -315,6 +315,7 @@
                                                 <constraints>
                                                     <constraint firstItem="Zpy-nB-gHO" firstAttribute="top" secondItem="t6g-3B-ujU" secondAttribute="top" constant="6" id="G6z-nH-Z8L"/>
                                                     <constraint firstItem="Zpy-nB-gHO" firstAttribute="leading" secondItem="t6g-3B-ujU" secondAttribute="leading" id="WBq-bX-m5h"/>
+                                                    <constraint firstAttribute="height" constant="96" id="hGC-T5-Wkr"/>
                                                     <constraint firstAttribute="bottom" secondItem="Zpy-nB-gHO" secondAttribute="bottom" id="paC-Xo-3Sr"/>
                                                     <constraint firstAttribute="trailing" secondItem="Zpy-nB-gHO" secondAttribute="trailing" id="wYG-2l-b6U"/>
                                                 </constraints>
@@ -483,7 +484,7 @@
                                             </scrollView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="026-92-GbB"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="026-92-GbB"/>
                                             <constraint firstAttribute="trailing" secondItem="0oS-10-PFy" secondAttribute="trailing" id="FPN-nv-7as"/>
                                             <constraint firstAttribute="bottom" secondItem="0oS-10-PFy" secondAttribute="bottom" id="Mv4-5P-HE5"/>
                                             <constraint firstItem="0oS-10-PFy" firstAttribute="leading" secondItem="c1O-He-7va" secondAttribute="leading" id="mLP-nU-yNJ"/>
