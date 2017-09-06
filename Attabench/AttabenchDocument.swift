@@ -170,6 +170,10 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     override init() {
         super.init()
 
+        self.glue.connector.connect(self.theme.values) { [unowned self] theme in
+            self.m.themeName.value = theme.name
+        }
+        
         self.glue.connector.connect([tasksToRun.tick, model.map{$0.runOptionsTick}].gather()) { [unowned self] in
             self.updateChangeCount(.changeDone)
             self.runOptionsDidChange()
@@ -466,12 +470,16 @@ extension AttabenchDocument {
             throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         }
     }
+    
+    func readAttaresult(_ data: Data) throws {
+        self.m = try JSONDecoder().decode(Attaresult.self, from: data)
+        self.theme.value = BenchmarkTheme.Predefined.theme(named: self.m.themeName.value) ?? BenchmarkTheme.Predefined.screen
+    }
 
     override func read(from url: URL, ofType typeName: String) throws {
         switch typeName {
         case UTI.attaresult:
-            let data = try Data(contentsOf: url)
-            self.m = try JSONDecoder().decode(Attaresult.self, from: data)
+            try self.readAttaresult(try Data(contentsOf: url))
             if let url = m.benchmarkURL.value {
                 do {
                     log(.status, "Loading \(FileManager().displayName(atPath: url.path))")
@@ -492,8 +500,7 @@ extension AttabenchDocument {
                 self.fileURL = resultsURL
                 self.fileType = UTI.attaresult
                 if (try? resultsURL.checkResourceIsReachable()) == true {
-                    let data = try Data(contentsOf: resultsURL)
-                    self.m = try JSONDecoder().decode(Attaresult.self, from: data)
+                    try self.readAttaresult(try Data(contentsOf: resultsURL))
                     m.benchmarkURL.value = url
                     self.fileModificationDate = (try? resultsURL.resourceValues(forKeys: [URLResourceKey.contentModificationDateKey]))?.contentModificationDate
                 }

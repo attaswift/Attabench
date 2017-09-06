@@ -63,7 +63,7 @@ private func monoLineParams(index: Int, count: Int, lineWidth: CGFloat) -> [Line
 public class BenchmarkTheme: Hashable {
     public let name: String
     public var imageSize: CGSize? = nil
-    public var marginRatio: (x: CGFloat, y: CGFloat) = (0.02, 0.05)
+    public var margins: (x: CGFloat, y: CGFloat) = (12, 12)
     public var backgroundColor: NSColor = .white
     var title: TextParams = .init(font: NSFont(name: labelFontName, size: 24)!, color: NSColor.black)
     var border: LineParams = .init(lineWidth: 0.5, color: NSColor.black)
@@ -96,10 +96,11 @@ public class BenchmarkTheme: Hashable {
 
     public enum Predefined {
         public static let screen = BenchmarkTheme(name: "Screen")
+        
         public static let presentation: BenchmarkTheme = {
             let theme = BenchmarkTheme(name: "Presentation")
             theme.imageSize = presentationSize
-            theme.marginRatio = (0, 0)
+            theme.margins = (0, 0)
             theme.backgroundColor = NSColor.black
             theme.title = TextParams(font: NSFont(name: labelFontName, size: 48)!, color: NSColor.white)
             theme.border = LineParams(lineWidth: 0.5, color: NSColor.white)
@@ -112,14 +113,15 @@ public class BenchmarkTheme: Hashable {
             theme.legendSampleLine = false
             theme.lineParams = { i, c in colorLineParams(index: i, count: c, lineWidth: 8, hairLine: false, shadowRadius: 3) }
             theme.xPadding = 12
-            theme.branding = TextParams(font: NSFont(name: labelFontName, size: 24)!, color: .black)
+            theme.branding = TextParams(font: NSFont(name: labelFontName, size: 18)!,
+                                        color: NSColor(calibratedWhite: 1, alpha: 1))
             return theme
         }()
 
         public static let colorPrint: BenchmarkTheme = {
             let theme = BenchmarkTheme(name: "Color Print")
             theme.imageSize = printSize
-            theme.marginRatio = (0, 0)
+            theme.margins = (0, 0)
             theme.backgroundColor = NSColor.white
             theme.title = TextParams(font: NSFont(name: labelFontName, size: 12)!, color: .black)
             theme.border = LineParams(lineWidth: 1, color: .black)
@@ -132,14 +134,15 @@ public class BenchmarkTheme: Hashable {
             theme.legendSampleLine = false
             theme.lineParams = { i, c in colorLineParams(index: i, count: c, lineWidth: 4, hairLine: true) }
             theme.xPadding = 6
-            theme.branding = TextParams(font: NSFont(name: labelFontName, size: 10)!, color: .black)
+            theme.branding = TextParams(font: NSFont(name: labelFontName, size: 10)!,
+                                        color: NSColor(calibratedWhite: 0, alpha: 1))
             return theme
         }()
 
         public static let monochromePrint: BenchmarkTheme = {
             let theme = BenchmarkTheme(name: "Monochrome Print")
             theme.imageSize = printSize
-            theme.marginRatio = (0, 0)
+            theme.margins = (0, 0)
             theme.backgroundColor = NSColor.white
             theme.title = TextParams(font: NSFont(name: labelFontName, size: 12)!, color: .black)
             theme.border = LineParams(lineWidth: 1, color: .black)

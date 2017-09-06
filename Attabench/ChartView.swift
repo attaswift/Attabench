@@ -3,33 +3,36 @@
 // For licensing information, see the file LICENSE.md in the Git repository above.
 
 import Cocoa
+import BenchmarkModel
 import BenchmarkCharts
 import GlueKit
 
 @IBDesignable
 class ChartView: NSView {
     var documentBasename: String = "Benchmark"
-
-    var chart: BenchmarkChart? = nil {
+    private let modelConnector = Connector()
+    var model: Attaresult? {
         didSet {
-            self.image = self.render()
-        }
-    }
-
-    private var themeConnection: Connection? = nil
-    var theme: AnyObservableValue<BenchmarkTheme> = .constant(BenchmarkTheme.Predefined.screen) {
-        didSet {
-            self.image = render()
-            themeConnection?.disconnect()
-            themeConnection = theme.values.subscribe { [unowned self] theme in
-                self.image = self.render()
+            modelConnector.disconnect()
+            if let model = model {
+                modelConnector.connect(model.chartOptionsTick) {
+                    self.render()
+                }
             }
         }
     }
-
-    var imageSize: CGSize? = nil {
+    
+    private var themeConnection: Connection? = nil
+    var theme: AnyObservableValue<BenchmarkTheme> = .constant(BenchmarkTheme.Predefined.screen) {
         didSet {
-            self.needsDisplay = true
+            themeConnection?.disconnect()
+            themeConnection = theme.values.subscribe { [unowned self] _ in self.render() }
+        }
+    }
+
+    var chart: BenchmarkChart? = nil {
+        didSet {
+            self.render()
         }
     }
 
@@ -48,8 +51,8 @@ class ChartView: NSView {
 
     var downEvent: NSEvent? = nil
 
-    func render() -> NSImage? {
-        return render(at: imageSize ?? self.bounds.size)
+    func render() {
+        self.image = render(at: theme.value.imageSize ?? self.bounds.size)
     }
 
     func render(at size: CGSize) -> NSImage? {
@@ -89,8 +92,8 @@ class ChartView: NSView {
         get { return super.frame }
         set {
             super.frame = newValue
-            if imageSize == nil {
-                self.image = render()
+            if theme.value.imageSize == nil {
+                render()
             }
         }
     }
