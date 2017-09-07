@@ -22,6 +22,7 @@
 		BB7BC57B1F3FC483004484EF /* IntBTree3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC5661F3FC482004484EF /* IntBTree3.swift */; };
 		BB7BC57C1F3FC483004484EF /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC5671F3FC482004484EF /* OrderedSet.swift */; };
 		BB7BC57F1F3FC483004484EF /* SortedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7BC56A1F3FC482004484EF /* SortedArray.swift */; };
+		BBA63AFA1F6144AA00E21490 /* RedBlackTree2b.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA63AF91F6144AA00E21490 /* RedBlackTree2b.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +56,7 @@
 		BB7BC5671F3FC482004484EF /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		BB7BC56A1F3FC482004484EF /* SortedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedArray.swift; sourceTree = "<group>"; };
 		BB805E7D1F5B226B00D59657 /* run.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = "<group>"; };
+		BBA63AF91F6144AA00E21490 /* RedBlackTree2b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedBlackTree2b.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				BB7BC55E1F3FC481004484EF /* BinaryTree.swift */,
 				BB7BC55D1F3FC481004484EF /* RedBlackTree.swift */,
 				BB7BC55C1F3FC481004484EF /* RedBlackTree2.swift */,
+				BBA63AF91F6144AA00E21490 /* RedBlackTree2b.swift */,
 				BB7BC5611F3FC481004484EF /* BTree.swift */,
 				BB7BC5641F3FC482004484EF /* BTree2.swift */,
 				BB7BC55F1F3FC481004484EF /* BTree3.swift */,
@@ -182,6 +185,7 @@
 				BB7BC57F1F3FC483004484EF /* SortedArray.swift in Sources */,
 				BB7BC5731F3FC483004484EF /* BinaryTree.swift in Sources */,
 				BB7BC5741F3FC483004484EF /* BTree3.swift in Sources */,
+				BBA63AFA1F6144AA00E21490 /* RedBlackTree2b.swift in Sources */,
 				BB7BC57C1F3FC483004484EF /* OrderedSet.swift in Sources */,
 				BB7BC5771F3FC483004484EF /* SortedSet.swift in Sources */,
 				BB7BC5721F3FC483004484EF /* RedBlackTree.swift in Sources */,

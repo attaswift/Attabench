@@ -302,7 +302,7 @@ benchmark.addTask(title: "RedBlackTree2.for-in2") { input, lookups in
 }
 
 benchmark.addTask(title: "RedBlackTree2.for-in3") { input, lookups in
-    var set = RedBlackTree2<Int>()
+    var set = RedBlackTree2b<Int>()
     for value in input {
         set.insert(value)
     }
