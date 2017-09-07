@@ -61,6 +61,8 @@ public struct Time: CustomStringConvertible, LosslessStringConvertible, Expressi
         "": .second,
         "s": .second,
         "ms": .millisecond,
+        "µs": .microsecond,
+        "us": .microsecond,
         "ns": .nanosecond,
         "ps": .picosecond
     ]
@@ -88,7 +90,8 @@ public struct Time: CustomStringConvertible, LosslessStringConvertible, Expressi
         if self < .microsecond { return String(format: "%.3gns", Double(picoseconds) / 1e3) }
         if self < .millisecond { return String(format: "%.3gµs", Double(picoseconds) / 1e6) }
         if self < .second { return String(format: "%.3gms", Double(picoseconds) / 1e9) }
-        return String(format: "%.3gs", seconds)
+        if self.seconds < 1000 { return String(format: "%.3gs", seconds) }
+        return String(format: "%gs", seconds.rounded())
     }
 
     public static func ==(left: Time, right: Time) -> Bool {
