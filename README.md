@@ -27,22 +27,20 @@ and visualize the performance of Swift code.
 
 ## Background
 
-Károly created Attabench because he wanted to include some log-log
-charts in his [dotSwift 2017 talk][dotswift], and it seemed easier to
-build a custom chart renderer from scratch using Core Graphics than
-to mess with a bunch of CSV files and pivot tables in Excel.
+This app is for microbenchmarking low-level algorithms with one degree of freedom (usually size).
+It works by repeatedly performing the same operation on random data of various sizes, while continuously charting the results in nice plots. Attabench's default log-log plots are ideal for seeing your algorithm's performance at a glance.
+
+Attabench was originally created to supply nice log-log charts for my [dotSwift 2017 talk][dotswift] and [Optimizing Collections][oc] book. At the time, it seemed easier to build a custom chart renderer from scratch using Core Graphics than to mess with a bunch of CSV files and pivot tables in Excel. (It has to be noted though that this opinion has been somewhat weakened during the implementation process.)
 
 [dotswift]: https://speakerdeck.com/lorentey/optimizing-swift-collections
+[oc]: https://www.objc.io/books/optimizing-collections/
 
 Attabench was made in a hurry for a single use case, so its code is
-what polite people might call *a little messy*. Károly thinks it's a
-stinking pile of dog poo. Its UI design breaks new ground in making
-Cocoa look bad. But it's shockingly fun to play with, and the graphs
+what polite people might call *a little messy*. But it's shockingly fun to play with, and the graphs
 it produces are chock full of strange and wonderful little mysteries.
 
-(Károly does not usually refer to himself in the third person. He
-doesn't really know why he started doing it now, and he hopes he'll
-snap out of it soon.)
+If you find Attabench useful in your own project, please consider [buying a copy of my book][oc]!
+It contains a *lot* of benchmarks made with Attabench; I'm positive you'll find it entertaining and informative.
 
 ## Installation
 
