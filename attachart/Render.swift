@@ -34,6 +34,7 @@ extension Attaresult {
             chartOptions.displayAllMeasuredSizes = true
         case let (min?, max?):
             chartOptions.displaySizeRange = Swift.min(min, max) ... Swift.max(min, max)
+            chartOptions.displayAllMeasuredSizes = false
         default:
             throw OptionError("Both -min-size and -max-size must be specified")
         }
@@ -42,6 +43,7 @@ extension Attaresult {
             chartOptions.displayAllMeasuredTimes = true
         case let (min?, max?):
             chartOptions.displayTimeRange = Swift.min(min, max) ... Swift.max(min, max)
+            chartOptions.displayAllMeasuredTimes = false
         default:
             throw OptionError("Both -min-time and -max-time must be specified")
         }
@@ -79,7 +81,7 @@ extension Attaresult {
 
         var renderOptions = BenchmarkRenderer.Options()
         renderOptions.showTitle = false
-        renderOptions.legendHorizontalMargin = 0.02 * min(imageSize.width, imageSize.height)
+        renderOptions.legendHorizontalMargin = 0.04 * min(imageSize.width, imageSize.height)
         renderOptions.legendVerticalMargin = renderOptions.legendHorizontalMargin
 
         let renderer = BenchmarkRenderer(
