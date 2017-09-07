@@ -1,6 +1,7 @@
 ![Attabench](./Images/Header.png)
 
-[![Xcode 8.2](https://img.shields.io/badge/Xcode-8.2-blue.svg)](https://developer.apple.com/xcode/) 
+[![Xcode 9](https://img.shields.io/badge/Xcode-9-blue.svg)](https://developer.apple.com/xcode/)
+[![Swift 4](https://img.shields.io/badge/Swift-4-blue.svg)](https://swift.org/)
 [![Platform](https://img.shields.io/badge/platforms-macOS-blue.svg)](https://developer.apple.com/platforms/)
 [![Build Status](https://travis-ci.org/attaswift/Attabench.svg?branch=master)](https://travis-ci.org/attaswift/Attabench)
 
