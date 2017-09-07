@@ -7,8 +7,8 @@ let package = Package(
         .executable(name: "Benchmark", targets: ["Benchmark"])
     ],
     dependencies: [
-        .package(url: "https://github.com/attaswift/Benchmarking", .branch("master")),
-        .package(url: "https://github.com/attaswift/BTree", .branch("5.x"))
+        .package(url: "https://github.com/attaswift/Benchmarking", from: "1.0.0"),
+        .package(url: "https://github.com/attaswift/BTree", from: "4.1.0")
     ],
     targets: [
         .target(name: "Benchmark", dependencies: ["Benchmarking", "BTree"], path: "Sources"),
