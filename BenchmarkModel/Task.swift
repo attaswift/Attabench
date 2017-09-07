@@ -70,8 +70,15 @@ public final class Task: Codable, Hashable {
         return left.name == right.name
     }
     
-    public func deleteResults() {
-        samples = [:]
-        sampleCount.value = 0
+    public func deleteResults(in range: ClosedRange<Int>? = nil) {
+        if let range = range {
+            samples = samples.filter { !range.contains($0.key) }
+            sampleCount.value = samples.values.reduce(0) { $0 + $1.count }
+        }
+        else {
+            samples = [:]
+            sampleCount.value = 0
+        }
     }
+
 }

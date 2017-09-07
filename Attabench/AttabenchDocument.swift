@@ -746,8 +746,10 @@ extension AttabenchDocument {
         let tasks = (self.tasksTableView?.selectedRowIndexes ?? []).map { self.visibleTasks[$0] }
         m.tasks.withTransaction {
             for task in tasks {
-                task.deleteResults()
-                if !task.isRunnable.value {
+                task.deleteResults(in: NSEvent.modifierFlags.contains(.shift)
+                    ? nil
+                    : self.m.selectedSizeRange.value)
+                if !task.isRunnable.value && task.sampleCount.value == 0 {
                     self.m.remove(task)
                 }
             }

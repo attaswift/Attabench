@@ -67,6 +67,9 @@ public class Attaresult: NSObject, Codable {
             }
             return sizes
     }
+    public private(set) lazy var selectedSizeRange: AnyObservableValue<ClosedRange<Int>>
+        = self.sizeScaleRange.map { (1 << $0.lowerBound) ... (1 << $0.upperBound) }
+
 
     public private(set) lazy var runOptionsTick: MergedSource<Void>
         = [iterations.tick,
