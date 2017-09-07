@@ -6,8 +6,8 @@ import Cocoa
 import Quartz
 
 extension NSImage {
-    public func pngData() -> Data {
-        let cgimage = self.cgImage(forProposedRect: nil, context: nil, hints: [.CTM: NSAffineTransform(transform: AffineTransform.init(scale: 4))])!
+    public func pngData(scale: Int = 4) -> Data {
+        let cgimage = self.cgImage(forProposedRect: nil, context: nil, hints: [.CTM: NSAffineTransform(transform: AffineTransform.init(scale: CGFloat(scale)))])!
         let rep = NSBitmapImageRep(cgImage: cgimage)
         rep.size = self.size
         let data = rep.representation(using: .png, properties: [:])

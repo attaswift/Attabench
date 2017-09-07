@@ -289,7 +289,7 @@ public struct BenchmarkRenderer {
     struct LegendLayout {
         struct Caption {
             let path: NSBezierPath
-            let lineParams: LineParams
+            let lineParams: BenchmarkTheme.LineParams
             let position: CGPoint
             let text: NSAttributedString
         }

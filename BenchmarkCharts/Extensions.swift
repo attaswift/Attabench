@@ -22,7 +22,7 @@ extension NSBezierPath {
         self.setLineDash(dashes, count: dashes.count, phase: 0)
     }
 
-    func stroke(with params: LineParams) {
+    func stroke(with params: BenchmarkTheme.LineParams) {
         NSGraphicsContext.saveGraphicsState()
         params.apply(on: self)
         params.color.setStroke()

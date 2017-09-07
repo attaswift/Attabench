@@ -4,12 +4,26 @@
 
 import Cocoa
 
-struct TextParams {
-    let font: NSFont
-    let color: NSColor
+extension BenchmarkTheme {
+    public struct TextParams {
+        var font: NSFont
+        var color: NSColor
 
-    var attributes: [NSAttributedStringKey: Any] {
-        return [.foregroundColor: color,
-                .font: font]
+        var attributes: [NSAttributedStringKey: Any] {
+            return [.foregroundColor: color,
+                    .font: font]
+        }
+
+        var fontName: String {
+            get {
+                return font.fontName
+            }
+            set {
+                guard let font = NSFont(name: newValue, size: font.pointSize) else {
+                    preconditionFailure("Font '\(newValue)' not found")
+                }
+                self.font = font
+            }
+        }
     }
 }

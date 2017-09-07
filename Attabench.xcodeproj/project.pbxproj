@@ -152,12 +152,15 @@
 		BB14EDF31E6473D00006FD5F /* Noop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Noop.swift; sourceTree = "<group>"; };
 		BB17BB071E6733C700B05A22 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB17BB091E6733DA00B05A22 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		BB23CE811F61B476006FC3B3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		BB23CE8E1F61B991006FC3B3 /* Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render.swift; sourceTree = "<group>"; };
 		BB35FF981E359756003ABBF3 /* StatusLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusLabel.swift; sourceTree = "<group>"; };
 		BB40F81A1F5C2AE700C5EB75 /* BenchmarkRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkRenderer.swift; sourceTree = "<group>"; };
 		BB40F81C1F5C2D6600C5EB75 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BB4F155E1F409882003C05C3 /* BenchmarkRunner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BenchmarkRunner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB4F15611F409882003C05C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB4F157F1F409D36003C05C3 /* Complain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Complain.swift; sourceTree = "<group>"; };
+		BB55F5771F61CF1E00E9FF6D /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		BB5B02D81F5E2A4C0084D86B /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		BB6139791F5DBB80005455D5 /* Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bounds.swift; sourceTree = "<group>"; };
 		BB65B0F31F59BBA4007EB717 /* Attabench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Attabench.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -301,6 +304,7 @@
 				BBCA26EE1F59B88E00C6FB74 /* BenchmarkModel */,
 				BB4F155F1F409882003C05C3 /* BenchmarkRunner */,
 				BBCA26DB1F59B82C00C6FB74 /* BenchmarkCharts */,
+				BB23CE801F61B476006FC3B3 /* attachart */,
 				BB8E0E191E33D64A00505773 /* Dependencies */,
 				BB1DA9CE1E2E5923000F2B03 /* Products */,
 				BBCA268A1F559B3A00C6FB74 /* Frameworks */,
@@ -318,6 +322,16 @@
 				BB65B0F31F59BBA4007EB717 /* Attabench.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BB23CE801F61B476006FC3B3 /* attachart */ = {
+			isa = PBXGroup;
+			children = (
+				BB23CE811F61B476006FC3B3 /* main.swift */,
+				BB23CE8E1F61B991006FC3B3 /* Render.swift */,
+				BB55F5771F61CF1E00E9FF6D /* Options.swift */,
+			);
+			path = attachart;
 			sourceTree = "<group>";
 		};
 		BB4F155F1F409882003C05C3 /* BenchmarkRunner */ = {

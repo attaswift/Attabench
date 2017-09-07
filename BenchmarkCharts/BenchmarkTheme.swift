@@ -18,7 +18,7 @@ import Cocoa
 private let presentationSize = CGSize(width: 1280, height: 720)
 private let printSize = CGSize(width: 800, height: 260)
 
-private func colorLineParams(index: Int, count: Int, lineWidth: CGFloat, hairLine: Bool, shadowRadius: CGFloat = 0) -> [LineParams] {
+private func colorLineParams(index: Int, count: Int, lineWidth: CGFloat, hairLine: Bool, shadowRadius: CGFloat = 0) -> [BenchmarkTheme.LineParams] {
     let color: NSColor
     if count > 6 {
         color = NSColor(calibratedHue: CGFloat(index) / CGFloat(count),
@@ -39,15 +39,15 @@ private func colorLineParams(index: Int, count: Int, lineWidth: CGFloat, hairLin
         }
     }
     if hairLine {
-        return [LineParams(lineWidth: lineWidth, color: color, shadowRadius: shadowRadius),
-                LineParams(lineWidth: 0.5, color: .black)]
+        return [BenchmarkTheme.LineParams(lineWidth: lineWidth, color: color, shadowRadius: shadowRadius),
+                BenchmarkTheme.LineParams(lineWidth: 0.5, color: .black)]
     }
     else {
-        return [LineParams(lineWidth: lineWidth, color: color, shadowRadius: shadowRadius)]
+        return [BenchmarkTheme.LineParams(lineWidth: lineWidth, color: color, shadowRadius: shadowRadius)]
     }
 }
 
-private func monoLineParams(index: Int, count: Int, lineWidth: CGFloat) -> [LineParams] {
+private func monoLineParams(index: Int, count: Int, lineWidth: CGFloat) -> [BenchmarkTheme.LineParams] {
     let dash: [CGFloat]
     switch index {
     case 0: dash = []
@@ -56,30 +56,40 @@ private func monoLineParams(index: Int, count: Int, lineWidth: CGFloat) -> [Line
     default:
         dash = [6, 3] + [0, 3].repeated(index - 2)
     }
-    return [LineParams(lineWidth: lineWidth, color: .black, dash: dash)]
+    return [BenchmarkTheme.LineParams(lineWidth: lineWidth, color: .black, dash: dash)]
 }
 
 
-public class BenchmarkTheme: Hashable {
-    public let name: String
+public struct BenchmarkTheme: Hashable {
+    public var name: String
     public var imageSize: CGSize? = nil
     public var margins: (x: CGFloat, y: CGFloat) = (12, 12)
     public var backgroundColor: NSColor = .white
-    var title: TextParams = .init(font: NSFont(name: labelFontName, size: 24)!, color: NSColor.black)
-    var border: LineParams = .init(lineWidth: 0.5, color: NSColor.black)
-    var highlightedBorder: LineParams = .init(lineWidth: 4, color: NSColor.black)
-    var majorGridline: LineParams = .init(lineWidth: 0.75, color: NSColor(white: 0.3, alpha: 1))
-    var minorGridline: LineParams = .init(lineWidth: 0.5, color: NSColor(white: 0.3, alpha: 1), dash: [6, 3])
-    var axisLabel: TextParams = .init(font: NSFont(name: labelFontName, size: 10)!, color: .black)
-    var legend: TextParams = .init(font: NSFont(name: monoFontName, size: 12)!, color: .black)
+    public var title: TextParams = .init(font: NSFont(name: labelFontName, size: 24)!, color: NSColor.black)
+    public var border: LineParams = .init(lineWidth: 0.5, color: NSColor.black)
+    public var highlightedBorder: LineParams = .init(lineWidth: 4, color: NSColor.black)
+    public var majorGridline: LineParams = .init(lineWidth: 0.75, color: NSColor(white: 0.3, alpha: 1))
+    public var minorGridline: LineParams = .init(lineWidth: 0.5, color: NSColor(white: 0.3, alpha: 1), dash: [6, 3])
+    public var axisLabel: TextParams = .init(font: NSFont(name: labelFontName, size: 10)!, color: .black)
+    public var legend: TextParams = .init(font: NSFont(name: monoFontName, size: 12)!, color: .black)
     public var legendPadding: CGFloat = 6
     public var legendSampleLine: Bool = false
-    var lineParams: (Int, Int) -> [LineParams] = { i, c in colorLineParams(index: i, count: c, lineWidth: 4, hairLine: true) }
+    public var lineParams: (Int, Int) -> [LineParams] = { i, c in colorLineParams(index: i, count: c, lineWidth: 4, hairLine: true) }
     public var xPadding: CGFloat = 6
-    var branding: TextParams? = TextParams(font: NSFont(name: labelFontName, size: 10)!, color: .black)
+    public var branding: TextParams? = TextParams(font: NSFont(name: labelFontName, size: 10)!, color: .black)
 
     public init(name: String) {
         self.name = name
+    }
+
+    public mutating func setLabelFontName(_ name: String) {
+        title.fontName = name
+        axisLabel.fontName = name
+        branding?.fontName = name
+    }
+
+    public mutating func setMonoFontName(_ name: String) {
+        legend.fontName = name
     }
 
     func lineParams(for kind: Gridline.Kind) -> LineParams {
@@ -98,7 +108,7 @@ public class BenchmarkTheme: Hashable {
         public static let screen = BenchmarkTheme(name: "Screen")
         
         public static let presentation: BenchmarkTheme = {
-            let theme = BenchmarkTheme(name: "Presentation")
+            var theme = BenchmarkTheme(name: "Presentation")
             theme.imageSize = presentationSize
             theme.margins = (0, 0)
             theme.backgroundColor = NSColor.black
@@ -119,7 +129,7 @@ public class BenchmarkTheme: Hashable {
         }()
 
         public static let colorPrint: BenchmarkTheme = {
-            let theme = BenchmarkTheme(name: "Color Print")
+            var theme = BenchmarkTheme(name: "Color Print")
             theme.imageSize = printSize
             theme.margins = (0, 0)
             theme.backgroundColor = NSColor.white
@@ -140,7 +150,7 @@ public class BenchmarkTheme: Hashable {
         }()
 
         public static let monochromePrint: BenchmarkTheme = {
-            let theme = BenchmarkTheme(name: "Monochrome Print")
+            var theme = BenchmarkTheme(name: "Monochrome Print")
             theme.imageSize = printSize
             theme.margins = (0, 0)
             theme.backgroundColor = NSColor.white

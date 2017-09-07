@@ -286,6 +286,9 @@ public class Attaresult: NSObject, Codable {
         tasks.append(task)
         return self.tasksByName[name]!
     }
+    public func task(named name: String) -> Task? {
+        return tasksByName[name]
+    }
 
     public func addMeasurement(_ time: Time, forTask taskName: String, size: Int) {
         let task = self.task(for: taskName)
