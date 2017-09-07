@@ -19,7 +19,7 @@
                 <outlet property="consoleTextView" destination="trv-Ti-K8g" id="8M2-Ue-KP3"/>
                 <outlet property="displayIncludeAllMeasuredSizesCheckbox" destination="RnI-T4-xBu" id="jBk-8L-KCD"/>
                 <outlet property="displayIncludeAllMeasuredTimesCheckbox" destination="Awb-H9-ph0" id="IKb-VG-D1H"/>
-                <outlet property="displayIncludeSizeScaleRangeCheckbox" destination="UQn-gg-3xi" id="PHP-Ym-4mu"/>
+                <outlet property="displayIncludeSizeScaleRangeCheckbox" destination="sib-tL-s8J" id="dzR-zX-6LP"/>
                 <outlet property="displayIncludeTimeRangeCheckbox" destination="b6l-n7-Sbw" id="qO9-AQ-uAZ"/>
                 <outlet property="displayRefreshIntervalField" destination="pmL-ks-XtH" id="UI4-TS-ZYk"/>
                 <outlet property="displaySizeScaleRangeMaxPopUpButton" destination="SVl-Sw-GBR" id="GUv-sb-Tyh"/>
