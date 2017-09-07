@@ -65,9 +65,6 @@ extension Attaresult {
             theme.branding = nil
         }
 
-        var renderOptions = BenchmarkRenderer.Options()
-        renderOptions.showTitle = false
-
         var imageSize: CGSize
         switch (options.width, options.height) {
         case let (w?, h?): imageSize = CGSize(width: w, height: h)
@@ -79,6 +76,11 @@ extension Attaresult {
         default:
             throw OptionError("Both -width and -height must be specified")
         }
+
+        var renderOptions = BenchmarkRenderer.Options()
+        renderOptions.showTitle = false
+        renderOptions.legendHorizontalMargin = 0.02 * min(imageSize.width, imageSize.height)
+        renderOptions.legendVerticalMargin = renderOptions.legendHorizontalMargin
 
         let renderer = BenchmarkRenderer(
             chart: chart,
