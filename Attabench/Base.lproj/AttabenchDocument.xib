@@ -21,7 +21,6 @@
                 <outlet property="displayIncludeAllMeasuredTimesCheckbox" destination="Awb-H9-ph0" id="IKb-VG-D1H"/>
                 <outlet property="displayIncludeSizeScaleRangeCheckbox" destination="sib-tL-s8J" id="dzR-zX-6LP"/>
                 <outlet property="displayIncludeTimeRangeCheckbox" destination="b6l-n7-Sbw" id="qO9-AQ-uAZ"/>
-                <outlet property="displayRefreshIntervalField" destination="pmL-ks-XtH" id="UI4-TS-ZYk"/>
                 <outlet property="displaySizeScaleRangeMaxPopUpButton" destination="SVl-Sw-GBR" id="GUv-sb-Tyh"/>
                 <outlet property="displaySizeScaleRangeMinPopUpButton" destination="ApN-io-XrD" id="cZn-gV-1hV"/>
                 <outlet property="displayTimeRangeMaxPopUpButton" destination="LIJ-vX-rT9" id="AxX-lC-KaG"/>
@@ -86,11 +85,11 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="253" height="358"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" typeSelect="NO" autosaveName="TaskTable" rowHeight="20" viewBased="YES" id="FCj-n2-LsA">
+                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" autosaveColumns="NO" typeSelect="NO" autosaveName="TaskTable" rowHeight="20" viewBased="YES" id="FCj-n2-LsA">
                                                             <rect key="frame" x="0.0" y="0.0" width="253" height="358"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
-                                                            <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
+                                                            <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                             <tableColumns>
                                                                 <tableColumn identifier="TaskColumn" editable="NO" width="250" minWidth="40" maxWidth="10000" id="5JW-6S-7Uz">
@@ -120,10 +119,10 @@
                                                                                     </connections>
                                                                                 </button>
                                                                                 <textField horizontalHuggingPriority="239" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ZZR-24-yUe">
-                                                                                    <rect key="frame" x="18" y="10" width="197" height="17"/>
-                                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Task Name" usesSingleLineMode="YES" id="iqp-Dq-uQ0">
+                                                                                    <rect key="frame" x="20" y="10" width="193" height="17"/>
+                                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Task Name" drawsBackground="YES" usesSingleLineMode="YES" id="iqp-Dq-uQ0">
                                                                                         <font key="font" metaFont="system"/>
-                                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                                     </textFieldCell>
                                                                                 </textField>
@@ -160,6 +159,7 @@
                                                             </tableColumns>
                                                         </tableView>
                                                     </subviews>
+                                                    <nil key="backgroundColor"/>
                                                 </clipView>
                                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="VdQ-X3-4eM">
                                                     <rect key="frame" x="0.0" y="461" width="225" height="16"/>

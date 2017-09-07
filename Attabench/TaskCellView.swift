@@ -10,7 +10,7 @@ class TaskCellView: NSTableCellView {
     @IBOutlet weak var checkbox: NSButton?
     @IBOutlet weak var detail: NSTextField?
 
-    weak var context: TasksTableViewController?
+    weak var context: AttabenchDocument? // FIXME argh
 
     override func awakeFromNib() {
         self.appearance = NSAppearance(named: .vibrantLight)
@@ -46,8 +46,8 @@ class TaskCellView: NSTableCellView {
 
     @IBAction func checkboxAction(_ sender: NSButton) {
         guard let context = context else { return }
-        let tasks = context.contents
-        let tableView = context.tableView
+        let tasks = context.visibleTasks
+        let tableView = context.tasksTableView!
 
         let row = tableView.row(for: self)
         guard row != -1 else { return }

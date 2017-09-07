@@ -73,7 +73,7 @@
 		BBCC9FAF1F5ADBEF00AE36DE /* DocumentWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */; };
 		BBCC9FB11F5AE11100AE36DE /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB01F5AE11100AE36DE /* ColoredView.swift */; };
 		BBCC9FB41F5AEEB400AE36DE /* BenchmarkChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0E091E3262C600505773 /* BenchmarkChart.swift */; };
-		BBCC9FB61F5AFA6A00AE36DE /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */; };
+		BBCC9FB61F5AFA6A00AE36DE /* GlueKitTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FB51F5AFA6A00AE36DE /* GlueKitTableViewController.swift */; };
 		BBCC9FBC1F5B00F400AE36DE /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */; };
 		BBE4CA3B1F3CDC400062A281 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8E0DF61E32383900505773 /* Shuffle.swift */; };
 		BBE4CA3C1F3CDC450062A281 /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14EDF31E6473D00006FD5F /* Noop.swift */; };
@@ -218,7 +218,7 @@
 		BBCC9FA71F5AD2B600AE36DE /* attaresult.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = attaresult.iconset; sourceTree = "<group>"; };
 		BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentWindowController.swift; sourceTree = "<group>"; };
 		BBCC9FB01F5AE11100AE36DE /* ColoredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
-		BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
+		BBCC9FB51F5AFA6A00AE36DE /* GlueKitTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlueKitTableViewController.swift; sourceTree = "<group>"; };
 		BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
 		BBE4CA3D1F3CDCC40062A281 /* InputGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenerator.swift; sourceTree = "<group>"; };
 		BBF83F911F533ADD006F61C5 /* OptionParser.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = OptionParser.framework.dSYM; path = Carthage/Build/Mac/OptionParser.framework.dSYM; sourceTree = "<group>"; };
@@ -341,7 +341,7 @@
 				BB65B0F91F59BBA5007EB717 /* AttabenchDocument.xib */,
 				BBC93D1B1F5C3912002E3777 /* RateLimiter.swift */,
 				BBCC9FBB1F5B00F400AE36DE /* TaskCellView.swift */,
-				BBCC9FB51F5AFA6A00AE36DE /* TasksTableViewController.swift */,
+				BBCC9FB51F5AFA6A00AE36DE /* GlueKitTableViewController.swift */,
 				BBCC9FAE1F5ADBEF00AE36DE /* DocumentWindowController.swift */,
 				BB855CD11F5C2436008849E2 /* ChartView.swift */,
 				BB855CBE1F5C00B4008849E2 /* ChartView Dragging.swift */,
@@ -731,7 +731,7 @@
 			files = (
 				BB805E7C1F5B0F2500D59657 /* StatusLabel.swift in Sources */,
 				BB855CBF1F5C00B5008849E2 /* ChartView Dragging.swift in Sources */,
-				BBCC9FB61F5AFA6A00AE36DE /* TasksTableViewController.swift in Sources */,
+				BBCC9FB61F5AFA6A00AE36DE /* GlueKitTableViewController.swift in Sources */,
 				BB855CD21F5C2436008849E2 /* ChartView.swift in Sources */,
 				BB65B0F81F59BBA5007EB717 /* AttabenchDocument.swift in Sources */,
 				BBCC9FBC1F5B00F400AE36DE /* TaskCellView.swift in Sources */,

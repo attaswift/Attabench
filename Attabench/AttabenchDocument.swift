@@ -142,7 +142,7 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     var _status: String = "Ready"
 
     lazy var refreshChart = RateLimiter(maxDelay: 5, async: true) { [unowned self] in self._refreshChart() }
-    var tasksTableViewController: TasksTableViewController?
+    var tasksTableViewController: GlueKitTableViewController<Task, TaskCellView>?
 
     var pendingResults: [(task: String, size: Int, time: Time)] = []
     lazy var processPendingResults = RateLimiter(maxDelay: 0.2) { [unowned self] in
@@ -256,7 +256,10 @@ class AttabenchDocument: NSDocument, BenchmarkDelegate {
     override func windowControllerDidLoadNib(_ windowController: NSWindowController) {
         super.windowControllerDidLoadNib(windowController)
         consoleTextView!.textStorage!.setAttributedString(_log ?? NSAttributedString())
-        let tasksTVC = TasksTableViewController(tableView: tasksTableView!, contents: visibleTasks)
+        let tasksTVC = GlueKitTableViewController<Task, TaskCellView>(tableView: tasksTableView!, contents: visibleTasks) { [unowned self] cell, item in
+            cell.task = item
+            cell.context = self
+        }
         self.tasksTableViewController = tasksTVC
         self.tasksTableView!.delegate = tasksTVC
         self.tasksTableView!.dataSource = tasksTVC
