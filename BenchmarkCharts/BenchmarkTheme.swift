@@ -16,7 +16,6 @@ import Cocoa
 #endif
 
 private let presentationSize = CGSize(width: 1280, height: 720)
-private let printSize = CGSize(width: 800, height: 260)
 
 private func colorLineParams(index: Int, count: Int, lineWidth: CGFloat, hairLine: Bool, shadowRadius: CGFloat = 0) -> [BenchmarkTheme.LineParams] {
     let color: NSColor
@@ -130,7 +129,7 @@ public struct BenchmarkTheme: Hashable {
 
         public static let colorPrint: BenchmarkTheme = {
             var theme = BenchmarkTheme(name: "Color Print")
-            theme.imageSize = printSize
+            theme.imageSize = CGSize(width: 800, height: 260)
             theme.margins = (0, 0)
             theme.backgroundColor = NSColor.white
             theme.title = TextParams(font: NSFont(name: labelFontName, size: 12)!, color: .black)
@@ -151,21 +150,21 @@ public struct BenchmarkTheme: Hashable {
 
         public static let monochromePrint: BenchmarkTheme = {
             var theme = BenchmarkTheme(name: "Monochrome Print")
-            theme.imageSize = printSize
+            theme.imageSize = CGSize(width: 800, height: 320)
             theme.margins = (0, 0)
             theme.backgroundColor = NSColor.white
-            theme.title = TextParams(font: NSFont(name: labelFontName, size: 12)!, color: .black)
+            theme.title = TextParams(font: NSFont(name: labelFontName, size: 18)!, color: .black)
             theme.border = LineParams(lineWidth: 1, color: .black)
             theme.highlightedBorder = LineParams(lineWidth: 4, color: .black)
             theme.majorGridline = LineParams(lineWidth: 0.7, color: NSColor(white: 0.6, alpha: 1))
             theme.minorGridline = LineParams(lineWidth: 0.4, color: NSColor(white: 0.6, alpha: 1), dash: [2, 1])
-            theme.axisLabel = TextParams(font: NSFont(name: labelFontName, size: 10)!, color: .black)
-            theme.legend = TextParams(font: NSFont(name: monoFontName, size: 10)!, color: .black)
+            theme.axisLabel = TextParams(font: NSFont(name: labelFontName, size: 14)!, color: .black)
+            theme.legend = TextParams(font: NSFont(name: monoFontName, size: 14)!, color: .black)
             theme.legendPadding = 6
             theme.legendSampleLine = true
             theme.lineParams = { i, c in monoLineParams(index: i, count: c, lineWidth: 2) }
             theme.xPadding = 6
-            theme.branding = TextParams(font: NSFont(name: labelFontName, size: 10)!, color: .black)
+            theme.branding = TextParams(font: NSFont(name: labelFontName, size: 14)!, color: .black)
             return theme
         }()
 
