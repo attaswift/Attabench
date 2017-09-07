@@ -26,9 +26,9 @@ extension Attaresult {
         chartOptions.amortizedTime = options.amortized
         chartOptions.logarithmicTime = options.logarithmicTime
         chartOptions.logarithmicSize = options.logarithmicSize
-        chartOptions.topBand = options.topBand?.value ?? .sigma(2)
-        chartOptions.centerBand = options.centerBand?.value ?? .average
-        chartOptions.bottomBand = options.bottomBand?.value ?? .minimum
+        chartOptions.topBand = (options.topBand ?? BandOption(.sigma(2))).value
+        chartOptions.centerBand = (options.centerBand ?? BandOption(.average)).value
+        chartOptions.bottomBand = (options.bottomBand ?? BandOption(.minimum)).value
         switch (options.minSize, options.maxSize) {
         case (nil, nil):
             chartOptions.displayAllMeasuredSizes = true

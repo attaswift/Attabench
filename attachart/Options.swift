@@ -53,7 +53,7 @@ struct Options {
         case .optimizingCollections:
             topBand = topBand ?? BandOption(nil)
             centerBand = centerBand ?? BandOption(.average)
-            bottomBand = centerBand ?? BandOption(nil)
+            bottomBand = bottomBand ?? BandOption(nil)
             theme = theme ?? BenchmarkTheme.Predefined.colorPrint.name
             width = width ?? 800
             height = height ?? 260
