@@ -6,4 +6,4 @@ script:
 - xcrun xcodebuild -project Attabench.xcodeproj -scheme Benchmarking
 - swift build
 - (cd SampleBenchmark.attabench && swift build)
-- (cd OptimizingCollection.attabench && swift build)
+- (cd OptimizingCollections.attabench && swift build)
