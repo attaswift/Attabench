@@ -12,18 +12,15 @@ and visualize the performance of Swift code.
 
 ### Table of Contents
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-
 - [Background](#background)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Add New Benchmarks](#add-new-benchmarks)
+- [Control What Gets Measured](#control-what-gets-measured)
+- [Change How Data Gets Displayed](#change-how-data-gets-displayed)
+- [Get Chart Images Out of Attabench](#get-chart-images-out-of-attabench)
+- [Create Your Own Benchmarks](#create-new-benchmarks)
 - [Get Surprised by Results](#get-surprised-by-results)
-- [Create Less Interesting Charts](#create-less-interesting-charts)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+- [Internal Details: The Attabench Protocol](#internal-details-the-attabench-protocol)
 
 ## Background
 
@@ -44,9 +41,7 @@ It contains a *lot* of benchmarks made with Attabench; I'm positive you'll find 
 
 ## Installation
 
-90% the fun of Attabench is in defining and running your own
-benchmarks. In order to do that, you currently need to build
-Attabench from source.
+Follow these steps to compile Attabench on your own:
 
 1. Clone this repo to your Mac.
 
@@ -67,7 +62,7 @@ Attabench from source.
     carthage bootstrap --platform Mac
     ```
 
-4. Open the project file in Xcode 8.2, then build and run the Attabench target.
+4. Open the project file in Xcode 9, then build and run the Attabench target.
 
     ```
     open Attabench.xcodeproj
@@ -81,39 +76,92 @@ Attabench from source.
 
 ## Usage
 
-When the app starts up, it presents you with an empty chart. Press
-Space to start running benchmarks with the parameters displayed in
-the toolbar. The chart gets updated in real time as new measurements
-are made.
+Attabench has two document formats: a benchmark document defining what to test (with the extension `.attabench`), and a results document containing benchmark timings (extension `.attaresult`). Results documents remember which benchmark they came from, so you can stop Attabench and restart any particular benchmark run at any point. You may create many result documents for any benchmark.
+
+When the app starts up, it prompts you to open a benchmark document. Each benchmark contains executable code for one or more individually measurable tasks that can take some variable input. The repository contains two examples, so you don't need to start from sratch:
+
+- **SampleBenchmark.attabench** is a simple example benchmark with just three tasks. It is a useful starting point for starting your own benchmarks.
+
+- **OptimizingCollections.attabench** is an example of a real-life benchmark definition. It was used to generate the charts in the Optimizing Collections book. (See if you can reproduce my results!)
+
+We are going to look at how to define your own benchmark files later; let's just play with the app first.
+
+Once you load a benchmark, you can press <kbd>⌘-R</kbd> to start running benchmarks with the parameters displayed in
+the toolbar and the left panel. The chart gets updated in real time as new measurements are made.
 
 ![Screenshot of Attabench app](./Images/Attabench-screenshot.png)
 
-The currently active size range is highlighted by a thick black line
-on the size axis; the app cycles through all sizes in this range,
-running all active benchmarks tasks for each of them. (You can
-show/hide the highlight by pressing <kbd>H</kbd>.)
+You can follow the benchmarking progress by looking at the status bar in the middle panel. Below it there is a console area that includes Attabench status messages. If the benchmark prints anything on standard output or standard error during its run, that too will get included in the console area.
 
-The chart is automatically scaled to fit all existing measurements for the active tasks and the entire active range.
+## Control What Gets Measured
 
-To get a PNG version of the current chart, simply use the mouse to
-drag the chart into Finder or another app. (You can also copy the
-image to the clipboard by pressing Command-C.)
+You can use the checkboxes in the list inside the left panel to control which tasks get executed. If you have many tasks, you can filter them by name using the search field on the bottom. (You can build simple expressions using negation, conjunction (AND) and disjunction (OR) -- for example, typing `dog !brown, cat` in the search field will get you all tasks whose name includes either `dog` but not `brown`, or it includes `cat`.) To check/uncheck many tasks at once, just select them all and press any of their checkboxes.
 
-To explore the rest of the app, just look around the menu and click
-around in the toolbar; I'm sure you'll quickly figure out how it
-works.
+The two pop up buttons in the tool bar lets you select the size interval on which you want to run your tasks. Attabench will smoothly sample the interval on a logarithmic curve that perfectly fits the charts.
+
+While there is an active benchmark running, whenever you change something on the left side of the window, the benchmark is immediately stopped and restarted with the new parameters. This includes typing anything in the search bar -- only visible tasks get run. Be careful not to interrupt long-running measurements.
+
+The run options panel in the bottom controls how many times any particular task is executed before a measurement is reported. As a general rule, the task is repeated *Iterations* times, and the fastest result is used as the measurement. However, when the *Min Duration* field is set, each task will keep repeating until the specified time has elapsed; this smooths out the charts of super quick benchmarks that would otherwise have really noisy results. On the other hand, a task will not get repeated when it has cumulatively taken more time than the time interval in *Max Duration* field. (This will get you results quicker for long-running tasks.) So with the *Duration* fields, any particular task may get run for either more or less times than what you set in the *Iteration* field.
+
+## Change How Data Gets Displayed
+
+The right panel is used to configure how the chart is rendered. Feel free to experiment by tweaking these controls; they only change the appearance of how the results get displayed; they do not affect any currently running benchmark.
+
+The pop up button on the top lets select one from a handful of built-in visual themes to radically change the chart's appearance. For example, the *Presentation* theme is nice for white-on-black presentation decks. (You currently need to modify the source of the app if you need to change these themes or create your own.)
+
+The three *Scales* checkboxes lets you enable/disable amortized time display or switch to linear scales on any of the two axes. These are occasionally useful.
+
+The *Curves* panel includes two pop up buttons for selecting what data to display. For the actual curves, you can choose from the following kinds of data:
+
+- *None* to disable the curve altogether
+- *Minimum* to show the minimum of all collected measurements.
+- *Average* selects the arithmetic mean of collected samples. This is often the most informative, so this is the default choice.
+- *Maximum* displays the slowest measurement only. This is probably not that useful on its own, but it was really cheap to implement! (And it can be interesting to combine it with the stddev-based error bands.)
+- *Sample Count* is the odd one out: it displays the count of measurements made, not their value. This is a bit of a hack, but it is very useful for determining if you have taken enough measurements. (To get the best view, switch to a linear "time" scale.)
+
+There is also an optional *Error Band* that you can display around each curve. Here are the available options for these bands:
+
+- *None* disables them. This is the minimalist choice.
+- *Maximum* paints a faintly colored band between the minimum and maximum measured values.
+- The *μ + σ* option replaces the maximum value with the sum of the average and the standard deviation. (This is the 68% in the [68-95-99.7 rule][sigmas].)
+- *μ + 2σ* doubles the standard deviation from the previous option. ("95%")
+- *μ + 3σ* goes triple. ("99.7%")
+
+[sigmas]: https://en.wikipedia.org/wiki/68–95–99.7_rule
+
+The bottom band is always set to the minimum value, in all cases except *None*. (E.g., *μ - σ* can easily go below zero, which looks really bad on a log scale.)
+
+A word of warning: I know nothing about statistics, and I'm not qualified to do proper statistical analysis. I chose these options because they produced cool-looking charts that seemed to tell me something meaningful about the spread of the data. These sigma expressions look suitably scientific, but they are likely not the greatest choice for benchmarking. (I'm pretty sure benchmark measurements don't follow a normal distribution.) If you do know this sort of thing, please submit a PR to fix things!
+
+The *Visible Ranges* panel lets you select what ranges of values to display on the chart. By default, the chart is automatically scaled to fit all existing measurements for the active tasks and the entire active range. Setting specific ranges is useful if you need to zoom into a part of the chart; sorry you can't do this directly on the chart view.
+
+Finally, the two *Performance* fields lets you control how often Attabench updates the UI status and how often it redraws the chart. If results come too quickly, the CPU spent on Attabench's UI updates could easily affect measurements.
+
+## Get Chart Images Out of Attabench
+
+To get a PNG version of the current chart, simply use the mouse to drag the chart into Finder or another app. Attabench also includes a command-line tool to automate the rendering of charts -- check out the `attachart` executable target in the Swift package. You can use it to prevent wrist fatigue when you need to generate more than a handful of images. (Saving the command line invocations into a script will also let you regenerate the whole batch later.)
 
 
-## Add New Benchmarks
+## Create Your Own Benchmarks
 
-Benchmarks are currently compiled directly into the app, and cannot be changed at runtime. (I know, I know, this is awful. [Pull requests are welcome!][issue1])
+90% the fun of Attabench is in defining and running your own benchmarks. The easiest way to do that is to make a copy of the included `SampleBenchmark.attabench` benchmark and then modify the code in it.
 
-[issue1]: https://github.com/attaswift/Attabench/issues/1
+### Anatomy of an Attabench Benchmark Document
 
-You can add new benchmarks or change existing ones by modifying the
-source files of the `Benchmarks` target in the Xcode project. To
-define a new benchmark, you need to create a new instance of the
-`Benchmark<Input>` generic class and add some tasks to it.
+An `.attabench` document is actually a folder containing the files needed to run the benchmark tasks. The only required file is `run.sh`; it gets executed every time Attabench needs to run a new measurement. [The one in `SampleBenchmark`][run.sh] uses the Swift Package Manager to build and run the Swift package that's included in the folder. (You can define benchmarks in other languages, too; however, you'll need to implement the Attabench IPC protocol on your own. Attabench only provides a [client implementation in Swift][Benchmarking-pkg].)
+
+[run.sh]: ./SampleBenchmark.attabench/run.sh
+[Benchmarking-pkg]: https://github.com/attaswift/Benchmarking
+
+### Defining Tasks in Swift
+
+`SampleBenchmark` contains a Swift package that is already set up to run benchmarks in Attabench; you only need to replace the example tasks with your own ones.
+
+(To help you debug things, you may want to build the package in Terminal rather than inside Attabench. It is a normal Swift package, so you can build it and run it on its own. It even contains a set of command line options that you can use to run benchmarks directly from the command line -- this is extremely useful when you need to debug something about a task.)
+
+To help you get started, let's describe the tasks that `SampleBenchmark` gives you by default.
+
+To define a new benchmark, you need to create a new instance of the `Benchmark<Input>` generic class and add some tasks to it.
     
 ```swift
 public class Benchmark<Input>: BenchmarkProtocol {
@@ -205,7 +253,7 @@ This variant will go much faster the second and subsequent time the app runs it.
 To make things a little more interesting let's add a third task that measures binary search in a sorted array:
 
 ```swift
-benchmark.addJob(title: "Array.binarySearch") { input, lookups in
+benchmark.addTask(title: "Array.binarySearch") { input, lookups in
     let data = input.sorted()
     return { timer in 
         for value in lookups {
@@ -226,11 +274,15 @@ benchmark.addJob(title: "Array.binarySearch") { input, lookups in
 }
 ```
 
-That's it! To finish things off, we just need to modify the function `generateBenchmarks` in `Benchmarks.swift` to include our new benchmark in its return value, and recompile the app.
+That's it! To finish things off, we just need to start the benchmark. The `start()` method parses command line arguments and starts running tasks based on the options it receives.
+
+```swift
+benchmark.start()
+```
 
 ## Get Surprised by Results
 
-Running our brand new benchmark gets us a chart like this one:
+To run the new benchmark, just open it in Attabench, and press play. This gets us a chart like this one:
 
 ![Sample benchmark results](Images/SampleBenchmark.png)
 
@@ -288,24 +340,20 @@ features of the chart above:
 
  6. Finally, `Array.binarySearch` has highly prominent spikes at powers-of-two sizes. This isn't some random benchmarking artifact: the spikes are in fact due to *cache line aliasing*, an interesting (if unfortunate) interaction between the processor's L2 cache and our binary search algorithm. The series of memory accesses performed by binary search on a large enough continuous array with a power-of-two size tends to all fall into the same L2 cache line, quickly overwhelming its associative capacity. Try changing the algorithm so that you optimize away the spikes without affecting the overall shape and position of the curve!
 
-## Create Less Interesting Charts
+## Internal Details: The Attabench Protocol
 
-A log-log chart displaying average time spent per element is usually
-the best way to compare benchmark results, but if you wish to switch
-to another chart type, just use the toggles in the View menu:
+(In most cases, you don't need to know about the info in this section; however, you'll need to know it if you want to create benchmarks in languages other than Swift.)
 
-<img alt="View Menu" src="Images/ViewMenu.png" width="250">
+Attabench runs `run.sh` with two parameters: the first is the constant string `attabench`, identifying the protocol version, and the second is a path to a named FIFO file that will serve as the report channel for the benchmark. (Benchmarking progress is not written to stdout/stderr to make sure you can still use `print` in your benchmarking code without worrying about the output getting interleaved with progress reports.)
 
-For example, here is the same chart in linear scale, displaying raw
-execution times. 
+The command to run is fed to `run.sh` via the stdin file. It consists of a single JSON-encoded [`BenchmarkIPC.Command`][Command] value; the type definition contains some documentation describing what each command is supposed to do.
+Only a single command is sent to stdin, and the pipe is then immediately closed. When Attabench wants to run multiple commands, it will simply execute `run.sh` multiple times.
 
-![Sample benchmark results in linear scale](Images/SampleBenchmark2.png)
+[Command]: https://github.com/attaswift/Benchmarking/blob/125109f8aa22c54047ae7f7e6f0b98839a572373/BenchmarkIPC/BenchmarkIPC.swift#L50
 
-Note how the `Array.contains` case is completely invisible---its 16k
-cutoff is too small to even register on the horizontal axis. But the
-other two curves don't fare too well, either: most of the features
-that were so obvious on the log-log chart have disappeared. What
-happened to that marvellous sawtooth pattern? What of the prominent
-change of gears at 500,000 elements? At least the spikes of our
-binary search are still visible, although they don't *pop* the way
-they used to. Blergh!
+When the run command is given, Attabench expects `run.sh` to keep running indefinitely, constantly making new measurements, in an infinite loop over the specified sizes and tasks. Measurements are to be reported through the report FIFO, in JSON-encoded [`BenchmarkIPC.Report`][Report] values. Each report must be written as a single line, including the terminating newline character.
+
+[Report]: https://github.com/attaswift/Benchmarking/blob/125109f8aa22c54047ae7f7e6f0b98839a572373/BenchmarkIPC/BenchmarkIPC.swift#L96
+
+When Attabench needs to stop a running benchmark, it sends SIGTERM (signal 15) to the process. The process is expected to exit withing 2 seconds; if it doesn't, then Attabench will kill it immediately with SIGKILL (signal 9). Normally you don't need to do anything to make this work -- but you should be aware that the benchmark may get terminated at any time, so be sure to install a signal handler for SIGTERM if you need to do any cleanup prior to exiting.
+
