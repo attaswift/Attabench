@@ -303,7 +303,7 @@ features of the chart above:
     state, warming up the instruction cache etc.) that is a
     significant contributor to execution time at small sizes, but is gradually eclipsed by our algorithmic costs as we add more elements.
   
- 2. Afer the initial warmup, the cost of looking up an element using
+ 2. After the initial warmup, the cost of looking up an element using
     `Array.contains` seems to be proportional to the size of the
     array. This is exactly what we expect, because linear search is
     supposed to be, well, linear. Still, it's nice to see this
