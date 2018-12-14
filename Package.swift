@@ -10,7 +10,7 @@ let package = Package(
         .executable(name: "attachart", targets: ["attachart"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/attaswift/Benchmarking", from: "1.0.0"),
+        .package(url: "https://github.com/attaswift/Benchmarking", .branch("master")),
         .package(url: "https://github.com/attaswift/BigInt", from: "3.0.0"),
         .package(url: "https://github.com/attaswift/SipHash", from: "1.2.0"),
         .package(url: "https://github.com/attaswift/GlueKit", from: "0.2.0"),
