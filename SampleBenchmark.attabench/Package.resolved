@@ -5,9 +5,9 @@
         "package": "Benchmarking",
         "repositoryURL": "https://github.com/attaswift/Benchmarking",
         "state": {
-          "branch": null,
-          "revision": "6a224c19f21d5e28198f74f5c679c0c55335688c",
-          "version": "1.0.0"
+          "branch": "master",
+          "revision": "5fb2680a1a3d6197f5dbba29d9d57c2c1c56799e",
+          "version": null
         }
       },
       {
