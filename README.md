@@ -5,6 +5,11 @@
 [![Platform](https://img.shields.io/badge/platforms-macOS-blue.svg)](https://developer.apple.com/platforms/)
 [![Build Status](https://travis-ci.org/attaswift/Attabench.svg?branch=master)](https://travis-ci.org/attaswift/Attabench)
 
+| :warning: WARNING          |
+|:---------------------------|
+| This package has been largely superseded by the [Swift Collections Benchmark package](https://github.com/apple/swift-collections-benchmark). That package provides a portable benchmarking solution that works on all platforms that Swift supports, and it is being maintained by the Swift Standard Library team.|
+
+
 Attabench is a microbenchmarking app for macOS, designed to measure
 and visualize the performance of Swift code.
 
